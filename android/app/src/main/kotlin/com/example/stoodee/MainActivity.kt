@@ -1,4 +1,4 @@
-package com.example.stoodee
+package com.StooCrew.stoodee
 
 import io.flutter.embedding.android.FlutterActivity
 
