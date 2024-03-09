@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stoodee/services/auth/auth_service.dart';
 
 class Page1 extends StatefulWidget {
   const Page1({
@@ -11,10 +12,6 @@ class Page1 extends StatefulWidget {
 }
 
 class _Page1 extends State<Page1> {
-  void _incrementCounter() {
-    setState(() {});
-  }
-
   void gotomain() {
     context.go('/');
   }
@@ -30,7 +27,14 @@ class _Page1 extends State<Page1> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(onPressed: gotomain, child: const Text('aaa')),
+            ElevatedButton(
+                onPressed: () {
+                  if (AuthService.firebase().currentUser != null) {
+                    AuthService.firebase().logOut();
+                  }
+                  gotomain();
+                },
+                child: const Text('Log out')),
           ],
         ),
       ),

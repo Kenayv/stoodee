@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/login_test.dart';
+import 'package:stoodee/services/auth/auth_service.dart';
 import 'page1.dart';
 
-void main() {
+void main() async {
+  //FIXME: DEBUG
+  WidgetsFlutterBinding.ensureInitialized();
+  await AuthService.firebase().initialize();
+  if (AuthService.firebase().currentUser != null) {
+    await AuthService.firebase().logOut();
+  }
+  //FIXME: DEBUG
   runApp(const MyApp());
 }
 
