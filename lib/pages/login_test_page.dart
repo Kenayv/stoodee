@@ -18,7 +18,7 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   TextEditingController passwordController = TextEditingController();
 
   void gotoPage1() {
-    context.go('/page1');
+    context.go('/page1',extra:"r");
   }
 
   Future<void> signUpTest(String email, String password) async {
@@ -47,10 +47,14 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
+              autocorrect: false,
               decoration: const InputDecoration(helperText: "Email here ^"),
               controller: emailController,
             ),
             TextField(
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
               decoration: const InputDecoration(helperText: "Password here ^"),
               controller: passwordController,
             ),

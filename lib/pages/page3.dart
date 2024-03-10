@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 
-class Page1 extends StatefulWidget {
-  const Page1({
+class Page3 extends StatefulWidget {
+  const Page3({
     super.key,
   });
 
   @override
-  State<Page1> createState() => _Page1();
+  State<Page3> createState() => _Page1();
 }
 
-class _Page1 extends State<Page1> {
+class _Page1 extends State<Page3> {
   void gotomain() {
     context.go('/');
   }
@@ -21,7 +21,7 @@ class _Page1 extends State<Page1> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('page1'),
+        title: const Text('page3'),
       ),
       body: Center(
         child: Column(
@@ -38,17 +38,19 @@ class _Page1 extends State<Page1> {
             ElevatedButton(
                 onPressed: () {
 
-                context.go("/page1/dialog");
+                context.go("/page3/dialog");
                 },
                 child: const Text('Dialog')),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ElevatedButton(onPressed: (){ context.go("/page1",extra: "r");}, child: Text("page1")),
+                ElevatedButton(onPressed: (){ context.go("/page2",extra: "r");}, child: Text("page2")),
 
-                ElevatedButton(onPressed: (){ context.go("/page2",extra: "l");}, child: Text("page2")),
-                ElevatedButton(onPressed: (){ context.go("/page3",extra: "l");}, child: Text("page3")),
               ],
             )
+
           ],
         ),
       ),
