@@ -35,22 +35,21 @@ class _Page1 extends State<Page2> {
                   gotomain();
                 },
                 child: const Text('Log out')),
-            ElevatedButton(
-                onPressed: () {
-
-                context.go("/page2/dialog",extra: "r");
-                },
-                child: const Text('Dialog')),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(onPressed: (){ context.go("/page1",extra: "r");}, child: Text("page1")),
-
-                ElevatedButton(onPressed: (){ context.go("/page3",extra: "l");}, child: Text("page3")),
+                ElevatedButton(
+                    onPressed: () {
+                      context.go("/page1", extra: "r");
+                    },
+                    child: const Text("page1")),
+                ElevatedButton(
+                    onPressed: () {
+                      context.go("/page3", extra: "l");
+                    },
+                    child: const Text("page3")),
               ],
             )
-
           ],
         ),
       ),

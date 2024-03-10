@@ -3,14 +3,14 @@ import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/router/go_router_service.dart';
 
 void main() async {
-  await debugInitApp();
+  await initApp();
   runApp(const MyApp());
 }
 
-//FIXME: CREATED FOR DEBUG
-Future<void> debugInitApp() async {
+Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AuthService.firebase().initialize();
+  //FIXME: LOGOUT CREATED FOR DEBUG
   if (AuthService.firebase().currentUser != null) {
     await AuthService.firebase().logOut();
   }

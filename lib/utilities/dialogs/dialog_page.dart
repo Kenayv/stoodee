@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class DialogPage<T> extends Page<T> {
   final Offset? anchorPoint;
   final Color? barrierColor;
@@ -34,12 +33,5 @@ class DialogPage<T> extends Page<T> {
       barrierDismissible: barrierDismissible,
       barrierLabel: barrierLabel,
       useSafeArea: useSafeArea,
-      themes: themes
-  );
-
-
-
-
-
-
+      themes: themes);
 }

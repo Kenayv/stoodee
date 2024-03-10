@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'dart:developer';
+
+import 'package:stoodee/utilities/dialogs/error_dialog.dart';
 
 class OogaBoogaLoginTest extends StatefulWidget {
   const OogaBoogaLoginTest({
@@ -17,8 +20,12 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void gotoPage1() {
-    context.go('/page1',extra:"r");
+  void goToPage1() {
+    context.go('/page1', extra: "r");
+  }
+
+  void goToEmailVerification() {
+    context.go('/email_verification_page', extra: "r");
   }
 
   Future<void> signUpTest(String email, String password) async {
@@ -62,12 +69,26 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
               onPressed: () async {
                 try {
                   await signUpTest(
-                      emailController.text, passwordController.text);
-                  gotoPage1();
+                    emailController.text,
+                    passwordController.text,
+                  );
+                  await AuthService.firebase().sendEmailVerification();
+                  goToEmailVerification();
+                } on EmailAlreadyInUseAuthException {
+                  showErrorDialog(context,
+                      "Account with this e-mail addresss already exists");
+                } on InvalidEmailAuthException {
+                  showErrorDialog(context, "Incorrect email entered");
+                } on GenericAuthException {
+                  showErrorDialog(
+                      context, "Enter email and password to Sign-Up");
+                } on WeakPasswordAuthException {
+                  showErrorDialog(
+                      context, "Password must contain at least 8 characters");
                 } catch (e) {
                   log("error occured during registration");
                   log(e.toString());
-                  log(e.hashCode.toString());
+                  showErrorDialog(context, e.toString());
                 }
               },
               child: const Text('Sign-up'),
@@ -76,12 +97,28 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
               onPressed: () async {
                 try {
                   await signInTest(
-                      emailController.text, passwordController.text);
-                  gotoPage1();
+                    emailController.text,
+                    passwordController.text,
+                  );
+
+                  if (AuthService.firebase().currentUser == null) {
+                    throw UserNotLoggedInAuthException();
+                  }
+
+                  if (!AuthService.firebase().currentUser!.isEmailVerified) {
+                    goToEmailVerification();
+                  } else {
+                    goToPage1();
+                  }
+                } on InvalidCredentialsAuthException {
+                  showErrorDialog(context, "Incorrect email or password");
+                } on GenericAuthException {
+                  showErrorDialog(
+                      context, "Enter email and password to log-in");
                 } catch (e) {
                   log("error occured during login");
                   log(e.toString());
-                  log(e.hashCode.toString());
+                  showErrorDialog(context, e.toString());
                 }
               },
               child: const Text('Log-in'),
