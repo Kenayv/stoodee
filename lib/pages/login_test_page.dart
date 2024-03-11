@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'dart:developer';
+import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
 import 'package:stoodee/utilities/dialogs/error_dialog.dart';
 
@@ -20,12 +21,12 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void goToPage1() {
-    context.go('/page1', extra: "r");
+  void gotoMain() {
+    context.go('/Main',);
   }
 
   void goToEmailVerification() {
-    context.go('/email_verification_page', extra: "r");
+    context.go('/email_verification_page',);
   }
 
   Future<void> signUpTest(String email, String password) async {
@@ -75,20 +76,33 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   await AuthService.firebase().sendEmailVerification();
                   goToEmailVerification();
                 } on EmailAlreadyInUseAuthException {
-                  showErrorDialog(context,
-                      "Account with this e-mail addresss already exists");
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    create_snackbar("Account with this e-mail addresss already exists")
+                  );
+
                 } on InvalidEmailAuthException {
-                  showErrorDialog(context, "Incorrect email entered");
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      create_snackbar("Incorrect email entered")
+                  );
                 } on GenericAuthException {
-                  showErrorDialog(
-                      context, "Enter email and password to Sign-Up");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      create_snackbar("Enter email and password to Sign-Up")
+                  );
+
                 } on WeakPasswordAuthException {
-                  showErrorDialog(
-                      context, "Password must contain at least 8 characters");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      create_snackbar("Password must contain at least 8 characters")
+                  );
+
                 } catch (e) {
                   log("error occured during registration");
                   log(e.toString());
-                  showErrorDialog(context, e.toString());
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      create_snackbar(e.toString())
+                  );
+
                 }
               },
               child: const Text('Sign-up'),
@@ -108,17 +122,25 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   if (!AuthService.firebase().currentUser!.isEmailVerified) {
                     goToEmailVerification();
                   } else {
-                    goToPage1();
+                    gotoMain();
                   }
                 } on InvalidCredentialsAuthException {
-                  showErrorDialog(context, "Incorrect email or password");
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      create_snackbar("Incorrect email or password")
+                  );
                 } on GenericAuthException {
-                  showErrorDialog(
-                      context, "Enter email and password to log-in");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      create_snackbar("Enter email and password to log-in")
+                  );
+
                 } catch (e) {
                   log("error occured during login");
                   log(e.toString());
-                  showErrorDialog(context, e.toString());
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      create_snackbar(e.toString())
+                  );
+
                 }
               },
               child: const Text('Log-in'),
@@ -129,3 +151,5 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
     );
   }
 }
+
+

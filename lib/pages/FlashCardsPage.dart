@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 
-class Page1 extends StatefulWidget {
-  const Page1({
+class FlashCardsPage extends StatefulWidget {
+  const FlashCardsPage({
     super.key,
   });
 
   @override
-  State<Page1> createState() => _Page1();
+  State<FlashCardsPage> createState() => _FlashCardsPage();
 }
 
-class _Page1 extends State<Page1> {
+class _FlashCardsPage extends State<FlashCardsPage> {
+  int pageIndex=1;
   void gotomain() {
     context.go('/');
   }
@@ -21,7 +22,7 @@ class _Page1 extends State<Page1> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('page1'),
+        title: Text('FlashCards'),
       ),
       body: Center(
         child: Column(
@@ -40,14 +41,14 @@ class _Page1 extends State<Page1> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      context.go("/page2", extra: "l");
+                      context.go("/Main", extra: pageIndex);
                     },
-                    child: const Text("page2")),
+                    child: const Text("Main")),
                 ElevatedButton(
                     onPressed: () {
-                      context.go("/page3", extra: "l");
+                      context.go("/Account", extra: pageIndex);
                     },
-                    child: const Text("page3")),
+                    child: const Text("Account")),
               ],
             )
           ],
