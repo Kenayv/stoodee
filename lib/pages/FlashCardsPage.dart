@@ -20,10 +20,7 @@ class _FlashCardsPage extends State<FlashCardsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('FlashCards'),
-      ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -39,16 +36,7 @@ class _FlashCardsPage extends State<FlashCardsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      context.go("/Main", extra: pageIndex);
-                    },
-                    child: const Text("Main")),
-                ElevatedButton(
-                    onPressed: () {
-                      context.go("/Account", extra: pageIndex);
-                    },
-                    child: const Text("Account")),
+                Text("FlashCards"),
               ],
             )
           ],

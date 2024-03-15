@@ -9,6 +9,7 @@ import 'package:stoodee/pages/login_test_page.dart';
 import 'package:stoodee/pages/MainPage.dart';
 import 'package:stoodee/pages/AchievementsPage.dart';
 import 'package:stoodee/pages/AccountPage.dart';
+import 'package:stoodee/pages/pagescaffold.dart';
 
 
 
@@ -43,10 +44,13 @@ String resolveSwipeDirection(Object from,int where){
 
 }
 
-
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 
 final GoRouter goRouterService = GoRouter(
+
+  navigatorKey: _rootNavigatorKey,
   routes: <RouteBase>[
     GoRoute(
       path: '/',
@@ -66,169 +70,186 @@ final GoRouter goRouterService = GoRouter(
       },
     ),
 
+
+    ShellRoute(
+      navigatorKey: _shellNavigatorKey,
+      builder: (context,state,child) =>
+          PageScaffold(child: child),
+      routes:[
+        GoRoute(
+          path: '/ToDo',
+          parentNavigatorKey: _shellNavigatorKey,
+          pageBuilder: (context, state) {
+            final fromIndex = state.extra ?? "3";
+            int whereIndex=1;
+
+            String direction=resolveSwipeDirection(fromIndex, whereIndex);
+
+
+            return CustomTransitionPage(
+              transitionDuration: const Duration(milliseconds: 400),
+              key: state.pageKey,
+              child: const ToDoPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                var begin = const Offset(1.0, 0.0);
+
+                if (direction == "toLeft") begin = const Offset(1.0, 0.0);
+                if (direction == "toRight") begin = const Offset(-1.0, 0.0);
+
+                const end = Offset.zero;
+                const curve = Curves.easeOutQuint;
+                var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                return SlideTransition(
+                    position: animation.drive(tween), child: child);
+              },
+            );
+          },
+        ),
+
+        //FLASHCARDSPAGE
+        GoRoute(
+          path: '/FlashCards',
+          parentNavigatorKey: _shellNavigatorKey,
+          pageBuilder: (context, state) {
+            final fromIndex = state.extra ?? "3";
+            int whereIndex=2;
+
+            String direction=resolveSwipeDirection(fromIndex, whereIndex);
+
+
+            return CustomTransitionPage(
+              transitionDuration: const Duration(milliseconds: 400),
+              key: state.pageKey,
+              child: const FlashCardsPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                var begin = const Offset(1.0, 0.0);
+
+                if (direction == "toLeft") begin = const Offset(1.0, 0.0);
+                if (direction == "toRight") begin = const Offset(-1.0, 0.0);
+
+                const end = Offset.zero;
+                const curve = Curves.easeOutQuint;
+                var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                return SlideTransition(
+                    position: animation.drive(tween), child: child);
+              },
+            );
+          },
+        ),
+
+
+
+        //Main
+        GoRoute(
+          path: '/Main',
+          parentNavigatorKey: _shellNavigatorKey,
+          pageBuilder: (context, state) {
+            final fromIndex = state.extra ?? "3";
+            int whereIndex=3;
+
+            String direction=resolveSwipeDirection(fromIndex, whereIndex);
+
+
+            return CustomTransitionPage(
+              transitionDuration: const Duration(milliseconds: 400),
+              key: state.pageKey,
+              child: const MainPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                var begin = const Offset(1.0, 0.0);
+
+                if (direction == "toLeft") begin = const Offset(1.0, 0.0);
+                if (direction == "toRight") begin = const Offset(-1.0, 0.0);
+
+                const end = Offset.zero;
+                const curve = Curves.easeOutQuint;
+                var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                return SlideTransition(
+                    position: animation.drive(tween), child: child);
+              },
+            );
+          },
+        ),
+
+        //Achievements
+        GoRoute(
+          parentNavigatorKey: _shellNavigatorKey,
+          path: '/Achievements',
+          pageBuilder: (context, state) {
+            final fromIndex = state.extra ?? "none";
+
+            int whereIndex=4;
+
+            String direction=resolveSwipeDirection(fromIndex, whereIndex);
+
+
+            return CustomTransitionPage(
+              transitionDuration: const Duration(milliseconds: 400),
+              key: state.pageKey,
+              child: const AchievementsPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                var begin = const Offset(1.0, 0.0);
+
+                if (direction == "toLeft") begin = const Offset(1.0, 0.0);
+                if (direction == "toRight") begin = const Offset(-1.0, 0.0);
+
+                const end = Offset.zero;
+                const curve = Curves.easeOutQuint;
+                var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                return SlideTransition(
+                    position: animation.drive(tween), child: child);
+              },
+            );
+          },
+        ),
+
+        //Account
+        GoRoute(
+          parentNavigatorKey: _shellNavigatorKey,
+          path: '/Account',
+          pageBuilder: (context, state) {
+            final fromIndex = state.extra ?? "none";
+
+            int whereIndex=5;
+
+            String direction=resolveSwipeDirection(fromIndex, whereIndex);
+
+
+            return CustomTransitionPage(
+              transitionDuration: const Duration(milliseconds: 400),
+              key: state.pageKey,
+              child: const AccountPage(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                var begin = const Offset(1.0, 0.0);
+
+                if (direction == "toLeft") begin = const Offset(1.0, 0.0);
+                if (direction == "toRight") begin = const Offset(-1.0, 0.0);
+
+                const end = Offset.zero;
+                const curve = Curves.easeOutQuint;
+                var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                return SlideTransition(
+                    position: animation.drive(tween), child: child);
+              },
+            );
+          },
+        ),
+      ]
+
+
+    ),
+
     //TO-DOPAGE
-    GoRoute(
-      path: '/ToDo',
-      pageBuilder: (context, state) {
-        final fromIndex = state.extra ?? "3";
-        int whereIndex=1;
 
-        String direction=resolveSwipeDirection(fromIndex, whereIndex);
-
-
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 400),
-          key: state.pageKey,
-          child: const ToDoPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = const Offset(1.0, 0.0);
-
-            if (direction == "toLeft") begin = const Offset(1.0, 0.0);
-            if (direction == "toRight") begin = const Offset(-1.0, 0.0);
-
-            const end = Offset.zero;
-            const curve = Curves.easeOutQuint;
-            var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-                position: animation.drive(tween), child: child);
-          },
-        );
-      },
-    ),
-
-    //FLASHCARDSPAGE
-    GoRoute(
-      path: '/FlashCards',
-      pageBuilder: (context, state) {
-        final fromIndex = state.extra ?? "3";
-        int whereIndex=2;
-
-        String direction=resolveSwipeDirection(fromIndex, whereIndex);
-
-
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 400),
-          key: state.pageKey,
-          child: const FlashCardsPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = const Offset(1.0, 0.0);
-
-            if (direction == "toLeft") begin = const Offset(1.0, 0.0);
-            if (direction == "toRight") begin = const Offset(-1.0, 0.0);
-
-            const end = Offset.zero;
-            const curve = Curves.easeOutQuint;
-            var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-                position: animation.drive(tween), child: child);
-          },
-        );
-      },
-    ),
-
-
-
-    //Main
-    GoRoute(
-      path: '/Main',
-      pageBuilder: (context, state) {
-        final fromIndex = state.extra ?? "3";
-        int whereIndex=3;
-
-        String direction=resolveSwipeDirection(fromIndex, whereIndex);
-
-
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 400),
-          key: state.pageKey,
-          child: const MainPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = const Offset(1.0, 0.0);
-
-            if (direction == "toLeft") begin = const Offset(1.0, 0.0);
-            if (direction == "toRight") begin = const Offset(-1.0, 0.0);
-
-            const end = Offset.zero;
-            const curve = Curves.easeOutQuint;
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-                position: animation.drive(tween), child: child);
-          },
-        );
-      },
-    ),
-
-    //Achievements
-    GoRoute(
-      path: '/Achievements',
-      pageBuilder: (context, state) {
-        final fromIndex = state.extra ?? "none";
-
-        int whereIndex=4;
-
-        String direction=resolveSwipeDirection(fromIndex, whereIndex);
-
-
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 400),
-          key: state.pageKey,
-          child: const AchievementsPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = const Offset(1.0, 0.0);
-
-            if (direction == "toLeft") begin = const Offset(1.0, 0.0);
-            if (direction == "toRight") begin = const Offset(-1.0, 0.0);
-
-            const end = Offset.zero;
-            const curve = Curves.easeOutQuint;
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-                position: animation.drive(tween), child: child);
-          },
-        );
-      },
-    ),
-
-    //Account
-    GoRoute(
-      path: '/Account',
-      pageBuilder: (context, state) {
-        final fromIndex = state.extra ?? "none";
-
-        int whereIndex=5;
-
-        String direction=resolveSwipeDirection(fromIndex, whereIndex);
-
-
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 400),
-          key: state.pageKey,
-          child: const AccountPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = const Offset(1.0, 0.0);
-
-            if (direction == "toLeft") begin = const Offset(1.0, 0.0);
-            if (direction == "toRight") begin = const Offset(-1.0, 0.0);
-
-            const end = Offset.zero;
-            const curve = Curves.easeOutQuint;
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-                position: animation.drive(tween), child: child);
-          },
-        );
-      },
-    ),
     GoRoute(
       path: '/login_test',
       pageBuilder: (context, state) {

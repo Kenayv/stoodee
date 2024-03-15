@@ -20,10 +20,7 @@ class _AccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('AccountPage'),
-      ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -39,16 +36,7 @@ class _AccountPage extends State<AccountPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      context.go("/Main", extra: pageIndex);
-                    },
-                    child: const Text("Main")),
-                ElevatedButton(
-                    onPressed: () {
-                      context.go("/Achievements", extra: pageIndex);
-                    },
-                    child: const Text("Achievements")),
+                Text("Account"),
               ],
             )
           ],

@@ -20,37 +20,12 @@ class _AchievementsPage extends State<AchievementsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Achievements Page'),
-      ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-                onPressed: () {
-                  if (AuthService.firebase().currentUser != null) {
-                    AuthService.firebase().logOut();
-                  }
-                  gotomain();
-                },
-                child: const Text('Log out')),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      context.go("/Main", extra: pageIndex);
-                    },
-                    child: const Text("Main")),
-                ElevatedButton(
-                    onPressed: () {
-                      context.go("/Account", extra: pageIndex);
-                    },
-                    child: const Text("Account")),
-              ],
-            )
+            Text("Achievements"),
           ],
         ),
       ),
