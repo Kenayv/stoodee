@@ -20,7 +20,7 @@ class PageScaffold extends StatefulWidget{
 
 class _PageScaffold extends State<PageScaffold>{
 
-  int currentIndex=0;
+  int currentIndex=2;
 
 
   String indexToTitle(int index){
@@ -40,54 +40,72 @@ class _PageScaffold extends State<PageScaffold>{
 
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) {  
+    return GestureDetector(
+      onHorizontalDragEnd: (DragEndDetails details) {
 
-      appBar: CustomAppBar(
-        title: indexToTitle(currentIndex+1),
-        titleWidget: Text(indexToTitle(currentIndex+1),style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold)),
-        leading: Icon(Icons.account_box_rounded,color: Colors.white,),
+        if (details.primaryVelocity! > 0) {
+          // Swiped right
+          changeTab(currentIndex - 1);
+          print("velocity: ${details.velocity}");
 
-      ),
-      body: widget.child,
+        } else if (details.primaryVelocity! < 0) {
+          // Swiped left
+          changeTab(currentIndex + 1);
+          print("velocity: ${details.velocity}");
 
+        }
+      },
+      child: Scaffold(
 
+        appBar: CustomAppBar(
+          title: indexToTitle(currentIndex+1),
+          titleWidget: Text(indexToTitle(currentIndex+1),style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold)),
+          leading: Icon(Icons.account_box_rounded,color: Colors.white,),
 
-      bottomNavigationBar: Theme(
-        data: ThemeData(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
         ),
-        child: SafeArea(
-          child: Container(
-            height: 70, //TODO: In Future remove the height
-            padding: const EdgeInsets.only(top:4,bottom:4,left:18,right:18),
-            margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-            decoration: const BoxDecoration(
-              color: primaryAppColor,
-              borderRadius: BorderRadius.all(Radius.circular(24)),
+        body: widget.child,
 
-            ),
-            child: BottomNavigationBar(
-              elevation: 0,
 
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              selectedFontSize: 0,
 
-              unselectedIconTheme: IconThemeData(color: CupertinoColors.inactiveGray.withOpacity(0.85),size:22),
-              selectedIconTheme: const IconThemeData(size:30),
 
-              onTap: changeTab,
-              backgroundColor: const Color(0xff230734),
-              currentIndex: currentIndex,
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.list), label: 'ToDo',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'FlashCards',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.add_chart), label: 'Achievements',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.account_box_rounded), label: 'Account',backgroundColor: Colors.transparent),
-              ],
+
+        bottomNavigationBar: Theme(
+          data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: SafeArea(
+            child: Container(
+              height: 70, //TODO: In Future remove the height
+              padding: const EdgeInsets.only(top:4,bottom:4,left:18,right:18),
+              margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+              decoration: const BoxDecoration(
+                color: primaryAppColor,
+                borderRadius: BorderRadius.all(Radius.circular(24)),
+
+              ),
+              child: BottomNavigationBar(
+                elevation: 0,
+
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                selectedFontSize: 0,
+
+                unselectedIconTheme: IconThemeData(color: CupertinoColors.inactiveGray.withOpacity(0.85),size:22),
+                selectedIconTheme: const IconThemeData(size:30),
+
+                onTap: changeTab,
+                backgroundColor: const Color(0xff230734),
+                currentIndex: currentIndex,
+                items: const [
+                  BottomNavigationBarItem(icon: Icon(Icons.list), label: 'ToDo',backgroundColor: Colors.transparent),
+                  BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'FlashCards',backgroundColor: Colors.transparent),
+                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home',backgroundColor: Colors.transparent),
+                  BottomNavigationBarItem(icon: Icon(Icons.add_chart), label: 'Achievements',backgroundColor: Colors.transparent),
+                  BottomNavigationBarItem(icon: Icon(Icons.account_box_rounded), label: 'Account',backgroundColor: Colors.transparent),
+                ],
+              ),
             ),
           ),
         ),
@@ -98,36 +116,37 @@ class _PageScaffold extends State<PageScaffold>{
 
 
   void changeTab(int index) {
-    switch(index){
-      case 0:
-        context.go('/ToDo',extra: currentIndex+1);
-        break;
-      case 1:
-        context.go('/FlashCards',extra: currentIndex+1);
-        break;
+    if (index >= 0 && index < 5) {
+      switch (index) {
+        case 0:
+          context.go('/ToDo', extra: currentIndex + 1);
+          break;
+        case 1:
+          context.go('/FlashCards', extra: currentIndex + 1);
+          break;
 
-      case 2:
-        context.go('/Main',extra: currentIndex+1);
-        break;
+        case 2:
+          context.go('/Main', extra: currentIndex + 1);
+          break;
 
-      case 3:
-        context.go('/Achievements',extra: currentIndex+1);
-        break;
+        case 3:
+          context.go('/Achievements', extra: currentIndex + 1);
+          break;
 
 
-      case 4:
-        context.go('/Account',extra: currentIndex+1);
-        break;
+        case 4:
+          context.go('/Account', extra: currentIndex + 1);
+          break;
 
-      default:
-        context.go('/');
-        break;
+        default:
+          context.go('/');
+          break;
+      }
+      setState(() {
+        currentIndex = index;
+      });
     }
-    setState(() {
-      currentIndex = index;
-    });
   }
-
 
 
 }
