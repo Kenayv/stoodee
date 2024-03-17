@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-
+import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/utilities/custom_appbar.dart';
 class PageScaffold extends StatefulWidget{
 
   PageScaffold({
@@ -21,16 +22,32 @@ class _PageScaffold extends State<PageScaffold>{
 
   int currentIndex=0;
 
-  Color primaryAppColor = Color.fromRGBO(109, 0, 239, 1);
+
+  String indexToTitle(int index){
+
+    switch(index){
+      case 1: return "ToDo";
+      case 2: return "FlashCards";
+      case 3: return "Home";
+      case 4: return "Achievements";
+      case 5: return "Account";
+      default: return "?";
+    }
+
+
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(
-        backgroundColor: primaryAppColor,
-        title: Text("lol",style: TextStyle(color: Colors.white)),
+      appBar: CustomAppBar(
+        title: indexToTitle(currentIndex+1),
+        titleWidget: Text(indexToTitle(currentIndex+1),style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold)),
+        leading: Icon(Icons.account_box_rounded,color: Colors.white,),
+
       ),
       body: widget.child,
 
@@ -44,26 +61,32 @@ class _PageScaffold extends State<PageScaffold>{
         child: SafeArea(
           child: Container(
             height: 70, //TODO: In Future remove the height
-            padding: const EdgeInsets.symmetric(vertical:8,horizontal: 4),
+            padding: const EdgeInsets.only(top:4,bottom:4,left:18,right:18),
             margin: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: primaryAppColor,
-              borderRadius: const BorderRadius.all(Radius.circular(24)),
+              borderRadius: BorderRadius.all(Radius.circular(24)),
 
             ),
             child: BottomNavigationBar(
               elevation: 0,
-              selectedLabelStyle: TextStyle(fontSize: 12),
+
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              selectedFontSize: 0,
+
+              unselectedIconTheme: IconThemeData(color: CupertinoColors.inactiveGray.withOpacity(0.85),size:22),
+              selectedIconTheme: const IconThemeData(size:30),
 
               onTap: changeTab,
               backgroundColor: const Color(0xff230734),
               currentIndex: currentIndex,
               items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.list,size: 24), label: 'ToDo',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.add_circle,size: 24), label: 'FlashCards',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.home,size: 24), label: 'Home',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.add_chart,size: 24), label: 'Achievements',backgroundColor: Colors.transparent),
-                BottomNavigationBarItem(icon: Icon(Icons.account_box_rounded,size: 24), label: 'Account',backgroundColor: Colors.transparent),
+                BottomNavigationBarItem(icon: Icon(Icons.list), label: 'ToDo',backgroundColor: Colors.transparent),
+                BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'FlashCards',backgroundColor: Colors.transparent),
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home',backgroundColor: Colors.transparent),
+                BottomNavigationBarItem(icon: Icon(Icons.add_chart), label: 'Achievements',backgroundColor: Colors.transparent),
+                BottomNavigationBarItem(icon: Icon(Icons.account_box_rounded), label: 'Account',backgroundColor: Colors.transparent),
               ],
             ),
           ),
