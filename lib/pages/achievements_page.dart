@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class AchievementsPage extends StatefulWidget {
   const AchievementsPage({
@@ -12,9 +11,6 @@ class AchievementsPage extends StatefulWidget {
 
 class _AchievementsPage extends State<AchievementsPage> {
   int pageIndex = 4;
-  void gotomain() {
-    context.go('/');
-  }
 
   @override
   Widget build(BuildContext context) {
