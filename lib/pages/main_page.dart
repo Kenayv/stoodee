@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 
-class FlashCardsPage extends StatefulWidget {
-  const FlashCardsPage({
+class MainPage extends StatefulWidget {
+  const MainPage({
     super.key,
   });
 
   @override
-  State<FlashCardsPage> createState() => _FlashCardsPage();
+  State<MainPage> createState() => _MainPage();
 }
 
-class _FlashCardsPage extends State<FlashCardsPage> {
-  int pageIndex=1;
+class _MainPage extends State<MainPage> {
+  int pageIndex = 3;
+
   void gotomain() {
     context.go('/');
   }
@@ -20,7 +21,6 @@ class _FlashCardsPage extends State<FlashCardsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -33,11 +33,16 @@ class _FlashCardsPage extends State<FlashCardsPage> {
                   gotomain();
                 },
                 child: const Text('Log out')),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("FlashCards"),
-              ],
+
+            //TODO: debug widget ONLY, will be replaced by navbar
+            const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Main"),
+                ],
+              ),
             )
           ],
         ),

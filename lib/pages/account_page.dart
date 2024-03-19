@@ -12,7 +12,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPage extends State<AccountPage> {
-  int pageIndex=5;
+  int pageIndex = 5;
   void gotomain() {
     context.go('/');
   }
@@ -20,7 +20,6 @@ class _AccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -33,7 +32,7 @@ class _AccountPage extends State<AccountPage> {
                   gotomain();
                 },
                 child: const Text('Log out')),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Account"),

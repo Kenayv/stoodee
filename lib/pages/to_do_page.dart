@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stoodee/services/auth/auth_service.dart';
 
-class AchievementsPage extends StatefulWidget {
-  const AchievementsPage({
+class ToDoPage extends StatefulWidget {
+  const ToDoPage({
     super.key,
   });
 
   @override
-  State<AchievementsPage> createState() => _AchievementsPage();
+  State<ToDoPage> createState() => _ToDoPage();
 }
 
-class _AchievementsPage extends State<AchievementsPage> {
-  int pageIndex=4;
+class _ToDoPage extends State<ToDoPage> {
+  int pageIndex = 1;
   void gotomain() {
     context.go('/');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Achievements"),
+            Text("To-Do"),
           ],
         ),
       ),
