@@ -56,7 +56,7 @@ class AchievementsPage extends StatefulWidget {
 }
 
 class _AchievementsPage extends State<AchievementsPage> {
-  int pageIndex = 4;
+  int pageIndex = 4; //FIXME: NOT USED????
   List<Widget> obtainedAchievements = [];
 
   void initAchivs() {
