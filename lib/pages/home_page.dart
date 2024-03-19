@@ -10,8 +10,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void _gotoLoginTest() {
+  void _goToLoginTest() {
     context.go('/login_test');
+  }
+
+  void _goToMainPage() {
+    context.go('/Main');
   }
 
   @override
@@ -26,8 +30,12 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
-              onPressed: _gotoLoginTest,
+              onPressed: _goToLoginTest,
               child: const Text("go to Login Page"),
+            ),
+            TextButton(
+              onPressed: _goToMainPage,
+              child: const Text("Skip log-in"),
             )
           ],
         ),
