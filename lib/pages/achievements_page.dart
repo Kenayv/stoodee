@@ -57,7 +57,6 @@ class AchievementsPage extends StatefulWidget {
 
 class _AchievementsPage extends State<AchievementsPage> {
   int pageIndex = 4;
-
   List<Widget> obtainedAchievements = [];
 
   void initAchivs() {
