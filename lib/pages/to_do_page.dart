@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/services/todo_service/todo_service.dart';
+import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
+import 'package:stoodee/utilities/dialogs/edit_task_dialog.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({
@@ -10,19 +13,29 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPage extends State<ToDoPage> {
-  //FIXME: DEBUG STATIC ARRAY
-  List<String> tasks = [
-    "Incomplete Task 1",
-    "debug Task 2",
-    "Incomplete Task 3",
-    "debug Task 4",
-    "Incomplete Task 5",
-  ];
+  late List<String> _tasks;
 
   void completeTask(int index) {
+    TodoService().removeTaskAt(index);
+    setState(() {});
+  }
+
+  void addTask() async {
+    await showAddTaskDialog(context: context);
+    setState(() {});
+  }
+
+  void editTask(int index, String newText) {
+    TodoService().editTaskAt(index, newText);
     setState(() {
-      tasks.removeAt(index);
+      _tasks = TodoService().tasks;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tasks = TodoService().tasks;
   }
 
   @override
@@ -43,8 +56,13 @@ class _ToDoPage extends State<ToDoPage> {
             ),
             taskListView(
               context: context,
-              tasks: tasks,
+              tasks: _tasks,
               onDismissed: completeTask,
+              onLongPressed: editTask, // Pass the editTask callback
+            ),
+            FloatingActionButton(
+              onPressed: addTask,
+              child: const Icon(Icons.add),
             ),
           ],
         ),
@@ -57,6 +75,7 @@ ListView taskListView({
   required BuildContext context,
   required List<String> tasks,
   required Function onDismissed,
+  required Function onLongPressed,
 }) {
   return ListView.builder(
     shrinkWrap: true,
@@ -65,6 +84,16 @@ ListView taskListView({
     itemBuilder: (context, index) {
       return taskItem(
         text: tasks[index],
+        onLongPress: () async {
+          //FIXME: spaghetti code. This returns string, AddTask() adds task.
+          final String? newText = await showEditTaskDialog(
+            context: context,
+            index: index,
+          );
+          if (newText != null && newText.isNotEmpty) {
+            onLongPressed(index, newText);
+          }
+        },
         onDismissed: () {
           onDismissed(index);
         },
@@ -73,7 +102,11 @@ ListView taskListView({
   );
 }
 
-ListTile taskItem({required String text, required Function onDismissed}) {
+ListTile taskItem({
+  required String text,
+  required Function onDismissed,
+  required Function onLongPress,
+}) {
   return ListTile(
     title: Dismissible(
       key: UniqueKey(),
@@ -104,5 +137,8 @@ ListTile taskItem({required String text, required Function onDismissed}) {
         title: Text(text),
       ),
     ),
+    onLongPress: () async {
+      await onLongPress();
+    },
   );
 }

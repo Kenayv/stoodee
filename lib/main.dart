@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/router/go_router_service.dart';
+import 'package:stoodee/services/todo_service/todo_service.dart';
 
 void main() async {
   await initApp();
@@ -14,6 +15,7 @@ Future<void> initApp() async {
   if (AuthService.firebase().currentUser != null) {
     await AuthService.firebase().logOut();
   }
+  TodoService().init();
 }
 
 class MyApp extends StatelessWidget {
