@@ -18,7 +18,8 @@ ListTile _flashCardSetItem({
     title: Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        height: 92,
+        height: 400,
+
         decoration: BoxDecoration(
           color: Colors.purple[300],
           borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -27,16 +28,40 @@ ListTile _flashCardSetItem({
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                name,
-                style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+              Container(
+                alignment: Alignment.topCenter,
+                height:35,
+
+                child: Row(
+                  children: [
+                    //TODO: MAKE THEM DO SOMETHING WITH BUTTONS, AND SPACE THEM CORRECTLY
+                    Icon(Icons.add,size:20,color: Colors.white,),
+                    Icon(Icons.star,size:20,color: Colors.white),
+                    Icon(Icons.lock,size:20,color: Colors.white),
+                  ],
+                ),
+
               ),
-              Text(
-                'Card count: ${fcSet.length}',
-                style: const TextStyle(fontSize: 16, color: Colors.white),
+
+
+              Container(
+                alignment: Alignment.topCenter,
+                height:40,
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                height:100,
+                child: Text(
+                  'Pair count: ${fcSet.length}',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -46,7 +71,7 @@ ListTile _flashCardSetItem({
   );
 }
 
-ListView flashCardSetListView({required BuildContext context}) {
+List<Widget> flashCardSetListView({required BuildContext context}) {
   //FIXME: debug debug
   List<String> emptySet = [];
   final flashCardSets = [
@@ -55,33 +80,59 @@ ListView flashCardSetListView({required BuildContext context}) {
     emptySet,
     ["hihi", "haha"],
     ["woooo"],
-    ['another', 'set', 'test']
+    ['another', 'set', 'test'],
+    ['another', 'set', 'test'],
+  ['another', 'set', 'test'],
+    ['another', 'set', 'test'],
+    ['another', 'set', 'test'],
+    ['another', 'set', 'test'],
+    ['another', 'set', 'test'],
   ];
 
-  return ListView.builder(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: flashCardSets.length,
-    itemBuilder: (context, index) {
-      return _flashCardSetItem(
-        context: context,
-        fcSet: flashCardSets[index],
-        name: "debug set $index",
-      );
-    },
-  );
+  List<Widget> flashCardList=[];
+
+
+  for(int i=0;i<flashCardSets.length;i++){
+    flashCardList.add(
+        _flashCardSetItem(
+          context: context,
+          fcSet: flashCardSets[i],
+          name: "debug set $i",
+        )
+    );
+  }
+
+  return flashCardList;
+
 }
 
 class _FlashCardsPage extends State<FlashCardsPage> {
   int pageIndex = 1; //FIXME: NOT USED????
 
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    var size = MediaQuery.of(context).size;
+
+    /*24 is for notification bar on Android*/
+
+
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: flashCardSetListView(context: context),
+      body: Center(
+        child: GridView.count(
+          primary: false,
+          childAspectRatio: (1/1.3),
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
+          crossAxisCount: 2,
+          children: flashCardSetListView(context: context),
         ),
+
+        //flashCardSetListView(context: context),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

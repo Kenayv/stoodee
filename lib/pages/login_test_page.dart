@@ -48,10 +48,6 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
       log("user: not logged in");
     }
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Logowanko uwu'),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

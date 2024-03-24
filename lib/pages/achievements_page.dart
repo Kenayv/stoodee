@@ -1,14 +1,23 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:stoodee/utilities/globals.dart';
 
 Container achievementTile({required String name, required String path}) {
   return Container(
-    color: Colors.teal[100],
+
+    decoration: BoxDecoration(
+      color: primaryAppColor.withOpacity(0.5),
+      borderRadius: BorderRadius.all(Radius.circular(16)),
+    ),
     child: Column(
       children: [
-        Text(
-          name,
-          textAlign: TextAlign.center,
+        Padding(
+          padding: const EdgeInsets.only(top:2),
+          child: Text(
+            name,
+            textAlign: TextAlign.center,
+            style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold),
+          ),
         ),
         Expanded(
           child: Container(
