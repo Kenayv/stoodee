@@ -19,7 +19,6 @@ ListTile _flashCardSetItem({
       padding: const EdgeInsets.all(10.0),
       child: Container(
         height: 400,
-
         decoration: BoxDecoration(
           color: Colors.purple[300],
           borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -30,23 +29,23 @@ ListTile _flashCardSetItem({
             children: [
               Container(
                 alignment: Alignment.topCenter,
-                height:35,
-
-                child: Row(
+                height: 35,
+                child: const Row(
                   children: [
                     //TODO: MAKE THEM DO SOMETHING WITH BUTTONS, AND SPACE THEM CORRECTLY
-                    Icon(Icons.add,size:20,color: Colors.white,),
-                    Icon(Icons.star,size:20,color: Colors.white),
-                    Icon(Icons.lock,size:20,color: Colors.white),
+                    Icon(
+                      Icons.add,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                    Icon(Icons.star, size: 20, color: Colors.white),
+                    Icon(Icons.lock, size: 20, color: Colors.white),
                   ],
                 ),
-
               ),
-
-
               Container(
                 alignment: Alignment.topCenter,
-                height:40,
+                height: 40,
                 child: Text(
                   name,
                   style: const TextStyle(
@@ -57,7 +56,7 @@ ListTile _flashCardSetItem({
               ),
               Container(
                 alignment: Alignment.bottomCenter,
-                height:100,
+                height: 100,
                 child: Text(
                   'Pair count: ${fcSet.length}',
                   style: const TextStyle(fontSize: 16, color: Colors.white),
@@ -82,50 +81,40 @@ List<Widget> flashCardSetListView({required BuildContext context}) {
     ["woooo"],
     ['another', 'set', 'test'],
     ['another', 'set', 'test'],
-  ['another', 'set', 'test'],
+    ['another', 'set', 'test'],
     ['another', 'set', 'test'],
     ['another', 'set', 'test'],
     ['another', 'set', 'test'],
     ['another', 'set', 'test'],
   ];
 
-  List<Widget> flashCardList=[];
+  List<Widget> flashCardList = [];
 
-
-  for(int i=0;i<flashCardSets.length;i++){
-    flashCardList.add(
-        _flashCardSetItem(
-          context: context,
-          fcSet: flashCardSets[i],
-          name: "debug set $i",
-        )
-    );
+  for (int i = 0; i < flashCardSets.length; i++) {
+    flashCardList.add(_flashCardSetItem(
+      context: context,
+      fcSet: flashCardSets[i],
+      name: "debug set $i",
+    ));
   }
 
   return flashCardList;
-
 }
 
 class _FlashCardsPage extends State<FlashCardsPage> {
   int pageIndex = 1; //FIXME: NOT USED????
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     var size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
-
-
 
     return Scaffold(
       body: Center(
         child: GridView.count(
           primary: false,
-          childAspectRatio: (1/1.3),
+          childAspectRatio: (1 / 1.3),
           crossAxisSpacing: 0,
           mainAxisSpacing: 0,
           crossAxisCount: 2,
