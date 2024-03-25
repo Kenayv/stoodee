@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class FlashCardsPage extends StatefulWidget {
-  const FlashCardsPage({
+class FlashcardsPage extends StatefulWidget {
+  const FlashcardsPage({
     super.key,
   });
 
   @override
-  State<FlashCardsPage> createState() => _FlashCardsPage();
+  State<FlashcardsPage> createState() => _FlashcardsPage();
 }
 
-ListTile _flashCardSetItem({
+ListTile _flashcardSetItem({
   required BuildContext context,
   required List<String> fcSet,
   required String name,
@@ -70,10 +70,10 @@ ListTile _flashCardSetItem({
   );
 }
 
-List<Widget> flashCardSetListView({required BuildContext context}) {
+List<Widget> flashcardSetListView({required BuildContext context}) {
   //FIXME: debug debug
   List<String> emptySet = [];
-  final flashCardSets = [
+  final flashcardSets = [
     ["xd", "lol", "debug"],
     ["yeet", "debug", "set"],
     emptySet,
@@ -88,20 +88,20 @@ List<Widget> flashCardSetListView({required BuildContext context}) {
     ['another', 'set', 'test'],
   ];
 
-  List<Widget> flashCardList = [];
+  List<Widget> flashcardList = [];
 
-  for (int i = 0; i < flashCardSets.length; i++) {
-    flashCardList.add(_flashCardSetItem(
+  for (int i = 0; i < flashcardSets.length; i++) {
+    flashcardList.add(_flashcardSetItem(
       context: context,
-      fcSet: flashCardSets[i],
+      fcSet: flashcardSets[i],
       name: "debug set $i",
     ));
   }
 
-  return flashCardList;
+  return flashcardList;
 }
 
-class _FlashCardsPage extends State<FlashCardsPage> {
+class _FlashcardsPage extends State<FlashcardsPage> {
   int pageIndex = 1; //FIXME: NOT USED????
 
   @override
@@ -118,10 +118,10 @@ class _FlashCardsPage extends State<FlashCardsPage> {
           crossAxisSpacing: 0,
           mainAxisSpacing: 0,
           crossAxisCount: 2,
-          children: flashCardSetListView(context: context),
+          children: flashcardSetListView(context: context),
         ),
 
-        //flashCardSetListView(context: context),
+        //flashcardSetListView(context: context),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

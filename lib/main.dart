@@ -19,7 +19,7 @@ Future<void> initApp() async {
   }
 
   TodoService().init();
-  FlashCardService().init();
+  FlashcardService().init();
 }
 
 class MyApp extends StatelessWidget {

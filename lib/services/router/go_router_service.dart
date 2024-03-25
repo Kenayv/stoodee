@@ -93,7 +93,7 @@ final GoRouter goRouterService = GoRouter(
 
           //FLASHCARDSPAGE
           GoRoute(
-            path: '/FlashCards',
+            path: '/Flashcards',
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) {
               final fromIndex = state.extra ?? "3";
@@ -104,7 +104,7 @@ final GoRouter goRouterService = GoRouter(
               return CustomTransitionPage(
                 transitionDuration: const Duration(milliseconds: 400),
                 key: state.pageKey,
-                child: const FlashCardsPage(),
+                child: const FlashcardsPage(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   var begin = const Offset(1.0, 0.0);

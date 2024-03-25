@@ -21,7 +21,7 @@ class _PageScaffold extends State<PageScaffold> {
       case 1:
         return "ToDo";
       case 2:
-        return "FlashCards";
+        return "Flashcards";
       case 3:
         return "Home";
       case 4:
@@ -93,7 +93,7 @@ class _PageScaffold extends State<PageScaffold> {
                       backgroundColor: Colors.transparent),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.add_circle),
-                      label: 'FlashCards',
+                      label: 'Flashcards',
                       backgroundColor: Colors.transparent),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.home),
@@ -123,7 +123,7 @@ class _PageScaffold extends State<PageScaffold> {
           context.go('/ToDo', extra: currentIndex + 1);
           break;
         case 1:
-          context.go('/FlashCards', extra: currentIndex + 1);
+          context.go('/Flashcards', extra: currentIndex + 1);
           break;
 
         case 2:

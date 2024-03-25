@@ -1,13 +1,13 @@
 import 'package:stoodee/services/flashcards_service/flashcard.dart';
 import 'package:stoodee/services/flashcards_service/flashcard_set.dart';
 
-class FlashCardService {
-  late final List<FlashCardSet> _flashcardSets;
+class FlashcardService {
+  late final List<FlashcardSet> _flashcardSets;
 
   //ToDoService should be only used via singleton //
-  static final FlashCardService _shared = FlashCardService._sharedInstance();
-  factory FlashCardService() => _shared;
-  FlashCardService._sharedInstance();
+  static final FlashcardService _shared = FlashcardService._sharedInstance();
+  factory FlashcardService() => _shared;
+  FlashcardService._sharedInstance();
   //ToDoService should be only used via singleton //
 
   init() {}
@@ -20,11 +20,11 @@ class FlashCardService {
   }) async {} //FIXME:
 
   Future<void> removeSet({
-    required FlashCardSet fcSet,
+    required FlashcardSet fcSet,
   }) async {} //FIXME:
 
   Future<void> renameSet({
-    required FlashCardSet fcSet,
+    required FlashcardSet fcSet,
     required String newName,
   }) async {} //FIXME:
 
@@ -33,7 +33,7 @@ class FlashCardService {
   }) async {} //FIXME:
 
   Future<void> addCardToset({
-    required FlashCardSet fcSet,
+    required FlashcardSet fcSet,
     required String frontText,
     required String backText,
   }) async {} //FIXME:
@@ -44,5 +44,5 @@ class FlashCardService {
     required String backText,
   }) async {} //FIXME:
 
-  List<FlashCardSet> get fcSets => _flashcardSets;
+  List<FlashcardSet> get fcSets => _flashcardSets;
 }

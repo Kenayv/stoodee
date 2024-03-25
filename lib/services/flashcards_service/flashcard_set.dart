@@ -1,10 +1,10 @@
 import 'package:stoodee/services/flashcards_service/flashcard.dart';
 
-class FlashCardSet {
+class FlashcardSet {
   String name;
   late final List<Flashcard> _flashcards;
 
-  FlashCardSet({required this.name});
+  FlashcardSet({required this.name});
 
   init() {} //FIXME:
 
