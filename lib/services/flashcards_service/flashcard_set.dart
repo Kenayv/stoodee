@@ -1,36 +1,60 @@
 import 'package:stoodee/services/flashcards_service/flashcard.dart';
+import 'package:stoodee/services/flashcards_service/flashcards_exceptions.dart';
 
 class FlashcardSet {
   String name;
   late final List<Flashcard> _flashcards;
+  bool _initialized = false;
 
   FlashcardSet({required this.name});
 
-  init() {} //FIXME:
+  init() {
+    if (_initialized) throw FcSetAlreadyInitialized();
 
-  //FIXME: I don't know how it will be saved yet.
+    _flashcards = [];
+    _loadFlashcards();
+    _initialized = true;
+  }
+
   Future<void> _loadFlashcards() async {} //FIXME:
   Future<void> _saveFlashcards() async {} //FIXME:
-  Future<void> load() async {} //FIXME:
-  Future<void> save() async {} //FIXME:
 
   Future<void> addFlashcard({
     required String frontText,
     required String backText,
-  }) async {} //FIXME:
+  }) async {
+    if (!_initialized) throw FcSetNotInitialized();
+
+    //FIXME:
+  }
 
   Future<void> editFlashcard({
     required Flashcard flashcard,
     required String frontText,
     required String backText,
-  }) async {} //FIXME:
+  }) async {
+    if (!_initialized) throw FcSetNotInitialized();
+
+    //FIXME:
+  }
 
   Future<void> removeFlashcard({
     required Flashcard flashcard,
-  }) async {} //FIXME:
+  }) async {
+    if (!_initialized) throw FcSetNotInitialized();
 
-  Future<void> editName({required String name}) async {} //FIXME:
+    //FIXME:
+  }
 
-  List<Flashcard> get flashcards => _flashcards;
-  int get pairCount => _flashcards.length;
+  Future<void> editName({required String name}) async {
+    if (!_initialized) throw FcSetNotInitialized();
+
+    //FIXME:
+  }
+
+  List<Flashcard> get flashcards =>
+      _initialized ? _flashcards : throw FcSetNotInitialized();
+
+  int get pairCount =>
+      _initialized ? _flashcards.length : throw FcSetNotInitialized();
 }

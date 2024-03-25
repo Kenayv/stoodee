@@ -9,12 +9,12 @@ Future<void> showAddTaskDialog({
   TextEditingController taskController = TextEditingController();
   return genericInputDialog(
     context: context,
-    title: 'Dodaj zadanie',
+    title: 'Add Task',
     inputs: [
       TextField(
         controller: taskController,
         decoration: const InputDecoration(
-          hintText: 'Tekst zadania',
+          hintText: 'task text',
         ),
       )
     ],

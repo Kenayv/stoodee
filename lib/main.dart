@@ -18,8 +18,8 @@ Future<void> initApp() async {
     await AuthService.firebase().logOut();
   }
 
-  TodoService().init();
-  FlashcardService().init();
+  await TodoService().init();
+  await FlashcardService().init();
 }
 
 class MyApp extends StatelessWidget {

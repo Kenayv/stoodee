@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/services/flashcards_service/flashcard_service.dart';
+import 'package:stoodee/services/flashcards_service/flashcard_set.dart';
+import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 
 class FlashcardsPage extends StatefulWidget {
   const FlashcardsPage({
@@ -11,7 +14,7 @@ class FlashcardsPage extends StatefulWidget {
 
 ListTile _flashcardSetItem({
   required BuildContext context,
-  required List<String> fcSet,
+  required FlashcardSet fcSet,
   required String name,
 }) {
   return ListTile(
@@ -58,7 +61,7 @@ ListTile _flashcardSetItem({
                 alignment: Alignment.bottomCenter,
                 height: 100,
                 child: Text(
-                  'Pair count: ${fcSet.length}',
+                  'Pair count: ${fcSet.pairCount}',
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ),
@@ -72,21 +75,8 @@ ListTile _flashcardSetItem({
 
 List<Widget> flashcardSetListView({required BuildContext context}) {
   //FIXME: debug debug
-  List<String> emptySet = [];
-  final flashcardSets = [
-    ["xd", "lol", "debug"],
-    ["yeet", "debug", "set"],
-    emptySet,
-    ["hihi", "haha"],
-    ["woooo"],
-    ['another', 'set', 'test'],
-    ['another', 'set', 'test'],
-    ['another', 'set', 'test'],
-    ['another', 'set', 'test'],
-    ['another', 'set', 'test'],
-    ['another', 'set', 'test'],
-    ['another', 'set', 'test'],
-  ];
+
+  final List<FlashcardSet> flashcardSets = FlashcardService().fcSets;
 
   List<Widget> flashcardList = [];
 
@@ -94,7 +84,7 @@ List<Widget> flashcardSetListView({required BuildContext context}) {
     flashcardList.add(_flashcardSetItem(
       context: context,
       fcSet: flashcardSets[i],
-      name: "debug set $i",
+      name: flashcardSets[i].name,
     ));
   }
 
@@ -125,7 +115,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          print("DEBUG DEBUG add flash card Debug Debug");
+          await showAddFcSetDialog(context: context);
           setState(() {});
         },
         child: const Icon(Icons.add),
