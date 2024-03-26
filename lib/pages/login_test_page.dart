@@ -74,22 +74,22 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   await AuthService.firebase().sendEmailVerification();
                   goToEmailVerification();
                 } on EmailAlreadyInUseAuthException {
-                  ScaffoldMessenger.of(context).showSnackBar(create_snackbar(
+                  ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
                       "Account with this e-mail addresss already exists"));
                 } on InvalidEmailAuthException {
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(create_snackbar("Incorrect email entered"));
+                      .showSnackBar(createSnackbar("Incorrect email entered"));
                 } on GenericAuthException {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      create_snackbar("Enter email and password to Sign-Up"));
+                      createSnackbar("Enter email and password to Sign-Up"));
                 } on WeakPasswordAuthException {
-                  ScaffoldMessenger.of(context).showSnackBar(create_snackbar(
+                  ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
                       "Password must contain at least 8 characters"));
                 } catch (e) {
                   log("error occured during registration");
                   log(e.toString());
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(create_snackbar(e.toString()));
+                      .showSnackBar(createSnackbar(e.toString()));
                 }
               },
               child: const Text('Sign-up'),
@@ -113,15 +113,15 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   }
                 } on InvalidCredentialsAuthException {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      create_snackbar("Incorrect email or password"));
+                      createSnackbar("Incorrect email or password"));
                 } on GenericAuthException {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      create_snackbar("Enter email and password to log-in"));
+                      createSnackbar("Enter email and password to log-in"));
                 } catch (e) {
                   log("error occured during login");
                   log(e.toString());
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(create_snackbar(e.toString()));
+                      .showSnackBar(createSnackbar(e.toString()));
                 }
               },
               child: const Text('Log-in'),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'custom_snackbar.dart';
 
-SnackBar create_snackbar(String errorText) {
+SnackBar createSnackbar(String errorText) {
   SnackBar snackbar = SnackBar(
       content: CustomSnackBar(
         errorText: errorText,

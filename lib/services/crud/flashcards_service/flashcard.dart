@@ -11,10 +11,6 @@ class Flashcard {
     _backText = backText;
   }
 
-  String toJson() {
-    return ''; //FIXME
-  }
-
   String get frontText => _frontText;
   String get backText => _backText;
 }

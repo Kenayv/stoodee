@@ -74,8 +74,6 @@ ListTile _flashcardSetItem({
 }
 
 List<Widget> flashcardSetListView({required BuildContext context}) {
-  //FIXME: debug debug
-
   final List<FlashcardSet> flashcardSets = FlashcardService().fcSets;
 
   List<Widget> flashcardList = [];
@@ -92,8 +90,6 @@ List<Widget> flashcardSetListView({required BuildContext context}) {
 }
 
 class _FlashcardsPage extends State<FlashcardsPage> {
-  int pageIndex = 1; //FIXME: NOT USED????
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

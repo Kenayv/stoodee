@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/services/crud/local_database_service/database_task.dart';
 import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
 
@@ -12,10 +13,10 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPage extends State<ToDoPage> {
-  late List<String> _tasks;
+  late List<DatabaseTask> _tasks;
 
-  void completeTask(int index) {
-    TodoService().removeTaskAt(index);
+  void completeTask(DatabaseTask task) {
+    TodoService().removeTask(task);
     setState(() {});
   }
 
@@ -64,7 +65,7 @@ class _ToDoPage extends State<ToDoPage> {
 
 ListView taskListView({
   required BuildContext context,
-  required List<String> tasks,
+  required List<DatabaseTask> tasks,
   required Function onDismissed,
 }) {
   return ListView.builder(
@@ -73,7 +74,7 @@ ListView taskListView({
     itemCount: tasks.length,
     itemBuilder: (context, index) {
       return taskItem(
-        text: tasks[index],
+        text: tasks[index].text,
         onDismissed: () {
           onDismissed(index);
         },

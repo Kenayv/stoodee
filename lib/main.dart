@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/crud/flashcards_service/flashcard_service.dart';
+import 'package:stoodee/services/crud/local_database_service/database_controller.dart';
 import 'package:stoodee/services/router/go_router_service.dart';
 import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 
@@ -17,7 +18,7 @@ Future<void> initApp() async {
   if (AuthService.firebase().currentUser != null) {
     await AuthService.firebase().logOut();
   }
-
+  await DatabaseController().init();
   await TodoService().init();
   await FlashcardService().init();
 }

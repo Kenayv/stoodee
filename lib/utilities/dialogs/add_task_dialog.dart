@@ -1,5 +1,4 @@
 //Opens a new pop-up window allowing user to add a task. Function invoked on (+) button press.
-import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/generic_input_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +18,7 @@ Future<void> showAddTaskDialog({
       )
     ],
     function: () {
-      if (taskController.text.isNotEmpty) {
-        TodoService().addTask(taskController.text);
-      }
+      if (taskController.text.isNotEmpty) {}
     },
   );
 }

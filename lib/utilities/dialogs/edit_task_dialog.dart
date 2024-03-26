@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/services/crud/local_database_service/database_task.dart';
 import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/generic_input_dialog.dart';
 
-Future<String?> showEditTaskDialog({
-  required BuildContext context,
-  required int index,
-}) async {
+Future<String?> showEditTaskDialog(
+    {required BuildContext context, required DatabaseTask task}) async {
   TextEditingController taskController = TextEditingController();
-  taskController.text =
-      TodoService().taskAt(index); // Set text from TodoService
+  taskController.text = task.text; // Set text from TodoService
 
   return await genericInputDialog(
     context: context,
@@ -22,7 +20,7 @@ Future<String?> showEditTaskDialog({
       )
     ],
     function: () {
-      return taskController.text;
+      TodoService().updateTask(task: task, text: taskController.text);
     },
   );
 }
