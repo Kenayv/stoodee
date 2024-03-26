@@ -11,8 +11,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPage extends State<MainPage> {
-  int pageIndex = 3; //FIXME: NOT USED????
-
   void gotomain() {
     context.go('/');
   }

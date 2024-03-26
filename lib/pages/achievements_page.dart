@@ -4,19 +4,19 @@ import 'package:stoodee/utilities/globals.dart';
 
 Container achievementTile({required String name, required String path}) {
   return Container(
-
     decoration: BoxDecoration(
       color: primaryAppColor.withOpacity(0.5),
-      borderRadius: BorderRadius.all(Radius.circular(16)),
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
     ),
     child: Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top:2),
+          padding: const EdgeInsets.only(top: 2),
           child: Text(
             name,
             textAlign: TextAlign.center,
-            style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(

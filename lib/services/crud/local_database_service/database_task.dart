@@ -1,6 +1,5 @@
 import 'package:stoodee/services/crud/local_database_service/consts.dart';
 import 'package:stoodee/services/crud/local_database_service/database_user.dart';
-import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 
 class DatabaseTask {
   final int id;

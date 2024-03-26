@@ -8,6 +8,7 @@ import 'package:path/path.dart' show join;
 
 class DatabaseController {
   Database? _db;
+  DatabaseUser? currentUser;
 
   //Database Service should be only used via singleton //
   static final DatabaseController _shared =

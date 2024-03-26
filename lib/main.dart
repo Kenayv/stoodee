@@ -12,13 +12,14 @@ void main() async {
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseController().init();
   await AuthService.firebase().initialize();
 
   //FIXME: LOGOUT CREATED FOR DEBUG
   if (AuthService.firebase().currentUser != null) {
     await AuthService.firebase().logOut();
   }
-  await DatabaseController().init();
+
   await TodoService().init();
   await FlashcardService().init();
 }

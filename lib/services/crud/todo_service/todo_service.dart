@@ -30,17 +30,17 @@ class TodoService {
     _tasks = await DatabaseController().getAllDbTasks();
   }
 
-  // Future<DatabaseTask> addTask({required String text}) async {
-  //   if (!_initialized) throw TodoServiceNotInitialized();
+  Future<DatabaseTask> addTask({required String text}) async {
+    if (!_initialized) throw TodoServiceNotInitialized();
 
-  //   final task = await DatabaseController().createTask(
-  //     owner: DatabaseController().currentUser,
-  //     text: text,
-  //   );
+    final task = await DatabaseController().createTask(
+      owner: DatabaseController().currentUser!,
+      text: text,
+    );
 
-  //   _tasks.add(task);
-  //   return task;
-  // }
+    _tasks.add(task);
+    return task;
+  }
 
   Future<void> deleteTask({required DatabaseTask task}) async {
     if (!_initialized) throw TodoServiceNotInitialized();

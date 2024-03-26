@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -40,11 +42,11 @@ class _PageScaffold extends State<PageScaffold> {
         if (details.primaryVelocity! > 0) {
           // Swiped right
           changeTab(currentIndex - 1);
-          print("velocity: ${details.velocity}");
+          log("velocity: ${details.velocity}");
         } else if (details.primaryVelocity! < 0) {
           // Swiped left
           changeTab(currentIndex + 1);
-          print("velocity: ${details.velocity}");
+          log("velocity: ${details.velocity}");
         }
       },
       child: Scaffold(
