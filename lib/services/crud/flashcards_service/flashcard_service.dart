@@ -1,6 +1,6 @@
-import 'package:stoodee/services/flashcards_service/flashcard.dart';
-import 'package:stoodee/services/flashcards_service/flashcard_set.dart';
-import 'package:stoodee/services/flashcards_service/flashcards_exceptions.dart';
+import 'package:stoodee/services/crud/flashcards_service/flashcard.dart';
+import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
+import 'package:stoodee/services/crud/flashcards_service/flashcards_exceptions.dart';
 
 class FlashcardService {
   late final List<FlashcardSet> _flashcardSets;
@@ -15,13 +15,21 @@ class FlashcardService {
   init() {
     if (_initialized) throw FcServiceAlreadyInitialized();
 
-    _flashcardSets = [];
     _loadFcSets();
+
     _initialized = true;
   }
 
-  Future<void> _loadFcSets() async {} //FIXME:
-  Future<void> _saveFcSets() async {} //FIXME:
+  Future<void> _loadFcSets() async {
+    _flashcardSets = [];
+    //FIXME:
+  }
+
+  Future<void> _saveFcSets() async {
+    if (!_initialized) throw FcServiceNotInitialized();
+
+    //FIXME:
+  }
 
   Future<void> addSet({
     required String name,

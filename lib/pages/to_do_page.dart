@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/todo_service/todo_service.dart';
+import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
 import 'package:stoodee/utilities/dialogs/edit_task_dialog.dart';
 

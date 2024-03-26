@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/todo_service/todo_service.dart';
+import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/generic_input_dialog.dart';
 
 Future<String?> showEditTaskDialog({

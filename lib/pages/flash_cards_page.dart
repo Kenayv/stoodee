@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/flashcards_service/flashcard_service.dart';
-import 'package:stoodee/services/flashcards_service/flashcard_set.dart';
+import 'package:stoodee/services/crud/flashcards_service/flashcard_service.dart';
+import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 
 class FlashcardsPage extends StatefulWidget {

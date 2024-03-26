@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
-import 'package:stoodee/services/flashcards_service/flashcard_service.dart';
+import 'package:stoodee/services/crud/flashcards_service/flashcard_service.dart';
 import 'package:stoodee/services/router/go_router_service.dart';
-import 'package:stoodee/services/todo_service/todo_service.dart';
+import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 
 void main() async {
   await initApp();
