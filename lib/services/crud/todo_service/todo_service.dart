@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/services/crud/crud_exceptions.dart';
 import 'package:stoodee/services/crud/todo_service/consts.dart';
 import 'package:stoodee/services/crud/todo_service/todo_exceptions.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,7 +10,13 @@ class TodoService {
   late final List<String> _tasks;
   bool _initialized = false;
   Database? _db;
-  //FIXME:
+
+  //ToDoService should be only used via singleton //
+  static final TodoService _shared = TodoService._sharedInstance();
+  factory TodoService() => _shared;
+  TodoService._sharedInstance();
+  //ToDoService should be only used via singleton //
+
   Future<void> init() async {
     if (_initialized) throw TodoServiceAlreadyInitialized;
 
@@ -18,12 +25,6 @@ class TodoService {
 
     _initialized = true;
   }
-
-  //ToDoService should be only used via singleton //
-  static final TodoService _shared = TodoService._sharedInstance();
-  factory TodoService() => _shared;
-  TodoService._sharedInstance();
-  //ToDoService should be only used via singleton //
 
   Future<void> openDb() async {
     if (_db != null) throw DatabaseAlreadyOpened();
@@ -56,6 +57,51 @@ class TodoService {
     return _db!;
   }
 
+  Future<void> deleteUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+    final deletedCount = await db.delete(
+      userTable,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+
+    if (deletedCount != 1) throw CouldNotDeleteUser();
+  }
+
+  Future<DatabaseUser> createUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+
+    final result = await db.query(
+      userTable,
+      limit: 1,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+
+    if (result.isNotEmpty) throw UserAlreadyExists();
+
+    final userId = await db.insert(userTable, {
+      emailColumn: email.toLowerCase(),
+    });
+
+    return DatabaseUser(id: userId, email: email);
+  }
+
+  Future<DatabaseUser> getUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+
+    final result = await db.query(
+      userTable,
+      limit: 1,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+
+    if (result.isEmpty) throw CouldNotFindUser;
+
+    return DatabaseUser.fromRow(result.first);
+  }
+
   Future<void> saveTasks() async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
@@ -74,12 +120,55 @@ class TodoService {
     //FIXME:
   }
 
-  Future<void> addTask(String task) async {
+  Future<void> addTask(String text) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
-    _tasks.add(task);
+    //FIXME
+    //createTask(owner: CurrentUser, text: text);
 
-    await saveTasks();
+    _tasks.add(text);
+  }
+
+  Future<DatabaseTask> createTask(
+      {required DatabaseUser owner, required String text}) async {
+    if (!_initialized) throw TodoServiceNotInitialized();
+
+    final db = _getDatabaseOrThrow();
+    final dbUser = await getUser(email: owner.email);
+
+    //make sure owner exists in database and isn't hard-coded
+    if (dbUser != owner) throw CouldNotFindUser();
+
+    final taskId = await db.insert(taskTable, {
+      userIdColumn: owner.id,
+      textColumn: text,
+      isSyncedWithCloudColumn: 0,
+    });
+
+    _tasks.add(text);
+
+    final task = DatabaseTask(
+      id: taskId,
+      userId: owner.id,
+      text: text,
+      isSyncedWithCloud: false,
+    );
+
+    return task;
+  }
+
+  Future<void> deleteTask({required int id}) async {
+    if (!_initialized) throw TodoServiceNotInitialized();
+
+    final db = _getDatabaseOrThrow();
+
+    final deletedCount = await db.delete(
+      taskTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (deletedCount != 1) throw CouldNotDeleteTask();
   }
 
   Future<void> removeTaskAt(int index) async {
@@ -90,12 +179,42 @@ class TodoService {
     await saveTasks();
   }
 
-  Future<void> editTaskAt(int index, String newText) async {
-    if (!_initialized) throw TodoServiceNotInitialized();
+  Future<DatabaseTask> getDbTask({required int id}) async {
+    final db = _getDatabaseOrThrow();
 
-    _tasks[index] = newText;
+    final task = await db.query(
+      taskTable,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
 
-    await saveTasks();
+    if (task.isEmpty) throw CouldNotFindTask();
+
+    return DatabaseTask.fromRow(task.first);
+  }
+
+  Future<Iterable<DatabaseTask>> getAllDbTasks() async {
+    final db = _getDatabaseOrThrow();
+    final tasks = await db.query(taskTable);
+    return tasks.map((taskRow) => DatabaseTask.fromRow(taskRow));
+  }
+
+  Future<DatabaseTask> updateTask({
+    required DatabaseTask task,
+    required String text,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    await getDbTask(id: task.id);
+
+    final updateCount = await db.update(taskTable, {
+      textColumn: text,
+      isSyncedWithCloudColumn: 0,
+    });
+
+    if (updateCount != 1) throw CouldNotUpdateTask();
+
+    return task;
   }
 
   String taskAt(index) =>

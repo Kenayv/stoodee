@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
-import 'package:stoodee/utilities/dialogs/edit_task_dialog.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({
@@ -23,13 +22,6 @@ class _ToDoPage extends State<ToDoPage> {
   void addTask() async {
     await showAddTaskDialog(context: context);
     setState(() {});
-  }
-
-  void editTask(int index, String newText) {
-    TodoService().editTaskAt(index, newText);
-    setState(() {
-      _tasks = TodoService().tasks;
-    });
   }
 
   @override
@@ -58,7 +50,6 @@ class _ToDoPage extends State<ToDoPage> {
               context: context,
               tasks: _tasks,
               onDismissed: completeTask,
-              onLongPressed: editTask, // Pass the editTask callback
             ),
             FloatingActionButton(
               onPressed: addTask,
@@ -75,7 +66,6 @@ ListView taskListView({
   required BuildContext context,
   required List<String> tasks,
   required Function onDismissed,
-  required Function onLongPressed,
 }) {
   return ListView.builder(
     shrinkWrap: true,
@@ -84,16 +74,6 @@ ListView taskListView({
     itemBuilder: (context, index) {
       return taskItem(
         text: tasks[index],
-        onLongPress: () async {
-          //FIXME: spaghetti code. This returns string, AddTask() adds task.
-          final String? newText = await showEditTaskDialog(
-            context: context,
-            index: index,
-          );
-          if (newText != null && newText.isNotEmpty) {
-            onLongPressed(index, newText);
-          }
-        },
         onDismissed: () {
           onDismissed(index);
         },
@@ -105,7 +85,6 @@ ListView taskListView({
 ListTile taskItem({
   required String text,
   required Function onDismissed,
-  required Function onLongPress,
 }) {
   return ListTile(
     title: Dismissible(
@@ -137,8 +116,5 @@ ListTile taskItem({
         title: Text(text),
       ),
     ),
-    onLongPress: () async {
-      await onLongPress();
-    },
   );
 }
