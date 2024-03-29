@@ -42,9 +42,12 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   @override
   Widget build(BuildContext context) {
     if (AuthService.firebase().currentUser != null) {
+      //FIXME: debug log
       log(AuthService.firebase().currentUser!.email!);
       log(AuthService.firebase().currentUser!.isEmailVerified.toString());
+      //FIXME: debug log ^^^
     } else {
+      //FIXME: debug log
       log("user: not logged in");
     }
     return Scaffold(
@@ -86,8 +89,6 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
                       "Password must contain at least 8 characters"));
                 } catch (e) {
-                  log("error occured during registration");
-                  log(e.toString());
                   ScaffoldMessenger.of(context)
                       .showSnackBar(createSnackbar(e.toString()));
                 }
@@ -118,8 +119,6 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   ScaffoldMessenger.of(context).showSnackBar(
                       createSnackbar("Enter email and password to log-in"));
                 } catch (e) {
-                  log("error occured during login");
-                  log(e.toString());
                   ScaffoldMessenger.of(context)
                       .showSnackBar(createSnackbar(e.toString()));
                 }

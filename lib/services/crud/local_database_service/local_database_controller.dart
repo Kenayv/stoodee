@@ -6,19 +6,28 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
 
-class DatabaseController {
+class LocalDbController {
   Database? _db;
-  DatabaseUser? currentUser;
+  DatabaseUser? _currentUser;
 
   //Database Service should be only used via singleton //
-  static final DatabaseController _shared =
-      DatabaseController._sharedInstance();
-  factory DatabaseController() => _shared;
-  DatabaseController._sharedInstance();
+  static final LocalDbController _shared = LocalDbController._sharedInstance();
+  factory LocalDbController() => _shared;
+  LocalDbController._sharedInstance();
   //Database Service should be only used via singleton //
 
   Future<void> init() async {
     await openDb();
+    await initNullUser();
+  }
+
+  //Current user is set to nullUser before logging in.
+  Future<void> initNullUser() async {
+    DatabaseUser? nullUser = await getUserOrNull(email: notLoggedInUserEmail);
+    nullUser ??= await createUser(email: notLoggedInUserEmail);
+
+    // [currentUser] value can be changed later in runtime.
+    _currentUser = nullUser;
   }
 
   Future<void> openDb() async {
@@ -34,8 +43,10 @@ class DatabaseController {
       await _db!.execute(createTaskTable);
     } on MissingPlatformDirectoryException {
       print('Could not open database!');
+      rethrow;
     } catch (e) {
       print('error ${e.toString()}');
+      rethrow;
     }
   }
 
@@ -43,12 +54,12 @@ class DatabaseController {
     if (_db == null) throw DatabaseIsNotOpened();
 
     await _db!.close();
+    _currentUser = null;
     _db = null;
   }
 
   Database _getDatabaseOrThrow() {
     if (_db == null) throw DatabaseIsNotOpened();
-
     return _db!;
   }
 
@@ -78,7 +89,6 @@ class DatabaseController {
     final userId = await db.insert(userTable, {
       emailColumn: email.toLowerCase(),
     });
-
     return DatabaseUser(id: userId, email: email);
   }
 
@@ -105,8 +115,10 @@ class DatabaseController {
     return DatabaseUser.fromRow(result.first);
   }
 
-  Future<DatabaseTask> createTask(
-      {required DatabaseUser owner, required String text}) async {
+  Future<DatabaseTask> createTask({
+    required DatabaseUser owner,
+    required String text,
+  }) async {
     final db = _getDatabaseOrThrow();
     final dbUser = await getUser(email: owner.email);
 
@@ -158,6 +170,7 @@ class DatabaseController {
   Future<List<DatabaseTask>> getAllDbTasks() async {
     final db = _getDatabaseOrThrow();
     final tasks = await db.query(taskTable);
+
     return tasks.map((taskRow) => DatabaseTask.fromRow(taskRow)).toList();
   }
 
@@ -178,4 +191,6 @@ class DatabaseController {
 
     return task;
   }
+
+  DatabaseUser? get currentUser => _currentUser;
 }

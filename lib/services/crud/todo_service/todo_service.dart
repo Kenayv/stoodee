@@ -1,4 +1,4 @@
-import 'package:stoodee/services/crud/local_database_service/database_controller.dart';
+import 'package:stoodee/services/crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/crud/local_database_service/database_task.dart';
 import 'package:stoodee/services/crud/todo_service/todo_exceptions.dart';
 
@@ -16,25 +16,23 @@ class TodoService {
     if (_initialized) throw TodoServiceAlreadyInitialized;
 
     await loadTasks();
-
     _initialized = true;
   }
 
-  Future<void> saveTasks() async {
+  Future<void> syncWithCloud() async {
     if (!_initialized) throw TodoServiceNotInitialized();
-
     //FIXME:
   }
 
   Future<void> loadTasks() async {
-    _tasks = await DatabaseController().getAllDbTasks();
+    _tasks = await LocalDbController().getAllDbTasks();
   }
 
-  Future<DatabaseTask> addTask({required String text}) async {
+  Future<DatabaseTask> createTask({required String text}) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
-    final task = await DatabaseController().createTask(
-      owner: DatabaseController().currentUser!,
+    final task = await LocalDbController().createTask(
+      owner: LocalDbController().currentUser!,
       text: text,
     );
 
@@ -45,24 +43,29 @@ class TodoService {
   Future<void> deleteTask({required DatabaseTask task}) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
-    await DatabaseController().deleteTask(id: task.id);
+    await LocalDbController().deleteTask(id: task.id);
   }
 
   Future<void> removeTask(DatabaseTask task) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
-    await DatabaseController().deleteTask(id: task.id);
+    await LocalDbController().deleteTask(id: task.id);
+    _tasks.removeWhere((taskToRemove) => taskToRemove == task);
   }
 
   Future<void> updateTask({
     required DatabaseTask task,
     required String text,
   }) async {
-    await DatabaseController().updateTask(task: task, text: text);
+    await LocalDbController().updateTask(task: task, text: text);
   }
 
-  DatabaseTask taskAt(index) =>
-      _initialized ? _tasks[index] : throw TodoServiceNotInitialized();
+  DatabaseTask taskAt(index) {
+    if (_initialized == false) throw TodoServiceNotInitialized();
+    if (index > _tasks.length - 1 || index < 0) throw RangeError("Range error");
+
+    return _tasks[index];
+  }
 
   List<DatabaseTask> get tasks =>
       _initialized ? _tasks : throw TodoServiceNotInitialized();

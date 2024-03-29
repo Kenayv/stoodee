@@ -15,12 +15,12 @@ class ToDoPage extends StatefulWidget {
 class _ToDoPage extends State<ToDoPage> {
   late List<DatabaseTask> _tasks;
 
-  void completeTask(DatabaseTask task) {
-    TodoService().removeTask(task);
+  Future<void> completeTask(DatabaseTask task) async {
+    await TodoService().removeTask(task);
     setState(() {});
   }
 
-  void addTask() async {
+  Future<void> addTask() async {
     await showAddTaskDialog(context: context);
     setState(() {});
   }
@@ -75,8 +75,8 @@ ListView taskListView({
     itemBuilder: (context, index) {
       return taskItem(
         text: tasks[index].text,
-        onDismissed: () {
-          onDismissed(index);
+        onDismissed: () async {
+          await onDismissed(tasks[index]);
         },
       );
     },

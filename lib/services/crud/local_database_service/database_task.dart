@@ -1,5 +1,4 @@
 import 'package:stoodee/services/crud/local_database_service/consts.dart';
-import 'package:stoodee/services/crud/local_database_service/database_user.dart';
 
 class DatabaseTask {
   final int id;
@@ -26,7 +25,7 @@ class DatabaseTask {
       'Task\n id = [$id],\nuserId = [$userId],\ntext = [$text],\nisSyncedWithCloud = [$isSyncedWithCloud]';
 
   @override
-  bool operator ==(covariant DatabaseUser other) => id == other.id;
+  bool operator ==(covariant DatabaseTask other) => id == other.id;
 
   @override
   int get hashCode => id.hashCode;
