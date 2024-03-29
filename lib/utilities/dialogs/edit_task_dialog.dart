@@ -19,8 +19,8 @@ Future<String?> showEditTaskDialog(
         ),
       )
     ],
-    function: () {
-      TodoService().updateTask(task: task, text: taskController.text);
+    function: () async {
+      await TodoService().updateTask(task: task, text: taskController.text);
     },
   );
 }
