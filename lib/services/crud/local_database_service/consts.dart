@@ -12,20 +12,20 @@ const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 const notLoggedInUserEmail = 'null.user@stoodee.fakemail';
 
 const createUserTable = ''' 
-  CREATE TABLE IF NOT EXISTS "user" (
-    "ID"	INTEGER NOT NULL UNIQUE,
-    "email"	TEXT NOT NULL UNIQUE,
-    PRIMARY KEY("ID" AUTOINCREMENT)
+  CREATE TABLE IF NOT EXISTS "$userTable" (
+    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$emailColumn"	TEXT NOT NULL UNIQUE,
+    PRIMARY KEY("$idColumn" AUTOINCREMENT)
   );
 ''';
 
 const createTaskTable = '''
-  CREATE TABLE IF NOT EXISTS "task" (
-    "ID"	INTEGER NOT NULL UNIQUE,
-    "user_id"	INTEGER NOT NULL,
+  CREATE TABLE IF NOT EXISTS "$taskTable" (
+    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$userIdColumn"	INTEGER NOT NULL,
     "text"	TEXT NOT NULL,
-    "is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY("ID" AUTOINCREMENT),
-    FOREIGN KEY("user_id") REFERENCES "user"("ID")
+    "$isSyncedWithCloudColumn"	INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY("$idColumn" AUTOINCREMENT),
+    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")
   );
 ''';
