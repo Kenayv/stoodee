@@ -8,7 +8,6 @@ import 'package:path/path.dart' show join;
 
 class LocalDbController {
   Database? _db;
-  DatabaseUser? _currentUser;
 
   //Database Service should be only used via singleton //
   static final LocalDbController _shared = LocalDbController._sharedInstance();
@@ -25,9 +24,6 @@ class LocalDbController {
   Future<void> initNullUser() async {
     DatabaseUser? nullUser = await getUserOrNull(email: notLoggedInUserEmail);
     nullUser ??= await createUser(email: notLoggedInUserEmail);
-
-    // [currentUser] value can be changed later in runtime.
-    _currentUser = nullUser;
   }
 
   Future<void> openDb() async {
@@ -54,7 +50,6 @@ class LocalDbController {
     if (_db == null) throw DatabaseIsNotOpened();
 
     await _db!.close();
-    _currentUser = null;
     _db = null;
   }
 
@@ -192,5 +187,5 @@ class LocalDbController {
     return task;
   }
 
-  DatabaseUser? get currentUser => _currentUser;
+  Future<DatabaseUser> get nullUser => getUser(email: notLoggedInUserEmail);
 }
