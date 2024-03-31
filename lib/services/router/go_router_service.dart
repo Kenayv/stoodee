@@ -10,6 +10,9 @@ import 'package:stoodee/pages/main_page.dart';
 import 'package:stoodee/pages/achievements_page.dart';
 import 'package:stoodee/pages/account_page.dart';
 import 'package:stoodee/pages/page_scaffold.dart';
+import 'package:stoodee/pages/flash_cards_reader.dart';
+import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
+import 'package:stoodee/utilities/containers.dart';
 
 String resolveSwipeDirection(Object from, int where) {
   String s_temp = from.toString();
@@ -57,7 +60,26 @@ final GoRouter goRouterService = GoRouter(
 
     ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) => PageScaffold(child: child),
+        //builder: (context, state, child) => PageScaffold(child: child),
+
+        pageBuilder: (context, state,child) {
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 200),
+            key: state.pageKey,
+            child:  PageScaffold(child: child),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0, -1.0);
+              const end = Offset.zero;
+              const curve = Curves.easeOutQuint;
+              var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                  position: animation.drive(tween), child: child);
+            },
+          );
+        },
+
         routes: [
           GoRoute(
             path: '/ToDo',
@@ -226,7 +248,31 @@ final GoRouter goRouterService = GoRouter(
           ),
         ]),
 
-    //TO-DOPAGE
+
+    GoRoute(
+      path: '/flash_cards_reader',
+      pageBuilder: (context, state) {
+        SetContainer container=state.extra as SetContainer;
+        return CustomTransitionPage(
+          transitionDuration: const Duration(milliseconds: 400),
+          key: state.pageKey,
+          child:  FlashCardsReader(fcSet: container.getSet(),name: container.getName()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0, 1.0);
+            const end = Offset.zero;
+            const curve = Curves.easeOutQuint;
+            var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+                position: animation.drive(tween), child: child);
+          },
+        );
+      },
+    ),
+
+
+
 
     GoRoute(
       path: '/login_test',

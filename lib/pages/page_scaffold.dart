@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/utilities/globals.dart';
-import 'package:stoodee/utilities/custom_appbar.dart';
+import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 
 class PageScaffold extends StatefulWidget {
   const PageScaffold({required this.child, super.key});

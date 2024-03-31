@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:stoodee/services/crud/flashcards_service/flashcard_service.dart';
 import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
+import 'package:go_router/go_router.dart';
+import 'package:stoodee/utilities/containers.dart';
+
 
 class FlashcardsPage extends StatefulWidget {
   const FlashcardsPage({
@@ -11,6 +15,19 @@ class FlashcardsPage extends StatefulWidget {
   @override
   State<FlashcardsPage> createState() => _FlashcardsPage();
 }
+
+
+void tap(BuildContext context,SetContainer container){
+
+
+  context.go('/flash_cards_reader', extra: container);
+}
+
+void deletingfunction(){
+  //FIXME: ONLY DEBUGGING OPTION, LINK IT TO A REAL FUNCTION LATER
+  print("deleted");
+}
+
 
 ListTile _flashcardSetItem({
   required BuildContext context,
@@ -70,6 +87,8 @@ ListTile _flashcardSetItem({
         ),
       ),
     ),
+    onTap: () => tap(context,SetContainer(set: fcSet, name: name)),
+    onLongPress: deletingfunction,
   );
 }
 
