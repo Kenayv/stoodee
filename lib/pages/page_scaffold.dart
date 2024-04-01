@@ -38,15 +38,16 @@ class _PageScaffold extends State<PageScaffold> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+
       onHorizontalDragEnd: (DragEndDetails details) {
         if (details.primaryVelocity! > 0) {
           // Swiped right
           changeTab(currentIndex - 1);
-          log("velocity: ${details.velocity}");
+          log("SwipeVelocity: ${details.velocity}");
         } else if (details.primaryVelocity! < 0) {
           // Swiped left
           changeTab(currentIndex + 1);
-          log("velocity: ${details.velocity}");
+          log("SwipeVelocity: ${details.velocity}");
         }
       },
       child: Scaffold(

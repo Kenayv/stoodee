@@ -5,6 +5,8 @@ import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/utilities/containers.dart';
+import 'package:stoodee/utilities/globals.dart';
+import 'package:gap/gap.dart';
 
 
 class FlashcardsPage extends StatefulWidget {
@@ -40,7 +42,7 @@ ListTile _flashcardSetItem({
       child: Container(
         height: 400,
         decoration: BoxDecoration(
-          color: Colors.purple[300],
+          color: analogusColor,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Center(
@@ -117,24 +119,33 @@ class _FlashcardsPage extends State<FlashcardsPage> {
 
     return Scaffold(
       body: Center(
-        child: GridView.count(
-          primary: false,
-          childAspectRatio: (1 / 1.3),
-          crossAxisSpacing: 0,
-          mainAxisSpacing: 0,
-          crossAxisCount: 2,
-          children: flashcardSetListView(context: context),
+        child: Column(
+          children: [
+            Gap(10),
+            GridView.count(
+              shrinkWrap: true,
+              primary: false,
+              childAspectRatio: (1 / 1.3),
+              crossAxisSpacing: 0,
+              mainAxisSpacing: 0,
+              crossAxisCount: 2,
+              children: flashcardSetListView(context: context),
+            ),
+            Gap(15),
+        FloatingActionButton(
+          onPressed: () async {
+            await showAddFcSetDialog(context: context);
+            setState(() {});
+
+          },
+          child: const Icon(Icons.add),
+        )
+          ],
         ),
 
         //flashcardSetListView(context: context),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await showAddFcSetDialog(context: context);
-          setState(() {});
-        },
-        child: const Icon(Icons.add),
-      ),
+
     );
   }
 }

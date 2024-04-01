@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/services/crud/local_database_service/database_task.dart';
 import 'package:stoodee/services/crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
+import 'package:stoodee/utilities/globals.dart';
+import 'package:gap/gap.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({
@@ -34,29 +36,24 @@ class _ToDoPage extends State<ToDoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'To Do:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom:20),
+        child: Center(
+          child: Column(
+            children: [
+              const Gap(20),
+              taskListView(
+                context: context,
+                tasks: _tasks,
+                onDismissed: completeTask,
               ),
-            ),
-            taskListView(
-              context: context,
-              tasks: _tasks,
-              onDismissed: completeTask,
-            ),
-            FloatingActionButton(
-              onPressed: addTask,
-              child: const Icon(Icons.add),
-            ),
-          ],
+              const Gap(5),
+              FloatingActionButton(
+                onPressed: addTask,
+                child: const Icon(Icons.add),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -88,33 +85,67 @@ ListTile taskItem({
   required Function onDismissed,
 }) {
   return ListTile(
+    contentPadding: EdgeInsets.symmetric(horizontal:18),
+    minVerticalPadding: 10,
+
     title: Dismissible(
       key: UniqueKey(),
       background: Container(
-        color: Colors.green,
+
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20.0),
+
+        decoration: const BoxDecoration(
+          color: Colors.green,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         child: const Icon(
           Icons.check,
           color: Colors.white,
           size: 30,
         ),
       ),
+
+
       secondaryBackground: Container(
-        color: Colors.red,
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 20.0),
+        height: 0.2,
+        decoration: const BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         child: const Icon(
           Icons.delete,
           color: Colors.white,
           size: 30,
         ),
       ),
+
       onDismissed: (_) {
         onDismissed();
       },
-      child: ListTile(
-        title: Text(text),
+
+
+      child: Container(
+        decoration: const BoxDecoration(
+          color:analogusColor,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: ListTile(
+
+
+          contentPadding: const EdgeInsets.all(0),
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+                text,
+                style: const  TextStyle(  color: Colors.white, fontWeight: FontWeight.bold,),
+                textAlign: TextAlign.center,
+
+            ),
+          ),
+        ),
       ),
     ),
   );

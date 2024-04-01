@@ -4,9 +4,9 @@ import 'package:stoodee/utilities/globals.dart';
 
 Container achievementTile({required String name, required String path}) {
   return Container(
-    decoration: BoxDecoration(
-      color: primaryAppColor.withOpacity(0.5),
-      borderRadius: const BorderRadius.all(Radius.circular(16)),
+    decoration: const BoxDecoration(
+      color: analogusColor,
+      borderRadius: BorderRadius.all(Radius.circular(16)),
     ),
     child: Column(
       children: [
