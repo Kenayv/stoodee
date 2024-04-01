@@ -88,61 +88,65 @@ ListTile taskItem({
     contentPadding: EdgeInsets.symmetric(horizontal:18),
     minVerticalPadding: 10,
 
-    title: Dismissible(
-      key: UniqueKey(),
-      background: Container(
+    title: ClipRRect(
+      borderRadius: BorderRadius.circular(15.0),
 
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 20.0),
+      child: Dismissible(
+        key: UniqueKey(),
+        background: Container(
 
-        decoration: const BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 20.0),
+
+          decoration: const BoxDecoration(
+            color: Colors.green,
+
+          ),
+          child: const Icon(
+            Icons.check,
+            color: Colors.white,
+            size: 30,
+          ),
         ),
-        child: const Icon(
-          Icons.check,
-          color: Colors.white,
-          size: 30,
+
+
+        secondaryBackground: Container(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(left: 20.0),
+          height: 0.2,
+          decoration: const BoxDecoration(
+            color: Colors.red,
+
+          ),
+          child: const Icon(
+            Icons.delete,
+            color: Colors.white,
+            size: 30,
+          ),
         ),
-      ),
+
+        onDismissed: (_) {
+          onDismissed();
+        },
 
 
-      secondaryBackground: Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 20.0),
-        height: 0.2,
-        decoration: const BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: const Icon(
-          Icons.delete,
-          color: Colors.white,
-          size: 30,
-        ),
-      ),
+        child: Container(
+          decoration: const BoxDecoration(
+            color:analogusColor,
 
-      onDismissed: (_) {
-        onDismissed();
-      },
+          ),
+          child: ListTile(
 
 
-      child: Container(
-        decoration: const BoxDecoration(
-          color:analogusColor,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            title: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  text,
+                  style: const  TextStyle(  color: Colors.white, fontWeight: FontWeight.bold,),
+                  textAlign: TextAlign.center,
 
-
-          contentPadding: const EdgeInsets.all(0),
-          title: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-                text,
-                style: const  TextStyle(  color: Colors.white, fontWeight: FontWeight.bold,),
-                textAlign: TextAlign.center,
-
+              ),
             ),
           ),
         ),
