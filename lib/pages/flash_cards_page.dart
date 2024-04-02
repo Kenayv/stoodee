@@ -136,7 +136,6 @@ List<Widget> flashcardSetListView({required BuildContext context}) {
 class _FlashcardsPage extends State<FlashcardsPage> {
   @override
   Widget build(BuildContext context) {
-    //FIXME ????? unused
     var size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
@@ -162,13 +161,6 @@ class _FlashcardsPage extends State<FlashcardsPage> {
                 crossAxisCount: 2,
                 items: flashcardSetListView(context: context)),
             const Gap(15),
-            FloatingActionButton(
-              onPressed: () async {
-                await showAddFcSetDialog(context: context);
-                setState(() {});
-              },
-              child: const Icon(Icons.add),
-            ),
             FloatingActionButton(
               onPressed: () async {
                 await showAddFcSetDialog(context: context);

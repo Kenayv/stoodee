@@ -89,6 +89,14 @@ class LocalDbController {
     return DatabaseUser(id: userId, email: email);
   }
 
+  Future<DatabaseUser> createOrLoginUser({required String email}) async {
+    DatabaseUser? user = await getUserOrNull(email: email);
+
+    user ??= await createUser(email: email);
+
+    return user;
+  }
+
   Future<DatabaseUser> getUser({required String email}) async {
     final DatabaseUser? user = await getUserOrNull(email: email);
 
@@ -189,7 +197,11 @@ class LocalDbController {
     return task;
   }
 
-  Future<DatabaseUser> getNullUser() => getUser(email: notLoggedInUserEmail);
+  Future<DatabaseUser> getNullUser() async {
+    return await getUser(email: notLoggedInUserEmail);
+  }
+
+  void setUser(DatabaseUser user) => _currentUser = user;
 
   DatabaseUser get currentUser => _currentUser;
 }
