@@ -87,6 +87,7 @@ ListTile taskItem({
   return ListTile(
     contentPadding: EdgeInsets.symmetric(horizontal:18),
     minVerticalPadding: 10,
+    splashColor: Colors.transparent,
 
     title: ClipRRect(
       borderRadius: BorderRadius.circular(15.0),
@@ -94,14 +95,12 @@ ListTile taskItem({
       child: Dismissible(
         key: UniqueKey(),
         background: Container(
-
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: 20.0),
-
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(left: 15.0),
           decoration: const BoxDecoration(
             color: Colors.green,
-
           ),
+
           child: const Icon(
             Icons.check,
             color: Colors.white,
@@ -111,13 +110,13 @@ ListTile taskItem({
 
 
         secondaryBackground: Container(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.only(left: 20.0),
+          alignment: Alignment.centerRight,
+          padding: const EdgeInsets.only(right: 15.0),
           height: 0.2,
           decoration: const BoxDecoration(
             color: Colors.red,
-
           ),
+
           child: const Icon(
             Icons.delete,
             color: Colors.white,
@@ -137,7 +136,6 @@ ListTile taskItem({
           ),
           child: ListTile(
 
-
             contentPadding: const EdgeInsets.all(0),
             title: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -152,5 +150,14 @@ ListTile taskItem({
         ),
       ),
     ),
+    onTap: ()  {
+      print("tapped on task : $text");
+    },
+
+    onLongPress: (){
+      print("longpressed on task : $text");
+    },
+
+
   );
 }
