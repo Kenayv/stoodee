@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:stoodee/services/crud/flashcards_service/flashcard_service.dart';
 import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
@@ -7,6 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
+
+const double iconSize = 40;
 
 class FlashcardsPage extends StatefulWidget {
   const FlashcardsPage({
@@ -33,36 +36,60 @@ ListTile _flashcardSetItem({
 }) {
   return ListTile(
     title: Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(4.0),
       child: Container(
-        height: 400,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: analogusColor,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Gap(10),
               Container(
                 alignment: Alignment.topCenter,
                 height: 35,
-                child: const Row(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //TODO: MAKE THEM DO SOMETHING WITH BUTTONS, AND SPACE THEM CORRECTLY
-                    Icon(
-                      Icons.add,
-                      size: 20,
-                      color: Colors.white,
+                    Container(
+                      width: MediaQuery.of(context).size.width / 8,
+                      child: TextButton(
+                          onPressed: () {
+                            print("add");
+                          },
+                          child: const Icon(
+                            Icons.add,
+                            size: 20,
+                            color: Colors.white,
+                          )),
                     ),
-                    Icon(Icons.star, size: 20, color: Colors.white),
-                    Icon(Icons.lock, size: 20, color: Colors.white),
+
+                    Container(
+                        width: MediaQuery.of(context).size.width / 8,
+                        child: TextButton(
+                            onPressed: () {
+                              print("favorite");
+                            },
+                            child: const Icon(Icons.star,
+                                size: 20, color: Colors.white))),
+
+                    Container(
+                        width: MediaQuery.of(context).size.width / 8,
+                        child: TextButton(
+                            onPressed: () {
+                              print("lock");
+                            },
+                            child: const Icon(Icons.lock,
+                                size: 20, color: Colors.white))),
                   ],
                 ),
               ),
               Container(
-                alignment: Alignment.topCenter,
-                height: 40,
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Text(
                   name,
                   style: const TextStyle(
@@ -71,12 +98,14 @@ ListTile _flashcardSetItem({
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Container(
-                alignment: Alignment.bottomCenter,
-                height: 100,
-                child: Text(
-                  'Pair count: ${fcSet.pairCount}',
-                  style: const TextStyle(fontSize: 16, color: Colors.white),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 100,
+                  child: Text(
+                    'Pair count: ${fcSet.pairCount}',
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -113,10 +142,11 @@ class _FlashcardsPage extends State<FlashcardsPage> {
     /*24 is for notification bar on Android*/
 
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Gap(10),
+            /*
             GridView.count(
               shrinkWrap: true,
               primary: false,
@@ -126,6 +156,11 @@ class _FlashcardsPage extends State<FlashcardsPage> {
               crossAxisCount: 2,
               children: flashcardSetListView(context: context),
             ),
+
+             */
+            CustomGridLayout(
+                crossAxisCount: 2,
+                items: flashcardSetListView(context: context)),
             Gap(15),
             FloatingActionButton(
               onPressed: () async {
@@ -133,11 +168,17 @@ class _FlashcardsPage extends State<FlashcardsPage> {
                 setState(() {});
               },
               child: const Icon(Icons.add),
-            )
+            ),
+            FloatingActionButton(
+              onPressed: () async {
+                await showAddFcSetDialog(context: context);
+                setState(() {});
+              },
+              child: const Icon(Icons.add),
+            ),
+            Gap(15),
           ],
         ),
-
-        //flashcardSetListView(context: context),
       ),
     );
   }
