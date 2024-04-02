@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 
 const double iconSize = 40;
@@ -46,7 +45,7 @@ ListTile _flashcardSetItem({
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Gap(10),
+              const Gap(10),
               Container(
                 alignment: Alignment.topCenter,
                 height: 35,
@@ -54,7 +53,7 @@ ListTile _flashcardSetItem({
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //TODO: MAKE THEM DO SOMETHING WITH BUTTONS, AND SPACE THEM CORRECTLY
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width / 8,
                       child: TextButton(
                           onPressed: () {
@@ -67,7 +66,7 @@ ListTile _flashcardSetItem({
                           )),
                     ),
 
-                    Container(
+                    SizedBox(
                         width: MediaQuery.of(context).size.width / 8,
                         child: TextButton(
                             onPressed: () {
@@ -76,7 +75,7 @@ ListTile _flashcardSetItem({
                             child: const Icon(Icons.star,
                                 size: 20, color: Colors.white))),
 
-                    Container(
+                    SizedBox(
                         width: MediaQuery.of(context).size.width / 8,
                         child: TextButton(
                             onPressed: () {
@@ -113,7 +112,7 @@ ListTile _flashcardSetItem({
         ),
       ),
     ),
-    onTap: () => tap(context, SetContainer(set: fcSet, name: name)),
+    onTap: () => tap(context, SetContainer(currentSet: fcSet, name: name)),
     onLongPress: deletingfunction,
   );
 }
@@ -137,6 +136,7 @@ List<Widget> flashcardSetListView({required BuildContext context}) {
 class _FlashcardsPage extends State<FlashcardsPage> {
   @override
   Widget build(BuildContext context) {
+    //FIXME ????? unused
     var size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
@@ -145,7 +145,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Gap(10),
+            const Gap(10),
             /*
             GridView.count(
               shrinkWrap: true,
@@ -161,7 +161,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
             CustomGridLayout(
                 crossAxisCount: 2,
                 items: flashcardSetListView(context: context)),
-            Gap(15),
+            const Gap(15),
             FloatingActionButton(
               onPressed: () async {
                 await showAddFcSetDialog(context: context);
@@ -176,7 +176,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
               },
               child: const Icon(Icons.add),
             ),
-            Gap(15),
+            const Gap(15),
           ],
         ),
       ),

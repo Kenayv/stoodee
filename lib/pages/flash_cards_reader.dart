@@ -39,7 +39,7 @@ class _FlashCardsReader extends State<FlashCardsReader> {
   int cardIndex = 0;
   @override
   Widget build(BuildContext context) {
-    FlashcardSet set = widget.fcSet;
+    FlashcardSet currentSet = widget.fcSet;
     String name = widget.name;
     int tobemade = 3; //set.pairCount;
     double indicatorvalue = isNotZero(completed, tobemade);

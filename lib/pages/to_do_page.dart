@@ -37,7 +37,7 @@ class _ToDoPage extends State<ToDoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom:20),
+        padding: const EdgeInsets.only(bottom: 20),
         child: Center(
           child: Column(
             children: [
@@ -85,13 +85,11 @@ ListTile taskItem({
   required Function onDismissed,
 }) {
   return ListTile(
-    contentPadding: EdgeInsets.symmetric(horizontal:18),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 18),
     minVerticalPadding: 10,
     splashColor: Colors.transparent,
-
     title: ClipRRect(
       borderRadius: BorderRadius.circular(15.0),
-
       child: Dismissible(
         key: UniqueKey(),
         background: Container(
@@ -100,15 +98,12 @@ ListTile taskItem({
           decoration: const BoxDecoration(
             color: Colors.green,
           ),
-
           child: const Icon(
             Icons.check,
             color: Colors.white,
             size: 30,
           ),
         ),
-
-
         secondaryBackground: Container(
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 15.0),
@@ -116,48 +111,41 @@ ListTile taskItem({
           decoration: const BoxDecoration(
             color: Colors.red,
           ),
-
           child: const Icon(
             Icons.delete,
             color: Colors.white,
             size: 30,
           ),
         ),
-
         onDismissed: (_) {
           onDismissed();
         },
-
-
         child: Container(
           decoration: const BoxDecoration(
-            color:analogusColor,
-
+            color: analogusColor,
           ),
           child: ListTile(
-
             contentPadding: const EdgeInsets.all(0),
             title: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                  text,
-                  style: const  TextStyle(  color: Colors.white, fontWeight: FontWeight.bold,),
-                  textAlign: TextAlign.center,
-
+                text,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
         ),
       ),
     ),
-    onTap: ()  {
+    onTap: () {
       print("tapped on task : $text");
     },
-
-    onLongPress: (){
+    onLongPress: () {
       print("longpressed on task : $text");
     },
-
-
   );
 }

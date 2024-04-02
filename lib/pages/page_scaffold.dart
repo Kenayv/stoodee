@@ -38,7 +38,6 @@ class _PageScaffold extends State<PageScaffold> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
       onHorizontalDragEnd: (DragEndDetails details) {
         if (details.primaryVelocity! > 0) {
           // Swiped right
