@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:stoodee/services/crud/crud_exceptions.dart';
 import 'package:stoodee/services/crud/local_database_service/consts.dart';
 import 'package:stoodee/services/crud/local_database_service/database_task.dart';
@@ -134,6 +133,7 @@ class LocalDbController {
     final taskId = await db.insert(taskTable, {
       userIdColumn: owner.id,
       textColumn: text,
+      lastEditedColumn: getCurrentDateAsFormattedString(),
       isSyncedWithCloudColumn: 0,
     });
 
@@ -141,6 +141,7 @@ class LocalDbController {
       id: taskId,
       userId: owner.id,
       text: text,
+      lastEdited: DateTime.now(),
       isSyncedWithCloud: false,
     );
 
@@ -186,6 +187,14 @@ class LocalDbController {
         as List<DatabaseTask>;
   }
 
+  Future<void> deleteAllTasks() async {
+    final db = _getDatabaseOrThrow();
+
+    final deletedCount = await db.delete(taskTable);
+
+    if (deletedCount <= 0) throw CouldNotDeleteTask();
+  }
+
   Future<DatabaseTask> updateTask({
     required DatabaseTask task,
     required String text,
@@ -196,6 +205,7 @@ class LocalDbController {
 
     final updateCount = await db.update(taskTable, {
       textColumn: text,
+      lastEditedColumn: getCurrentDateAsFormattedString(),
       isSyncedWithCloudColumn: 0,
     });
 

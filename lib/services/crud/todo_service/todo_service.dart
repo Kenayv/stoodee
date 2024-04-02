@@ -26,6 +26,9 @@ class TodoService {
 
   Future<void> loadTasks() async {
     _tasks = await LocalDbController().getAllDbTasks();
+    print("STARTED: loading tasks:\n\n");
+    print('$_tasks');
+    print("\nENDED Loading tasks\n");
   }
 
   Future<DatabaseTask> createTask({required String text}) async {
@@ -40,12 +43,14 @@ class TodoService {
     return task;
   }
 
+  //FIXME: why is it repeated????
   Future<void> deleteTask({required DatabaseTask task}) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
     await LocalDbController().deleteTask(id: task.id);
   }
 
+  //FIXME: why is it repeated????
   Future<void> removeTask(DatabaseTask task) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
@@ -67,6 +72,10 @@ class TodoService {
     return _tasks[index];
   }
 
-  List<DatabaseTask> get tasks =>
-      _initialized ? _tasks : throw TodoServiceNotInitialized();
+  List<DatabaseTask> get tasks {
+    for (DatabaseTask task in _tasks) {
+      print('returning $task');
+    }
+    return _initialized ? _tasks : throw TodoServiceNotInitialized();
+  }
 }
