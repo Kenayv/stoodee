@@ -1,7 +1,6 @@
 import 'package:stoodee/services/crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/crud/local_database_service/database_task.dart';
 import 'package:stoodee/services/crud/todo_service/todo_exceptions.dart';
-import 'package:stoodee/services/currentUser/user.dart';
 
 class TodoService {
   late final List<DatabaseTask> _tasks;
@@ -33,7 +32,8 @@ class TodoService {
     if (!_initialized) throw TodoServiceNotInitialized();
 
     final task = await LocalDbController().createTask(
-      owner: CurrentUser().currentUser!,
+      //FIXME
+      owner: LocalDbController().currentUser,
       text: text,
     );
 

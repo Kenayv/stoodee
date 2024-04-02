@@ -8,7 +8,6 @@ import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
 
-
 class FlashcardsPage extends StatefulWidget {
   const FlashcardsPage({
     super.key,
@@ -18,18 +17,14 @@ class FlashcardsPage extends StatefulWidget {
   State<FlashcardsPage> createState() => _FlashcardsPage();
 }
 
-
-void tap(BuildContext context,SetContainer container){
-
-
+void tap(BuildContext context, SetContainer container) {
   context.go('/flash_cards_reader', extra: container);
 }
 
-void deletingfunction(){
+void deletingfunction() {
   //FIXME: ONLY DEBUGGING OPTION, LINK IT TO A REAL FUNCTION LATER
   print("deleted");
 }
-
 
 ListTile _flashcardSetItem({
   required BuildContext context,
@@ -89,7 +84,7 @@ ListTile _flashcardSetItem({
         ),
       ),
     ),
-    onTap: () => tap(context,SetContainer(set: fcSet, name: name)),
+    onTap: () => tap(context, SetContainer(set: fcSet, name: name)),
     onLongPress: deletingfunction,
   );
 }
@@ -132,20 +127,18 @@ class _FlashcardsPage extends State<FlashcardsPage> {
               children: flashcardSetListView(context: context),
             ),
             Gap(15),
-        FloatingActionButton(
-          onPressed: () async {
-            await showAddFcSetDialog(context: context);
-            setState(() {});
-
-          },
-          child: const Icon(Icons.add),
-        )
+            FloatingActionButton(
+              onPressed: () async {
+                await showAddFcSetDialog(context: context);
+                setState(() {});
+              },
+              child: const Icon(Icons.add),
+            )
           ],
         ),
 
         //flashcardSetListView(context: context),
       ),
-
     );
   }
 }
