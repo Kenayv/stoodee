@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:stoodee/services/crud/crud_exceptions.dart';
 import 'package:stoodee/services/crud/local_database_service/consts.dart';
 import 'package:stoodee/services/crud/local_database_service/database_task.dart';
@@ -177,6 +178,12 @@ class LocalDbController {
     final tasks = await db.query(taskTable);
 
     return tasks.map((taskRow) => DatabaseTask.fromRow(taskRow)).toList();
+  }
+
+  Future<List<DatabaseTask>> getUserTasks(DatabaseUser user) async {
+    List<DatabaseTask> allTasks = await getAllDbTasks();
+    return allTasks.where((element) => element.userId == user.id)
+        as List<DatabaseTask>;
   }
 
   Future<DatabaseTask> updateTask({

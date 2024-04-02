@@ -37,7 +37,7 @@ class _ToDoPage extends State<ToDoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 20),
+        padding: EdgeInsets.only(bottom: 20),
         child: Center(
           child: Column(
             children: [
@@ -85,7 +85,7 @@ ListTile taskItem({
   required Function onDismissed,
 }) {
   return ListTile(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 18),
+    contentPadding: EdgeInsets.symmetric(horizontal: 18),
     minVerticalPadding: 10,
     splashColor: Colors.transparent,
     title: ClipRRect(
