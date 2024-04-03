@@ -45,7 +45,7 @@ const createTaskTable = '''
 ''';
 
 const createFlashcardSetTable = '''
-  CREATE TABLE "$flashcardSetTable" (
+  CREATE TABLE IF NOT EXISTS "$flashcardSetTable" (
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$userIdColumn"	INTEGER NOT NULL,
     "$nameColumn"	TEXT NOT NULL,
@@ -55,7 +55,7 @@ const createFlashcardSetTable = '''
 ''';
 
 const createFlashcardTable = '''
-  CREATE TABLE "$flashcardTable" (
+  CREATE TABLE  IF NOT EXISTS"$flashcardTable" (
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$flashcardSetIdColumn"	INTEGER NOT NULL,
     "$frontTextColumn"	TEXT NOT NULL,
