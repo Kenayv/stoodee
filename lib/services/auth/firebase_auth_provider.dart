@@ -5,7 +5,6 @@ import 'package:stoodee/services/auth/auth_provider.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
-import 'package:stoodee/services/crud/local_database_service/local_database_controller.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
@@ -20,7 +19,6 @@ class FirebaseAuthProvider implements AuthProvider {
       );
 
       if (currentUser != null) {
-        LocalDbController().createOrLoginUser(email: email);
         return currentUser!;
       } else {
         throw UserNotLoggedInAuthException();
@@ -62,7 +60,6 @@ class FirebaseAuthProvider implements AuthProvider {
         password: password,
       );
       if (currentUser != null) {
-        LocalDbController().createOrLoginUser(email: email);
         return currentUser!;
       } else {
         throw UserNotLoggedInAuthException();
@@ -85,7 +82,6 @@ class FirebaseAuthProvider implements AuthProvider {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       await FirebaseAuth.instance.signOut();
-      LocalDbController().setUser(await LocalDbController().getNullUser());
     } else {
       throw UserNotLoggedInAuthException();
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/crud/local_database_service/database_task.dart';
-import 'package:stoodee/services/crud/todo_service/todo_service.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
+import 'package:stoodee/services/local_crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/generic_input_dialog.dart';
 
 Future<String?> showEditTaskDialog(

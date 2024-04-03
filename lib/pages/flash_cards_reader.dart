@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flip_card/flip_card.dart';
-import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
+import 'package:stoodee/services/local_crud/flashcards_service/flashcard_set.dart';
 
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/globals.dart';

@@ -1,24 +1,24 @@
-const dbName = 'tasks.db';
-
 //FIXME: remove debug prefix
-const taskTable = 'debug1_task';
-const userTable = 'debug1_user';
+const dbName = 'debug3_tasks.db';
+
+const taskTable = 'task';
+const userTable = 'user';
 
 const idColumn = 'ID';
 const userIdColumn = 'user_id';
 const emailColumn = 'email';
 const textColumn = 'text';
-const showAfterDateColumn = 'show_after_date';
-const lastEditedColumn = 'last_edited';
 const isSyncedWithCloudColumn = 'is_synced_with_cloud';
-const difficultyColumn = 'difficulty';
+const lastSyncedColumn = 'lastSyncedColumn';
 
+const defaultLastSyncedDate = '1990-01-01 00:00:00';
 const notLoggedInUserEmail = 'null.user@stoodee.fakemail';
 
 const createUserTable = ''' 
   CREATE TABLE IF NOT EXISTS "$userTable" (
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$emailColumn"	TEXT NOT NULL UNIQUE,
+    "$lastSyncedColumn" TEXT NOT NULL DEFAULT '$defaultLastSyncedDate',
     PRIMARY KEY("$idColumn" AUTOINCREMENT)
   );
 ''';
@@ -28,7 +28,6 @@ const createTaskTable = '''
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$userIdColumn"	INTEGER NOT NULL,
     "$textColumn"	TEXT NOT NULL,
-    "$lastEditedColumn" TEXT NOT NULL,
     "$isSyncedWithCloudColumn"	INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$idColumn" AUTOINCREMENT),
     FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")

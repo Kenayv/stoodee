@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
+import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'dart:developer';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
@@ -107,6 +108,7 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                     throw UserNotLoggedInAuthException();
                   }
 
+                  print(LocalDbController().currentUser);
                   if (!AuthService.firebase().currentUser!.isEmailVerified) {
                     goToEmailVerification();
                   } else {

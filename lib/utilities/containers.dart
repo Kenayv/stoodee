@@ -1,4 +1,4 @@
-import 'package:stoodee/services/crud/flashcards_service/flashcard_set.dart';
+import 'package:stoodee/services/local_crud/flashcards_service/flashcard_set.dart';
 
 class SetContainer {
   final FlashcardSet currentSet;

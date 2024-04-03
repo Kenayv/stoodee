@@ -1,5 +1,5 @@
-import 'package:stoodee/services/crud/flashcards_service/flashcard.dart';
-import 'package:stoodee/services/crud/flashcards_service/flashcards_exceptions.dart';
+import 'package:stoodee/services/local_crud/flashcards_service/flashcard.dart';
+import 'package:stoodee/services/local_crud/flashcards_service/flashcards_exceptions.dart';
 
 class FlashcardSet {
   String name;

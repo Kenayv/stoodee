@@ -1,14 +1,14 @@
-import 'package:stoodee/services/crud/crud_exceptions.dart';
-import 'package:stoodee/services/crud/local_database_service/consts.dart';
-import 'package:stoodee/services/crud/local_database_service/database_task.dart';
-import 'package:stoodee/services/crud/local_database_service/database_user.dart';
+import 'package:stoodee/services/local_crud/crud_exceptions.dart';
+import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
 
 class LocalDbController {
   Database? _db;
-  late DatabaseUser _currentUser;
+  DatabaseUser? _currentUser;
 
   //Database Service should be only used via singleton //
   static final LocalDbController _shared = LocalDbController._sharedInstance();
@@ -53,6 +53,7 @@ class LocalDbController {
 
     await _db!.close();
     _db = null;
+    _currentUser = null;
   }
 
   Database _getDatabaseOrThrow() {
@@ -86,13 +87,18 @@ class LocalDbController {
     final userId = await db.insert(userTable, {
       emailColumn: email.toLowerCase(),
     });
-    return DatabaseUser(id: userId, email: email);
+
+    return DatabaseUser(
+      id: userId,
+      email: email,
+    );
   }
 
-  Future<DatabaseUser> createOrLoginUser({required String email}) async {
+  Future<DatabaseUser> createOrLoginAndSetUser({required String email}) async {
     DatabaseUser? user = await getUserOrNull(email: email);
 
     user ??= await createUser(email: email);
+    setCurrentUser(user);
 
     return user;
   }
@@ -133,7 +139,6 @@ class LocalDbController {
     final taskId = await db.insert(taskTable, {
       userIdColumn: owner.id,
       textColumn: text,
-      lastEditedColumn: getCurrentDateAsFormattedString(),
       isSyncedWithCloudColumn: 0,
     });
 
@@ -141,7 +146,6 @@ class LocalDbController {
       id: taskId,
       userId: owner.id,
       text: text,
-      lastEdited: DateTime.now(),
       isSyncedWithCloud: false,
     );
 
@@ -205,7 +209,6 @@ class LocalDbController {
 
     final updateCount = await db.update(taskTable, {
       textColumn: text,
-      lastEditedColumn: getCurrentDateAsFormattedString(),
       isSyncedWithCloudColumn: 0,
     });
 
@@ -215,10 +218,14 @@ class LocalDbController {
   }
 
   Future<DatabaseUser> getNullUser() async {
+    if (_db == null) throw DatabaseIsNotOpened();
+
     return await getUser(email: notLoggedInUserEmail);
   }
 
-  void setUser(DatabaseUser user) => _currentUser = user;
+  void setCurrentUser(DatabaseUser user) =>
+      _db != null ? _currentUser = user : throw DatabaseIsNotOpened();
 
-  DatabaseUser get currentUser => _currentUser;
+  DatabaseUser get currentUser =>
+      _db != null ? _currentUser! : throw DatabaseIsNotOpened();
 }
