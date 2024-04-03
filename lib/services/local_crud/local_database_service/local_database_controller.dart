@@ -44,6 +44,8 @@ class LocalDbController {
 
       await _db!.execute(createUserTable);
       await _db!.execute(createTaskTable);
+      await _db!.execute(createFlashcardSetTable);
+      await _db!.execute(createFlashcardTable);
     } on MissingPlatformDirectoryException {
       print('Could not open database!');
       rethrow;

@@ -1,24 +1,35 @@
 //FIXME: remove debug prefix
 const dbName = 'debug3_tasks.db';
 
-const taskTable = 'task';
 const userTable = 'user';
+const taskTable = 'task';
+const flashcardSetTable = 'flashcard_set';
+const flashcardTable = 'flashcard';
 
 const idColumn = 'ID';
-const userIdColumn = 'user_id';
 const emailColumn = 'email';
-const textColumn = 'text';
-const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 const lastSyncedColumn = 'lastSyncedColumn';
 
-const defaultLastSyncedDate = '1990-01-01 00:00:00';
+const textColumn = 'text';
+const userIdColumn = 'user_id';
+const isSyncedWithCloudColumn = 'is_synced_with_cloud';
+
+const flashcardSetIdColumn = 'flashcard_set_id';
+const frontTextColumn = 'front_text';
+const backTextColumn = 'back_text';
+
+const displayAfterDate = 'display_after_date';
+const cardDifficultyColumn = 'card_difficulty';
+const nameColumn = 'name';
+
+const defaultDateStringValue = '1990-01-01 00:00:00';
 const notLoggedInUserEmail = 'null.user@stoodee.fakemail';
 
 const createUserTable = ''' 
   CREATE TABLE IF NOT EXISTS "$userTable" (
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$emailColumn"	TEXT NOT NULL UNIQUE,
-    "$lastSyncedColumn" TEXT NOT NULL DEFAULT '$defaultLastSyncedDate',
+    "$lastSyncedColumn" TEXT NOT NULL DEFAULT '$defaultDateStringValue',
     PRIMARY KEY("$idColumn" AUTOINCREMENT)
   );
 ''';
@@ -28,14 +39,36 @@ const createTaskTable = '''
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$userIdColumn"	INTEGER NOT NULL,
     "$textColumn"	TEXT NOT NULL,
-    "$isSyncedWithCloudColumn"	INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$idColumn" AUTOINCREMENT),
     FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")
   );
 ''';
 
+const createFlashcardSetTable = '''
+  CREATE TABLE "$flashcardSetTable" (
+    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$userIdColumn"	INTEGER NOT NULL,
+    "$nameColumn"	TEXT NOT NULL,
+    PRIMARY KEY("$idColumn" AUTOINCREMENT),
+    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")
+  );
+''';
+
+const createFlashcardTable = '''
+  CREATE TABLE "$flashcardTable" (
+    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$flashcardSetIdColumn"	INTEGER NOT NULL,
+    "$frontTextColumn"	TEXT NOT NULL,
+    "$backTextColumn"	TEXT NOT NULL,
+    "$displayAfterDate"	TEXT NOT NULL DEFAULT '$defaultDateStringValue',
+    "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT 1,
+    PRIMARY KEY("$idColumn" AUTOINCREMENT),
+    FOREIGN KEY("$flashcardSetIdColumn") REFERENCES "$flashcardSetTable"("$idColumn")
+  );
+''';
+
 DateTime parseStringToDateTime(String date) {
-  // Regular expression for "2024-01-24 12:00:00"-like format
+  // Regular expression for "1990-01-01 00:00:00"-like format
   final RegExp dateRegex = RegExp(
       r'^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$');
 
@@ -54,7 +87,6 @@ DateTime parseStringToDateTime(String date) {
   return DateTime(year, month, day, hour, minute, second);
 }
 
-//FIXME: ugly ahh
 String getCurrentDateAsFormattedString() {
   return DateTime.now().toString().substring(0, 19);
 }

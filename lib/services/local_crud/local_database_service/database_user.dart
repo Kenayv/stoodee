@@ -12,7 +12,7 @@ class DatabaseUser {
   }) {
     lastSyncedDate != null
         ? setLastSynced(lastSyncedDate)
-        : setLastSynced(parseStringToDateTime(defaultLastSyncedDate));
+        : setLastSynced(parseStringToDateTime(defaultDateStringValue));
   }
 
   DatabaseUser.fromRow(Map<String, Object?> map)
