@@ -30,7 +30,7 @@ void deletingfunction() {
 
 ListTile _flashcardSetItem({
   required BuildContext context,
-  required FlashcardSet fcSet,
+  required DatabaseFlashcardSet fcSet,
   required String name,
 }) {
   return ListTile(
@@ -118,7 +118,7 @@ ListTile _flashcardSetItem({
 }
 
 List<Widget> flashcardSetListView({required BuildContext context}) {
-  final List<FlashcardSet> flashcardSets = FlashcardService().fcSets;
+  final List<DatabaseFlashcardSet> flashcardSets = FlashcardService().fcSets;
 
   List<Widget> flashcardList = [];
 

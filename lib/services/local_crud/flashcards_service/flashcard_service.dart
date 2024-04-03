@@ -3,7 +3,7 @@ import 'package:stoodee/services/local_crud/flashcards_service/flashcard_set.dar
 import 'package:stoodee/services/local_crud/flashcards_service/flashcards_exceptions.dart';
 
 class FlashcardService {
-  late final List<FlashcardSet> _flashcardSets;
+  late final List<DatabaseFlashcardSet> _flashcardSets;
   bool _initialized = false;
 
   //ToDoService should be only used via singleton //
@@ -40,7 +40,7 @@ class FlashcardService {
       throw FcSetAlreadyExists;
     }
 
-    FlashcardSet fcSet = FlashcardSet(name: name);
+    DatabaseFlashcardSet fcSet = DatabaseFlashcardSet(name: name);
     await fcSet.init();
     _flashcardSets.add(fcSet);
 
@@ -48,11 +48,11 @@ class FlashcardService {
   }
 
   Future<void> removeSet({
-    required FlashcardSet fcSet,
+    required DatabaseFlashcardSet fcSet,
   }) async {
     if (!_initialized) throw FcServiceNotInitialized();
 
-    FlashcardSet? fcSetToRemove =
+    DatabaseFlashcardSet? fcSetToRemove =
         _flashcardSets.where((o) => o.name == fcSet.name).firstOrNull;
 
     if (fcSetToRemove == null) {
@@ -65,12 +65,12 @@ class FlashcardService {
   }
 
   Future<void> renameSet({
-    required FlashcardSet fcSet,
+    required DatabaseFlashcardSet fcSet,
     required String newName,
   }) async {
     if (!_initialized) throw FcServiceNotInitialized();
 
-    FlashcardSet? fcSetToRename =
+    DatabaseFlashcardSet? fcSetToRename =
         _flashcardSets.where((o) => o.name == fcSet.name).firstOrNull;
 
     if (fcSetToRename == null) {
@@ -83,8 +83,8 @@ class FlashcardService {
   }
 
   Future<void> removeCardFromFcSet({
-    required Flashcard flashcard,
-    required FlashcardSet fcSet,
+    required DatabaseFlashcard flashcard,
+    required DatabaseFlashcardSet fcSet,
   }) async {
     if (!_initialized) throw FcServiceNotInitialized();
 
@@ -92,7 +92,7 @@ class FlashcardService {
   }
 
   Future<void> addCardToset({
-    required FlashcardSet fcSet,
+    required DatabaseFlashcardSet fcSet,
     required String frontText,
     required String backText,
   }) async {
@@ -102,7 +102,7 @@ class FlashcardService {
   }
 
   Future<void> editCard({
-    required Flashcard flashcard,
+    required DatabaseFlashcard flashcard,
     required String frontText,
     required String backText,
   }) async {
@@ -113,5 +113,5 @@ class FlashcardService {
     await _saveFcSets();
   }
 
-  List<FlashcardSet> get fcSets => _flashcardSets;
+  List<DatabaseFlashcardSet> get fcSets => _flashcardSets;
 }

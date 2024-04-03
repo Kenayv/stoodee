@@ -11,7 +11,7 @@ import 'package:stoodee/utilities/reusables/reusable_card.dart';
 class FlashCardsReader extends StatefulWidget {
   const FlashCardsReader({super.key, required this.fcSet, required this.name});
 
-  final FlashcardSet fcSet;
+  final DatabaseFlashcardSet fcSet;
   final String name;
 
   @override
@@ -40,7 +40,7 @@ class _FlashCardsReader extends State<FlashCardsReader> {
   @override
   Widget build(BuildContext context) {
     //FIXME: nie jest uzywane??????
-    FlashcardSet currentSet = widget.fcSet;
+    DatabaseFlashcardSet currentSet = widget.fcSet;
     String name = widget.name;
     int tobemade = 3; //set.pairCount;
     double indicatorvalue = isNotZero(completed, tobemade);

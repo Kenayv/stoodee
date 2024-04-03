@@ -1,12 +1,12 @@
 import 'package:stoodee/services/local_crud/flashcards_service/flashcard.dart';
 import 'package:stoodee/services/local_crud/flashcards_service/flashcards_exceptions.dart';
 
-class FlashcardSet {
+class DatabaseFlashcardSet {
   String name;
-  late final List<Flashcard> _flashcards;
+  late final List<DatabaseFlashcard> _flashcards;
   bool _initialized = false;
 
-  FlashcardSet({required this.name});
+  DatabaseFlashcardSet({required this.name});
 
   init() {
     if (_initialized) throw FcSetAlreadyInitialized();
@@ -29,7 +29,7 @@ class FlashcardSet {
   }
 
   Future<void> editFlashcard({
-    required Flashcard flashcard,
+    required DatabaseFlashcard flashcard,
     required String frontText,
     required String backText,
   }) async {
@@ -39,7 +39,7 @@ class FlashcardSet {
   }
 
   Future<void> removeFlashcard({
-    required Flashcard flashcard,
+    required DatabaseFlashcard flashcard,
   }) async {
     if (!_initialized) throw FcSetNotInitialized();
 
@@ -52,7 +52,7 @@ class FlashcardSet {
     //FIXME:
   }
 
-  List<Flashcard> get flashcards =>
+  List<DatabaseFlashcard> get flashcards =>
       _initialized ? _flashcards : throw FcSetNotInitialized();
 
   int get pairCount =>
