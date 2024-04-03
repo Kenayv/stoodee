@@ -18,7 +18,7 @@ const flashcardSetIdColumn = 'flashcard_set_id';
 const frontTextColumn = 'front_text';
 const backTextColumn = 'back_text';
 
-const displayAfterDate = 'display_after_date';
+const displayAfterDateColumn = 'display_after_date';
 const cardDifficultyColumn = 'card_difficulty';
 const nameColumn = 'name';
 
@@ -60,7 +60,7 @@ const createFlashcardTable = '''
     "$flashcardSetIdColumn"	INTEGER NOT NULL,
     "$frontTextColumn"	TEXT NOT NULL,
     "$backTextColumn"	TEXT NOT NULL,
-    "$displayAfterDate"	TEXT NOT NULL DEFAULT '$defaultDateStringValue',
+    "$displayAfterDateColumn"	TEXT NOT NULL DEFAULT '$defaultDateStringValue',
     "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT 1,
     PRIMARY KEY("$idColumn" AUTOINCREMENT),
     FOREIGN KEY("$flashcardSetIdColumn") REFERENCES "$flashcardSetTable"("$idColumn")

@@ -108,7 +108,7 @@ class FlashcardService {
   }) async {
     if (!_initialized) throw FcServiceNotInitialized();
 
-    flashcard.editCard(frontText: frontText, backText: backText);
+    //FIXME: not finished
 
     await _saveFcSets();
   }

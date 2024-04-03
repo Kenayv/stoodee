@@ -1,5 +1,6 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
+//FIXME: remove synced with cloud
 class DatabaseTask {
   final int id;
   final int userId;
