@@ -22,7 +22,7 @@ class DatabaseTask {
 
   @override
   String toString() =>
-      "\nTask [$id]:\n   text = [$text],\n   userId = [$userId],\n   isSyncedWithCloud = [$isSyncedWithCloud]\n";
+      "\nTaskId = [$id]:\n   text = [$text],\n   userId = [$userId],\n   isSyncedWithCloud = [$isSyncedWithCloud]\n";
 
   @override
   bool operator ==(covariant DatabaseTask other) => id == other.id;

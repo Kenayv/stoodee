@@ -38,7 +38,7 @@ class AuthService implements AuthProvider {
       LocalDbController().setCurrentUser(nullUser);
     } on DatabaseIsNotOpened catch (_) {
       //if localDb is NOT initialized, then it's not an error. if it is, rethrow.
-      if (LocalDbController().initialized == false) rethrow;
+      if (LocalDbController().initialized) rethrow;
     }
 
     await provider.logOut();

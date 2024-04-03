@@ -108,7 +108,9 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                     throw UserNotLoggedInAuthException();
                   }
 
-                  print(LocalDbController().currentUser);
+                  //FIXME: DEBUG LOG
+                  log('Logging in with: ${LocalDbController().currentUser}');
+
                   if (!AuthService.firebase().currentUser!.isEmailVerified) {
                     goToEmailVerification();
                   } else {

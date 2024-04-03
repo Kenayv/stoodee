@@ -1,3 +1,5 @@
+import 'dart:developer' show log;
+
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 import 'package:stoodee/services/local_crud/todo_service/todo_exceptions.dart';
@@ -29,10 +31,12 @@ class TodoService {
     _tasks =
         await LocalDbController().getUserTasks(LocalDbController().currentUser);
 
-    //FIXME: debug print
-    print("STARTED: loading tasks:\n\n");
-    print('$_tasks');
-    print("\nENDED Loading tasks\n");
+    //FIXME: debug log
+    String debugLogStart = "[START] loading tasks [START]\n\n";
+    String debugLogTasks = "$_tasks\n\n";
+    String debugLogEnd = "[END] loading tasks [END]\n.";
+
+    log(debugLogStart + debugLogTasks + debugLogEnd);
 
     return _tasks;
   }
@@ -72,7 +76,7 @@ class TodoService {
 
   List<DatabaseTask> get tasks {
     for (DatabaseTask task in _tasks) {
-      print('returning $task');
+      log('returning $task');
     }
     return _initialized ? _tasks : throw TodoServiceNotInitialized();
   }

@@ -15,4 +15,9 @@ class AuthUser {
         email: user.email,
         isEmailVerified: user.emailVerified,
       );
+
+  @override
+  String toString() {
+    return "Auth user:\n    email = [${email ?? 'null'}], verified: [$isEmailVerified]";
+  }
 }
