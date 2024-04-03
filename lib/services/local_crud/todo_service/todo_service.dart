@@ -3,7 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_task
 import 'package:stoodee/services/local_crud/todo_service/todo_exceptions.dart';
 
 class TodoService {
-  late final List<DatabaseTask> _tasks;
+  late List<DatabaseTask> _tasks;
   bool _initialized = false;
 
   //ToDoService should be only used via singleton //
@@ -15,7 +15,8 @@ class TodoService {
   Future<void> init() async {
     if (_initialized) throw TodoServiceAlreadyInitialized;
 
-    await loadTasks();
+    //FIXME: nic sie nie dzieje uwu
+
     _initialized = true;
   }
 
@@ -24,11 +25,16 @@ class TodoService {
     //FIXME:
   }
 
-  Future<void> loadTasks() async {
-    _tasks = await LocalDbController().getAllDbTasks();
+  Future<List<DatabaseTask>> loadTasks() async {
+    _tasks =
+        await LocalDbController().getUserTasks(LocalDbController().currentUser);
+
+    //FIXME: debug print
     print("STARTED: loading tasks:\n\n");
     print('$_tasks');
     print("\nENDED Loading tasks\n");
+
+    return _tasks;
   }
 
   Future<DatabaseTask> createTask({required String text}) async {

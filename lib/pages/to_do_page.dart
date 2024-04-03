@@ -16,8 +16,6 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPage extends State<ToDoPage> {
-  late List<DatabaseTask> _tasks;
-
   Future<void> completeTask(DatabaseTask task) async {
     await TodoService().removeTask(task);
     setState(() {});
@@ -31,34 +29,45 @@ class _ToDoPage extends State<ToDoPage> {
   @override
   void initState() {
     super.initState();
-    _tasks = TodoService().tasks;
-    print(LocalDbController().currentUser);
   }
 
+  //FIXME: dużo tu sie musi pozmieniac szczegolnie case:
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 20),
-        child: Center(
-          child: Column(
-            children: [
-              const Gap(20),
-              taskListView(
-                context: context,
-                tasks: _tasks,
-                onDismissed: completeTask,
-              ),
-              const Gap(5),
-              FloatingActionButton(
-                onPressed: addTask,
-                child: const Icon(Icons.add),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return FutureBuilder<List<DatabaseTask>>(
+        future: TodoService().loadTasks(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              List<DatabaseTask> tasks = snapshot.data ?? [];
+              return Scaffold(
+                body: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const Gap(20),
+                        taskListView(
+                          context: context,
+                          tasks: tasks,
+                          onDismissed: completeTask,
+                        ),
+                        const Gap(5),
+                        FloatingActionButton(
+                          onPressed: addTask,
+                          child: const Icon(Icons.add),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            default:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+        });
   }
 }
 
@@ -87,7 +96,7 @@ ListTile taskItem({
   required Function onDismissed,
 }) {
   return ListTile(
-    contentPadding: EdgeInsets.symmetric(horizontal: 18),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 18),
     minVerticalPadding: 10,
     splashColor: Colors.transparent,
     title: ClipRRect(

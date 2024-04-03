@@ -178,7 +178,7 @@ class LocalDbController {
     return DatabaseTask.fromRow(task.first);
   }
 
-  Future<List<DatabaseTask>> getAllDbTasks() async {
+  Future<List<DatabaseTask>> _getAllDbTasks() async {
     final db = _getDatabaseOrThrow();
     final tasks = await db.query(taskTable);
 
@@ -186,9 +186,8 @@ class LocalDbController {
   }
 
   Future<List<DatabaseTask>> getUserTasks(DatabaseUser user) async {
-    List<DatabaseTask> allTasks = await getAllDbTasks();
-    return allTasks.where((element) => element.userId == user.id)
-        as List<DatabaseTask>;
+    List<DatabaseTask> allTasks = await _getAllDbTasks();
+    return allTasks.where((task) => task.userId == user.id).toList();
   }
 
   Future<void> deleteAllTasks() async {
