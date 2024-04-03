@@ -47,6 +47,7 @@ dependencies:
   flip_card: ^0.7.0
   gap: ^3.0.1
   flutter_layout_grid: ^2.0.6
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

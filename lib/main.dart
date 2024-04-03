@@ -4,16 +4,25 @@ import 'package:stoodee/services/local_crud/flashcards_service/flashcard_service
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/router/go_router_service.dart';
 import 'package:stoodee/services/local_crud/todo_service/todo_service.dart';
+import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initApp();
   runApp(const MyApp());
 }
 
 Future<void> initApp() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await LocalDbController().init();
+  await SharedPrefs().init();
   await AuthService.firebase().init();
+
+  //FIXME: ugly ass, idk if it should be there
+  if (!SharedPrefs().rememberLoginData &&
+      AuthService.firebase().currentUser != null) {
+    await AuthService.firebase().logOut();
+  }
+
+  await LocalDbController().init();
   await TodoService().init();
   await FlashcardService().init();
 }

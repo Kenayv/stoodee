@@ -1,6 +1,7 @@
 import 'package:stoodee/services/auth/firebase_auth_provider.dart';
 import 'package:stoodee/services/auth/auth_provider.dart';
 import 'package:stoodee/services/auth/auth_user.dart';
+import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 
 class AuthService implements AuthProvider {
@@ -32,7 +33,14 @@ class AuthService implements AuthProvider {
 
   @override
   Future<void> logOut() async {
-    LocalDbController().setCurrentUser(await LocalDbController().getNullUser());
+    try {
+      final nullUser = await LocalDbController().getNullUser();
+      LocalDbController().setCurrentUser(nullUser);
+    } on DatabaseIsNotOpened catch (_) {
+      //if localDb is NOT initialized, then it's not an error. if it is, rethrow.
+      if (LocalDbController().initialized == false) rethrow;
+    }
+
     await provider.logOut();
   }
 

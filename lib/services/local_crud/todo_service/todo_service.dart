@@ -49,14 +49,6 @@ class TodoService {
     return task;
   }
 
-  //FIXME: why is it repeated????
-  Future<void> deleteTask({required DatabaseTask task}) async {
-    if (!_initialized) throw TodoServiceNotInitialized();
-
-    await LocalDbController().deleteTask(id: task.id);
-  }
-
-  //FIXME: why is it repeated????
   Future<void> removeTask(DatabaseTask task) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 

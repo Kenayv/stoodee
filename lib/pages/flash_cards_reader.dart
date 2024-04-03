@@ -39,6 +39,7 @@ class _FlashCardsReader extends State<FlashCardsReader> {
   int cardIndex = 0;
   @override
   Widget build(BuildContext context) {
+    //FIXME: nie jest uzywane??????
     FlashcardSet currentSet = widget.fcSet;
     String name = widget.name;
     int tobemade = 3; //set.pairCount;
@@ -78,7 +79,7 @@ class _FlashCardsReader extends State<FlashCardsReader> {
           const SizedBox(
             height: 20,
           ),
-          SizedBox(
+          const SizedBox(
             width: 300,
             height: 300,
             child: FlipCard(

@@ -1,3 +1,4 @@
+import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
@@ -19,7 +20,11 @@ class LocalDbController {
   Future<void> init() async {
     await openDb();
     await initNullUser();
-    _currentUser = await getNullUser();
+
+    final String userEmail =
+        AuthService.firebase().currentUser?.email ?? notLoggedInUserEmail;
+
+    _currentUser = await getUserOrNull(email: userEmail) ?? await getNullUser();
   }
 
   //Current user is set to nullUser before logging in.
@@ -227,4 +232,6 @@ class LocalDbController {
 
   DatabaseUser get currentUser =>
       _db != null ? _currentUser! : throw DatabaseIsNotOpened();
+
+  bool get initialized => _db != null;
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
-import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/local_crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
 import 'package:stoodee/utilities/globals.dart';

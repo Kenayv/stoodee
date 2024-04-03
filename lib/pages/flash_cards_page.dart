@@ -136,6 +136,7 @@ List<Widget> flashcardSetListView({required BuildContext context}) {
 class _FlashcardsPage extends State<FlashcardsPage> {
   @override
   Widget build(BuildContext context) {
+    //FIXME: nie jest używane?????
     var size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
