@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/local_crud/flashcards_service/flashcard_set.dart';
 
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
@@ -20,7 +21,26 @@ class FlashCardsReader extends StatefulWidget {
   State<FlashCardsReader> createState() => _FlashCardsReader();
 }
 
-class _FlashCardsReader extends State<FlashCardsReader> {
+class _FlashCardsReader extends State<FlashCardsReader> with TickerProviderStateMixin {
+  late final AnimationController _controller;
+
+
+  @override
+  void initState(){
+    super.initState();
+    imageCache.clear();
+    _controller=AnimationController(vsync: this,duration: Durations.extralong4);
+
+
+
+
+  }
+
+  @override
+  void dispose(){
+    _controller.dispose();
+    super.dispose();
+  }
 
 
 
@@ -57,99 +77,130 @@ class _FlashCardsReader extends State<FlashCardsReader> {
           titleWidget: Text(name,
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold))),
-      body: Center(
-          child: Column(
-        children: [
-          Container(
-            padding:EdgeInsets.all(8),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: StoodeeButton(
-                onPressed: sendToFlashCards,
-                child: const Icon(Icons.arrow_back,color: Colors.white),
+      body: Stack(
+        children: [Center(
+            child: Column(
+          children: [
+            Container(
+              padding:EdgeInsets.all(8),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: StoodeeButton(
+                  onPressed: sendToFlashCards,
+                  child: const Icon(Icons.arrow_back,color: Colors.white),
 
+                ),
               ),
             ),
-          ),
-          Container(
-              margin: const EdgeInsets.only(top: 15),
-              child: Text("$completed/$tobemade")),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: LinearPercentIndicator(
-                backgroundColor: primaryAppColor.withOpacity(0.08),
-                percent: indicatorvalue,
-                linearGradient: const LinearGradient(
-                    colors: [primaryAppColor, secondaryAppColor]),
-                animation: true,
-                lineHeight: 20,
-                restartAnimation: false,
-                animationDuration: 150,
-                curve: Curves.easeOut,
-                barRadius: const Radius.circular(10),
-                animateFromLastPercent: true,
+            Container(
+                margin: const EdgeInsets.only(top: 15),
+                child: Text("$completed/$tobemade")),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                child: LinearPercentIndicator(
+                  backgroundColor: primaryAppColor.withOpacity(0.08),
+                  percent: indicatorvalue,
+                  linearGradient: const LinearGradient(
+                      colors: [primaryAppColor, secondaryAppColor]),
+                  animation: true,
+                  lineHeight: 20,
+                  restartAnimation: false,
+                  animationDuration: 150,
+                  curve: Curves.easeOut,
+                  barRadius: const Radius.circular(10),
+                  animateFromLastPercent: true,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const SizedBox(
-            width: 300,
-            height: 300,
-            child: FlipCard(
-                side: CardSide.FRONT,
-                direction: FlipDirection.VERTICAL,
-                front: ReusableCard(text: "lollo"),
-                back: ReusableCard(text: "ollol")),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              StoodeeButton(
-                  size: Size(80,30),
-                  onPressed: () {
-                    completed++;
-                    setState(() {});
-                  },
-                  child: Text("add",style:buttonTextStyle)),
-              StoodeeButton(
-                  size: Size(80,30),
-                  onPressed: () {
-                    completed--;
-                    setState(() {});
-                  },
-                  child:  Text("unadd",style:buttonTextStyle)),
-            ],
-          ),
-
-
-          Expanded(child: Text("")),
-          Container(
-            
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(4)),
-              color: primaryAppColor.withOpacity(0.2),
+            const SizedBox(
+              height: 20,
             ),
-            padding:EdgeInsets.only(bottom:20,top:20),
-            
-            child: Row(
+            const SizedBox(
+              width: 300,
+              height: 300,
+              child: FlipCard(
+                  side: CardSide.FRONT,
+                  direction: FlipDirection.VERTICAL,
+                  front: ReusableCard(text: "lollo"),
+                  back: ReusableCard(text: "ollol")),
+            ),
+
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                StoodeeButton(
+                    size: Size(80,30),
+                    onPressed: () {
+                      completed++;
 
-                StoodeeButton(child: Text("Latwe",style: buttonTextStyle), onPressed: (){},),
-                StoodeeButton(child: Text("Srednie",style: buttonTextStyle), onPressed: (){}),
-                StoodeeButton(child: Text("Trudne",style: buttonTextStyle), onPressed: (){},),
+
+
+
+                      setState(() {
+                        if(completed==tobemade){
+
+                        var ticker=_controller.forward();
+
+                        ticker.whenComplete(() => _controller.reset());
+
+                        }
+                      });
+
+
+                    },
+                    child: Text("add",style:buttonTextStyle)),
+                StoodeeButton(
+                    size: Size(80,30),
+                    onPressed: () {
+                      completed--;
+                      setState(() {});
+                    },
+                    child:  Text("unadd",style:buttonTextStyle)),
               ],
+            ),
+
+
+            Expanded(child: Text("")),
+            Container(
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+                color: primaryAppColor.withOpacity(0.2),
+              ),
+              padding:EdgeInsets.only(bottom:20,top:20),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+
+                  StoodeeButton(child: Text("Latwe",style: buttonTextStyle), onPressed: (){},),
+                  StoodeeButton(child: Text("Srednie",style: buttonTextStyle), onPressed: (){}),
+                  StoodeeButton(child: Text("Trudne",style: buttonTextStyle), onPressed: (){},),
+                ],
+              ),
+            ),
+
+
+
+          ],
+        )),
+          IgnorePointer(
+            child: Lottie.asset(
+              'lib/assets/sparkle.json',
+              controller:_controller,
+              height:MediaQuery.of(context).size.height,
+              width:MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
+              repeat: false,
+
+            
             ),
           ),
 
-
-
-        ],
-      )),
+    ]
+      ),
     );
   }
 }

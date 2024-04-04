@@ -48,6 +48,7 @@ dependencies:
   gap: ^3.0.1
   flutter_layout_grid: ^2.0.6
   shared_preferences: ^2.2.2
+  lottie: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -73,25 +74,27 @@ flutter:
   uses-material-design: true
 
   assets:
-    - lib/assets/wood_tasks.svg
-    - lib/assets/copper_tasks.svg
-    - lib/assets/silver_tasks.svg
-    - lib/assets/gold_tasks.svg
-    
-    - lib/assets/wood_flashcards.svg
-    - lib/assets/copper_flashcards.svg
-    - lib/assets/silver_flashcards.svg
-    - lib/assets/gold_flashcards.svg
-
-    - lib/assets/wood_rush.svg
-    - lib/assets/copper_rush.svg
-    - lib/assets/silver_rush.svg
-    - lib/assets/gold_rush.svg
-    
-    - lib/assets/wood_streak.svg
-    - lib/assets/copper_streak.svg
-    - lib/assets/silver_streak.svg
-    - lib/assets/gold_streak.svg
+    - lib/assets/
+  #  - lib/assets/sparkle.json
+  #  - lib/assets/wood_tasks.svg
+  #  - lib/assets/copper_tasks.svg
+  #  - lib/assets/silver_tasks.svg
+  #  - lib/assets/gold_tasks.svg
+  #
+  #  - lib/assets/wood_flashcards.svg
+  #  - lib/assets/copper_flashcards.svg
+  #  - lib/assets/silver_flashcards.svg
+  #  - lib/assets/gold_flashcards.svg
+  #
+  #  - lib/assets/wood_rush.svg
+  #  - lib/assets/copper_rush.svg
+  #  - lib/assets/silver_rush.svg
+  #  - lib/assets/gold_rush.svg
+  #
+  #  - lib/assets/wood_streak.svg
+  #  - lib/assets/copper_streak.svg
+  #  - lib/assets/silver_streak.svg
+  #  - lib/assets/gold_streak.svg
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
