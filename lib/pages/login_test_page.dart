@@ -1,10 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'dart:developer';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
+import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
+import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
+import 'package:stoodee/utilities/globals.dart';
+
 
 class OogaBoogaLoginTest extends StatefulWidget {
   const OogaBoogaLoginTest({
@@ -19,6 +25,9 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   //FIXME: NIGDY NIE SĄ DISPOSOWANE MEMORY LEAK MEMORY LEAK
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+
+  bool rememberBool=false;
 
   void gotoMain() {
     context.go(
@@ -68,13 +77,15 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
               decoration: const InputDecoration(helperText: "Password here ^"),
               controller: passwordController,
             ),
-            ElevatedButton(
+            StoodeeButton(
               onPressed: () async {
                 try {
                   await signUpTest(
                     emailController.text,
                     passwordController.text,
                   );
+                  await SharedPrefs().setRememberLogin(value:rememberBool);
+
                   await AuthService.firebase().sendEmailVerification();
                   goToEmailVerification();
                 } on EmailAlreadyInUseAuthException {
@@ -94,15 +105,20 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                       .showSnackBar(createSnackbar(e.toString()));
                 }
               },
-              child: const Text('Sign-up'),
+
+              child:  Text('Sign-up',style:buttonTextStyle,),
+
             ),
-            ElevatedButton(
+            Gap(20),
+            StoodeeButton(
               onPressed: () async {
                 try {
                   await signInTest(
                     emailController.text,
                     passwordController.text,
                   );
+
+                  await SharedPrefs().setRememberLogin(value:rememberBool);
 
                   if (AuthService.firebase().currentUser == null) {
                     throw UserNotLoggedInAuthException();
@@ -127,8 +143,29 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                       .showSnackBar(createSnackbar(e.toString()));
                 }
               },
-              child: const Text('Log-in'),
+              child:  Text('Log-in',style:buttonTextStyle),
             ),
+            
+              StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                return Checkbox(value: rememberBool, onChanged: (newValue) async{
+                  setState(() {
+                    rememberBool=newValue!;
+                  }
+
+
+                  );
+
+
+                });
+
+
+              }),
+              
+              
+              
+
+
+
           ],
         ),
       ),

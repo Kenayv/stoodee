@@ -7,11 +7,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title = '',
     this.leading,
     this.titleWidget,
+    this.leftWidget,
   });
 
   final String title;
   final Widget? leading;
   final Widget? titleWidget;
+  final Widget? leftWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Transform.translate(
                       offset: const Offset(0, 0),
                       child: const Text("nothing"),
-                    )
+                    ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: leftWidget ?? Text('')
+                )
               ],
             )
           ],

@@ -13,6 +13,9 @@ import 'package:stoodee/pages/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
 import 'package:stoodee/utilities/containers.dart';
 
+import '../../utilities/dialogs/dialog_page.dart';
+import '../../utilities/dialogs/not_for_production_use/custom_dialog.dart';
+
 String resolveSwipeDirection(Object from, int where) {
   String sTemp = from.toString();
 
@@ -286,6 +289,26 @@ final GoRouter goRouterService = GoRouter(
           },
         );
       },
+
+      routes: [
+        GoRoute(
+            path: "dialog",
+
+
+          //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
+            pageBuilder: (BuildContext context, GoRouterState state) {
+            return DialogPage(builder: (_) => CustomDialog(title: 'title', content: 'content',),
+
+);
+},
+
+
+        ),
+
+
+      ]
+
+
     ),
     GoRoute(
       path: '/email_verification_page',

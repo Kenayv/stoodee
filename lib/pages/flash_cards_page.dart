@@ -8,6 +8,8 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 
+import '../utilities/reusables/reusable_stoodee_button.dart';
+
 const double iconSize = 40;
 
 class FlashcardsPage extends StatefulWidget {
@@ -162,12 +164,13 @@ class _FlashcardsPage extends State<FlashcardsPage> {
                 crossAxisCount: 2,
                 items: flashcardSetListView(context: context)),
             const Gap(15),
-            FloatingActionButton(
+            StoodeeButton(
+
               onPressed: () async {
                 await showAddFcSetDialog(context: context);
                 setState(() {});
               },
-              child: const Icon(Icons.add),
+              child: const Icon(Icons.add,color:Colors.white,size:30),
             ),
             const Gap(15),
           ],

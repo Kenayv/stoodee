@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:stoodee/services/local_crud/flashcards_service/flashcard_set.dart';
@@ -7,6 +8,7 @@ import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:stoodee/utilities/reusables/reusable_card.dart';
+import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
 class FlashCardsReader extends StatefulWidget {
   const FlashCardsReader({super.key, required this.fcSet, required this.name});
@@ -19,6 +21,10 @@ class FlashCardsReader extends StatefulWidget {
 }
 
 class _FlashCardsReader extends State<FlashCardsReader> {
+
+
+
+
   double isNotZero(int completed, int tobemade) {
     if (tobemade == 0) {
       return 0;
@@ -54,6 +60,17 @@ class _FlashCardsReader extends State<FlashCardsReader> {
       body: Center(
           child: Column(
         children: [
+          Container(
+            padding:EdgeInsets.all(8),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: StoodeeButton(
+                onPressed: sendToFlashCards,
+                child: const Icon(Icons.arrow_back,color: Colors.white),
+
+              ),
+            ),
+          ),
           Container(
               margin: const EdgeInsets.only(top: 15),
               child: Text("$completed/$tobemade")),
@@ -91,27 +108,46 @@ class _FlashCardsReader extends State<FlashCardsReader> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(
+              StoodeeButton(
+                  size: Size(80,30),
                   onPressed: () {
                     completed++;
                     setState(() {});
                   },
-                  child: const Text("add")),
-              ElevatedButton(
+                  child: Text("add",style:buttonTextStyle)),
+              StoodeeButton(
+                  size: Size(80,30),
                   onPressed: () {
                     completed--;
                     setState(() {});
                   },
-                  child: const Text("unadd")),
+                  child:  Text("unadd",style:buttonTextStyle)),
             ],
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: ElevatedButton(
-              onPressed: sendToFlashCards,
-              child: const Icon(Icons.arrow_back),
+
+
+          Expanded(child: Text("")),
+          Container(
+            
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: primaryAppColor.withOpacity(0.2),
             ),
-          )
+            padding:EdgeInsets.only(bottom:20,top:20),
+            
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+
+                StoodeeButton(child: Text("Latwe",style: buttonTextStyle), onPressed: (){},),
+                StoodeeButton(child: Text("Srednie",style: buttonTextStyle), onPressed: (){}),
+                StoodeeButton(child: Text("Trudne",style: buttonTextStyle), onPressed: (){},),
+              ],
+            ),
+          ),
+
+
+
         ],
       )),
     );
