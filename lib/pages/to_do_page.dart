@@ -4,6 +4,7 @@ import 'package:stoodee/services/local_crud/todo_service/todo_service.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
+import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({
@@ -52,9 +53,10 @@ class _ToDoPage extends State<ToDoPage> {
                           onDismissed: completeTask,
                         ),
                         const Gap(5),
-                        FloatingActionButton(
+                        StoodeeButton(
+
                           onPressed: addTask,
-                          child: const Icon(Icons.add),
+                          child: const Icon(Icons.add,color:Colors.white,size:30),
                         ),
                       ],
                     ),

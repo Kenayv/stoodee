@@ -11,31 +11,62 @@ class StoodeeButton extends StatelessWidget{
 
   StoodeeButton({super.key, required this.child,required this.onPressed,this.size=const Size(10,10)});
 
+  Color color1=primaryAppColor;
+  Color color2=analogusColor;
+
+
+  Widget resolveWidgetSize(){
+    if(size==Size(10,10)){
+      return  Padding(
+
+        padding: const EdgeInsets.all(12.0),
+        child: FittedBox(
+            fit:BoxFit.fitWidth,
+            child: child
+        ),
+      );
+    }
+    else{
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          alignment: Alignment.center,
+          width:size.width,
+          height:size.height,
+
+
+          child:child,
+        ),
+      );
+    }
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: onPressed,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        child: Container(
+
+          decoration:  BoxDecoration(
+              gradient: LinearGradient(colors: [color1,color2],begin:Alignment.topCenter,end:Alignment.bottomCenter,stops: [0.85,1]),
+              border: Border(
+                  bottom: BorderSide(
+                    color: color2,
+                    width: 2.5,
+                  ),
+
+              )
 
 
-      ),
-
-      child: ElevatedButton(onPressed: onPressed, style: ElevatedButton.styleFrom(
-        shadowColor: primaryAppColor,
-        backgroundColor: analogusColor,
-
-
-
-
-      ) ,
-
-
-          child: FittedBox(
-              fit:BoxFit.fitWidth,
-              child: child
-          )
-
+          ),
+          child: resolveWidgetSize(),
+        ),
       ),
     );
 

@@ -108,18 +108,20 @@ class _FlashCardsReader extends State<FlashCardsReader> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(
+              StoodeeButton(
+                  size: Size(80,30),
                   onPressed: () {
                     completed++;
                     setState(() {});
                   },
-                  child: const Text("add")),
-              ElevatedButton(
+                  child: Text("add",style:buttonTextStyle)),
+              StoodeeButton(
+                  size: Size(80,30),
                   onPressed: () {
                     completed--;
                     setState(() {});
                   },
-                  child: const Text("unadd")),
+                  child:  Text("unadd",style:buttonTextStyle)),
             ],
           ),
 
@@ -136,10 +138,10 @@ class _FlashCardsReader extends State<FlashCardsReader> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                StoodeeButton(child: Text("Umiem",style:buttonTextStyle), onPressed: (){}),
+
                 StoodeeButton(child: Text("Latwe",style: buttonTextStyle), onPressed: (){},),
                 StoodeeButton(child: Text("Srednie",style: buttonTextStyle), onPressed: (){}),
-                StoodeeButton(child: Text("Powtorz",style: buttonTextStyle), onPressed: (){},),
+                StoodeeButton(child: Text("Trudne",style: buttonTextStyle), onPressed: (){},),
               ],
             ),
           ),
