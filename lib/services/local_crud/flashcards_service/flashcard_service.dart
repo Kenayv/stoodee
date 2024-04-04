@@ -1,5 +1,5 @@
-import 'package:stoodee/services/local_crud/flashcards_service/flashcard.dart';
-import 'package:stoodee/services/local_crud/flashcards_service/flashcard_set.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/flashcards_service/flashcards_exceptions.dart';
 
 class FlashcardService {
@@ -40,7 +40,14 @@ class FlashcardService {
       throw FcSetAlreadyExists;
     }
 
-    DatabaseFlashcardSet fcSet = DatabaseFlashcardSet(name: name);
+    //FIXME: bad initialized
+    //FIXME: bad initialized
+    //FIXME: bad initialized
+    DatabaseFlashcardSet fcSet = DatabaseFlashcardSet(
+      id: 0,
+      userId: 0,
+      name: name,
+    );
     await fcSet.init();
     _flashcardSets.add(fcSet);
 
@@ -64,22 +71,23 @@ class FlashcardService {
     await _saveFcSets();
   }
 
+  //FIXME:
   Future<void> renameSet({
     required DatabaseFlashcardSet fcSet,
     required String newName,
   }) async {
-    if (!_initialized) throw FcServiceNotInitialized();
+    // if (!_initialized) throw FcServiceNotInitialized();
 
-    DatabaseFlashcardSet? fcSetToRename =
-        _flashcardSets.where((o) => o.name == fcSet.name).firstOrNull;
+    // DatabaseFlashcardSet? fcSetToRename =
+    //     _flashcardSets.where((o) => o.name == fcSet.name).firstOrNull;
 
-    if (fcSetToRename == null) {
-      throw FcSetDoesNotExist;
-    }
+    // if (fcSetToRename == null) {
+    //   throw FcSetDoesNotExist;
+    // }
 
-    fcSetToRename.name = newName;
+    // fcSetToRename.name = newName;
 
-    await _saveFcSets();
+    // await _saveFcSets();
   }
 
   Future<void> removeCardFromFcSet({

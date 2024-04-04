@@ -1,6 +1,5 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
-//FIXME: not finished not tested
 class DatabaseFlashcard {
   final int id;
   final int flashcardSetId;
@@ -27,9 +26,9 @@ class DatabaseFlashcard {
         displayAfterDate =
             parseStringToDateTime(map[displayAfterDateColumn] as String);
 
-  //FIXME not finished
   @override
-  String toString() => super.toString();
+  String toString() =>
+      "Flashcard id = [$id]\n   Set id = [$flashcardSetId]\n   text = [f: $frontText |b: $backText]\n   difficulty = [$cardDifficulty]\n   display after: $displayAfterDate";
 
   @override
   bool operator ==(covariant DatabaseFlashcard other) => id == other.id;
