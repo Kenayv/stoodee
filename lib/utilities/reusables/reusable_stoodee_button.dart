@@ -48,6 +48,7 @@ class StoodeeButton extends StatelessWidget{
   Widget build(BuildContext context) {
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: onPressed,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(16)),

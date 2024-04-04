@@ -22,7 +22,6 @@ class _MainPage extends State<MainPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            //TODO: debug widget ONLY, will be replaced by navbar
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
