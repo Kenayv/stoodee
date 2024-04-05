@@ -29,6 +29,20 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
 
   bool rememberBool=false;
 
+  void initState() {
+    super.initState();
+
+    //yeah wtf does that mean, it runs gotoMain after build is finished
+    if(SharedPrefs().rememberLoginData){
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => gotoMain());
+    }
+
+
+  }
+
+
+
   void gotoMain() {
     context.go(
       '/Main',
@@ -93,7 +107,7 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                     animatedTexts: [
                       TypewriterAnimatedText('Thanks for being with us :D',speed: const Duration(milliseconds: 150),curve: Curves.decelerate,cursor: "|"),
                       TypewriterAnimatedText('It means a lot! ^^',speed: const Duration(milliseconds: 100),curve: Curves.decelerate,cursor: "|"),
-                      TypewriterAnimatedText('-Stoodee dev team',speed: const Duration(milliseconds: 100),curve: Curves.decelerate,cursor: "|"),
+                      TypewriterAnimatedText('~Stoodee dev team',speed: const Duration(milliseconds: 100),curve: Curves.decelerate,cursor: "|"),
 
                     ],
                   ),
