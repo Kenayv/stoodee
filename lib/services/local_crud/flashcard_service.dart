@@ -1,9 +1,5 @@
 import 'dart:developer';
 
-<<<<<<< HEAD
-import 'package:stoodee/services/local_crud/crud_exceptions.dart';
-=======
->>>>>>> a968878df1f15000cf14772660c6c5d37a4335e3
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';

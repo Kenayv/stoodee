@@ -1,10 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
-<<<<<<< HEAD
-import 'package:stoodee/services/local_crud/todo_service.dart';
-=======
->>>>>>> a968878df1f15000cf14772660c6c5d37a4335e3
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';

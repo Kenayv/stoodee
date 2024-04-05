@@ -1,8 +1,4 @@
 //Opens a new pop-up window allowing user to add a task. Function invoked on (+) button press.
-<<<<<<< HEAD
-import 'package:stoodee/services/local_crud/todo_service.dart';
-=======
->>>>>>> a968878df1f15000cf14772660c6c5d37a4335e3
 import 'package:stoodee/utilities/dialogs/generic_input_dialog.dart';
 import 'package:flutter/material.dart';
 
