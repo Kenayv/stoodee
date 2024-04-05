@@ -42,23 +42,6 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final GoRouter goRouterService = GoRouter(
   navigatorKey: _rootNavigatorKey,
   routes: <RouteBase>[
-    GoRoute(
-      path: '/',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 200),
-          key: state.pageKey,
-          child: const HomePage(title: "homepage"),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity:
-                  CurveTween(curve: Curves.easeInOutCirc).animate(animation),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
     ShellRoute(
         navigatorKey: _shellNavigatorKey,
         //builder: (context, state, child) => PageScaffold(child: child),
@@ -272,7 +255,7 @@ final GoRouter goRouterService = GoRouter(
       },
     ),
     GoRoute(
-        path: '/login_test',
+        path: '/',
         pageBuilder: (context, state) {
           return CustomTransitionPage(
             transitionDuration: const Duration(milliseconds: 400),

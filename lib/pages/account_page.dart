@@ -5,6 +5,7 @@ import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
+import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({
@@ -24,16 +25,18 @@ class _AccountPage extends State<AccountPage> {
   StoodeeButton resolveWhichButton(){
 
     if(AuthService.firebase().currentUser == null) {
-      return StoodeeButton(onPressed: (){
-        context.go("/login_test");
+      return StoodeeButton(onPressed: () async {
+        await SharedPrefs().setRememberLogin(value: false);
+        context.go("/");
       },
           child: Text("Log-in",style:buttonTextStyle)
       );
 
       }
     else {
-      return StoodeeButton(onPressed: (){
-        context.go("/login_test");
+      return StoodeeButton(onPressed: () async{
+        await SharedPrefs().setRememberLogin(value: false);
+        context.go("/");
       },
           child: Text("Log-out",style:buttonTextStyle)
       );
