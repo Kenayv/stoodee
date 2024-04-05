@@ -239,10 +239,7 @@ class LocalDbController {
     });
 
     final fcSet = DatabaseFlashcardSet(
-      id: fcSetId,
-      userId: owner.id,
-      name: name,
-    );
+        id: fcSetId, userId: owner.id, name: name, pairCount: 0);
 
     return fcSet;
   }
@@ -250,9 +247,9 @@ class LocalDbController {
   Future<List<DatabaseFlashcardSet>> _getAllDbFlashCardSets() async {
     final db = _getDatabaseOrThrow();
 
-    final flashcardSetMaps = await db.query(flashcardSetTable);
+    final flashcardSets = await db.query(flashcardSetTable);
 
-    List<DatabaseFlashcardSet> fcSets = flashcardSetMaps
+    return flashcardSets
         .map((flashcardSetRow) => DatabaseFlashcardSet.fromRow(flashcardSetRow))
         .toList();
   }

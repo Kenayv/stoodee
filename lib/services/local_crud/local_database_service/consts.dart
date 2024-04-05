@@ -1,5 +1,5 @@
 //FIXME: remove debug prefix
-const dbName = 'debug3_tasks.db';
+const dbName = 'debug4_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -55,7 +55,7 @@ const createFlashcardSetTable = '''
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$userIdColumn"	INTEGER NOT NULL,
     "$nameColumn"	TEXT NOT NULL,
-    "$pairCountColumn" INTEGER NOT NULL,
+    "$pairCountColumn" INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$idColumn" AUTOINCREMENT),
     FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")
   );
