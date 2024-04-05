@@ -54,9 +54,9 @@ class _ToDoPage extends State<ToDoPage> {
                         ),
                         const Gap(5),
                         StoodeeButton(
-
                           onPressed: addTask,
-                          child: const Icon(Icons.add,color:Colors.white,size:30),
+                          child: const Icon(Icons.add,
+                              color: Colors.white, size: 30),
                         ),
                       ],
                     ),

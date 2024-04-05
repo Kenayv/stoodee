@@ -119,16 +119,17 @@ ListTile _flashcardSetItem({
   );
 }
 
-List<Widget> flashcardSetListView({required BuildContext context}) {
-  final List<DatabaseFlashcardSet> flashcardSets = FlashcardService().fcSets;
-
+List<Widget> flashcardSetListView({
+  required BuildContext context,
+  required List<DatabaseFlashcardSet> fcSets,
+}) {
   List<Widget> flashcardList = [];
 
-  for (int i = 0; i < flashcardSets.length; i++) {
+  for (int i = 0; i < fcSets.length; i++) {
     flashcardList.add(_flashcardSetItem(
       context: context,
-      fcSet: flashcardSets[i],
-      name: flashcardSets[i].name,
+      fcSet: fcSets[i],
+      name: fcSets[i].name,
     ));
   }
 
@@ -137,44 +138,52 @@ List<Widget> flashcardSetListView({required BuildContext context}) {
 
 class _FlashcardsPage extends State<FlashcardsPage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> addFcSet() async {
+    await showAddFcSetDialog(context: context);
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //FIXME: nie jest używane?????
-    var size = MediaQuery.of(context).size;
-
-    /*24 is for notification bar on Android*/
-
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Gap(10),
-            /*
-            GridView.count(
-              shrinkWrap: true,
-              primary: false,
-              childAspectRatio: (1 / 1.3),
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              crossAxisCount: 2,
-              children: flashcardSetListView(context: context),
-            ),
-
-             */
-            CustomGridLayout(
-                crossAxisCount: 2,
-                items: flashcardSetListView(context: context)),
-            const Gap(15),
-            StoodeeButton(
-              onPressed: () async {
-                await showAddFcSetDialog(context: context);
-                setState(() {});
-              },
-              child: const Icon(Icons.add, color: Colors.white, size: 30),
-            ),
-            const Gap(15),
-          ],
-        ),
-      ),
+    return FutureBuilder<List<DatabaseFlashcardSet>>(
+      future: FlashcardService().loadFcSets(),
+      builder: (context, snapshot) {
+        List<DatabaseFlashcardSet> flashcardSets = snapshot.data ?? [];
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    CustomGridLayout(
+                      crossAxisCount: 2,
+                      items: flashcardSetListView(
+                        context: context,
+                        fcSets: flashcardSets,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    StoodeeButton(
+                      onPressed: addFcSet,
+                      child:
+                          const Icon(Icons.add, color: Colors.white, size: 30),
+                    ),
+                    const SizedBox(height: 15),
+                  ],
+                ),
+              ),
+            );
+          default:
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+        }
+      },
     );
   }
 }

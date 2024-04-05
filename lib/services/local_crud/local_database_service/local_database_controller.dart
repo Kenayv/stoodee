@@ -227,6 +227,7 @@ class LocalDbController {
     required DatabaseUser owner,
     required String name,
   }) async {
+    print('i was here c');
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded

@@ -29,8 +29,10 @@ class FlashcardService {
   }
 
   Future<DatabaseFlashcardSet> createFcSet({required String name}) async {
-    final fcSet = await LocalDbController()
-        .createFcSet(owner: LocalDbController().currentUser, name: name);
+    final fcSet = await LocalDbController().createFcSet(
+      owner: LocalDbController().currentUser,
+      name: name,
+    );
 
     _flashcardSets.add(fcSet);
     return fcSet;

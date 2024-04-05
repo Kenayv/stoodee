@@ -1,5 +1,4 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
-import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 
 class DatabaseFlashcardSet {
   final int id;
@@ -14,8 +13,6 @@ class DatabaseFlashcardSet {
     required this.pairCount,
   });
 
-  init() {}
-
   DatabaseFlashcardSet.fromRow(Map<String, Object?> map)
       : id = map[idColumn] as int,
         userId = map[userIdColumn] as int,
@@ -24,7 +21,7 @@ class DatabaseFlashcardSet {
 
   @override
   String toString() =>
-      "\nTaskId = [$id]:\n   name = [$name],\n   userId = [$userId]\n   pairCount = [$pairCount]\n";
+      "FcSetId = [$id]:\n   name = [$name],\n   userId = [$userId]\n   pairCount = [$pairCount]\n";
 
   @override
   bool operator ==(covariant DatabaseFlashcardSet other) => id == other.id;

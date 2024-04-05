@@ -18,9 +18,9 @@ Future<void> showAddFcSetDialog({
         ),
       )
     ],
-    function: () {
+    function: () async {
       if (fcSetNameController.text.isNotEmpty) {
-        FlashcardService().createFcSet(name: fcSetNameController.text);
+        await FlashcardService().createFcSet(name: fcSetNameController.text);
       }
     },
   );
