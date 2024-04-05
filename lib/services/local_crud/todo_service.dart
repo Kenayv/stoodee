@@ -1,10 +1,12 @@
 import 'dart:developer' show log;
 
+import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 
 class TodoService {
-  late List<DatabaseTask> _tasks;
+  late final List<DatabaseTask>? _tasks;
+  bool _initialized = false;
 
   //ToDoService should be only used via singleton //
   static final TodoService _shared = TodoService._sharedInstance();
@@ -13,8 +15,12 @@ class TodoService {
   //ToDoService should be only used via singleton //
 
   Future<List<DatabaseTask>> loadTasks() async {
-    _tasks =
-        await LocalDbController().getUserTasks(LocalDbController().currentUser);
+    if (!_initialized) {
+      _tasks = await LocalDbController().getUserTasks(
+        LocalDbController().currentUser,
+      );
+      _initialized = true;
+    }
 
     //FIXME: debug log
     String debugLogStart = "[START] loading tasks [START]\n\n";
@@ -23,41 +29,40 @@ class TodoService {
 
     log(debugLogStart + debugLogTasks + debugLogEnd);
 
-    return _tasks;
+    return _tasks!;
   }
 
   Future<DatabaseTask> createTask({required String text}) async {
+    if (!_initialized) throw TodoServiceNotInitialized();
+
     final task = await LocalDbController().createTask(
       owner: LocalDbController().currentUser,
       text: text,
     );
 
-    _tasks.add(task);
+    _tasks!.add(task);
     return task;
   }
 
   Future<void> removeTask(DatabaseTask task) async {
+    if (!_initialized) throw TodoServiceNotInitialized();
+
     await LocalDbController().deleteTask(task: task);
-    _tasks.removeWhere((taskToRemove) => taskToRemove == task);
+    _tasks!.removeWhere((taskToRemove) => taskToRemove == task);
   }
 
   Future<void> updateTask({
     required DatabaseTask task,
     required String text,
   }) async {
+    if (!_initialized) throw TodoServiceNotInitialized();
+
     await LocalDbController().updateTask(task: task, text: text);
   }
 
-  DatabaseTask taskAt(index) {
-    if (index > _tasks.length - 1 || index < 0) throw RangeError("Range error");
-
-    return _tasks[index];
-  }
-
   List<DatabaseTask> get tasks {
-    for (DatabaseTask task in _tasks) {
-      log('returning $task');
-    }
-    return _tasks;
+    if (!_initialized) throw TodoServiceNotInitialized();
+
+    return _tasks!;
   }
 }
