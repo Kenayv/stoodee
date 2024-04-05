@@ -22,6 +22,12 @@ const displayAfterDateColumn = 'display_after_date';
 const cardDifficultyColumn = 'card_difficulty';
 const nameColumn = 'name';
 
+const pairCountColumn = 'pair_count';
+
+const minFlashCardDifficulty = 0;
+const defaultFlashcardDifficulty = 5;
+const maxFlashCardDifficulty = 10;
+
 const defaultDateStringValue = '1990-01-01 00:00:00';
 const notLoggedInUserEmail = 'null.user@stoodee.fakemail';
 
@@ -49,6 +55,7 @@ const createFlashcardSetTable = '''
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$userIdColumn"	INTEGER NOT NULL,
     "$nameColumn"	TEXT NOT NULL,
+    "$pairCountColumn" INTEGER NOT NULL,
     PRIMARY KEY("$idColumn" AUTOINCREMENT),
     FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")
   );
@@ -61,7 +68,7 @@ const createFlashcardTable = '''
     "$frontTextColumn"	TEXT NOT NULL,
     "$backTextColumn"	TEXT NOT NULL,
     "$displayAfterDateColumn"	TEXT NOT NULL DEFAULT '$defaultDateStringValue',
-    "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT 1,
+    "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT $defaultFlashcardDifficulty,
     PRIMARY KEY("$idColumn" AUTOINCREMENT),
     FOREIGN KEY("$flashcardSetIdColumn") REFERENCES "$flashcardSetTable"("$idColumn")
   );

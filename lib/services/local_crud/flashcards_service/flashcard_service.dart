@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
-import 'package:stoodee/services/local_crud/flashcards_service/flashcards_exceptions.dart';
+import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 
 class FlashcardService {
   late final List<DatabaseFlashcardSet> _flashcardSets;
-  bool _initialized = false;
 
   //ToDoService should be only used via singleton //
   static final FlashcardService _shared = FlashcardService._sharedInstance();
@@ -12,113 +13,72 @@ class FlashcardService {
   FlashcardService._sharedInstance();
   //ToDoService should be only used via singleton //
 
-  init() {
-    if (_initialized) throw FcServiceAlreadyInitialized();
+  Future<List<DatabaseFlashcardSet>> loadFcSets() async {
+    _flashcardSets = await LocalDbController().getUserFlashCardSets(
+      user: LocalDbController().currentUser,
+    );
 
-    _loadFcSets();
+    //FIXME: debug log
+    String debugLogStart = "[START] loading FlashcardSets [START]\n\n";
+    String debugLogFlashcardSets = "$_flashcardSets\n\n";
+    String debugLogEnd = "[END] loading FlashcardSets [END]\n.";
 
-    _initialized = true;
+    log(debugLogStart + debugLogFlashcardSets + debugLogEnd);
+
+    return _flashcardSets;
   }
 
-  Future<void> _loadFcSets() async {
-    _flashcardSets = [];
-    //FIXME:
+  Future<DatabaseFlashcardSet> createFcSet({required String name}) async {
+    final fcSet = await LocalDbController()
+        .createFcSet(owner: LocalDbController().currentUser, name: name);
+
+    _flashcardSets.add(fcSet);
+    return fcSet;
   }
 
-  Future<void> _saveFcSets() async {
-    if (!_initialized) throw FcServiceNotInitialized();
-
-    //FIXME:
+  Future<void> removeFcSet(DatabaseFlashcardSet fcSet) async {
+    await LocalDbController().deleteFcSet(fcSet: fcSet);
+    _flashcardSets.removeWhere((fcSetToRemove) => fcSetToRemove == fcSet);
   }
 
-  Future<void> addSet({
+  Future<void> renameFcSet({
+    required DatabaseFlashcardSet fcSet,
     required String name,
   }) async {
-    if (!_initialized) throw FcServiceNotInitialized();
-
-    if (_flashcardSets.where((o) => o.name == name).firstOrNull != null) {
-      throw FcSetAlreadyExists;
-    }
-
-    //FIXME: bad initialized
-    //FIXME: bad initialized
-    //FIXME: bad initialized
-    DatabaseFlashcardSet fcSet = DatabaseFlashcardSet(
-      id: 0,
-      userId: 0,
+    await LocalDbController().updateFcSet(
+      fcSet: fcSet,
       name: name,
     );
-    await fcSet.init();
-    _flashcardSets.add(fcSet);
-
-    await _saveFcSets();
   }
 
-  Future<void> removeSet({
-    required DatabaseFlashcardSet fcSet,
-  }) async {
-    if (!_initialized) throw FcServiceNotInitialized();
-
-    DatabaseFlashcardSet? fcSetToRemove =
-        _flashcardSets.where((o) => o.name == fcSet.name).firstOrNull;
-
-    if (fcSetToRemove == null) {
-      throw FcSetDoesNotExist;
-    }
-
-    _flashcardSets.remove(fcSetToRemove);
-
-    await _saveFcSets();
-  }
-
-  //FIXME:
-  Future<void> renameSet({
-    required DatabaseFlashcardSet fcSet,
-    required String newName,
-  }) async {
-    // if (!_initialized) throw FcServiceNotInitialized();
-
-    // DatabaseFlashcardSet? fcSetToRename =
-    //     _flashcardSets.where((o) => o.name == fcSet.name).firstOrNull;
-
-    // if (fcSetToRename == null) {
-    //   throw FcSetDoesNotExist;
-    // }
-
-    // fcSetToRename.name = newName;
-
-    // await _saveFcSets();
-  }
-
-  Future<void> removeCardFromFcSet({
+  Future<void> removeFlashcard({
     required DatabaseFlashcard flashcard,
-    required DatabaseFlashcardSet fcSet,
   }) async {
-    if (!_initialized) throw FcServiceNotInitialized();
-
-    //FIXME:
+    await LocalDbController().deleteFlashcard(flashcard: flashcard);
   }
 
-  Future<void> addCardToset({
+  Future<DatabaseFlashcard> createFlashcard({
     required DatabaseFlashcardSet fcSet,
     required String frontText,
     required String backText,
   }) async {
-    if (!_initialized) throw FcServiceNotInitialized();
-
-    //FIXME:
+    return await LocalDbController().createFlashcard(
+      fcSet: fcSet,
+      frontText: frontText,
+      backText: backText,
+    );
   }
 
-  Future<void> editCard({
+  Future<void> updateFlashcard({
     required DatabaseFlashcard flashcard,
     required String frontText,
     required String backText,
   }) async {
-    if (!_initialized) throw FcServiceNotInitialized();
-
-    //FIXME: not finished
-
-    await _saveFcSets();
+    await LocalDbController().updateFlashcard(
+      flashcard: flashcard,
+      frontText: frontText,
+      backText: backText,
+    );
   }
 
   List<DatabaseFlashcardSet> get fcSets => _flashcardSets;

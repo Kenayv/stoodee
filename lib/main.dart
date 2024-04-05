@@ -46,8 +46,6 @@ Future<void> initApp() async {
   }
 
   await LocalDbController().init();
-  await TodoService().init();
-  await FlashcardService().init();
 }
 
 class MyApp extends StatelessWidget {

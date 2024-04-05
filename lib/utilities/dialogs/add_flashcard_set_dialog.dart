@@ -20,7 +20,7 @@ Future<void> showAddFcSetDialog({
     ],
     function: () {
       if (fcSetNameController.text.isNotEmpty) {
-        FlashcardService().addSet(name: fcSetNameController.text);
+        FlashcardService().createFcSet(name: fcSetNameController.text);
       }
     },
   );

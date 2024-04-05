@@ -1,6 +1,8 @@
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:sqflite/sqflite.dart';
@@ -146,43 +148,27 @@ class LocalDbController {
     final taskId = await db.insert(taskTable, {
       userIdColumn: owner.id,
       textColumn: text,
-      isSyncedWithCloudColumn: 0,
     });
 
     final task = DatabaseTask(
       id: taskId,
       userId: owner.id,
       text: text,
-      isSyncedWithCloud: false,
     );
 
     return task;
   }
 
-  Future<void> deleteTask({required int id}) async {
+  Future<void> deleteTask({required DatabaseTask task}) async {
     final db = _getDatabaseOrThrow();
 
     final deletedCount = await db.delete(
       taskTable,
       where: 'id = ?',
-      whereArgs: [id],
+      whereArgs: [task.id],
     );
 
     if (deletedCount != 1) throw CouldNotDeleteTask();
-  }
-
-  Future<DatabaseTask> getDbTask({required int id}) async {
-    final db = _getDatabaseOrThrow();
-
-    final task = await db.query(
-      taskTable,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-
-    if (task.isEmpty) throw CouldNotFindTask();
-
-    return DatabaseTask.fromRow(task.first);
   }
 
   Future<List<DatabaseTask>> _getAllDbTasks() async {
@@ -211,11 +197,8 @@ class LocalDbController {
   }) async {
     final db = _getDatabaseOrThrow();
 
-    await getDbTask(id: task.id);
-
     final updateCount = await db.update(taskTable, {
       textColumn: text,
-      isSyncedWithCloudColumn: 0,
     });
 
     if (updateCount != 1) throw CouldNotUpdateTask();
@@ -231,6 +214,150 @@ class LocalDbController {
 
   void setCurrentUser(DatabaseUser user) =>
       _db != null ? _currentUser = user : throw DatabaseIsNotOpened();
+
+  // FIXME SKIBIDI not tested
+
+  Future<List<DatabaseFlashcardSet>> getUserFlashCardSets(
+      {required DatabaseUser user}) async {
+    List<DatabaseFlashcardSet> allFcSets = await _getAllDbFlashCardSets();
+    return allFcSets.where((fcSet) => fcSet.userId == user.id).toList();
+  }
+
+  Future<DatabaseFlashcardSet> createFcSet({
+    required DatabaseUser owner,
+    required String name,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure owner exists in database and isn't hard-coded
+    final dbUser = await getUser(email: owner.email);
+    if (dbUser != owner) throw CouldNotFindUser();
+
+    final fcSetId = await db.insert(flashcardSetTable, {
+      userIdColumn: owner.id,
+      nameColumn: name,
+    });
+
+    final fcSet = DatabaseFlashcardSet(
+      id: fcSetId,
+      userId: owner.id,
+      name: name,
+    );
+
+    return fcSet;
+  }
+
+  Future<List<DatabaseFlashcardSet>> _getAllDbFlashCardSets() async {
+    final db = _getDatabaseOrThrow();
+
+    final flashcardSetMaps = await db.query(flashcardSetTable);
+
+    List<DatabaseFlashcardSet> fcSets = flashcardSetMaps
+        .map((flashcardSetRow) => DatabaseFlashcardSet.fromRow(flashcardSetRow))
+        .toList();
+  }
+
+  Future<void> deleteFcSet({required DatabaseFlashcardSet fcSet}) async {
+    final db = _getDatabaseOrThrow();
+
+    final deletedCount = await db.delete(
+      flashcardSetTable,
+      where: 'id = ?',
+      whereArgs: [fcSet.id],
+    );
+
+    if (deletedCount != 1) throw CouldNotDeleteFcSet();
+  }
+
+  Future<DatabaseFlashcardSet> updateFcSet({
+    required DatabaseFlashcardSet fcSet,
+    required String name,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    final updateCount = await db.update(flashcardSetTable, {
+      nameColumn: name,
+    });
+
+    if (updateCount != 1) throw CouldNotUpdateFcSet();
+
+    return fcSet;
+  }
+
+  Future<DatabaseFlashcard> updateFlashcard({
+    required DatabaseFlashcard flashcard,
+    required String frontText,
+    required String backText,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    final updateCount = await db.update(flashcardTable, {
+      frontTextColumn: frontText,
+      backTextColumn: backText,
+    });
+
+    if (updateCount != 1) throw CouldNotUpdateFlashCard();
+
+    return flashcard;
+  }
+
+  Future<DatabaseFlashcardSet> getFcSet({required int id}) async {
+    final db = _getDatabaseOrThrow();
+
+    final results = await db.query(
+      flashcardSetTable,
+      limit: 1,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (results.isEmpty) throw CouldNotFindFcSet();
+
+    return DatabaseFlashcardSet.fromRow(results.first);
+  }
+
+  Future<DatabaseFlashcard> createFlashcard({
+    required DatabaseFlashcardSet fcSet,
+    required String frontText,
+    required String backText,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure set exists in database and isn't hard-coded
+    final ownerSet = await getFcSet(id: fcSet.id);
+    if (ownerSet != fcSet) throw CouldNotFindFcSet();
+
+    final flashcardID = await db.insert(flashcardTable, {
+      flashcardSetIdColumn: fcSet.id,
+      backTextColumn: backText,
+      frontTextColumn: frontText,
+    });
+
+    final flashcard = DatabaseFlashcard(
+      id: flashcardID,
+      flashcardSetId: fcSet.id,
+      backText: backText,
+      frontText: frontText,
+      cardDifficulty: defaultFlashcardDifficulty,
+      displayAfterDate: parseStringToDateTime(defaultDateStringValue),
+    );
+
+    return flashcard;
+  }
+
+  Future<void> deleteFlashcard({required DatabaseFlashcard flashcard}) async {
+    final db = _getDatabaseOrThrow();
+
+    final deletedCount = await db.delete(
+      flashcardTable,
+      where: 'id = ?',
+      whereArgs: [flashcard.id],
+    );
+
+    if (deletedCount != 1) throw CouldNotDeleteFlashCard();
+  }
+
+  // FIXME SKIBIDI
 
   DatabaseUser get currentUser =>
       _db != null ? _currentUser! : throw DatabaseIsNotOpened();

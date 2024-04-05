@@ -5,34 +5,33 @@ class DatabaseFlashcardSet {
   final int id;
   final int userId;
   final String name;
-
-  late final List<DatabaseFlashcard> _flashcards;
+  final int pairCount;
 
   DatabaseFlashcardSet({
     required this.id,
     required this.userId,
     required this.name,
+    required this.pairCount,
   });
 
-  init() {
-    _flashcards = [];
-  }
+  init() {}
 
   DatabaseFlashcardSet.fromRow(Map<String, Object?> map)
       : id = map[idColumn] as int,
         userId = map[userIdColumn] as int,
-        name = map[nameColumn] as String;
+        name = map[nameColumn] as String,
+        pairCount = map[pairCountColumn] as int;
 
   @override
   String toString() =>
-      "\nTaskId = [$id]:\n   name = [$name],\n   userId = [$userId]";
+      "\nTaskId = [$id]:\n   name = [$name],\n   userId = [$userId]\n   pairCount = [$pairCount]\n";
 
   @override
-  bool operator ==(covariant DatabaseFlashcard other) => id == other.id;
+  bool operator ==(covariant DatabaseFlashcardSet other) => id == other.id;
 
   @override
   int get hashCode => id.hashCode;
 
-  List<DatabaseFlashcard> get flashcards => _flashcards;
-  int get pairCount => _flashcards.length;
+  //FIXME: move to fcService
+  // List<DatabaseFlashcard> get flashcards => _flashcards;
 }

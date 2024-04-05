@@ -15,3 +15,13 @@ class CouldNotDeleteTask implements Exception {}
 class CouldNotFindTask implements Exception {}
 
 class CouldNotUpdateTask implements Exception {}
+
+class CouldNotDeleteFcSet implements Exception {}
+
+class CouldNotDeleteFlashCard implements Exception {}
+
+class CouldNotUpdateFlashCard implements Exception {}
+
+class CouldNotUpdateFcSet implements Exception {}
+
+class CouldNotFindFcSet implements Exception {}

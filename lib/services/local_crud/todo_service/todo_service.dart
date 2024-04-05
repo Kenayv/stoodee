@@ -2,30 +2,15 @@ import 'dart:developer' show log;
 
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
-import 'package:stoodee/services/local_crud/todo_service/todo_exceptions.dart';
 
 class TodoService {
   late List<DatabaseTask> _tasks;
-  bool _initialized = false;
 
   //ToDoService should be only used via singleton //
   static final TodoService _shared = TodoService._sharedInstance();
   factory TodoService() => _shared;
   TodoService._sharedInstance();
   //ToDoService should be only used via singleton //
-
-  Future<void> init() async {
-    if (_initialized) throw TodoServiceAlreadyInitialized;
-
-    //FIXME: nic sie nie dzieje uwu
-
-    _initialized = true;
-  }
-
-  Future<void> syncWithCloud() async {
-    if (!_initialized) throw TodoServiceNotInitialized();
-    //FIXME:
-  }
 
   Future<List<DatabaseTask>> loadTasks() async {
     _tasks =
@@ -42,8 +27,6 @@ class TodoService {
   }
 
   Future<DatabaseTask> createTask({required String text}) async {
-    if (!_initialized) throw TodoServiceNotInitialized();
-
     final task = await LocalDbController().createTask(
       owner: LocalDbController().currentUser,
       text: text,
@@ -54,9 +37,7 @@ class TodoService {
   }
 
   Future<void> removeTask(DatabaseTask task) async {
-    if (!_initialized) throw TodoServiceNotInitialized();
-
-    await LocalDbController().deleteTask(id: task.id);
+    await LocalDbController().deleteTask(task: task);
     _tasks.removeWhere((taskToRemove) => taskToRemove == task);
   }
 
@@ -68,7 +49,6 @@ class TodoService {
   }
 
   DatabaseTask taskAt(index) {
-    if (_initialized == false) throw TodoServiceNotInitialized();
     if (index > _tasks.length - 1 || index < 0) throw RangeError("Range error");
 
     return _tasks[index];
@@ -78,6 +58,6 @@ class TodoService {
     for (DatabaseTask task in _tasks) {
       log('returning $task');
     }
-    return _initialized ? _tasks : throw TodoServiceNotInitialized();
+    return _tasks;
   }
 }
