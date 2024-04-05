@@ -1,0 +1,6 @@
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: lib/assets/BaseLogoSwan.png
+  android_12:
+    color: "#FFFFFF"
+    image: lib/assets/SplashSwan.png
