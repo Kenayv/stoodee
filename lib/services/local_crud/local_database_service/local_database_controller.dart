@@ -215,12 +215,18 @@ class LocalDbController {
   void setCurrentUser(DatabaseUser user) =>
       _db != null ? _currentUser = user : throw DatabaseIsNotOpened();
 
-  // FIXME SKIBIDI not tested
-
-  Future<List<DatabaseFlashcardSet>> getUserFlashCardSets(
+  Future<List<DatabaseFlashcardSet>> getUserFlashcardSets(
       {required DatabaseUser user}) async {
     List<DatabaseFlashcardSet> allFcSets = await _getAllDbFlashCardSets();
     return allFcSets.where((fcSet) => fcSet.userId == user.id).toList();
+  }
+
+  Future<List<DatabaseFlashcard>> getFlashcardsFromSet(
+      {required DatabaseFlashcardSet fcSet}) async {
+    List<DatabaseFlashcard> allFlashcards = await _getAllDbFlashcards();
+    return allFlashcards
+        .where((flashcard) => flashcard.flashcardSetId == fcSet.id)
+        .toList();
   }
 
   Future<DatabaseFlashcardSet> createFcSet({
@@ -252,6 +258,16 @@ class LocalDbController {
 
     return flashcardSets
         .map((flashcardSetRow) => DatabaseFlashcardSet.fromRow(flashcardSetRow))
+        .toList();
+  }
+
+  Future<List<DatabaseFlashcard>> _getAllDbFlashcards() async {
+    final db = _getDatabaseOrThrow();
+
+    final flashcards = await db.query(flashcardTable);
+
+    return flashcards
+        .map((flashcardRow) => DatabaseFlashcard.fromRow(flashcardRow))
         .toList();
   }
 
@@ -331,6 +347,15 @@ class LocalDbController {
       frontTextColumn: frontText,
     });
 
+    await db.update(
+      flashcardSetTable,
+      where: 'id = ?',
+      whereArgs: [fcSet.id],
+      {
+        pairCountColumn: fcSet.pairCount + 1,
+      },
+    );
+
     final flashcard = DatabaseFlashcard(
       id: flashcardID,
       flashcardSetId: fcSet.id,
@@ -354,8 +379,6 @@ class LocalDbController {
 
     if (deletedCount != 1) throw CouldNotDeleteFlashCard();
   }
-
-  // FIXME SKIBIDI
 
   DatabaseUser get currentUser =>
       _db != null ? _currentUser! : throw DatabaseIsNotOpened();

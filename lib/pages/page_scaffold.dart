@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
-import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
 class PageScaffold extends StatefulWidget {
   const PageScaffold({required this.child, super.key});
@@ -60,8 +59,6 @@ class _PageScaffold extends State<PageScaffold> {
             Icons.account_box_rounded,
             color: Colors.white,
           ),
-
-
         ),
         body: widget.child,
         bottomNavigationBar: Theme(

@@ -28,7 +28,4 @@ class DatabaseFlashcardSet {
 
   @override
   int get hashCode => id.hashCode;
-
-  //FIXME: move to fcService
-  // List<DatabaseFlashcard> get flashcards => _flashcards;
 }

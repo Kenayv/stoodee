@@ -256,7 +256,8 @@ final GoRouter goRouterService = GoRouter(
           transitionDuration: const Duration(milliseconds: 400),
           key: state.pageKey,
           child: FlashCardsReader(
-              fcSet: container.getSet(), name: container.getName()),
+            fcSet: container.getSet(),
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(0, 1.0);
             const end = Offset.zero;
@@ -271,45 +272,40 @@ final GoRouter goRouterService = GoRouter(
       },
     ),
     GoRoute(
-      path: '/login_test',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 400),
-          key: state.pageKey,
-          child: const OogaBoogaLoginTest(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeOutQuint;
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        path: '/login_test',
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 400),
+            key: state.pageKey,
+            child: const OogaBoogaLoginTest(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeOutQuint;
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-            return SlideTransition(
-                position: animation.drive(tween), child: child);
-          },
-        );
-      },
-
-      routes: [
-        GoRoute(
+              return SlideTransition(
+                  position: animation.drive(tween), child: child);
+            },
+          );
+        },
+        routes: [
+          GoRoute(
             path: "dialog",
 
-
-          //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
+            //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
             pageBuilder: (BuildContext context, GoRouterState state) {
-            return DialogPage(builder: (_) => CustomDialog(title: 'title', content: 'content',),
-
-);
-},
-
-
-        ),
-
-
-      ]
-
-
-    ),
+              return DialogPage(
+                builder: (_) => CustomDialog(
+                  title: 'title',
+                  content: 'content',
+                ),
+              );
+            },
+          ),
+        ]),
     GoRoute(
       path: '/email_verification_page',
       pageBuilder: (context, state) {

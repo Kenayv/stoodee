@@ -15,9 +15,15 @@ class FlashcardService {
   FlashcardService._sharedInstance();
   //ToDoService should be only used via singleton //
 
-  Future<List<DatabaseFlashcardSet>> loadFcSets() async {
+  Future<List<DatabaseFlashcardSet>> getFlashcardSets() async {
+    await _loadFcSets();
+
+    return _flashcardSets!;
+  }
+
+  Future<List<DatabaseFlashcardSet>> _loadFcSets() async {
     if (!_initialized) {
-      _flashcardSets = await LocalDbController().getUserFlashCardSets(
+      _flashcardSets = await LocalDbController().getUserFlashcardSets(
         user: LocalDbController().currentUser,
       );
       _initialized = true;
@@ -31,6 +37,22 @@ class FlashcardService {
     log(debugLogStart + debugLogFlashcardSets + debugLogEnd);
 
     return _flashcardSets!;
+  }
+
+  Future<List<DatabaseFlashcard>> loadFlashcardsFromSet(
+      {required DatabaseFlashcardSet fcSet}) async {
+    final flashcards = await LocalDbController().getFlashcardsFromSet(
+      fcSet: fcSet,
+    );
+
+    //FIXME: debug log
+    String debugLogStart = "[START] loading Flashcards [START]\n\n";
+    String debugLogFlashcards = "$flashcards\n\n";
+    String debugLogEnd = "[END] loading Flashcards [END]\n.";
+
+    log(debugLogStart + debugLogFlashcards + debugLogEnd);
+
+    return flashcards.where((card) => card.flashcardSetId == fcSet.id).toList();
   }
 
   Future<DatabaseFlashcardSet> createFcSet({required String name}) async {

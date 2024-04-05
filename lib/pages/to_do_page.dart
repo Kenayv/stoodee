@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';

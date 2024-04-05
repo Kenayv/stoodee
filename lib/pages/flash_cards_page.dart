@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
+import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/utilities/containers.dart';
@@ -58,8 +59,11 @@ ListTile _flashcardSetItem({
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 8,
                       child: TextButton(
-                          onPressed: () {
-                            print("add");
+                          onPressed: () async {
+                            await showAddFlashcardDialog(
+                              context: context,
+                              fcSet: fcSet,
+                            );
                           },
                           child: const Icon(
                             Icons.add,
@@ -150,7 +154,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DatabaseFlashcardSet>>(
-      future: FlashcardService().loadFcSets(),
+      future: FlashcardService().getFlashcardSets(),
       builder: (context, snapshot) {
         List<DatabaseFlashcardSet> flashcardSets = snapshot.data ?? [];
         switch (snapshot.connectionState) {

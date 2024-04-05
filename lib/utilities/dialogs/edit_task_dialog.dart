@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
-import 'package:stoodee/utilities/dialogs/generic_input_dialog.dart';
+import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
 
 import '../../services/local_crud/todo_service.dart';
 
@@ -21,7 +21,10 @@ Future<String?> showEditTaskDialog(
       )
     ],
     function: () async {
-      await TodoService().updateTask(task: task, text: taskController.text);
+      await TodoService().updateTask(
+        task: task,
+        text: taskController.text,
+      );
     },
   );
 }
