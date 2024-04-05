@@ -1,7 +1,8 @@
 //Opens a new pop-up window allowing user to add a flashcardSet. Function invoked on (+) button press.
-import 'package:stoodee/services/local_crud/flashcards_service/flashcard_service.dart';
 import 'package:stoodee/utilities/dialogs/generic_input_dialog.dart';
 import 'package:flutter/material.dart';
+
+import '../../services/local_crud/flashcard_service.dart';
 
 Future<void> showAddFcSetDialog({
   required BuildContext context,

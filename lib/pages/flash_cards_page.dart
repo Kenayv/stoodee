@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/local_crud/flashcards_service/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +7,7 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 
+import '../services/local_crud/flashcard_service.dart';
 import '../utilities/reusables/reusable_stoodee_button.dart';
 
 const double iconSize = 40;
