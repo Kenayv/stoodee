@@ -27,15 +27,17 @@ class SharedPrefs {
     _initialized = true;
   }
 
-  Future<void> setRememberLogin({required bool? value}) async {
+  Future<void> setRememberLogin({required bool value}) async {
     if (!_initialized) throw PrefsNotInitialized();
 
-    await _prefs.setBool(_rememberLoginDataKey, value!);
+    _rememberLoginData = value;
+    await _prefs.setBool(_rememberLoginDataKey, value);
   }
 
   Future<void> setHasSeenIntro({required bool value}) async {
     if (!_initialized) throw PrefsNotInitialized();
 
+    _hasSeenIntro = value;
     await _prefs.setBool(_hasSeenIntroKey, value);
   }
 
