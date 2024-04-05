@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:stoodee/services/local_crud/flashcards_service/flashcards_exceptions.dart';
+import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';

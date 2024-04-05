@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/local_crud/flashcards_service/flashcard_service.dart';
+import 'package:stoodee/services/local_crud/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:go_router/go_router.dart';
