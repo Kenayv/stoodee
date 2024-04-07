@@ -5,7 +5,7 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
-import '../services/local_crud/todo_service.dart';
+import '../services/todo_service.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({

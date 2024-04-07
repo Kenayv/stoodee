@@ -39,3 +39,5 @@ class FcSetAlreadyInitialized implements Exception {}
 class FcSetAlreadyExists implements Exception {}
 
 class FcSetDoesNotExist implements Exception {}
+
+class FlashcardListEmpty implements Exception {}

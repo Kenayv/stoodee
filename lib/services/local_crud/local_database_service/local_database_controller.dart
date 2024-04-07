@@ -347,12 +347,14 @@ class LocalDbController {
       frontTextColumn: frontText,
     });
 
+    fcSet.setPairCount(fcSet.pairCount + 1);
+
     await db.update(
       flashcardSetTable,
       where: 'id = ?',
       whereArgs: [fcSet.id],
       {
-        pairCountColumn: fcSet.pairCount + 1,
+        pairCountColumn: fcSet.pairCount,
       },
     );
 

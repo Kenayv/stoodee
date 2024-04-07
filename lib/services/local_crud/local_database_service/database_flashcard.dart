@@ -3,7 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseFlashcard {
   final int id;
   final int flashcardSetId;
-  final String frontText;
+  final String frontText; //FIXME: make those changable to optimize db loading.
   final String backText;
   final int cardDifficulty;
   final DateTime displayAfterDate;

@@ -8,7 +8,7 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 
-import '../services/local_crud/flashcard_service.dart';
+import '../services/flashcard_service.dart';
 import '../utilities/reusables/reusable_stoodee_button.dart';
 
 const double iconSize = 40;
@@ -154,7 +154,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DatabaseFlashcardSet>>(
-      future: FlashcardService().getFlashcardSets(),
+      future: FlashcardsService().getFlashcardSets(),
       builder: (context, snapshot) {
         List<DatabaseFlashcardSet> flashcardSets = snapshot.data ?? [];
         switch (snapshot.connectionState) {

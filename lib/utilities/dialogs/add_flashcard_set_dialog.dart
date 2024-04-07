@@ -3,7 +3,7 @@
 import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/local_crud/flashcard_service.dart';
+import '../../services/flashcard_service.dart';
 
 Future<void> showAddFcSetDialog({
   required BuildContext context,
@@ -22,7 +22,7 @@ Future<void> showAddFcSetDialog({
     ],
     function: () async {
       if (fcSetNameController.text.isNotEmpty) {
-        await FlashcardService().createFcSet(name: fcSetNameController.text);
+        await FlashcardsService().createFcSet(name: fcSetNameController.text);
       }
     },
   );

@@ -1,19 +1,39 @@
-import 'dart:developer';
+import 'dart:developer' as dart_developer;
+import 'dart:math';
 
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 
-import 'crud_exceptions.dart';
+import 'local_crud/crud_exceptions.dart';
 
-class FlashcardService {
+class FlashcardsService {
   late final List<DatabaseFlashcardSet>? _flashcardSets;
   bool _initialized = false;
+
   //ToDoService should be only used via singleton //
-  static final FlashcardService _shared = FlashcardService._sharedInstance();
-  factory FlashcardService() => _shared;
-  FlashcardService._sharedInstance();
+  static final FlashcardsService _shared = FlashcardsService._sharedInstance();
+  factory FlashcardsService() => _shared;
+  FlashcardsService._sharedInstance();
   //ToDoService should be only used via singleton //
+
+  DatabaseFlashcard getRandFcFromList({
+    required List<DatabaseFlashcard> fcList,
+    bool canReturnCardBeforeDisplayDate = false,
+  }) {
+    if (!_initialized) throw FcServiceNotInitialized();
+    if (fcList.isEmpty) throw FlashcardListEmpty();
+
+    int randIndex = Random().nextInt(fcList.length);
+
+    if (!canReturnCardBeforeDisplayDate) {
+      while (fcList[randIndex].displayAfterDate.isAfter(DateTime.now())) {
+        randIndex = Random().nextInt(fcList.length);
+      }
+    }
+
+    return fcList[randIndex];
+  }
 
   Future<List<DatabaseFlashcardSet>> getFlashcardSets() async {
     await _loadFcSets();
@@ -34,7 +54,7 @@ class FlashcardService {
     String debugLogFlashcardSets = "$_flashcardSets\n\n";
     String debugLogEnd = "[END] loading FlashcardSets [END]\n.";
 
-    log(debugLogStart + debugLogFlashcardSets + debugLogEnd);
+    dart_developer.log(debugLogStart + debugLogFlashcardSets + debugLogEnd);
 
     return _flashcardSets!;
   }
@@ -50,7 +70,7 @@ class FlashcardService {
     String debugLogFlashcards = "$flashcards\n\n";
     String debugLogEnd = "[END] loading Flashcards [END]\n.";
 
-    log(debugLogStart + debugLogFlashcards + debugLogEnd);
+    dart_developer.log(debugLogStart + debugLogFlashcards + debugLogEnd);
 
     return flashcards.where((card) => card.flashcardSetId == fcSet.id).toList();
   }

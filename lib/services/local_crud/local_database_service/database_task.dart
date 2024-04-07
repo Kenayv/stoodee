@@ -4,7 +4,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseTask {
   final int id;
   final int userId;
-  final String text;
+  final String text; //FIXME: make this changable to optimize db loading.
 
   DatabaseTask({
     required this.id,

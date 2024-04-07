@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:lottie/lottie.dart';
-import 'package:stoodee/services/local_crud/flashcard_service.dart';
+import 'package:stoodee/services/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 
@@ -61,11 +61,15 @@ class _FlashCardsReader extends State<FlashCardsReader>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DatabaseFlashcard>>(
-      future: FlashcardService().loadFlashcardsFromSet(fcSet: widget.fcSet),
+      future: FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             final List<DatabaseFlashcard> flashcards = snapshot.data!;
+
+            final DatabaseFlashcard currentFlashCard =
+                FlashcardsService().getRandFcFromList(fcList: flashcards);
+
             final DatabaseFlashcardSet currentSet = widget.fcSet;
             double indicatorValue = isNotZero(completed, currentSet.pairCount);
 
@@ -125,14 +129,18 @@ class _FlashCardsReader extends State<FlashCardsReader>
                         const SizedBox(
                           height: 20,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 300,
                           height: 300,
                           child: FlipCard(
                             side: CardSide.FRONT,
                             direction: FlipDirection.VERTICAL,
-                            front: ReusableCard(text: "lollo"),
-                            back: ReusableCard(text: "ollol"),
+                            front: ReusableCard(
+                              text: currentFlashCard.frontText,
+                            ),
+                            back: ReusableCard(
+                              text: currentFlashCard.backText,
+                            ),
                           ),
                         ),
                         Row(
