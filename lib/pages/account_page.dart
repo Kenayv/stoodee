@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -17,8 +18,12 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPage extends State<AccountPage> {
-  void gotomain() {
+  void gotologin() {
     context.go('/');
+  }
+
+  void nothing(){
+    print("nothing");
   }
 
 
@@ -27,8 +32,8 @@ class _AccountPage extends State<AccountPage> {
     if(AuthService.firebase().currentUser == null) {
       return StoodeeButton(onPressed: () async {
         await SharedPrefs().setRememberLogin(value: false);
-        context.go("/");
-      },
+        gotologin();
+        },
           child: Text("Log-in",style:buttonTextStyle)
       );
 
@@ -36,8 +41,8 @@ class _AccountPage extends State<AccountPage> {
     else {
       return StoodeeButton(onPressed: () async{
         await SharedPrefs().setRememberLogin(value: false);
-        context.go("/");
-      },
+        gotologin();
+        },
           child: Text("Log-out",style:buttonTextStyle)
       );
     }
@@ -53,19 +58,38 @@ class _AccountPage extends State<AccountPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Gap(10),
+            Stack(children: [
+              Align(alignment: Alignment.center ,child: Image.asset('lib/assets/BurnOutSorry.png',width:200,height:200)),
+              Align(alignment: Alignment.topRight, child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: StoodeeButton(child: Icon(Icons.settings,color: Colors.white,), onPressed: nothing),
+              ))
 
-            Container(
-                height: 200,
-                child:Text("image placeholder")
 
+            ]
 
             ),
+            Gap(30),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                      )
+                    ]
+                  ),
+                  height: MediaQuery.of(context).size.height*0.3,
 
-            Container(
-                height: 200,
-                child:Text("stats placeholder")
+                  child:Text("stats placeholder")
 
 
+              ),
             ),
             Expanded(child: Container()),
             Row(

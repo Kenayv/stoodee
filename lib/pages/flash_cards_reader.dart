@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flip_card/flip_card.dart';
@@ -208,14 +210,19 @@ class _FlashCardsReader extends State<FlashCardsReader>
                   ),
                   IgnorePointer(
                     child: Lottie.asset(
+                      alignment: Alignment.center,
+
                       'lib/assets/sparkle.json',
                       controller: _controller,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
+
+                      height: MediaQuery.of(context).size.height*0.45,
+                      width: MediaQuery.of(context).size.width*0.45,
                       fit: BoxFit.cover,
                       repeat: false,
                     ),
                   ),
+
+
                 ],
               ),
             );
