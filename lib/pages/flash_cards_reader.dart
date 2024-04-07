@@ -19,11 +19,16 @@ class FlashCardsReader extends StatefulWidget {
 
   @override
   State<FlashCardsReader> createState() => _FlashCardsReader();
+
+
+
 }
 
 class _FlashCardsReader extends State<FlashCardsReader>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
+
+  late Future<List<DatabaseFlashcard>> _initializeWidgetFuture;
 
   @override
   void initState() {
@@ -31,6 +36,8 @@ class _FlashCardsReader extends State<FlashCardsReader>
     imageCache.clear();
     _controller =
         AnimationController(vsync: this, duration: Durations.extralong4);
+
+     _initializeWidgetFuture=FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet);
   }
 
   @override
@@ -61,7 +68,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DatabaseFlashcard>>(
-      future: FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet),
+      future: _initializeWidgetFuture,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
