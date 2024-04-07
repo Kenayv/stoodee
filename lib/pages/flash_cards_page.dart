@@ -10,6 +10,7 @@ import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 
 import '../services/flashcard_service.dart';
 import '../utilities/reusables/reusable_stoodee_button.dart';
+import '../utilities/reusables/custom_flash_card_set_widget.dart';
 
 const double iconSize = 40;
 
@@ -22,106 +23,8 @@ class FlashcardsPage extends StatefulWidget {
   State<FlashcardsPage> createState() => _FlashcardsPage();
 }
 
-void tap(BuildContext context, SetContainer container) {
-  context.go('/flash_cards_reader', extra: container);
-}
 
-void deletingfunction() {
-  //FIXME: ONLY DEBUGGING OPTION, LINK IT TO A REAL FUNCTION LATER
-  print("deleted");
-}
 
-ListTile _flashcardSetItem({
-  required BuildContext context,
-  required DatabaseFlashcardSet fcSet,
-  required String name,
-}) {
-  return ListTile(
-    title: Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: analogusColor,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Center(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Gap(10),
-              Container(
-                alignment: Alignment.topCenter,
-                height: 35,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    //TODO: MAKE THEM DO SOMETHING WITH BUTTONS, AND SPACE THEM CORRECTLY
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 8,
-                      child: TextButton(
-                          onPressed: () async {
-                            await showAddFlashcardDialog(
-                              context: context,
-                              fcSet: fcSet,
-                            );
-                          },
-                          child: const Icon(
-                            Icons.add,
-                            size: 20,
-                            color: Colors.white,
-                          )),
-                    ),
-
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width / 8,
-                        child: TextButton(
-                            onPressed: () {
-                              print("favorite");
-                            },
-                            child: const Icon(Icons.star,
-                                size: 20, color: Colors.white))),
-
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width / 8,
-                        child: TextButton(
-                            onPressed: () {
-                              print("lock");
-                            },
-                            child: const Icon(Icons.lock,
-                                size: 20, color: Colors.white))),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: Text(
-                  name,
-                  style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  height: 100,
-                  child: Text(
-                    'Pair count: ${fcSet.pairCount}',
-                    style: const TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-    onTap: () => tap(context, SetContainer(currentSet: fcSet, name: name)),
-    onLongPress: deletingfunction,
-  );
-}
 
 List<Widget> flashcardSetListView({
   required BuildContext context,
@@ -130,7 +33,7 @@ List<Widget> flashcardSetListView({
   List<Widget> flashcardList = [];
 
   for (int i = 0; i < fcSets.length; i++) {
-    flashcardList.add(_flashcardSetItem(
+    flashcardList.add(FlashCardSetWidget(
       context: context,
       fcSet: fcSets[i],
       name: fcSets[i].name,
