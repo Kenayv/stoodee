@@ -11,6 +11,7 @@ import 'package:stoodee/pages/achievements_page.dart';
 import 'package:stoodee/pages/account_page.dart';
 import 'package:stoodee/pages/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
+import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/utilities/containers.dart';
 
 import '../../utilities/dialogs/dialog_page.dart';
@@ -203,6 +204,20 @@ final GoRouter goRouterService = GoRouter(
             path: '/Account',
             pageBuilder: (context, state) {
               final fromIndex = state.extra ?? "none";
+
+              //FIXME
+              //FIXME
+              //FIXME
+
+              debug___Print___info(
+                sharedprefs: true,
+                authService: true,
+                localDbUser: true,
+              );
+
+              //FIXME
+              //FIXME
+              //FIXME
 
               int whereIndex = 5;
 

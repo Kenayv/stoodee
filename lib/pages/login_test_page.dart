@@ -26,22 +26,16 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-
-  bool rememberBool=false;
+  bool rememberBool = false;
 
   void initState() {
     super.initState();
 
     //yeah wtf does that mean, it runs gotoMain after build is finished
-    if(SharedPrefs().rememberLoginData){
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => gotoMain());
+    if (SharedPrefs().rememberLoginData) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => gotoMain());
     }
-
-
   }
-
-
 
   void gotoMain() {
     context.go(
@@ -80,18 +74,30 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left:4),
-                    child: GestureDetector(onTap: (){
-                      context.go('/Main');
-                    },child: Text("skip log-in",style: TextStyle(fontSize: 12,color: Colors.grey.shade400,decoration: TextDecoration.underline,decorationColor: Colors.grey.shade400),)),
-                  )
+              Row(children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: GestureDetector(
+                      onTap: () {
+                        context.go('/Main');
+                      },
+                      child: Text(
+                        "skip log-in",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade400,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.grey.shade400),
+                      )),
+                )
               ]),
-              Expanded(child: Container(),flex:1),
-              Gap(MediaQuery.of(context).size.height*0.01),
-              Image.asset('lib/assets/BaseLogoSwanResized.png',width: 140,height:140,),
+              Expanded(child: Container(), flex: 1),
+              Gap(MediaQuery.of(context).size.height * 0.01),
+              Image.asset(
+                'lib/assets/BaseLogoSwanResized.png',
+                width: 140,
+                height: 140,
+              ),
               Gap(25),
               SizedBox(
                 height: 35,
@@ -105,18 +111,27 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                     repeatForever: false,
                     isRepeatingAnimation: false,
                     animatedTexts: [
-                      TypewriterAnimatedText('Thanks for being with us :D',speed: const Duration(milliseconds: 150),curve: Curves.decelerate,cursor: "|"),
-                      TypewriterAnimatedText('It means a lot! ^^',speed: const Duration(milliseconds: 100),curve: Curves.decelerate,cursor: "|"),
-                      TypewriterAnimatedText('~Stoodee dev team',speed: const Duration(milliseconds: 100),curve: Curves.decelerate,cursor: "|"),
-
+                      TypewriterAnimatedText('Thanks for being with us :D',
+                          speed: const Duration(milliseconds: 150),
+                          curve: Curves.decelerate,
+                          cursor: "|"),
+                      TypewriterAnimatedText('It means a lot! ^^',
+                          speed: const Duration(milliseconds: 100),
+                          curve: Curves.decelerate,
+                          cursor: "|"),
+                      TypewriterAnimatedText('~Stoodee dev team',
+                          speed: const Duration(milliseconds: 100),
+                          curve: Curves.decelerate,
+                          cursor: "|"),
                     ],
                   ),
                 ),
               ),
               Gap(10),
-              Text("Log-in ",style: TextStyle(color:Colors.grey)),
+              Text("Log-in ", style: TextStyle(color: Colors.grey)),
               Padding(
-                padding: const EdgeInsets.only(left:25.0 ,right:25.0,top:10,bottom:25),
+                padding: const EdgeInsets.only(
+                    left: 25.0, right: 25.0, top: 10, bottom: 25),
                 child: TextField(
                   textInputAction: TextInputAction.next,
                   autocorrect: false,
@@ -125,36 +140,33 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryAppColor),
-                      ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryAppColor),
+                    ),
                     fillColor: Colors.grey.shade200,
-                    filled:true,
-
+                    filled: true,
                   ),
-
-
                   controller: emailController,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top:15.0,left:25,right:25,bottom:5),
+                padding: const EdgeInsets.only(
+                    top: 15.0, left: 25, right: 25, bottom: 5),
                 child: TextField(
                   textInputAction: TextInputAction.done,
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
-                  decoration: InputDecoration(hintText: 'Password',
-                      enabledBorder: OutlineInputBorder(
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
-                ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: primaryAppColor),
-                  ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryAppColor),
+                    ),
                     fillColor: Colors.grey.shade200,
-                    filled:true,
-
-
+                    filled: true,
                   ),
                   controller: passwordController,
                 ),
@@ -162,34 +174,25 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Remember me",style: TextStyle(
-                    color: Colors.grey.shade400
-                  )),
-
-                  StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                  Text("Remember me",
+                      style: TextStyle(color: Colors.grey.shade400)),
+                  StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
                     return Checkbox(
-                        value: rememberBool,
-                        onChanged: (newValue) async{
-                      setState(() {
-                        rememberBool=newValue!;
-                      }
-
-
-                      );
-
-
-                    },
-
+                      value: rememberBool,
+                      onChanged: (newValue) async {
+                        setState(() {
+                          rememberBool = newValue!;
+                        });
+                      },
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),
                       ),
                       side: MaterialStateBorderSide.resolveWith(
-                            (states) => BorderSide(width: 2.0, color: primaryAppColor),
+                        (states) =>
+                            BorderSide(width: 2.0, color: primaryAppColor),
                       ),
-
                     );
-
-
                   }),
                   Gap(20),
                 ],
@@ -204,7 +207,8 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                           emailController.text,
                           passwordController.text,
                         );
-                        await SharedPrefs().setRememberLogin(value:rememberBool);
+                        await SharedPrefs()
+                            .setRememberLogin(value: rememberBool);
 
                         await AuthService.firebase().sendEmailVerification();
                         goToEmailVerification();
@@ -212,24 +216,26 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                         ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
                             "Account with this e-mail addresss already exists"));
                       } on InvalidEmailAuthException {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(createSnackbar("Incorrect email entered"));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            createSnackbar("Incorrect email entered"));
                       } on GenericAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSnackbar("Enter email and password to Sign-Up"));
+                            createSnackbar(
+                                "Enter email and password to Sign-Up"));
                       } on WeakPasswordAuthException {
-                        ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
-                            "Password must contain at least 8 characters"));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            createSnackbar(
+                                "Password must contain at least 8 characters"));
                       } catch (e) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(createSnackbar(e.toString()));
                       }
                     },
-
-                    child:  Text('Sign-up',style:buttonTextStyle,),
-
+                    child: Text(
+                      'Sign-up',
+                      style: buttonTextStyle,
+                    ),
                   ),
-
                   StoodeeButton(
                     onPressed: () async {
                       try {
@@ -238,7 +244,8 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                           passwordController.text,
                         );
 
-                        await SharedPrefs().setRememberLogin(value:rememberBool);
+                        await SharedPrefs()
+                            .setRememberLogin(value: rememberBool);
 
                         if (AuthService.firebase().currentUser == null) {
                           throw UserNotLoggedInAuthException();
@@ -247,7 +254,9 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                         //FIXME: DEBUG LOG
                         log('Logging in with: ${LocalDbController().currentUser}');
 
-                        if (!AuthService.firebase().currentUser!.isEmailVerified) {
+                        if (!AuthService.firebase()
+                            .currentUser!
+                            .isEmailVerified) {
                           goToEmailVerification();
                         } else {
                           gotoMain();
@@ -257,27 +266,18 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                             createSnackbar("Incorrect email or password"));
                       } on GenericAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSnackbar("Enter email and password to log-in"));
+                            createSnackbar(
+                                "Enter email and password to log-in"));
                       } catch (e) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(createSnackbar(e.toString()));
                       }
                     },
-                    child:  Text('Log-in',style:buttonTextStyle),
+                    child: Text('Log-in', style: buttonTextStyle),
                   ),
-
-
                 ],
-
               ),
-
-
-
-
-            Expanded(child: Container(),flex:3),
-
-
-
+              Expanded(child: Container(), flex: 3),
             ],
           ),
         ),

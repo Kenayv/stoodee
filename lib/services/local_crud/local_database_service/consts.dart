@@ -1,5 +1,11 @@
 //FIXME: remove debug prefix
-const dbName = 'debug4_tasks.db';
+import 'dart:developer';
+
+import 'package:stoodee/services/auth/auth_service.dart';
+import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
+import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
+
+const dbName = 'debug10_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -8,7 +14,15 @@ const flashcardTable = 'flashcard';
 
 const idColumn = 'ID';
 const emailColumn = 'email';
-const lastSyncedColumn = 'lastSyncedColumn';
+const lastSyncedColumn = 'last_synced_column';
+const lastStudiedColumn = 'last_studied_column';
+
+const nameColumn = 'name';
+const dailyGoalFlashcardsColumn = 'daily_goal_flashcards';
+const dailyGoalTasksColumn = 'daily_goal_tasks';
+
+const tasksCompletedTodayColumn = 'tasks_completed_today';
+const flashcardsCompletedTodayColumn = 'flashcards_completed_today';
 
 const textColumn = 'text';
 const userIdColumn = 'user_id';
@@ -20,22 +34,30 @@ const backTextColumn = 'back_text';
 
 const displayAfterDateColumn = 'display_after_date';
 const cardDifficultyColumn = 'card_difficulty';
-const nameColumn = 'name';
-
 const pairCountColumn = 'pair_count';
 
 const minFlashCardDifficulty = 0;
 const defaultFlashcardDifficulty = 5;
 const maxFlashCardDifficulty = 10;
 
-const defaultDateStringValue = '1990-01-01 00:00:00';
-const notLoggedInUserEmail = 'null.user@stoodee.fakemail';
+const defaultDailyTaskGoal = 5;
+const defaultDailyFlashcardsGoal = 15;
+
+const defaultDateStr = '1990-01-01 00:00:00';
+const defaultUserName = 'Hello Dolly!';
+const defaultNullUserEmail = 'null.user@stoodee.fakemail';
 
 const createUserTable = ''' 
   CREATE TABLE IF NOT EXISTS "$userTable" (
     "$idColumn"	INTEGER NOT NULL UNIQUE,
     "$emailColumn"	TEXT NOT NULL UNIQUE,
-    "$lastSyncedColumn" TEXT NOT NULL DEFAULT '$defaultDateStringValue',
+    "$nameColumn" TEXT NOT NULL DEFAULT "$defaultUserName",
+    "$lastSyncedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
+    "$lastStudiedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
+    "$dailyGoalFlashcardsColumn" INTEGER NOT NULL DEFAULT "$defaultDailyFlashcardsGoal",
+    "$dailyGoalTasksColumn" INTEGER NOT NULL DEFAULT "$defaultDailyTaskGoal",
+    "$flashcardsCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
+    "$tasksCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$idColumn" AUTOINCREMENT)
   );
 ''';
@@ -67,8 +89,8 @@ const createFlashcardTable = '''
     "$flashcardSetIdColumn"	INTEGER NOT NULL,
     "$frontTextColumn"	TEXT NOT NULL,
     "$backTextColumn"	TEXT NOT NULL,
-    "$displayAfterDateColumn"	TEXT NOT NULL DEFAULT '$defaultDateStringValue',
-    "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT $defaultFlashcardDifficulty,
+    "$displayAfterDateColumn"	TEXT NOT NULL DEFAULT "$defaultDateStr",
+    "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT "$defaultDateStr",
     PRIMARY KEY("$idColumn" AUTOINCREMENT),
     FOREIGN KEY("$flashcardSetIdColumn") REFERENCES "$flashcardSetTable"("$idColumn")
   );
@@ -96,4 +118,30 @@ DateTime parseStringToDateTime(String date) {
 
 String getCurrentDateAsFormattedString() {
   return DateTime.now().toString().substring(0, 19);
+}
+
+void debug___Print___info({
+  required bool sharedprefs,
+  required bool authService,
+  required bool localDbUser,
+}) {
+  String allDebugStrings;
+  allDebugStrings = '[START] ALL INFO PRINT [START]\n\n';
+
+  if (sharedprefs) {
+    allDebugStrings +=
+        'Initialized [sharedPrefs] with values:\n   remember has seen intro = [${SharedPrefs().rememberHasSeenIntro}]\n   remember Login Data = [${SharedPrefs().rememberLoginData}]\n\n\n';
+  }
+  if (authService) {
+    allDebugStrings +=
+        'Initialized AuthService with values:\n   Current user = [${AuthService.firebase().currentUser ?? 'null'}]\n\n\n';
+  }
+  if (localDbUser) {
+    allDebugStrings +=
+        'Initialized localdb with values:\n   Current user = [${LocalDbController().currentUser.toString()}]\n\n';
+  }
+
+  allDebugStrings += '[END] Debug log After Init [END]\n.';
+
+  log(allDebugStrings);
 }

@@ -15,7 +15,7 @@ class AuthService implements AuthProvider {
     required String email,
     required String password,
   }) async {
-    await LocalDbController().createOrLoginAndSetUser(email: email);
+    await LocalDbController().createOrLoginUser(email: email);
     return await provider.createUser(email: email, password: password);
   }
 
@@ -27,7 +27,7 @@ class AuthService implements AuthProvider {
     required String email,
     required String password,
   }) async {
-    await LocalDbController().createOrLoginAndSetUser(email: email);
+    await LocalDbController().createOrLoginUser(email: email);
     return await provider.logIn(email: email, password: password);
   }
 

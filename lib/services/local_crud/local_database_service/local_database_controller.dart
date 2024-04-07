@@ -23,16 +23,16 @@ class LocalDbController {
     await openDb();
     await initNullUser();
 
-    final String userEmail =
-        AuthService.firebase().currentUser?.email ?? notLoggedInUserEmail;
+    final String email =
+        AuthService.firebase().currentUser?.email ?? defaultNullUserEmail;
 
-    _currentUser = await getUserOrNull(email: userEmail) ?? await getNullUser();
+    _currentUser = await createOrLoginUser(email: email);
   }
 
   //Current user is set to nullUser before logging in.
   Future<void> initNullUser() async {
-    DatabaseUser? nullUser = await getUserOrNull(email: notLoggedInUserEmail);
-    nullUser ??= await createUser(email: notLoggedInUserEmail);
+    DatabaseUser? nullUser = await getUserOrNull(email: defaultNullUserEmail);
+    nullUser ??= await createUser(email: defaultNullUserEmail);
   }
 
   Future<void> openDb() async {
@@ -81,7 +81,9 @@ class LocalDbController {
     if (deletedCount != 1) throw CouldNotDeleteUser();
   }
 
-  Future<DatabaseUser> createUser({required String email}) async {
+  Future<DatabaseUser> createUser({
+    required String email,
+  }) async {
     final db = _getDatabaseOrThrow();
 
     final result = await db.query(
@@ -100,10 +102,17 @@ class LocalDbController {
     return DatabaseUser(
       id: userId,
       email: email,
+      name: defaultUserName,
+      lastSynced: parseStringToDateTime(defaultDateStr),
+      lastStudied: parseStringToDateTime(defaultDateStr),
+      dailyGoalFlashcards: defaultDailyFlashcardsGoal,
+      dailyGoalTasks: defaultDailyTaskGoal,
+      tasksCompletedToday: 0,
+      flashcardsCompletedToday: 0,
     );
   }
 
-  Future<DatabaseUser> createOrLoginAndSetUser({required String email}) async {
+  Future<DatabaseUser> createOrLoginUser({required String email}) async {
     DatabaseUser? user = await getUserOrNull(email: email);
 
     user ??= await createUser(email: email);
@@ -209,7 +218,7 @@ class LocalDbController {
   Future<DatabaseUser> getNullUser() async {
     if (_db == null) throw DatabaseIsNotOpened();
 
-    return await getUser(email: notLoggedInUserEmail);
+    return await getUser(email: defaultNullUserEmail);
   }
 
   void setCurrentUser(DatabaseUser user) =>
@@ -364,7 +373,7 @@ class LocalDbController {
       backText: backText,
       frontText: frontText,
       cardDifficulty: defaultFlashcardDifficulty,
-      displayAfterDate: parseStringToDateTime(defaultDateStringValue),
+      displayAfterDate: parseStringToDateTime(defaultDateStr),
     );
 
     return flashcard;
