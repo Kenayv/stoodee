@@ -31,12 +31,20 @@ class LocalDbController {
     //FIXME
     //1.reset user's daily completed flashcards if day has passed.
     //2.break user's streak if two or more days have passed
+    //FIXME
   }
 
   //Current user is set to nullUser before logging in.
   Future<void> initNullUser() async {
     DatabaseUser? nullUser = await getUserOrNull(email: defaultNullUserEmail);
-    nullUser ??= await createUser(email: defaultNullUserEmail);
+
+    if (nullUser == null) {
+      nullUser = await createUser(email: defaultNullUserEmail);
+      await setUserName(
+        user: nullUser,
+        name: "Not Logged In!",
+      );
+    }
   }
 
   Future<void> incrFcsCompletedToday({

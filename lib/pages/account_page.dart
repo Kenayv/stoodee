@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
+import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
@@ -22,34 +23,30 @@ class _AccountPage extends State<AccountPage> {
     context.go('/');
   }
 
-  void nothing(){
+  void nothing() {
     print("nothing");
   }
 
-
-  StoodeeButton resolveWhichButton(){
-
-    if(AuthService.firebase().currentUser == null) {
-      return StoodeeButton(onPressed: () async {
-        await SharedPrefs().setRememberLogin(value: false);
-        gotologin();
-        },
-          child: Text("Log-in",style:buttonTextStyle)
-      );
-
-      }
-    else {
-      return StoodeeButton(onPressed: () async{
-        await SharedPrefs().setRememberLogin(value: false);
-        gotologin();
-        },
-          child: Text("Log-out",style:buttonTextStyle)
-      );
+  StoodeeButton resolveWhichButton() {
+    if (AuthService.firebase().currentUser == null) {
+      return StoodeeButton(
+          onPressed: () async {
+            await SharedPrefs().setRememberLogin(value: false);
+            gotologin();
+          },
+          child: Text("Log-in", style: buttonTextStyle));
+    } else {
+      return StoodeeButton(
+          onPressed: () async {
+            await SharedPrefs().setRememberLogin(value: false);
+            await AuthService.firebase().logOut();
+            final loggedOutUser = await LocalDbController().getNullUser();
+            await LocalDbController().setCurrentUser(loggedOutUser);
+            gotologin();
+          },
+          child: Text("Log-out", style: buttonTextStyle));
     }
-
-      }
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,54 +57,53 @@ class _AccountPage extends State<AccountPage> {
           children: <Widget>[
             Gap(10),
             Stack(children: [
-              Align(alignment: Alignment.center ,child: Image.asset('lib/assets/BurnOutSorry.png',width:200,height:200)),
-              Align(alignment: Alignment.topRight, child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: StoodeeButton(child: Icon(Icons.settings,color: Colors.white,), onPressed: nothing),
-              ))
-
-
-            ]
-
-            ),
+              Align(
+                  alignment: Alignment.center,
+                  child: Image.asset('lib/assets/BurnOutSorry.png',
+                      width: 200, height: 200)),
+              Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: StoodeeButton(
+                        child: Icon(
+                          Icons.settings,
+                          color: Colors.white,
+                        ),
+                        onPressed: nothing),
+                  ))
+            ]),
             Gap(30),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                width: double.infinity,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                      )
-                    ]
-                  ),
-                  height: MediaQuery.of(context).size.height*0.3,
-
-                  child:Text("stats placeholder")
-
-
-              ),
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                        )
+                      ]),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: Text("stats placeholder")),
             ),
             Expanded(child: Container()),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(width:MediaQuery.of(context).size.width*0.2),
-
+                Container(width: MediaQuery.of(context).size.width * 0.2),
                 resolveWhichButton(),
-
-
-
-                StoodeeButton(child:Icon(Icons.sync,color:Colors.white),onPressed: (){showAddTaskDialog(context: context);},),
+                StoodeeButton(
+                  child: Icon(Icons.sync, color: Colors.white),
+                  onPressed: () {
+                    showAddTaskDialog(context: context);
+                  },
+                ),
               ],
-
             ),
             Gap(20),
-
-
           ],
         ),
       ),

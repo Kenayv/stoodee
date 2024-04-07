@@ -14,11 +14,6 @@ void main() async {
     authService: true,
     localDbUser: true,
   );
-  //FIXME
-  //FIXME
-  // LOGOUT W ACCOUT NIE LOGOUTUJE
-  //FIXME
-  //FIXME
 
   runApp(const MyApp());
 }
