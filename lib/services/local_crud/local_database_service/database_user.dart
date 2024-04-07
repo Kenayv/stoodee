@@ -10,6 +10,7 @@ class DatabaseUser {
   late int _dailyGoalTasks;
   late int _tasksCompletedToday;
   late int _flashcardsCompletedToday;
+  late int _dayStreak;
 
   DatabaseUser({
     required this.id,
@@ -21,13 +22,15 @@ class DatabaseUser {
     required int dailyGoalTasks,
     required int flashcardsCompletedToday,
     required int tasksCompletedToday,
+    required int dayStreak,
   })  : _name = name,
         _lastSynced = lastSynced,
         _lastStudied = lastStudied,
         _dailyGoalFlashcards = dailyGoalFlashcards,
         _dailyGoalTasks = dailyGoalTasks,
         _flashcardsCompletedToday = flashcardsCompletedToday,
-        _tasksCompletedToday = tasksCompletedToday;
+        _tasksCompletedToday = tasksCompletedToday,
+        _dayStreak = dayStreak;
 
   DatabaseUser.fromRow(Map<String, Object?> map)
       : id = map[idColumn] as int,
@@ -38,7 +41,8 @@ class DatabaseUser {
         _dailyGoalFlashcards = map[dailyGoalFlashcardsColumn] as int,
         _dailyGoalTasks = map[dailyGoalTasksColumn] as int,
         _flashcardsCompletedToday = map[flashcardsCompletedTodayColumn] as int,
-        _tasksCompletedToday = map[tasksCompletedTodayColumn] as int;
+        _tasksCompletedToday = map[tasksCompletedTodayColumn] as int,
+        _dayStreak = map[dayStreakColumn] as int;
 
   String get name => _name;
   DateTime get lastSynced => _lastSynced;
@@ -47,12 +51,15 @@ class DatabaseUser {
   int get dailyGoalTaskws => _dailyGoalTasks;
   int get flashcardsCompletedToday => _flashcardsCompletedToday;
   int get tasksCompletedToday => _tasksCompletedToday;
+  int get dayStreak => _dayStreak;
 
   void setLastSynced(DateTime date) => _lastSynced = date;
   void setLastStudied(DateTime date) => _lastStudied = date;
   void setName(String name) => _name = name;
-  void setDailyGoalFlashCards(int goal) => _dailyGoalFlashcards = goal;
-  void setDailyGoalTasks(int goal) => _dailyGoalTasks = goal;
+  void setDailyFlashcardsGoal(int goal) => _dailyGoalFlashcards = goal;
+  void setDailyTaskGoal(int goal) => _dailyGoalTasks = goal;
+  void setDayStreak(int streak) =>
+      _dayStreak = streak; //FIXME idk if this is needed there!!!
 
   void setFcCompletedToday(int completed) =>
       _flashcardsCompletedToday = completed;
@@ -62,7 +69,7 @@ class DatabaseUser {
 
   @override
   String toString() =>
-      'UserID = [$id],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n    lastStudied = [$lastStudied]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n ';
+      'UserID = [$id],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n    lastStudied = [$lastStudied]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   dayStreak = [$dayStreak]\n';
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;

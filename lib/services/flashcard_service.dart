@@ -35,6 +35,13 @@ class FlashcardsService {
     return fcList[randIndex];
   }
 
+  Future<void> incrFcsCompletedToday() async {
+    final user = LocalDbController().currentUser;
+    await LocalDbController().incrFcsCompletedToday(
+      user: user,
+    );
+  }
+
   Future<List<DatabaseFlashcardSet>> getFlashcardSets() async {
     await _loadFcSets();
 
@@ -144,4 +151,8 @@ class FlashcardsService {
 
   List<DatabaseFlashcardSet> get fcSets =>
       _initialized ? _flashcardSets! : throw FcServiceNotInitialized();
+
+  int get fcsCompletedToday => _initialized
+      ? LocalDbController().currentUser.flashcardsCompletedToday
+      : throw FcServiceNotInitialized();
 }

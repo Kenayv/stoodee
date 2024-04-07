@@ -5,7 +5,7 @@ import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
-const dbName = 'debug10_tasks.db';
+const dbName = 'debug11_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -23,6 +23,7 @@ const dailyGoalTasksColumn = 'daily_goal_tasks';
 
 const tasksCompletedTodayColumn = 'tasks_completed_today';
 const flashcardsCompletedTodayColumn = 'flashcards_completed_today';
+const dayStreakColumn = 'day_streak';
 
 const textColumn = 'text';
 const userIdColumn = 'user_id';
@@ -58,6 +59,7 @@ const createUserTable = '''
     "$dailyGoalTasksColumn" INTEGER NOT NULL DEFAULT "$defaultDailyTaskGoal",
     "$flashcardsCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
     "$tasksCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
+    "$dayStreakColumn" INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$idColumn" AUTOINCREMENT)
   );
 ''';

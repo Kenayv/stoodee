@@ -41,3 +41,9 @@ class FcSetAlreadyExists implements Exception {}
 class FcSetDoesNotExist implements Exception {}
 
 class FlashcardListEmpty implements Exception {}
+
+class CouldnotUpdateDailyGoal implements Exception {}
+
+class CouldNotFindFlashCard implements Exception {}
+
+class CouldNotUpdateUser implements Exception {}
