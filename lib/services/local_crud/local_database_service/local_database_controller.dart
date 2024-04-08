@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
@@ -26,12 +28,57 @@ class LocalDbController {
     final String email =
         AuthService.firebase().currentUser?.email ?? defaultNullUserEmail;
 
-    _currentUser = await createOrLoginUser(email: email);
+    _currentUser = await loginOrCreateUser(email: email);
 
-    //FIXME
-    //1.reset user's daily completed flashcards if day has passed.
-    //2.break user's streak if two or more days have passed
-    //FIXME
+    await initAndSetUserStreak(user: _currentUser!);
+  }
+
+  //FIXME: split it into 2 methods. one for streak one for tasks and fcs
+  Future<void> initAndSetUserStreak({required DatabaseUser user}) async {
+    var ___debugInt___ = 0;
+
+    //Resets user's Fcs and tasks completed today to 0 if user hadn't studied today.
+    if (daysDifferenceFromNow(user.lastStudied) <= -1) {
+      final db = _getDatabaseOrThrow();
+
+      final updateCount = await db.update(
+        userTable,
+        {
+          tasksCompletedTodayColumn: 0,
+          flashcardsCompletedTodayColumn: 0,
+        },
+        where: '$idColumn = ?',
+        whereArgs: [user.id],
+      );
+
+      ___debugInt___ += updateCount;
+      if (updateCount != 1) throw CouldNotUpdateTask();
+    }
+
+    //Resets user's streak if user hadn't finished a daily goal for more than 1 day
+    if (daysDifferenceFromNow(user.lastStreakBroken) <= -2) {
+      final db = _getDatabaseOrThrow();
+
+      final updateCount = await db.update(
+        userTable,
+        {dayStreakColumn: 0},
+        where: '$idColumn = ?',
+        whereArgs: [user.id],
+      );
+
+      ___debugInt___ += updateCount;
+      if (updateCount != 1) throw CouldNotUpdateTask();
+    }
+
+    String resetLog =
+        "[START] RESET LOG [START]\n\nReseted(OR NOT) user's streak data from:\n[dayStreak: ${user.dayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\nto\n";
+    //reload user's data
+    user = await getUser(email: user.email);
+
+    resetLog +=
+        "[dayStreak: ${user.dayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\n\n with updatesCount: $___debugInt___\n\n[END] RESET LOG [END]";
+
+    log(resetLog);
   }
 
   //Current user is set to nullUser before logging in.
@@ -44,6 +91,34 @@ class LocalDbController {
         user: nullUser,
         name: "Not Logged In!",
       );
+    }
+  }
+
+  Future<void> _updateUserStreakAfterChange(
+      {required DatabaseUser user}) async {
+    final db = _getDatabaseOrThrow();
+
+    if (daysDifferenceFromNow(user.lastStudied) != 0) {
+      user.setLastStudied(DateTime.now());
+    }
+
+    if (daysDifferenceFromNow(user.lastStreakBroken) != 0 &&
+        user.flashcardsCompletedToday >= user.dailyGoalFlashcards &&
+        user.tasksCompletedToday >= user.dailyGoalTasks) {
+      final updateCount = await db.update(
+        userTable,
+        {
+          lastStreakBrokenColumn: getCurrentDateAsFormattedString(),
+          dayStreakColumn: user.dayStreak + 1,
+        },
+        where: 'id = ?',
+        whereArgs: [user.id],
+      );
+
+      if (updateCount != 1) throw CouldNotUpdateUser();
+
+      user.setDayStreak(user.dayStreak + 1);
+      user.setLastStreakBroken(DateTime.now());
     }
   }
 
@@ -70,6 +145,7 @@ class LocalDbController {
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
 
     user.setFcCompletedToday(newCompletedCount);
+    await _updateUserStreakAfterChange(user: user);
   }
 
   Future<void> incrTasksCompletedToday({
@@ -95,6 +171,11 @@ class LocalDbController {
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
 
     user.setTasksCompletedToday(newCompletedCount);
+
+    if (daysDifferenceFromNow(user.lastStudied) != 0) {
+      user.setLastStudied(DateTime.now());
+    }
+    await _updateUserStreakAfterChange(user: user);
   }
 
   Future<void> openDb() async {
@@ -166,6 +247,7 @@ class LocalDbController {
       email: email,
       name: defaultUserName,
       lastSynced: parseStringToDateTime(defaultDateStr),
+      lastStreakBroken: parseStringToDateTime(defaultDateStr),
       lastStudied: parseStringToDateTime(defaultDateStr),
       dailyGoalFlashcards: defaultDailyFlashcardsGoal,
       dailyGoalTasks: defaultDailyTaskGoal,
@@ -175,7 +257,7 @@ class LocalDbController {
     );
   }
 
-  Future<DatabaseUser> createOrLoginUser({required String email}) async {
+  Future<DatabaseUser> loginOrCreateUser({required String email}) async {
     DatabaseUser? user = await getUserOrNull(email: email);
 
     user ??= await createUser(email: email);

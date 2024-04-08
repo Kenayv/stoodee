@@ -1,11 +1,11 @@
-//FIXME: remove debug prefix
 import 'dart:developer';
 
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
-const dbName = 'debug12_tasks.db';
+//FIXME: remove debug prefix
+const dbName = 'debug14_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -15,7 +15,8 @@ const flashcardTable = 'flashcard';
 const idColumn = 'ID';
 const emailColumn = 'email';
 const lastSyncedColumn = 'last_synced_column';
-const lastStudiedColumn = 'last_studied_column';
+const lastStreakBrokenColumn = 'last_streak_broken';
+const lastStudiedColumn = 'last_studied';
 
 const nameColumn = 'name';
 const dailyGoalFlashcardsColumn = 'daily_goal_flashcards';
@@ -54,6 +55,7 @@ const createUserTable = '''
     "$emailColumn"	TEXT NOT NULL UNIQUE,
     "$nameColumn" TEXT NOT NULL DEFAULT "$defaultUserName",
     "$lastSyncedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
+    "$lastStreakBrokenColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
     "$lastStudiedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
     "$dailyGoalFlashcardsColumn" INTEGER NOT NULL DEFAULT "$defaultDailyFlashcardsGoal",
     "$dailyGoalTasksColumn" INTEGER NOT NULL DEFAULT "$defaultDailyTaskGoal",
@@ -146,4 +148,9 @@ void debug___Print___info({
   allDebugStrings += '[END] Debug log After Init [END]\n.';
 
   log(allDebugStrings);
+}
+
+/// Returns the difference (in full days) between the provided date and today.
+int daysDifferenceFromNow(DateTime date) {
+  return date.difference(DateTime.now()).inDays;
 }

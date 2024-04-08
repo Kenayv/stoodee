@@ -67,9 +67,8 @@ class TodoService {
   }
 
   Future<void> incrTasksCompletedToday() async {
-    final user = LocalDbController().currentUser;
     await LocalDbController().incrTasksCompletedToday(
-      user: user,
+      user: LocalDbController().currentUser,
     );
   }
 }

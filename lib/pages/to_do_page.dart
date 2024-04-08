@@ -19,6 +19,7 @@ class ToDoPage extends StatefulWidget {
 class _ToDoPage extends State<ToDoPage> {
   Future<void> completeTask(DatabaseTask task) async {
     await TodoService().removeTask(task);
+    await TodoService().incrTasksCompletedToday();
     setState(() {});
   }
 
