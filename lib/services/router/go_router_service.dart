@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:stoodee/pages/flash_cards_page.dart';
 import 'package:stoodee/pages/to_do_page.dart';
 import 'package:stoodee/pages/email_verification_page.dart';
-import 'package:stoodee/pages/home_page.dart';
 import 'package:stoodee/pages/login_test_page.dart';
 import 'package:stoodee/pages/main_page.dart';
 import 'package:stoodee/pages/achievements_page.dart';
@@ -13,7 +12,6 @@ import 'package:stoodee/pages/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/utilities/containers.dart';
-
 import '../../utilities/dialogs/dialog_page.dart';
 import '../../utilities/dialogs/not_for_production_use/custom_dialog.dart';
 
@@ -296,7 +294,7 @@ final GoRouter goRouterService = GoRouter(
             //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
             pageBuilder: (BuildContext context, GoRouterState state) {
               return DialogPage(
-                builder: (_) => CustomDialog(
+                builder: (_) => const CustomDialog(
                   title: 'title',
                   content: 'content',
                 ),

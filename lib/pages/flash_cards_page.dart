@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
-import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
-import 'package:go_router/go_router.dart';
-import 'package:stoodee/utilities/containers.dart';
-import 'package:stoodee/utilities/globals.dart';
-import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
-
 import '../services/flashcard_service.dart';
 import '../utilities/reusables/reusable_stoodee_button.dart';
 import '../utilities/reusables/custom_flash_card_set_widget.dart';
@@ -22,9 +16,6 @@ class FlashcardsPage extends StatefulWidget {
   @override
   State<FlashcardsPage> createState() => _FlashcardsPage();
 }
-
-
-
 
 List<Widget> flashcardSetListView({
   required BuildContext context,

@@ -91,14 +91,14 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                       )),
                 )
               ]),
-              Expanded(child: Container(), flex: 1),
+              Expanded(flex: 1, child: Container()),
               Gap(MediaQuery.of(context).size.height * 0.01),
               Image.asset(
                 'lib/assets/BaseLogoSwanResized.png',
                 width: 140,
                 height: 140,
               ),
-              Gap(25),
+              const Gap(25),
               SizedBox(
                 height: 35,
                 child: DefaultTextStyle(
@@ -127,8 +127,8 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   ),
                 ),
               ),
-              Gap(10),
-              Text("Log-in ", style: TextStyle(color: Colors.grey)),
+              const Gap(10),
+              const Text("Log-in ", style: TextStyle(color: Colors.grey)),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 25.0, right: 25.0, top: 10, bottom: 25),
@@ -137,10 +137,10 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   autocorrect: false,
                   decoration: InputDecoration(
                     hintText: 'E-mail',
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: primaryAppColor),
                     ),
                     fillColor: Colors.grey.shade200,
@@ -159,10 +159,10 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   autocorrect: false,
                   decoration: InputDecoration(
                     hintText: 'Password',
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: primaryAppColor),
                     ),
                     fillColor: Colors.grey.shade200,
@@ -189,12 +189,12 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                         borderRadius: BorderRadius.circular(4.0),
                       ),
                       side: MaterialStateBorderSide.resolveWith(
-                        (states) =>
-                            BorderSide(width: 2.0, color: primaryAppColor),
+                        (states) => const BorderSide(
+                            width: 2.0, color: primaryAppColor),
                       ),
                     );
                   }),
-                  Gap(20),
+                  const Gap(20),
                 ],
               ),
               Row(
@@ -277,7 +277,7 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   ),
                 ],
               ),
-              Expanded(child: Container(), flex: 3),
+              Expanded(flex: 3, child: Container()),
             ],
           ),
         ),

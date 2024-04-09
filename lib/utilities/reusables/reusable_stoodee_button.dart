@@ -16,7 +16,7 @@ class StoodeeButton extends StatelessWidget {
       this.size = const Size(10, 10)});
 
   Widget resolveWidgetSize() {
-    if (size == Size(10, 10)) {
+    if (size == const Size(10, 10)) {
       return Padding(
         padding: const EdgeInsets.all(12.0),
         child: FittedBox(fit: BoxFit.fitWidth, child: child),

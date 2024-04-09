@@ -7,6 +7,7 @@ class CustomDialog extends StatelessWidget {
   final String content;
 
   const CustomDialog({
+    super.key,
     required this.title,
     required this.content,
   });
@@ -23,7 +24,7 @@ class CustomDialog extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop(); // Close the dialog
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
