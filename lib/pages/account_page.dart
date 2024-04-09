@@ -55,7 +55,7 @@ class _AccountPage extends State<AccountPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Gap(10),
+            const Gap(10),
             Stack(children: [
               Align(
                   alignment: Alignment.center,
@@ -66,14 +66,14 @@ class _AccountPage extends State<AccountPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: StoodeeButton(
-                        child: Icon(
+                        onPressed: nothing,
+                        child: const Icon(
                           Icons.settings,
                           color: Colors.white,
-                        ),
-                        onPressed: nothing),
+                        )),
                   ))
             ]),
-            Gap(30),
+            const Gap(30),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -81,13 +81,13 @@ class _AccountPage extends State<AccountPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.white,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.grey,
                         )
                       ]),
                   height: MediaQuery.of(context).size.height * 0.3,
-                  child: Text("stats placeholder")),
+                  child: const Text("stats placeholder")),
             ),
             Expanded(child: Container()),
             Row(
@@ -96,14 +96,14 @@ class _AccountPage extends State<AccountPage> {
                 Container(width: MediaQuery.of(context).size.width * 0.2),
                 resolveWhichButton(),
                 StoodeeButton(
-                  child: Icon(Icons.sync, color: Colors.white),
+                  child: const Icon(Icons.sync, color: Colors.white),
                   onPressed: () {
                     showAddTaskDialog(context: context);
                   },
                 ),
               ],
             ),
-            Gap(20),
+            const Gap(20),
           ],
         ),
       ),

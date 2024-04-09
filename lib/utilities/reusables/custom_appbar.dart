@@ -22,9 +22,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       height: 90, //TODO: In Future remove the height
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: primaryAppColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           /*
           BoxShadow(
@@ -34,7 +34,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
 
            */
-
         ],
       ),
       child: Padding(
@@ -56,9 +55,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: const Text("nothing"),
                     ),
                 Align(
-                  alignment: Alignment.centerRight,
-                  child: leftWidget ?? Text('')
-                )
+                    alignment: Alignment.centerRight,
+                    child: leftWidget ?? const Text(''))
               ],
             )
           ],

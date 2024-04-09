@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +27,7 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
 
   bool rememberBool = false;
 
+  @override
   void initState() {
     super.initState();
 

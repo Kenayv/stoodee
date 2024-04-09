@@ -374,7 +374,7 @@ class LocalDbController {
   }
 
   Future<void> setCurrentUser(DatabaseUser user) async {
-    final db = _getDatabaseOrThrow();
+    if (_db == null) throw DatabaseIsNotOpened();
 
     //Make sure the user exists and isn't hard-coded
     final dbUser = await getUser(email: user.email);

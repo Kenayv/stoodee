@@ -16,16 +16,12 @@ void deletingfunction() {
   print("deleted");
 }
 
-
-
-class FlashCardSetWidget extends StatefulWidget{
-
+class FlashCardSetWidget extends StatefulWidget {
   const FlashCardSetWidget({
     super.key,
-    required  this.context,
+    required this.context,
     required this.fcSet,
     required this.name,
-
   });
 
   @override
@@ -34,31 +30,25 @@ class FlashCardSetWidget extends StatefulWidget{
   final BuildContext context;
   final DatabaseFlashcardSet fcSet;
   final String name;
-
 }
 
-
-class _FlashCardSetWidgetState extends State<FlashCardSetWidget>{
-
+class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Container(
-          decoration:  BoxDecoration(
+          decoration: const BoxDecoration(
             color: analogusColor,
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color:primaryAppColor,
-
+                color: primaryAppColor,
                 spreadRadius: 1,
-                offset: Offset(3.0,1),
+                offset: Offset(3.0, 1),
               )
             ],
-
-
           ),
           child: Center(
             child: Column(
@@ -78,18 +68,14 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget>{
                                 context: context,
                                 fcSet: widget.fcSet,
                               );
-                              setState(() {
-
-                              });
+                              setState(() {});
                             },
-
                             child: const Icon(
                               Icons.add,
                               size: 20,
                               color: Colors.white,
                             )),
                       ),
-
                       SizedBox(
                           width: MediaQuery.of(context).size.width / 8,
                           child: TextButton(
@@ -98,7 +84,6 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget>{
                               },
                               child: const Icon(Icons.star,
                                   size: 20, color: Colors.white))),
-
                       SizedBox(
                           width: MediaQuery.of(context).size.width / 8,
                           child: TextButton(
@@ -136,10 +121,10 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget>{
           ),
         ),
       ),
-      onTap: () => tap(context, SetContainer(currentSet: widget.fcSet, name: widget.name)),
+      onTap: () => tap(
+          context, SetContainer(currentSet: widget.fcSet, name: widget.name)),
       splashColor: Colors.transparent,
       onLongPress: deletingfunction,
     );
   }
-
 }
