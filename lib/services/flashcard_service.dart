@@ -66,8 +66,9 @@ class FlashcardsService {
     return _flashcardSets!;
   }
 
-  Future<List<DatabaseFlashcard>> loadFlashcardsFromSet(
-      {required DatabaseFlashcardSet fcSet}) async {
+  Future<List<DatabaseFlashcard>> loadFlashcardsFromSet({
+    required DatabaseFlashcardSet fcSet,
+  }) async {
     final flashcards = await LocalDbController().getFlashcardsFromSet(
       fcSet: fcSet,
     );

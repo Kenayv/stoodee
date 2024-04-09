@@ -21,9 +21,6 @@ class FlashCardsReader extends StatefulWidget {
 
   @override
   State<FlashCardsReader> createState() => _FlashCardsReader();
-
-
-
 }
 
 class _FlashCardsReader extends State<FlashCardsReader>
@@ -39,7 +36,8 @@ class _FlashCardsReader extends State<FlashCardsReader>
     _controller =
         AnimationController(vsync: this, duration: Durations.extralong4);
 
-     _initializeWidgetFuture=FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet);
+    _initializeWidgetFuture =
+        FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet);
   }
 
   @override
@@ -74,7 +72,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            final List<DatabaseFlashcard> flashcards = snapshot.data!;
+            final List<DatabaseFlashcard> flashcards = snapshot.data ?? [];
 
             final DatabaseFlashcard currentFlashCard =
                 FlashcardsService().getRandFcFromList(fcList: flashcards);
@@ -161,6 +159,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
                                 completed++;
                                 setState(() {
                                   if (completed == currentSet.pairCount) {
+                                    FlashcardsService().incrFcsCompletedToday();
                                     var ticker = _controller.forward();
                                     ticker.whenComplete(
                                         () => _controller.reset());
@@ -211,18 +210,14 @@ class _FlashCardsReader extends State<FlashCardsReader>
                   IgnorePointer(
                     child: Lottie.asset(
                       alignment: Alignment.center,
-
                       'lib/assets/sparkle.json',
                       controller: _controller,
-
-                      height: MediaQuery.of(context).size.height*0.45,
-                      width: MediaQuery.of(context).size.width*0.45,
+                      height: MediaQuery.of(context).size.height * 0.45,
+                      width: MediaQuery.of(context).size.width * 0.45,
                       fit: BoxFit.cover,
                       repeat: false,
                     ),
                   ),
-
-
                 ],
               ),
             );
