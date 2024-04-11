@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
+import 'package:stoodee/services/router/route_functions.dart';
 
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/globals.dart';
@@ -57,7 +58,8 @@ class _FlashCardsReader extends State<FlashCardsReader>
   }
 
   void sendToFlashCards() {
-    context.go("/Main", extra: "l");
+    goRouterToMain(context,"l");
+
   }
 
   int completed = 0;

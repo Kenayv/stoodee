@@ -11,6 +11,8 @@ import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
+import '../services/router/route_functions.dart';
+
 class OogaBoogaLoginTest extends StatefulWidget {
   const OogaBoogaLoginTest({
     super.key,
@@ -31,23 +33,13 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   void initState() {
     super.initState();
 
-    //yeah wtf does that mean, it runs gotoMain after build is finished
-    if (SharedPrefs().rememberLoginData) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => gotoMain());
-    }
+
+
   }
 
-  void gotoMain() {
-    context.go(
-      '/Main',
-    );
-  }
 
-  void goToEmailVerification() {
-    context.go(
-      '/email_verification_page',
-    );
-  }
+
+
 
   Future<void> signUpTest(String email, String password) async {
     await AuthService.firebase().createUser(email: email, password: password);
@@ -79,7 +71,7 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                   padding: const EdgeInsets.only(left: 4),
                   child: GestureDetector(
                       onTap: () {
-                        context.go('/Main');
+                        goRouterToMain(context);
                       },
                       child: Text(
                         "skip log-in",
@@ -211,7 +203,8 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                             .setRememberLogin(value: rememberBool);
 
                         await AuthService.firebase().sendEmailVerification();
-                        goToEmailVerification();
+                        goRouterToEmailVerification(context);
+
                       } on EmailAlreadyInUseAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
                             "Account with this e-mail addresss already exists"));
@@ -257,9 +250,9 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                         if (!AuthService.firebase()
                             .currentUser!
                             .isEmailVerified) {
-                          goToEmailVerification();
+                          goRouterToEmailVerification(context);
                         } else {
-                          gotoMain();
+                          goRouterToMain(context);
                         }
                       } on InvalidCredentialsAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(

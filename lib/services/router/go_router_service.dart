@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:stoodee/pages/flash_cards_page.dart';
+import 'package:stoodee/pages/intro_screen_page.dart';
+import 'package:stoodee/pages/starting_page.dart';
 import 'package:stoodee/pages/to_do_page.dart';
 import 'package:stoodee/pages/email_verification_page.dart';
 import 'package:stoodee/pages/login_test_page.dart';
@@ -268,7 +271,7 @@ final GoRouter goRouterService = GoRouter(
       },
     ),
     GoRoute(
-        path: '/',
+        path: '/login',
         pageBuilder: (context, state) {
           return CustomTransitionPage(
             transitionDuration: const Duration(milliseconds: 400),
@@ -302,6 +305,52 @@ final GoRouter goRouterService = GoRouter(
             },
           ),
         ]),
+    GoRoute(
+        path: '/',
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 400),
+            key: state.pageKey,
+            child: const StartingPage(title: "lol"),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeOutQuint;
+              var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                  position: animation.drive(tween), child: child);
+            },
+          );
+        },),
+
+    GoRoute(
+        path: '/intro',
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 700),
+            key: state.pageKey,
+            child:  const IntroductionScreens(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 5.0);
+              const end = Offset.zero;
+              const curve = Curves.easeOutQuint;
+              var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                  position: animation.drive(tween), child: child);
+            },
+          );
+        },
+        routes: [
+
+        ]),
+
+
     GoRoute(
       path: '/email_verification_page',
       pageBuilder: (context, state) {

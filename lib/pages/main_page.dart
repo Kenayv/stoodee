@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
@@ -11,9 +10,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPage extends State<MainPage> {
-  void gotomain() {
-    context.go('/');
-  }
+
 
   @override
   Widget build(BuildContext context) {

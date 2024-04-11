@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
+import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
@@ -18,9 +19,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPage extends State<AccountPage> {
-  void gotologin() {
-    context.go('/');
-  }
+  
 
   void nothing() {
     print("nothing");
@@ -31,7 +30,7 @@ class _AccountPage extends State<AccountPage> {
       return StoodeeButton(
           onPressed: () async {
             await SharedPrefs().setRememberLogin(value: false);
-            gotologin();
+            goRouterToLogin(context);
           },
           child: Text("Log-in", style: buttonTextStyle));
     } else {
@@ -41,7 +40,7 @@ class _AccountPage extends State<AccountPage> {
             await AuthService.firebase().logOut();
             final loggedOutUser = await LocalDbController().getNullUser();
             await LocalDbController().setCurrentUser(loggedOutUser);
-            gotologin();
+            goRouterToLogin(context);
           },
           child: Text("Log-out", style: buttonTextStyle));
     }

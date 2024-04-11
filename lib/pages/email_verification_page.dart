@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
+import 'package:stoodee/services/router/route_functions.dart';
 
 class EmailVerificationPage extends StatefulWidget {
   const EmailVerificationPage({super.key});
@@ -40,7 +41,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
           TextButton(
             onPressed: () async {
               AuthService.firebase().logOut();
-              context.go('/login_test');
+              goRouterToLogin(context);
             },
             child: const Text('Log-in'),
           ),

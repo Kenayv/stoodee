@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 
@@ -122,22 +123,22 @@ class _PageScaffold extends State<PageScaffold> {
     if (index >= 0 && index < 5) {
       switch (index) {
         case 0:
-          context.go('/ToDo', extra: currentIndex + 1);
+          goRouterToToDo(context,currentIndex + 1);
           break;
         case 1:
-          context.go('/Flashcards', extra: currentIndex + 1);
+          goRouterToFlashCards(context,currentIndex+1);
           break;
 
         case 2:
-          context.go('/Main', extra: currentIndex + 1);
+          goRouterToMain(context,currentIndex + 1);
           break;
 
         case 3:
-          context.go('/Achievements', extra: currentIndex + 1);
+          goRouterToAchievements(context,currentIndex + 1);
           break;
 
         case 4:
-          context.go('/Account', extra: currentIndex + 1);
+          goRouterToAccount(context,currentIndex + 1);
           break;
 
         default:
