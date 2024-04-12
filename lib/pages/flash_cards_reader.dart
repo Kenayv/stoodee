@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -60,167 +63,235 @@ class _FlashCardsReader extends State<FlashCardsReader>
 
   int completed = 0;
   int cardIndex = 0;
+  bool shownav=false;
+
+
+
+
+  void onSetDone(){
+    log("SET DONE!!!");
+    if (completed == widget.fcSet.pairCount) {
+      FlashcardsService().incrFcsCompletedToday();
+      var ticker = _controller.forward();
+      ticker.whenComplete(
+              () => _controller.reset());
+    }
+  }
+
+
+
+  void addProgress(){
+      completed++;
+      setState(() {
+        onSetDone();
+      });
+
+  }
+
+  void setNavFalse(){
+
+    setState(() {
+      shownav=false;
+    });
+
+  }
+
+
+
+  Container difficultyRow(){
+
+    if(shownav==true){
+      return Container(
+        decoration: const BoxDecoration(
+          borderRadius:
+          BorderRadius.all(Radius.circular(4)),
+        ),
+        padding: const EdgeInsets.only(left:16,right:16,bottom:120),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: [
+                StoodeeButton(
+                  child: Text("Latwe", style: biggerButtonTextStyle),
+                  onPressed: () {
+                    addProgress();
+                    setNavFalse();
+
+
+                    //easy function
+                  },
+                ),
+                Text("1")
+              ],
+            ),
+            Column(
+              children: [
+                StoodeeButton(
+                  child: Text("Srednie", style: biggerButtonTextStyle),
+                  onPressed: () {
+                    addProgress();
+                    setNavFalse();
+
+
+                    //medium function
+                  },
+                ),
+                Text("2"),
+              ],
+            ),
+            Column(
+              children: [
+                StoodeeButton(
+                  child: Text("Trudne", style: biggerButtonTextStyle),
+                  onPressed: () {
+                    addProgress();
+                    setNavFalse();
+
+
+                    //hard function
+                  },
+                ),
+                Text("3"),
+              ],
+            ),
+
+          ],
+        ),
+      );
+    }
+    else {
+      return Container();
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<DatabaseFlashcard>>(
-      future: _initializeWidgetFuture,
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.done:
-            final List<DatabaseFlashcard> flashcards = snapshot.data ?? [];
+    return BackButtonListener(
 
-            final DatabaseFlashcard currentFlashCard =
-                FlashcardsService().getRandFcFromList(fcList: flashcards);
+      onBackButtonPressed: () async{
+        goRouterToMain(context);
+        return true;
 
-            final DatabaseFlashcardSet currentSet = widget.fcSet;
-            double indicatorValue = isNotZero(completed, currentSet.pairCount);
+      },
+      child: FutureBuilder<List<DatabaseFlashcard>>(
+        future: _initializeWidgetFuture,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              final List<DatabaseFlashcard> flashcards = snapshot.data ?? [];
 
-            return Scaffold(
-              appBar: CustomAppBar(
-                leading: const Text(''),
-                titleWidget: Text(
-                  currentSet.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+              final DatabaseFlashcard currentFlashCard =
+                  FlashcardsService().getRandFcFromList(fcList: flashcards);
+
+              final DatabaseFlashcardSet currentSet = widget.fcSet;
+              double indicatorValue = isNotZero(completed, currentSet.pairCount);
+
+              return Scaffold(
+                appBar: CustomAppBar(
+                  leading: const Text(''),
+                  titleWidget: Text(
+                    currentSet.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              body: Stack(
-                children: [
-                  Center(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: StoodeeButton(
-                              onPressed: sendToFlashCards,
-                              child: const Icon(Icons.arrow_back,
-                                  color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 15),
-                          child: Text("$completed/${currentSet.pairCount}"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            child: LinearPercentIndicator(
-                              backgroundColor:
-                                  primaryAppColor.withOpacity(0.08),
-                              percent: indicatorValue,
-                              linearGradient: const LinearGradient(
-                                colors: [primaryAppColor, secondaryAppColor],
+                body: Stack(
+                  children: [
+                    Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: StoodeeButton(
+                                onPressed: sendToFlashCards,
+                                child: const Icon(Icons.arrow_back,
+                                    color: Colors.white),
                               ),
-                              animation: true,
-                              lineHeight: 20,
-                              restartAnimation: false,
-                              animationDuration: 150,
-                              curve: Curves.easeOut,
-                              barRadius: const Radius.circular(10),
-                              animateFromLastPercent: true,
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          width: 300,
-                          height: 300,
-                          child: FlipCard(
-                            side: CardSide.FRONT,
-                            direction: FlipDirection.VERTICAL,
-                            front: ReusableCard(
-                              text: currentFlashCard.frontText,
-                            ),
-                            back: ReusableCard(
-                              text: currentFlashCard.backText,
+                          Container(
+                            margin: const EdgeInsets.only(top: 15),
+                            child: Text("$completed/${currentSet.pairCount}"),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              child: LinearPercentIndicator(
+                                backgroundColor:
+                                    primaryAppColor.withOpacity(0.08),
+                                percent: indicatorValue,
+                                linearGradient: const LinearGradient(
+                                  colors: [primaryAppColor, secondaryAppColor],
+                                ),
+                                animation: true,
+                                lineHeight: 20,
+                                restartAnimation: false,
+                                animationDuration: 150,
+                                curve: Curves.easeOut,
+                                barRadius: const Radius.circular(10),
+                                animateFromLastPercent: true,
+                              ),
                             ),
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            StoodeeButton(
-                              size: const Size(80, 30),
-                              onPressed: () {
-                                completed++;
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            width: 300,
+                            height: 300,
+                            child: FlipCard(
+                              speed: 250,
+                              onFlip: () {
                                 setState(() {
-                                  if (completed == currentSet.pairCount) {
-                                    FlashcardsService().incrFcsCompletedToday();
-                                    var ticker = _controller.forward();
-                                    ticker.whenComplete(
-                                        () => _controller.reset());
-                                  }
+                                  shownav=true;
                                 });
                               },
-                              child: Text("add", style: buttonTextStyle),
+                              side: CardSide.FRONT,
+                              direction: FlipDirection.HORIZONTAL,
+                              front: ReusableCard(
+                                text: currentFlashCard.frontText,
+                              ),
+                              back: ReusableCard(
+                                text: currentFlashCard.backText,
+                              ),
                             ),
-                            StoodeeButton(
-                              size: const Size(80, 30),
-                              onPressed: () {
-                                completed--;
-                                setState(() {});
-                              },
-                              child: Text("unadd", style: buttonTextStyle),
-                            ),
-                          ],
-                        ),
-                        const Expanded(child: Text("")),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(4)),
-                            color: primaryAppColor.withOpacity(0.2),
                           ),
-                          padding: const EdgeInsets.only(bottom: 20, top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              StoodeeButton(
-                                child: Text("Latwe", style: buttonTextStyle),
-                                onPressed: () {},
-                              ),
-                              StoodeeButton(
-                                child: Text("Srednie", style: buttonTextStyle),
-                                onPressed: () {},
-                              ),
-                              StoodeeButton(
-                                child: Text("Trudne", style: buttonTextStyle),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+
+                          const Expanded(child: Text("")),
+                          difficultyRow(),
+
+                        ],
+                      ),
                     ),
-                  ),
-                  IgnorePointer(
-                    child: Lottie.asset(
-                      alignment: Alignment.center,
-                      'lib/assets/sparkle.json',
-                      controller: _controller,
-                      height: MediaQuery.of(context).size.height * 0.45,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      fit: BoxFit.cover,
-                      repeat: false,
+                    IgnorePointer(
+                      child: Lottie.asset(
+                        alignment: Alignment.center,
+                        'lib/assets/sparkle.json',
+                        controller: _controller,
+                        height: MediaQuery.of(context).size.height * 0.45,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        fit: BoxFit.cover,
+                        repeat: false,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          default:
-            return const CircularProgressIndicator();
-        }
-      },
+                  ],
+                ),
+              );
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }

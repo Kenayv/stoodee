@@ -7,7 +7,7 @@ class StoodeeButton extends StatelessWidget {
   final Size size;
 
   final Color color1 = primaryAppColor;
-  final Color color2 = analogusColor;
+  final Color color2 = const Color.fromRGBO(83, 0, 189, 1.0);
 
   const StoodeeButton(
       {super.key,
@@ -39,22 +39,34 @@ class StoodeeButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onPressed,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [color1, color2],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.85, 1]),
-              border: Border(
-                bottom: BorderSide(
-                  color: color2,
-                  width: 2.5,
-                ),
-              )),
-          child: resolveWidgetSize(),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(80, 80, 80, 1.0),
+              blurRadius: 1,
+              offset: Offset(1,2),
+            )
+          ]
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          child: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [color1, color2],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0.9, 1]),
+                border: Border(
+                  bottom: BorderSide(
+                    color: color2,
+                    width: 2.5,
+                  ),
+                )),
+            child: resolveWidgetSize(),
+          ),
         ),
       ),
     );

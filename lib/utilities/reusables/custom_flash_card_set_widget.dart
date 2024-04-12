@@ -33,22 +33,59 @@ class FlashCardSetWidget extends StatefulWidget {
 }
 
 class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
+
+
+  List<BoxShadow> resolveWidgetShadows(){
+
+    List<BoxShadow> l=[];
+
+
+    if(widget.fcSet.pairCount>2){
+      l.add(const BoxShadow(
+        color: Color.fromRGBO(75, 0, 178, 1.0),
+        spreadRadius: 1,
+        offset: Offset(9.0, 3.0),));
+    }
+
+
+
+
+    if(widget.fcSet.pairCount>1){
+      l.add(const BoxShadow(
+        color: Color.fromRGBO(92, 0, 206, 1.0),
+        spreadRadius: 1,
+        offset: Offset(5.0, 2),));
+    }
+
+
+    if(widget.fcSet.pairCount>0){
+      l.add(const BoxShadow(
+        color: primaryAppColor,
+        spreadRadius: 1,
+        offset: Offset(2.0, 1),));
+    }
+
+
+
+
+
+
+
+    return l;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Container(
-          decoration: const BoxDecoration(
+          decoration:  BoxDecoration(
             color: analogusColor,
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                color: primaryAppColor,
-                spreadRadius: 1,
-                offset: Offset(3.0, 1),
-              )
-            ],
+            boxShadow: resolveWidgetShadows(),
           ),
           child: Center(
             child: Column(
