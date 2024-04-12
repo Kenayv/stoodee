@@ -599,7 +599,7 @@ class LocalDbController {
       whereArgs: [flashcard.id],
     );
 
-    if (deletedCount != 1) throw CouldNotDeleteFlashCard();
+    if (deletedCount != 1) throw CouldNotFindFlashCard();
   }
 
   Future<DatabaseFlashcard> getFlashcard({required int id}) async {

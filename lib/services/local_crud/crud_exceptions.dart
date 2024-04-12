@@ -18,7 +18,7 @@ class CouldNotUpdateTask implements Exception {}
 
 class CouldNotDeleteFcSet implements Exception {}
 
-class CouldNotDeleteFlashCard implements Exception {}
+class CouldNotFindFlashCard implements Exception {}
 
 class CouldNotUpdateFlashCard implements Exception {}
 
