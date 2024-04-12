@@ -21,7 +21,7 @@ class DatabaseFlashcard {
         _displayAfterDate = displayAfterDate;
 
   DatabaseFlashcard.fromRow(Map<String, Object?> map)
-      : id = map[idColumn] as int,
+      : id = map[localIdColumn] as int,
         flashcardSetId = map[flashcardSetIdColumn] as int,
         _frontText = map[frontTextColumn] as String,
         _backText = map[backTextColumn] as String,
@@ -35,6 +35,15 @@ class DatabaseFlashcard {
 
   @override
   bool operator ==(covariant DatabaseFlashcard other) => id == other.id;
+
+  Map<String, dynamic> toJson() => {
+        localIdColumn: id,
+        flashcardSetIdColumn: flashcardSetId,
+        frontTextColumn: _frontText,
+        backTextColumn: _backText,
+        cardDifficultyColumn: _cardDifficulty.toString(),
+        displayAfterDateColumn: getDateAsFormattedString(_displayAfterDate),
+      };
 
   @override
   int get hashCode => id.hashCode;

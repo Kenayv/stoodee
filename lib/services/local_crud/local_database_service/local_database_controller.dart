@@ -47,7 +47,7 @@ class LocalDbController {
           tasksCompletedTodayColumn: 0,
           flashcardsCompletedTodayColumn: 0,
         },
-        where: '$idColumn = ?',
+        where: '$localIdColumn = ?',
         whereArgs: [user.id],
       );
 
@@ -62,7 +62,7 @@ class LocalDbController {
       final updateCount = await db.update(
         userTable,
         {dayStreakColumn: 0},
-        where: '$idColumn = ?',
+        where: '$localIdColumn = ?',
         whereArgs: [user.id],
       );
 
@@ -147,7 +147,7 @@ class LocalDbController {
         flashcardsCompletedTodayColumn: newCompletedCount,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -174,7 +174,7 @@ class LocalDbController {
         tasksCompletedTodayColumn: newCompletedCount,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -254,6 +254,7 @@ class LocalDbController {
 
     return DatabaseUser(
       id: userId,
+      cloudId: null,
       email: email,
       name: defaultUserName,
       lastSynced: parseStringToDateTime(defaultDateStr),
@@ -299,6 +300,27 @@ class LocalDbController {
     return DatabaseUser.fromRow(result.first);
   }
 
+  Future<void> setUserCloudId({
+    required DatabaseUser user,
+    required String cloudId,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    if (user.cloudId != null) throw UserCloudIdAlreadyInitialized();
+
+    final updatesCount = await db.update(
+      userTable,
+      {cloudIdColumn: cloudId},
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updatesCount != 1) throw CouldNotUpdateUser();
+  }
+
   Future<DatabaseTask> createTask({
     required DatabaseUser owner,
     required String text,
@@ -328,7 +350,7 @@ class LocalDbController {
 
     final deletedCount = await db.delete(
       taskTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [task.id],
     );
 
@@ -370,7 +392,7 @@ class LocalDbController {
       {
         textColumn: text,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [task.id],
     );
 
@@ -456,7 +478,7 @@ class LocalDbController {
 
     final deletedCount = await db.delete(
       flashcardSetTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [fcSet.id],
     );
 
@@ -478,7 +500,7 @@ class LocalDbController {
       {
         nameColumn: name,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [fcSet.id],
     );
 
@@ -504,7 +526,7 @@ class LocalDbController {
         frontTextColumn: frontText,
         backTextColumn: backText,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [flashcard.id],
     );
 
@@ -519,7 +541,7 @@ class LocalDbController {
     final results = await db.query(
       flashcardSetTable,
       limit: 1,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [id],
     );
 
@@ -549,7 +571,7 @@ class LocalDbController {
 
     await db.update(
       flashcardSetTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [fcSet.id],
       {
         pairCountColumn: fcSet.pairCount,
@@ -573,7 +595,7 @@ class LocalDbController {
 
     final deletedCount = await db.delete(
       flashcardTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [flashcard.id],
     );
 
@@ -586,7 +608,7 @@ class LocalDbController {
     final results = await db.query(
       flashcardTable,
       limit: 1,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [id],
     );
 
@@ -601,7 +623,7 @@ class LocalDbController {
     final results = await db.query(
       taskTable,
       limit: 1,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [id],
     );
 
@@ -625,7 +647,7 @@ class LocalDbController {
       {
         nameColumn: name,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -649,7 +671,7 @@ class LocalDbController {
       {
         dailyGoalTasksColumn: taskGoal,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -673,7 +695,7 @@ class LocalDbController {
       {
         dailyGoalFlashcardsColumn: flashcardGoal,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 

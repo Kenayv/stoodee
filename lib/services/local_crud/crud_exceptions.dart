@@ -49,3 +49,5 @@ class CouldNotFindFlashCard implements Exception {}
 class CouldNotUpdateUser implements Exception {}
 
 class UserNotFound implements Exception {}
+
+class UserCloudIdAlreadyInitialized implements Exception {}
