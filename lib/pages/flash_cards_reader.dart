@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcard_service.dart';
@@ -26,17 +25,12 @@ class _FlashCardsReader extends State<FlashCardsReader>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
 
-  late Future<List<DatabaseFlashcard>> _initializeWidgetFuture;
-
   @override
   void initState() {
     super.initState();
     imageCache.clear();
     _controller =
         AnimationController(vsync: this, duration: Durations.extralong4);
-
-    _initializeWidgetFuture =
-        FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet);
   }
 
   @override
@@ -58,8 +52,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
   }
 
   void sendToFlashCards() {
-    goRouterToMain(context,"l");
-
+    goRouterToMain(context, "l");
   }
 
   int completed = 0;
@@ -68,7 +61,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DatabaseFlashcard>>(
-      future: _initializeWidgetFuture,
+      future: FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:

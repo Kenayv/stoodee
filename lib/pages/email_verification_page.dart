@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 

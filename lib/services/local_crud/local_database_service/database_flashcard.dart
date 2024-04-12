@@ -3,10 +3,10 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseFlashcard {
   final int id;
   final int flashcardSetId;
-  String _frontText; //FIXME: make those changable in localdbcontroller
-  String _backText;
-  int _cardDifficulty;
-  DateTime _displayAfterDate;
+  late String _frontText; //FIXME: make those changable in localdbcontroller
+  late String _backText;
+  late int _cardDifficulty;
+  late DateTime _displayAfterDate;
 
   DatabaseFlashcard({
     required this.id,

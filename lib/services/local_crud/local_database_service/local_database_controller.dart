@@ -394,6 +394,7 @@ class LocalDbController {
     required DatabaseFlashcardSet fcSet,
   }) async {
     List<DatabaseFlashcard> allFlashcards = await _getAllDbFlashcards();
+
     return allFlashcards
         .where((flashcard) => flashcard.flashcardSetId == fcSet.id)
         .toList();

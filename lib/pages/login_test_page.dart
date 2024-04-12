@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
@@ -32,14 +31,7 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
   @override
   void initState() {
     super.initState();
-
-
-
   }
-
-
-
-
 
   Future<void> signUpTest(String email, String password) async {
     await AuthService.firebase().createUser(email: email, password: password);
@@ -204,7 +196,6 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
 
                         await AuthService.firebase().sendEmailVerification();
                         goRouterToEmailVerification(context);
-
                       } on EmailAlreadyInUseAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
                             "Account with this e-mail addresss already exists"));
