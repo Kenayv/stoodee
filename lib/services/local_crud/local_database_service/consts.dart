@@ -151,6 +151,13 @@ void debug___Print___info({
 }
 
 /// Returns the difference (in full days) between the provided date and today.
-int daysDifferenceFromNow(DateTime date) {
-  return date.difference(DateTime.now()).inDays;
+int daysDifferenceFromNow(DateTime dateArg) {
+  final now = DateTime.now();
+
+  // get Argument's date and Today's date without hours:minutes:seconds
+  DateTime date = DateTime(dateArg.year, dateArg.month, dateArg.day);
+  DateTime today = DateTime(now.year, now.month, now.day);
+
+  //return difference in days between given date and today
+  return date.difference(today).inDays;
 }

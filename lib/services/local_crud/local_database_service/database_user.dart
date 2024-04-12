@@ -75,7 +75,7 @@ class DatabaseUser {
 
   @override
   String toString() =>
-      'UserID = [$id],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n    lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   dayStreak = [$dayStreak]\n';
+      'UserID = [$id],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$dayStreak]\n';
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;

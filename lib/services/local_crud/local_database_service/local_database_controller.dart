@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
@@ -38,6 +37,7 @@ class LocalDbController {
     var ___debugInt___ = 0;
 
     //Resets user's Fcs and tasks completed today to 0 if user hadn't studied today.
+    print("first difference: ${daysDifferenceFromNow(user.lastStudied)}");
     if (daysDifferenceFromNow(user.lastStudied) <= -1) {
       final db = _getDatabaseOrThrow();
 
@@ -79,6 +79,14 @@ class LocalDbController {
         "[dayStreak: ${user.dayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\n\n with updatesCount: $___debugInt___\n\n[END] RESET LOG [END]";
 
     log(resetLog);
+
+    if (___debugInt___ > 0) await reloadCurrentUser();
+  }
+
+  Future<void> reloadCurrentUser() async {
+    if (_currentUser == null) throw UserNotFound();
+
+    _currentUser = await getUser(email: _currentUser!.email);
   }
 
   //Current user is set to nullUser before logging in.
@@ -137,6 +145,7 @@ class LocalDbController {
       userTable,
       {
         flashcardsCompletedTodayColumn: newCompletedCount,
+        lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
       where: '$idColumn = ?',
       whereArgs: [user.id],
@@ -163,6 +172,7 @@ class LocalDbController {
       userTable,
       {
         tasksCompletedTodayColumn: newCompletedCount,
+        lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
       where: '$idColumn = ?',
       whereArgs: [user.id],

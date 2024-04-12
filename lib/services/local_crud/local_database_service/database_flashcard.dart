@@ -31,7 +31,7 @@ class DatabaseFlashcard {
 
   @override
   String toString() =>
-      "Flashcard id = [$id]\n   Set id = [$flashcardSetId]\n   text = [f: $frontText |b: $backText]\n   difficulty = [$cardDifficulty]\n   display after: $displayAfterDate";
+      "Flashcard id = [$id]\n   Set id = [$flashcardSetId]\n   text = [f: $frontText |b: $backText]\n   difficulty = [$cardDifficulty]\n   display after: $displayAfterDate\n";
 
   @override
   bool operator ==(covariant DatabaseFlashcard other) => id == other.id;
