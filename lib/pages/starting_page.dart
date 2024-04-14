@@ -28,10 +28,10 @@ class _StartingPage extends State<StartingPage> {
     }
     else
     if (SharedPrefs().rememberLoginData) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => goRouterToIntro(context));
+      WidgetsBinding.instance.addPostFrameCallback((_) => goRouterToMain(context));
     }
     else{
-      WidgetsBinding.instance.addPostFrameCallback((_) => goRouterToIntro(context));
+      WidgetsBinding.instance.addPostFrameCallback((_) => goRouterToLogin(context));
     }
 
 
