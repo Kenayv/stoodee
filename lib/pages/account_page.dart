@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
@@ -19,7 +21,7 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPage extends State<AccountPage> {
   void nothing() {
-    print("nothing");
+    log("nothing");
   }
 
   StoodeeButton resolveWhichButton() {

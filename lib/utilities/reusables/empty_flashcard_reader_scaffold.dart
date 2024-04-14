@@ -10,7 +10,7 @@ import '../globals.dart';
 import 'custom_appbar.dart';
 
 class EmptyReaderScaffold extends StatelessWidget{
-   EmptyReaderScaffold({super.key,required this.fcset});
+   const EmptyReaderScaffold({super.key,required this.fcset});
 
 
   void nothing(){
@@ -18,14 +18,14 @@ class EmptyReaderScaffold extends StatelessWidget{
   }
 
 
-  DatabaseFlashcardSet fcset;
+  final DatabaseFlashcardSet fcset;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        leading: Text(""),
+        leading: const Text(""),
         titleWidget: Text(
           fcset.name,
           style: const TextStyle(
@@ -54,7 +54,7 @@ class EmptyReaderScaffold extends StatelessWidget{
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 15),
-                  child: Text("empty"),
+                  child: const Text("empty"),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -94,10 +94,10 @@ class EmptyReaderScaffold extends StatelessWidget{
                     },
                     side: CardSide.FRONT,
                     direction: FlipDirection.HORIZONTAL,
-                    front: ReusableCard(
+                    front: const ReusableCard(
                       text: "",
                     ),
-                    back: ReusableCard(
+                    back: const ReusableCard(
                       text: "",
                     ),
                   ),

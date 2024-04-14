@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
@@ -156,10 +158,10 @@ ListTile taskItem({
       ),
     ),
     onTap: () {
-      print("tapped on task : $text");
+      log("tapped on task : $text");
     },
     onLongPress: () {
-      print("longpressed on task : $text");
+      log("longpressed on task : $text");
     },
   );
 }

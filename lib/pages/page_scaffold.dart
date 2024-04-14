@@ -56,7 +56,7 @@ class _PageScaffold extends State<PageScaffold> {
           titleWidget: Text(indexToTitle(currentIndex + 1),
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold)),
-          leading: Text(''),
+          leading: const Text(''),
         ),
         body: widget.child,
         bottomNavigationBar: Theme(

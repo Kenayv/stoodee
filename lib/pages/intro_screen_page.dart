@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +61,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                       alignment: Alignment.centerLeft,
                       child: DefaultTextStyle(
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 60,
@@ -71,7 +73,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                           totalRepeatCount: 1,
 
                           animatedTexts:[
-                            TyperAnimatedText("Stoodee",speed: Duration(milliseconds: 300))
+                            TyperAnimatedText("Stoodee",speed: const Duration(milliseconds: 300))
                           ]
                         ),
                       ),
@@ -112,7 +114,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     titleWidget: Stack(children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.35,
-                        child: SingleChildScrollView(
+                        child: const SingleChildScrollView(
                           child: Text("ToDoPlaceHolder")
                         ),
                       ),
@@ -123,7 +125,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                               width: MediaQuery.of(context).size.width * 0.12,
                               height: MediaQuery.of(context).size.width * 0.12,
                               child: const FloatingActionButton(
-                                  onPressed: testing_function,
+                                  onPressed: testingFunction,
                                   child: (Icon(
                                     Icons.add,
                                     color: primaryAppColor,
@@ -160,7 +162,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     titleWidget: Stack(children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.35,
-                        child: SingleChildScrollView(
+                        child: const SingleChildScrollView(
                           child: Text("FlashcardsPlaceholder")
                         ),
                       ),
@@ -171,7 +173,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                               width: MediaQuery.of(context).size.width * 0.12,
                               height: MediaQuery.of(context).size.width * 0.12,
                               child: const FloatingActionButton(
-                                  onPressed: testing_function,
+                                  onPressed: testingFunction,
                                   child: (Icon(
                                     Icons.add,
                                     color: primaryAppColor,
@@ -205,63 +207,61 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     decoration: getPageDecoration1(),
                   ),
                   PageViewModel(
-                    title: 'Jeszcze tylko chwilka i możemy zaczynać',
-                    bodyWidget: Container(
-                      child: Column(
-                        children: [
-                          TextField(
-                            textInputAction: TextInputAction.next,
+                    title: 'Jeszcze chwilka i możemy zaczynać',
+                    bodyWidget: Column(
+                      children: [
+                        TextField(
+                          textInputAction: TextInputAction.next,
 
-                            autocorrect: false,
-                            decoration: InputDecoration(
-                              hintText: 'Name',
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: primaryAppColor),
-                              ),
-                              fillColor: Colors.grey.shade200,
-                              filled: true,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            hintText: 'Name',
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
                             ),
-                            controller: nameController,
-                          ),
-                          TextField(
-                            textInputAction: TextInputAction.next,
-                            autocorrect: false,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: 'todo',
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: primaryAppColor),
-                              ),
-                              fillColor: Colors.grey.shade200,
-                              filled: true,
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryAppColor),
                             ),
-                            controller: taskController,
+                            fillColor: Colors.grey.shade200,
+                            filled: true,
                           ),
-                          TextField(
-                            textInputAction: TextInputAction.next,
-                            autocorrect: false,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: 'flashCard',
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: primaryAppColor),
-                              ),
-                              fillColor: Colors.grey.shade200,
-                              filled: true,
+                          controller: nameController,
+                        ),
+                        TextField(
+                          textInputAction: TextInputAction.next,
+                          autocorrect: false,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'todo',
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
                             ),
-                            controller: flashCardsController,
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryAppColor),
+                            ),
+                            fillColor: Colors.grey.shade200,
+                            filled: true,
                           ),
-                        ],
-                      )
+                          controller: taskController,
+                        ),
+                        TextField(
+                          textInputAction: TextInputAction.next,
+                          autocorrect: false,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'flashCard',
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: primaryAppColor),
+                            ),
+                            fillColor: Colors.grey.shade200,
+                            filled: true,
+                          ),
+                          controller: flashCardsController,
+                        ),
+                      ],
                     ),
                     image: Icon(Icons.settings,
                         color: primaryAppColor,
@@ -407,6 +407,6 @@ class BackgroundWaveClipper extends CustomClipper<Path> {
   bool shouldReclip(BackgroundWaveClipper oldClipper) => oldClipper != this;
 }
 
-void testing_function() {
-  print('pressed');
+void testingFunction() {
+  log('pressed');
 }

@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
-import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -127,7 +125,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
                     //easy function
                   },
                 ),
-                Text("1")
+                const Text("1")
               ],
             ),
             Column(
@@ -142,7 +140,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
                     //medium function
                   },
                 ),
-                Text("2"),
+                const Text("2"),
               ],
             ),
             Column(
@@ -157,7 +155,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
                     //hard function
                   },
                 ),
-                Text("3"),
+                const Text("3"),
               ],
             ),
 

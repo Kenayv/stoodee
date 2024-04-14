@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -13,7 +15,7 @@ void tap(BuildContext context, SetContainer container) {
 
 void deletingfunction() {
   //FIXME: ONLY DEBUGGING OPTION, LINK IT TO A REAL FUNCTION LATER
-  print("deleted");
+  log("deleted");
 }
 
 class FlashCardSetWidget extends StatefulWidget {
@@ -84,7 +86,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
         child: Container(
           decoration:  BoxDecoration(
             color: analogusColor,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             boxShadow: resolveWidgetShadows(),
           ),
           child: Center(
@@ -117,7 +119,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                           width: MediaQuery.of(context).size.width / 8,
                           child: TextButton(
                               onPressed: () {
-                                print("favorite");
+                                log("favorite");
                               },
                               child: const Icon(Icons.star,
                                   size: 20, color: Colors.white))),
@@ -125,7 +127,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                           width: MediaQuery.of(context).size.width / 8,
                           child: TextButton(
                               onPressed: () {
-                                print("lock");
+                                log("lock");
                               },
                               child: const Icon(Icons.lock,
                                   size: 20, color: Colors.white))),
