@@ -56,16 +56,14 @@ class _PageScaffold extends State<PageScaffold> {
           titleWidget: Text(indexToTitle(currentIndex + 1),
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold)),
-          leading: const Icon(
-            Icons.account_box_rounded,
-            color: Colors.white,
-          ),
+          leading: Text(''),
         ),
         body: widget.child,
         bottomNavigationBar: Theme(
           data: ThemeData(
             splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
+            //highlightColor: Colors.transparent,
+
           ),
           child: SafeArea(
             child: Container(

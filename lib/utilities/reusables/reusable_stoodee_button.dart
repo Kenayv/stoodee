@@ -40,8 +40,8 @@ class StoodeeButton extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onPressed,
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
           boxShadow: [
             BoxShadow(
               color: Color.fromRGBO(80, 80, 80, 1.0),

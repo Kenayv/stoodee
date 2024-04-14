@@ -37,8 +37,8 @@ String resolveSwipeDirection(Object from, int where) {
   return "notResolved";
 }
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "root");
+final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "shell");
 
 final GoRouter goRouterService = GoRouter(
   navigatorKey: _rootNavigatorKey,

@@ -15,6 +15,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:stoodee/utilities/reusables/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
+import '../services/local_crud/crud_exceptions.dart';
+import '../utilities/reusables/empty_flashcard_reader_scaffold.dart';
+import '../utilities/snackbar/create_snackbar.dart';
+
 class FlashCardsReader extends StatefulWidget {
   const FlashCardsReader({super.key, required this.fcSet});
 
@@ -37,6 +41,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
     _controller =
         AnimationController(vsync: this, duration: Durations.extralong4);
     _initializeWidgetFuture=FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet);
+
   }
 
   @override
@@ -171,122 +176,143 @@ class _FlashCardsReader extends State<FlashCardsReader>
   @override
   Widget build(BuildContext context) {
     return BackButtonListener(
-
       onBackButtonPressed: () async{
         goRouterToMain(context);
         return true;
-
       },
-      child: FutureBuilder<List<DatabaseFlashcard>>(
+      child:FutureBuilder<List<DatabaseFlashcard>>(
         future: _initializeWidgetFuture,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-              final List<DatabaseFlashcard> flashcards = snapshot.data ?? [];
+              try {
+                final List<DatabaseFlashcard> flashcards = snapshot.data ?? [];
 
-              final DatabaseFlashcard currentFlashCard =
-                  FlashcardsService().getRandFcFromList(fcList: flashcards);
+                final DatabaseFlashcard currentFlashCard =
+                FlashcardsService().getRandFcFromList(fcList: flashcards);
 
-              final DatabaseFlashcardSet currentSet = widget.fcSet;
-              double indicatorValue = isNotZero(completed, currentSet.pairCount);
+                final DatabaseFlashcardSet currentSet = widget.fcSet;
+                double indicatorValue = isNotZero(
+                    completed, currentSet.pairCount);
 
-              return Scaffold(
-                appBar: CustomAppBar(
-                  leading: const Text(''),
-                  titleWidget: Text(
-                    currentSet.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                return Scaffold(
+                  appBar: CustomAppBar(
+                    leading: const Text(''),
+                    titleWidget: Text(
+                      currentSet.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                body: Stack(
-                  children: [
-                    Center(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: StoodeeButton(
-                                onPressed: sendToFlashCards,
-                                child: const Icon(Icons.arrow_back,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            child: Text("$completed/${currentSet.pairCount}"),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              child: LinearPercentIndicator(
-                                backgroundColor:
-                                    primaryAppColor.withOpacity(0.08),
-                                percent: indicatorValue,
-                                linearGradient: const LinearGradient(
-                                  colors: [primaryAppColor, secondaryAppColor],
+                  body: Stack(
+                    children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: StoodeeButton(
+                                  onPressed: sendToFlashCards,
+                                  child: const Icon(Icons.arrow_back,
+                                      color: Colors.white),
                                 ),
-                                animation: true,
-                                lineHeight: 20,
-                                restartAnimation: false,
-                                animationDuration: 150,
-                                curve: Curves.easeOut,
-                                barRadius: const Radius.circular(10),
-                                animateFromLastPercent: true,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          SizedBox(
-                            width: 300,
-                            height: 300,
-                            child: FlipCard(
-                              speed: 250,
-                              onFlip: () {
-                                setState(() {
-                                  shownav=true;
-                                });
-                              },
-                              side: CardSide.FRONT,
-                              direction: FlipDirection.HORIZONTAL,
-                              front: ReusableCard(
-                                text: currentFlashCard.frontText,
-                              ),
-                              back: ReusableCard(
-                                text: currentFlashCard.backText,
+                            Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              child: Text("$completed/${currentSet.pairCount}"),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ClipRRect(
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                                child: LinearPercentIndicator(
+                                  backgroundColor:
+                                  primaryAppColor.withOpacity(0.08),
+                                  percent: indicatorValue,
+                                  linearGradient: const LinearGradient(
+                                    colors: [
+                                      primaryAppColor,
+                                      secondaryAppColor
+                                    ],
+                                  ),
+                                  animation: true,
+                                  lineHeight: 20,
+                                  restartAnimation: false,
+                                  animationDuration: 150,
+                                  curve: Curves.easeOut,
+                                  barRadius: const Radius.circular(10),
+                                  animateFromLastPercent: true,
+                                ),
                               ),
                             ),
-                          ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              width: 300,
+                              height: 300,
+                              child: FlipCard(
+                                speed: 250,
+                                onFlip: () {
+                                  setState(() {
+                                    shownav = true;
+                                  });
+                                },
+                                side: CardSide.FRONT,
+                                direction: FlipDirection.HORIZONTAL,
+                                front: ReusableCard(
+                                  text: currentFlashCard.frontText,
+                                ),
+                                back: ReusableCard(
+                                  text: currentFlashCard.backText,
+                                ),
+                              ),
+                            ),
 
-                          const Expanded(child: Text("")),
-                          difficultyRow(),
+                            const Expanded(child: Text("")),
+                            difficultyRow(),
 
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    IgnorePointer(
-                      child: Lottie.asset(
-                        alignment: Alignment.center,
-                        'lib/assets/sparkle.json',
-                        controller: _controller,
-                        height: MediaQuery.of(context).size.height * 0.45,
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        fit: BoxFit.cover,
-                        repeat: false,
+                      IgnorePointer(
+                        child: Lottie.asset(
+                          alignment: Alignment.center,
+                          'lib/assets/sparkle.json',
+                          controller: _controller,
+                          height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * 0.45,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.45,
+                          fit: BoxFit.cover,
+                          repeat: false,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
+                    ],
+                  ),
+                );
+              } on FlashcardListEmpty{
+
+                WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
+                    createSnackbar(
+                        "Empty Set,add some flashcards first")));
+
+
+                return EmptyReaderScaffold(fcset:widget.fcSet);
+
+              }
+
+
             default:
               return const CircularProgressIndicator();
           }

@@ -58,4 +58,9 @@ void goRouterToAccount(BuildContext context,[Object? extra]){
 
 
 
+void goRouterToStart(BuildContext context,[Object? extra]){
+  log("Going to: Starting Page");
+  context.go('/', extra:extra);
+  
 
+}

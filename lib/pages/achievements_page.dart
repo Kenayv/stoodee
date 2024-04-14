@@ -7,6 +7,13 @@ Container achievementTile({required String name, required String path}) {
     decoration: const BoxDecoration(
       color: analogusColor,
       borderRadius: BorderRadius.all(Radius.circular(16)),
+      boxShadow: [
+        BoxShadow(
+              color: Color.fromRGBO(80, 80, 80, 1.0),
+              blurRadius: 1,
+              offset: Offset(1,2),
+        )
+      ]
     ),
     child: Column(
       children: [
