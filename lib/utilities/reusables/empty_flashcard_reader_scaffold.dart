@@ -5,21 +5,27 @@ import 'package:stoodee/services/local_crud/local_database_service/database_flas
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/reusables/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
+import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
+import '../dialogs/add_flashcard_dialog.dart';
 import '../globals.dart';
 import 'custom_appbar.dart';
+import '../globals.dart';
 
-class EmptyReaderScaffold extends StatelessWidget{
+class EmptyReaderScaffold extends StatefulWidget{
    const EmptyReaderScaffold({super.key,required this.fcset});
-
-
-  void nothing(){
-
-  }
 
 
   final DatabaseFlashcardSet fcset;
 
+  @override
+  State<EmptyReaderScaffold> createState() => _EmptyReaderScaffoldState();
+}
+
+class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
+  void nothing(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class EmptyReaderScaffold extends StatelessWidget{
       appBar: CustomAppBar(
         leading: const Text(""),
         titleWidget: Text(
-          fcset.name,
+          widget.fcset.name,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -95,13 +101,45 @@ class EmptyReaderScaffold extends StatelessWidget{
                     side: CardSide.FRONT,
                     direction: FlipDirection.HORIZONTAL,
                     front: const ReusableCard(
-                      text: "",
+                      text: "add flashcard below",
                     ),
                     back: const ReusableCard(
-                      text: "",
+                      text: "pls",
                     ),
                   ),
                 ),
+                StoodeeButton(
+                    onPressed: () async {
+                      await showAddFlashcardDialog(
+                        context: context,
+                        fcSet: widget.fcset,
+                      );
+
+                      if(widget.fcset.pairCount>0){
+                       /*
+                        WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
+                            createSuccessSnackbar(
+                                "Flashcard added :3")));
+
+                        */
+                        ScaffoldMessenger.of(context).showSnackBar(createSuccessSnackbar("flashcard added :3"));
+                        goRouterToMain(context);
+                      }
+                      else {
+                        /*
+                        WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
+                            createErrorSnackbar(
+                                "Flashcard still not added :3")));
+
+                         */
+                        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("Flashcard still not added :3"));
+                      }
+
+
+
+
+                    },
+                    child:  Text("Add flashcard",style: buttonTextStyle,)),
 
                 const Expanded(child: Text("")),
 
@@ -114,10 +152,4 @@ class EmptyReaderScaffold extends StatelessWidget{
       ),
     );
   }
-
-
-
-
-
-
 }

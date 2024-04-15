@@ -197,22 +197,22 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                         await AuthService.firebase().sendEmailVerification();
                         goRouterToEmailVerification(context);
                       } on EmailAlreadyInUseAuthException {
-                        ScaffoldMessenger.of(context).showSnackBar(createSnackbar(
+                        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar(
                             "Account with this e-mail addresss already exists"));
                       } on InvalidEmailAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSnackbar("Incorrect email entered"));
+                            createErrorSnackbar("Incorrect email entered"));
                       } on GenericAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSnackbar(
+                            createErrorSnackbar(
                                 "Enter email and password to Sign-Up"));
                       } on WeakPasswordAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSnackbar(
+                            createErrorSnackbar(
                                 "Password must contain at least 8 characters"));
                       } catch (e) {
                         ScaffoldMessenger.of(context)
-                            .showSnackBar(createSnackbar(e.toString()));
+                            .showSnackBar(createErrorSnackbar(e.toString()));
                       }
                     },
                     child: Text(
@@ -247,14 +247,14 @@ class _OogaBoogaLoginTest extends State<OogaBoogaLoginTest> {
                         }
                       } on InvalidCredentialsAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSnackbar("Incorrect email or password"));
+                            createErrorSnackbar("Incorrect email or password"));
                       } on GenericAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSnackbar(
+                            createErrorSnackbar(
                                 "Enter email and password to log-in"));
                       } catch (e) {
                         ScaffoldMessenger.of(context)
-                            .showSnackBar(createSnackbar(e.toString()));
+                            .showSnackBar(createErrorSnackbar(e.toString()));
                       }
                     },
                     child: Text('Log-in', style: buttonTextStyle),

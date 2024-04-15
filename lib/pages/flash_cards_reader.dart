@@ -302,7 +302,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
               } on FlashcardListEmpty{
 
                 WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
-                    createSnackbar(
+                    createErrorSnackbar(
                         "Empty Set,add some flashcards first")));
 
 
