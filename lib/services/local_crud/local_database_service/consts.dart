@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug16_tasks.db';
+const dbName = 'debug17_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -13,7 +13,7 @@ const flashcardSetTable = 'flashcard_set';
 const flashcardTable = 'flashcard';
 
 const localIdColumn = 'ID';
-const cloudIdColumn = 'cloud-db-id';
+const cloudIdColumn = 'cloud_db_id';
 
 const emailColumn = 'email';
 const lastSyncedColumn = 'last_synced_column';

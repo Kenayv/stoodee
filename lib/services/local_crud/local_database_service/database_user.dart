@@ -2,8 +2,8 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
 class DatabaseUser {
   final int id;
-  final String? cloudId;
   final String email;
+  late String? _cloudId;
   late String _name;
   late DateTime _lastSynced;
   late DateTime _lastStreakBroken;
@@ -17,7 +17,7 @@ class DatabaseUser {
   DatabaseUser({
     required this.id,
     required this.email,
-    required this.cloudId,
+    required String? cloudId,
     required String name,
     required DateTime lastSynced,
     required DateTime lastStreakBroken,
@@ -27,7 +27,8 @@ class DatabaseUser {
     required int flashcardsCompletedToday,
     required int tasksCompletedToday,
     required int dayStreak,
-  })  : _name = name,
+  })  : _cloudId = cloudId,
+        _name = name,
         _lastSynced = lastSynced,
         _lastStreakBroken = lastStreakBroken,
         _dailyGoalFlashcards = dailyGoalFlashcards,
@@ -39,7 +40,7 @@ class DatabaseUser {
 
   DatabaseUser.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
-        cloudId = map[cloudIdColumn] as String,
+        _cloudId = map[cloudIdColumn] as String?,
         email = map[emailColumn] as String,
         _name = map[nameColumn] as String,
         _lastSynced = parseStringToDateTime(map[lastSyncedColumn] as String),
@@ -61,8 +62,10 @@ class DatabaseUser {
   int get flashcardsCompletedToday => _flashcardsCompletedToday;
   int get tasksCompletedToday => _tasksCompletedToday;
   int get dayStreak => _dayStreak;
+  String? get cloudId => _cloudId;
 
   void setLastSynced(DateTime date) => _lastSynced = date;
+
   void setLastStreakBroken(DateTime date) => _lastStreakBroken = date;
   void setLastStudied(DateTime date) => _lastStudied = date;
   void setName(String name) => _name = name;

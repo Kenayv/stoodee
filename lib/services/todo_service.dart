@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 
 class TodoService {
-  late final List<DatabaseTask>? _tasks;
+  late List<DatabaseTask>? _tasks;
   bool _initialized = false;
 
   //ToDoService should be only used via singleton //
@@ -14,10 +14,10 @@ class TodoService {
   TodoService._sharedInstance();
   //ToDoService should be only used via singleton //
 
-  Future<List<DatabaseTask>> loadTasks() async {
+  Future<List<DatabaseTask>> getTasks() async {
     if (!_initialized) {
       _tasks = await LocalDbController().getUserTasks(
-        LocalDbController().currentUser,
+        user: LocalDbController().currentUser,
       );
       _initialized = true;
     }
@@ -30,6 +30,14 @@ class TodoService {
     log(debugLogStart + debugLogTasks + debugLogEnd);
 
     return _tasks!;
+  }
+
+  Future<void> reloadTasks() async {
+    _tasks = null;
+
+    _tasks = await LocalDbController().getUserTasks(
+      user: LocalDbController().currentUser,
+    );
   }
 
   Future<DatabaseTask> createTask({required String text}) async {

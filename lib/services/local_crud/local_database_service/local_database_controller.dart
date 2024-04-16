@@ -1,5 +1,8 @@
 import 'dart:developer';
 import 'package:stoodee/services/auth/auth_service.dart';
+import 'package:stoodee/services/cloud_crud/cloud_database_controller.dart';
+import 'package:stoodee/services/cloud_crud/cloud_user_data.dart';
+import 'package:stoodee/services/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -9,6 +12,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
+import 'package:stoodee/services/todo_service.dart';
 
 class LocalDbController {
   Database? _db;
@@ -107,7 +111,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     if (daysDifferenceFromNow(user.lastStudied) != 0) {
-      user.setLastStudied(DateTime.now());
+      _setUserLastStudied(user: user, lastStudied: DateTime.now());
     }
 
     if (daysDifferenceFromNow(user.lastStreakBroken) != 0 &&
@@ -251,8 +255,7 @@ class LocalDbController {
     final userId = await db.insert(userTable, {
       emailColumn: email.toLowerCase(),
     });
-
-    return DatabaseUser(
+    final newUser = DatabaseUser(
       id: userId,
       cloudId: null,
       email: email,
@@ -266,6 +269,8 @@ class LocalDbController {
       flashcardsCompletedToday: 0,
       dayStreak: 0,
     );
+
+    return newUser;
   }
 
   Future<DatabaseUser> loginOrCreateUser({required String email}) async {
@@ -321,6 +326,58 @@ class LocalDbController {
     if (updatesCount != 1) throw CouldNotUpdateUser();
   }
 
+  Future<DatabaseUser> _setUserLastSynced({
+    required DatabaseUser user,
+    required DateTime lastSynced,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure task exists in database and isn't hard-coded
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    final updateCount = await db.update(
+      userTable,
+      {
+        lastSyncedColumn: getDateAsFormattedString(lastSynced),
+      },
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateTask();
+
+    user.setLastSynced(lastSynced);
+
+    return user;
+  }
+
+  Future<DatabaseUser> _setUserLastStudied({
+    required DatabaseUser user,
+    required DateTime lastStudied,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure task exists in database and isn't hard-coded
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    final updateCount = await db.update(
+      userTable,
+      {
+        lastStudiedColumn: getDateAsFormattedString(lastStudied),
+      },
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateTask();
+
+    user.setLastStudied(lastStudied);
+
+    return user;
+  }
+
   Future<DatabaseTask> createTask({
     required DatabaseUser owner,
     required String text,
@@ -364,7 +421,9 @@ class LocalDbController {
     return tasks.map((taskRow) => DatabaseTask.fromRow(taskRow)).toList();
   }
 
-  Future<List<DatabaseTask>> getUserTasks(DatabaseUser user) async {
+  Future<List<DatabaseTask>> getUserTasks({
+    required DatabaseUser user,
+  }) async {
     List<DatabaseTask> allTasks = await _getAllDbTasks();
     return allTasks.where((task) => task.userId == user.id).toList();
   }
@@ -702,6 +761,97 @@ class LocalDbController {
     user.setDailyFlashcardsGoal(flashcardGoal);
 
     if (updateCount != 1) throw CouldNotUpdateUser();
+  }
+
+  Future<void> syncWithCloud({required DatabaseUser user}) async {
+    log('Syncing with cloud\n');
+    if (user == await LocalDbController().getNullUser()) {
+      throw CannotSyncNullUser();
+    }
+
+    final cloudUser =
+        await CloudDatabaseController().getUserOrNull(cloudId: user.cloudId);
+    log('clouduser: $cloudUser\ncloudUser.lastSynced.isBefore(user.lastStudied): ${cloudUser!.lastSynced.isBefore(user.lastStudied)}\n${cloudUser.lastSynced} is before?: ${user.lastStudied}');
+
+    if (cloudUser == null || cloudUser.lastSynced.isBefore(user.lastStudied)) {
+      await _saveAllToCloud(user: user);
+    } else {
+      await _loadAllFromCloud(user: user);
+    }
+  }
+
+  Future<void> _saveAllToCloud({required DatabaseUser user}) async {
+    log('Saved all to cloud');
+
+    await _setUserLastSynced(user: user, lastSynced: DateTime.now());
+    await _setUserLastStudied(user: user, lastStudied: DateTime.now());
+    await CloudDatabaseController().saveAllToCloud(user: user);
+  }
+
+  Future<void> _updateUser({required DatabaseUser user}) async {
+    final db = _getDatabaseOrThrow();
+
+    await db.update(
+      userTable,
+      user.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+  }
+
+  Future<void> _updateFcSet({required DatabaseFlashcardSet fcSet}) async {
+    final db = _getDatabaseOrThrow();
+
+    await db.update(
+      flashcardSetTable,
+      fcSet.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [fcSet.id],
+    );
+  }
+
+  Future<void> _updateFlashcard({required DatabaseFlashcard flashcard}) async {
+    final db = _getDatabaseOrThrow();
+
+    db.update(
+      flashcardTable,
+      flashcard.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [flashcard.id],
+    );
+  }
+
+  Future<void> _updatetask({required DatabaseTask task}) async {
+    final db = _getDatabaseOrThrow();
+
+    db.update(
+      taskTable,
+      task.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [task.id],
+    );
+  }
+
+  Future<void> _loadAllFromCloud({required DatabaseUser user}) async {
+    log('loaded all from cloud');
+
+    final cloudUserData =
+        await CloudDatabaseController().loadAllFromCloud(user: user);
+
+    await _updateUser(user: user);
+
+    for (final fcSet in cloudUserData.flashcardSets) {
+      _updateFcSet(fcSet: fcSet);
+    }
+    for (final task in cloudUserData.tasks) {
+      _updatetask(task: task);
+    }
+    for (final flashcard in cloudUserData.flashcards) {
+      _updateFlashcard(flashcard: flashcard);
+    }
+
+    await TodoService().reloadTasks();
+    await FlashcardsService().reloadFlashcardSets();
   }
 
   DatabaseUser get currentUser =>

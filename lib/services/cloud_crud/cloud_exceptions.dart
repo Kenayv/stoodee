@@ -12,6 +12,10 @@ class CouldNotFindCloudUser implements Exception {}
 
 class CouldNotFindCloudTask implements Exception {}
 
+class CouldNotFindCloudFlashcard implements Exception {}
+
 class CouldNotFindCloudFcSet implements Exception {}
 
 class CouldNotDeleteCloudFc implements Exception {}
+
+class UserNotFoundException implements Exception {}
