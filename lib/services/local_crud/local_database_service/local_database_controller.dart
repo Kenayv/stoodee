@@ -106,11 +106,12 @@ class LocalDbController {
     }
   }
 
-  Future<void> _updateUserStreakAfterChange(
-      {required DatabaseUser user}) async {
+  Future<void> _updateUserStreakAfterChange({
+    required DatabaseUser user,
+  }) async {
     final db = _getDatabaseOrThrow();
 
-    if (daysDifferenceFromNow(user.lastStudied) != 0) {
+    if (daysDifferenceFromNow(user.lastStudied) == 0) {
       _setUserLastStudied(user: user, lastStudied: DateTime.now());
     }
 
@@ -795,7 +796,6 @@ class LocalDbController {
 
     final cloudUser =
         await CloudDbController().getUserOrNull(cloudId: user.cloudId);
-    log('clouduser: $cloudUser\ncloudUser.lastSynced.isBefore(user.lastStudied): ${cloudUser!.lastSynced.isBefore(user.lastStudied)}\n${cloudUser.lastSynced} is before?: ${user.lastStudied}');
 
     if (cloudUser == null || cloudUser.lastSynced.isBefore(user.lastStudied)) {
       await _saveAllToCloud(user: user);

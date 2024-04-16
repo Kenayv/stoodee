@@ -8,7 +8,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 
 class CloudDbController {
-  //CloudDatabaseController should be only used via singleton //
+  //CloudDatabaseController should be only used via singleton  //
   static final CloudDbController _shared = CloudDbController._sharedInstance();
   factory CloudDbController() => _shared;
   CloudDbController._sharedInstance();
@@ -60,7 +60,7 @@ class CloudDbController {
     }
 
     await batch.commit();
-    await deleteObsoleteFromCloud(user: user);
+    await _deleteObsoleteFromCloud(user: user);
   }
 
   Future<void> _saveUserToBatch({
@@ -143,10 +143,10 @@ class CloudDbController {
 
   Future<CloudUserData> loadAllFromCloud({required DatabaseUser user}) async {
     try {
-      final userData = await loadUserData(user);
-      final tasks = await loadTasks(user);
-      final flashcardSets = await loadFlashcardSets(user);
-      final flashcards = await loadFlashcards(user, flashcardSets);
+      final userData = await _loadUserData(user);
+      final tasks = await _loadTasks(user);
+      final flashcardSets = await _loadFlashcardSets(user);
+      final flashcards = await _loadFlashcards(user, flashcardSets);
 
       return CloudUserData(
         user: userData,
@@ -160,8 +160,8 @@ class CloudDbController {
     }
   }
 
-  Future<DatabaseUser> loadUserData(DatabaseUser user) async {
-    final docUser = _firestore.collection('users').doc(user.cloudId);
+  Future<DatabaseUser> _loadUserData(DatabaseUser user) async {
+    final docUser = _firestore.collection(usersCollection).doc(user.cloudId);
     final docSnapshot = await docUser.get();
 
     if (docSnapshot.exists) {
@@ -172,10 +172,13 @@ class CloudDbController {
     }
   }
 
-  Future<List<DatabaseTask>> loadTasks(DatabaseUser user) async {
-    final tasksCollection =
-        _firestore.collection('users').doc(user.cloudId).collection('tasks');
-    final querySnapshot = await tasksCollection.get();
+  Future<List<DatabaseTask>> _loadTasks(DatabaseUser user) async {
+    final taskCollection = _firestore
+        .collection(usersCollection)
+        .doc(user.cloudId)
+        .collection(tasksCollection);
+
+    final querySnapshot = await taskCollection.get();
 
     return querySnapshot.docs.map((doc) {
       final taskData = doc.data();
@@ -183,12 +186,13 @@ class CloudDbController {
     }).toList();
   }
 
-  Future<List<DatabaseFlashcardSet>> loadFlashcardSets(
+  Future<List<DatabaseFlashcardSet>> _loadFlashcardSets(
       DatabaseUser user) async {
     final setsCollection = _firestore
-        .collection('users')
+        .collection(usersCollection)
         .doc(user.cloudId)
-        .collection('flashcard_sets');
+        .collection(flashcardSetsCollection);
+
     final querySnapshot = await setsCollection.get();
 
     return querySnapshot.docs.map((doc) {
@@ -197,21 +201,21 @@ class CloudDbController {
     }).toList();
   }
 
-  Future<List<DatabaseFlashcard>> loadFlashcards(
+  Future<List<DatabaseFlashcard>> _loadFlashcards(
     DatabaseUser user,
     List<DatabaseFlashcardSet> flashcardSets,
   ) async {
     final List<DatabaseFlashcard> flashcards = [];
 
     for (final fcSet in flashcardSets) {
-      final flashcardsCollection = _firestore
-          .collection('users')
+      final flashcardCollection = _firestore
+          .collection(usersCollection)
           .doc(user.cloudId)
-          .collection('flashcard_sets')
+          .collection(flashcardSetsCollection)
           .doc(fcSet.id.toString())
-          .collection('flashcards');
+          .collection(flashcardsCollection);
 
-      final querySnapshot = await flashcardsCollection.get();
+      final querySnapshot = await flashcardCollection.get();
       final fcSetFlashcards = querySnapshot.docs.map((doc) {
         final flashcardData = doc.data();
         return DatabaseFlashcard.fromRow(flashcardData);
@@ -223,7 +227,7 @@ class CloudDbController {
     return flashcards;
   }
 
-  Future<void> deleteObsoleteFromCloud({
+  Future<void> _deleteObsoleteFromCloud({
     required DatabaseUser user,
   }) async {
     final cloudUserData = await loadAllFromCloud(user: user);
