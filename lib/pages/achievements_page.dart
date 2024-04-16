@@ -1,6 +1,9 @@
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/utilities/reusables/achievement_tile.dart';
+
+/*
 
 Container achievementTile({required String name, required String path}) {
   return Container(
@@ -40,26 +43,31 @@ Container achievementTile({required String name, required String path}) {
   );
 }
 
+ */
+
+
+
+
 List<Widget> allAchievements = [
-  achievementTile(name: "WoodTask", path: "lib/assets/wood_tasks.svg"),
-  achievementTile(name: "CopperTask", path: "lib/assets/copper_tasks.svg"),
-  achievementTile(name: "SilverTask", path: "lib/assets/silver_tasks.svg"),
-  achievementTile(name: "GoldTask", path: "lib/assets/gold_tasks.svg"),
+  const AchievementTile(name: "WoodTask", path: "lib/assets/wood_tasks.svg", desc: 'Ukończ 1 zadanie',),
+  const AchievementTile(name: "CopperTask", path: "lib/assets/copper_tasks.svg", desc: 'Ukończ 5 zadań',),
+  const AchievementTile(name: "SilverTask", path: "lib/assets/silver_tasks.svg", desc: 'Ukończ 20 zadań',),
+  const AchievementTile(name: "GoldTask", path: "lib/assets/gold_tasks.svg", desc: 'Ukończ 50 zadań',),
   //
-  achievementTile(name: "WoodFc", path: "lib/assets/wood_flashcards.svg"),
-  achievementTile(name: "CopperFc", path: "lib/assets/copper_flashcards.svg"),
-  achievementTile(name: "SilverFc", path: "lib/assets/silver_flashcards.svg"),
-  achievementTile(name: "GoldFc", path: "lib/assets/gold_flashcards.svg"),
+  const AchievementTile(name: "WoodFc", path: "lib/assets/wood_flashcards.svg", desc: 'Odgadnij 1 fiszkę',),
+  const AchievementTile(name: "CopperFc", path: "lib/assets/copper_flashcards.svg", desc: 'Odgadnij 10 fiszek',),
+  const AchievementTile(name: "SilverFc", path: "lib/assets/silver_flashcards.svg", desc: 'Odgadnij 50 fiszek',),
+  const AchievementTile(name: "GoldFc", path: "lib/assets/gold_flashcards.svg", desc: 'Odgadnij 250 fiszek',),
   //
-  achievementTile(name: "WoodRush", path: "lib/assets/wood_rush.svg"),
-  achievementTile(name: "CopperRush", path: "lib/assets/copper_rush.svg"),
-  achievementTile(name: "SilverRush", path: "lib/assets/silver_rush.svg"),
-  achievementTile(name: "GoldRush", path: "lib/assets/gold_rush.svg"),
+  const AchievementTile(name: "WoodRush", path: "lib/assets/wood_rush.svg", desc: 'Osiągnij rekord 5 Fiszki Rush',),
+  const AchievementTile(name: "CopperRush", path: "lib/assets/copper_rush.svg", desc: 'Osiągnij rekord 15 Fiszki Rush',),
+  const AchievementTile(name: "SilverRush", path: "lib/assets/silver_rush.svg", desc: 'Osiągnij rekord 25 Fiszki Rush',),
+  const AchievementTile(name: "GoldRush", path: "lib/assets/gold_rush.svg", desc: 'Osiągnij rekord 45 Fiszki Rush',),
   //
-  achievementTile(name: "WoodStreak", path: "lib/assets/wood_streak.svg"),
-  achievementTile(name: "CopperSteak", path: "lib/assets/copper_streak.svg"),
-  achievementTile(name: "SilverStreak", path: "lib/assets/silver_streak.svg"),
-  achievementTile(name: "GoldStreak", path: "lib/assets/gold_streak.svg"),
+  const AchievementTile(name: "WoodStreak", path: "lib/assets/wood_streak.svg", desc: 'Zdobądź 1-dniowy Streak',),
+  const AchievementTile(name: "CopperSteak", path: "lib/assets/copper_streak.svg", desc: 'Zdobądź 3-dniowy Streak',),
+  const AchievementTile(name: "SilverStreak", path: "lib/assets/silver_streak.svg", desc: 'Zdobądź 7-dniowy Streak',),
+  const AchievementTile(name: "GoldStreak", path: "lib/assets/gold_streak.svg", desc: 'Zdobądź 14-dniowy Streak',),
 ];
 
 class AchievementsPage extends StatefulWidget {
