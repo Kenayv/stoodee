@@ -7,12 +7,11 @@ import 'package:stoodee/services/local_crud/local_database_service/database_task
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 
-class CloudDatabaseController {
+class CloudDbController {
   //CloudDatabaseController should be only used via singleton //
-  static final CloudDatabaseController _shared =
-      CloudDatabaseController._sharedInstance();
-  factory CloudDatabaseController() => _shared;
-  CloudDatabaseController._sharedInstance();
+  static final CloudDbController _shared = CloudDbController._sharedInstance();
+  factory CloudDbController() => _shared;
+  CloudDbController._sharedInstance();
   //CloudDatabaseController should be only used via singleton //
 
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;
@@ -61,6 +60,7 @@ class CloudDatabaseController {
     }
 
     await batch.commit();
+    await deleteObsoleteFromCloud(user: user);
   }
 
   Future<void> _saveUserToBatch({
@@ -221,5 +221,64 @@ class CloudDatabaseController {
     }
 
     return flashcards;
+  }
+
+  Future<void> deleteObsoleteFromCloud({
+    required DatabaseUser user,
+  }) async {
+    final cloudUserData = await loadAllFromCloud(user: user);
+
+    final tasks = await LocalDbController().getUserTasks(user: user);
+    final flashcards = await LocalDbController().getUserFlashcards(user: user);
+    final flashcardSets =
+        await LocalDbController().getUserFlashcardSets(user: user);
+
+    // Identify obsolete tasks
+    final obsoleteTasks = cloudUserData.tasks.where((cloudTask) {
+      return tasks.any((localTask) => localTask.id == cloudTask.id);
+    }).toList();
+
+    // Identify obsolete flashcard sets
+    final obsoleteFlashcardSets = cloudUserData.flashcardSets.where((cloudSet) {
+      return flashcardSets.any((localSet) => localSet.id == cloudSet.id);
+    }).toList();
+
+    // Identify obsolete flashcards
+    final obsoleteFlashcards = cloudUserData.flashcards.where((cloudFlashcard) {
+      return flashcards
+          .any((localFlashcard) => localFlashcard.id == cloudFlashcard.id);
+    }).toList();
+
+    // Delete obsolete tasks
+    await Future.forEach(obsoleteTasks, (task) async {
+      final taskDoc = FirebaseFirestore.instance
+          .collection(usersCollection)
+          .doc(user.cloudId)
+          .collection(tasksCollection)
+          .doc(task.id.toString());
+      await taskDoc.delete();
+    });
+
+    // Delete obsolete flashcard sets
+    await Future.forEach(obsoleteFlashcardSets, (fcSet) async {
+      final fcSetDoc = FirebaseFirestore.instance
+          .collection(usersCollection)
+          .doc(user.cloudId)
+          .collection(flashcardSetsCollection)
+          .doc(fcSet.id.toString());
+      await fcSetDoc.delete();
+    });
+
+    // Delete obsolete flashcards
+    await Future.forEach(obsoleteFlashcards, (flashcard) async {
+      final flashcardDoc = FirebaseFirestore.instance
+          .collection(usersCollection)
+          .doc(user.cloudId)
+          .collection(flashcardSetsCollection)
+          .doc(flashcard.flashcardSetId.toString())
+          .collection(flashcardsCollection)
+          .doc(flashcard.id.toString());
+      await flashcardDoc.delete();
+    });
   }
 }

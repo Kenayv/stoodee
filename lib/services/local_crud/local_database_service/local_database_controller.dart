@@ -481,6 +481,30 @@ class LocalDbController {
     return allFcSets.where((fcSet) => fcSet.userId == user.id).toList();
   }
 
+  //FIXME: niezły syf. ADD USERID PROPERTY TO FLASHCARD!!
+  Future<List<DatabaseFlashcard>> getUserFlashcards({
+    required DatabaseUser user,
+  }) async {
+    final userFcSets = await getUserFlashcardSets(user: user);
+
+    List<DatabaseFlashcard> flashcards = await _getAllDbFlashcards();
+
+    // Filter flashcards based on the user's flashcard sets
+    List<DatabaseFlashcard> userFlashcards = [];
+    for (var flashcard in flashcards) {
+      // Fetch the flashcard set associated with the flashcard
+      final flashcardSet = userFcSets.firstWhere(
+        (set) => set.id == flashcard.flashcardSetId,
+      );
+      // If the flashcard set belongs to the user, add the flashcard to userFlashcards
+      if (flashcardSet.userId == user.id) {
+        userFlashcards.add(flashcard);
+      }
+    }
+
+    return userFlashcards;
+  }
+
   Future<List<DatabaseFlashcard>> getFlashcardsFromSet({
     required DatabaseFlashcardSet fcSet,
   }) async {
@@ -770,7 +794,7 @@ class LocalDbController {
     }
 
     final cloudUser =
-        await CloudDatabaseController().getUserOrNull(cloudId: user.cloudId);
+        await CloudDbController().getUserOrNull(cloudId: user.cloudId);
     log('clouduser: $cloudUser\ncloudUser.lastSynced.isBefore(user.lastStudied): ${cloudUser!.lastSynced.isBefore(user.lastStudied)}\n${cloudUser.lastSynced} is before?: ${user.lastStudied}');
 
     if (cloudUser == null || cloudUser.lastSynced.isBefore(user.lastStudied)) {
@@ -785,7 +809,7 @@ class LocalDbController {
 
     await _setUserLastSynced(user: user, lastSynced: DateTime.now());
     await _setUserLastStudied(user: user, lastStudied: DateTime.now());
-    await CloudDatabaseController().saveAllToCloud(user: user);
+    await CloudDbController().saveAllToCloud(user: user);
   }
 
   Future<void> _updateUser({required DatabaseUser user}) async {
@@ -836,7 +860,7 @@ class LocalDbController {
     log('loaded all from cloud');
 
     final cloudUserData =
-        await CloudDatabaseController().loadAllFromCloud(user: user);
+        await CloudDbController().loadAllFromCloud(user: user);
 
     await _updateUser(user: user);
 
