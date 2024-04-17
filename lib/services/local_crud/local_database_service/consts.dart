@@ -5,14 +5,16 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug15_tasks.db';
+const dbName = 'debug18_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
 const flashcardSetTable = 'flashcard_set';
 const flashcardTable = 'flashcard';
 
-const idColumn = 'ID';
+const localIdColumn = 'ID';
+const cloudIdColumn = 'cloud_db_id';
+
 const emailColumn = 'email';
 const lastSyncedColumn = 'last_synced_column';
 const lastStreakBrokenColumn = 'last_streak_broken';
@@ -51,7 +53,8 @@ const defaultNullUserEmail = 'null.user@stoodee.fakemail';
 
 const createUserTable = ''' 
   CREATE TABLE IF NOT EXISTS "$userTable" (
-    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$localIdColumn"	INTEGER NOT NULL UNIQUE,
+    "$cloudIdColumn" TEXT UNIQUE NULL,
     "$emailColumn"	TEXT NOT NULL UNIQUE,
     "$nameColumn" TEXT NOT NULL DEFAULT "$defaultUserName",
     "$lastSyncedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
@@ -62,41 +65,42 @@ const createUserTable = '''
     "$flashcardsCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
     "$tasksCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
     "$dayStreakColumn" INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY("$idColumn" AUTOINCREMENT)
+    PRIMARY KEY("$localIdColumn" AUTOINCREMENT)
   );
 ''';
 
 const createTaskTable = '''
   CREATE TABLE IF NOT EXISTS "$taskTable" (
-    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$localIdColumn"	INTEGER NOT NULL UNIQUE,
     "$userIdColumn"	INTEGER NOT NULL,
     "$textColumn"	TEXT NOT NULL,
-    PRIMARY KEY("$idColumn" AUTOINCREMENT),
-    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")
+    PRIMARY KEY("$localIdColumn" AUTOINCREMENT),
+    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$localIdColumn")
   );
 ''';
 
 const createFlashcardSetTable = '''
   CREATE TABLE IF NOT EXISTS "$flashcardSetTable" (
-    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$localIdColumn"	INTEGER NOT NULL UNIQUE,
     "$userIdColumn"	INTEGER NOT NULL,
     "$nameColumn"	TEXT NOT NULL,
     "$pairCountColumn" INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY("$idColumn" AUTOINCREMENT),
-    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$idColumn")
+    PRIMARY KEY("$localIdColumn" AUTOINCREMENT),
+    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$localIdColumn")
   );
 ''';
 
 const createFlashcardTable = '''
   CREATE TABLE  IF NOT EXISTS"$flashcardTable" (
-    "$idColumn"	INTEGER NOT NULL UNIQUE,
+    "$localIdColumn"	INTEGER NOT NULL UNIQUE,
     "$flashcardSetIdColumn"	INTEGER NOT NULL,
+    "$userIdColumn"	INTEGER NOT NULL,
     "$frontTextColumn"	TEXT NOT NULL,
     "$backTextColumn"	TEXT NOT NULL,
     "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT "$defaultFlashcardDifficulty",
     "$displayAfterDateColumn"	TEXT NOT NULL DEFAULT "$defaultDateStr",
-    PRIMARY KEY("$idColumn" AUTOINCREMENT),
-    FOREIGN KEY("$flashcardSetIdColumn") REFERENCES "$flashcardSetTable"("$idColumn")
+    PRIMARY KEY("$localIdColumn" AUTOINCREMENT),
+    FOREIGN KEY("$flashcardSetIdColumn") REFERENCES "$flashcardSetTable"("$localIdColumn")
   );
 ''';
 
@@ -120,8 +124,12 @@ DateTime parseStringToDateTime(String date) {
   return DateTime(year, month, day, hour, minute, second);
 }
 
+String getDateAsFormattedString(DateTime date) {
+  return date.toString().substring(0, 19);
+}
+
 String getCurrentDateAsFormattedString() {
-  return DateTime.now().toString().substring(0, 19);
+  return getDateAsFormattedString(DateTime.now());
 }
 
 void debug___Print___info({

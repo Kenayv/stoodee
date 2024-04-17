@@ -3,6 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseUser {
   final int id;
   final String email;
+  late String? _cloudId;
   late String _name;
   late DateTime _lastSynced;
   late DateTime _lastStreakBroken;
@@ -16,6 +17,7 @@ class DatabaseUser {
   DatabaseUser({
     required this.id,
     required this.email,
+    required String? cloudId,
     required String name,
     required DateTime lastSynced,
     required DateTime lastStreakBroken,
@@ -25,7 +27,8 @@ class DatabaseUser {
     required int flashcardsCompletedToday,
     required int tasksCompletedToday,
     required int dayStreak,
-  })  : _name = name,
+  })  : _cloudId = cloudId,
+        _name = name,
         _lastSynced = lastSynced,
         _lastStreakBroken = lastStreakBroken,
         _dailyGoalFlashcards = dailyGoalFlashcards,
@@ -36,7 +39,8 @@ class DatabaseUser {
         _dayStreak = dayStreak;
 
   DatabaseUser.fromRow(Map<String, Object?> map)
-      : id = map[idColumn] as int,
+      : id = map[localIdColumn] as int,
+        _cloudId = map[cloudIdColumn] as String?,
         email = map[emailColumn] as String,
         _name = map[nameColumn] as String,
         _lastSynced = parseStringToDateTime(map[lastSyncedColumn] as String),
@@ -58,8 +62,10 @@ class DatabaseUser {
   int get flashcardsCompletedToday => _flashcardsCompletedToday;
   int get tasksCompletedToday => _tasksCompletedToday;
   int get dayStreak => _dayStreak;
+  String? get cloudId => _cloudId;
 
   void setLastSynced(DateTime date) => _lastSynced = date;
+
   void setLastStreakBroken(DateTime date) => _lastStreakBroken = date;
   void setLastStudied(DateTime date) => _lastStudied = date;
   void setName(String name) => _name = name;
@@ -75,7 +81,22 @@ class DatabaseUser {
 
   @override
   String toString() =>
-      'UserID = [$id],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$dayStreak]\n';
+      'UserID = [$id],\n   cloudId = [$cloudId],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$dayStreak]\n';
+
+  Map<String, dynamic> toJson() => {
+        localIdColumn: id,
+        cloudIdColumn: cloudId,
+        emailColumn: email,
+        nameColumn: _name,
+        lastSyncedColumn: getDateAsFormattedString(_lastSynced),
+        lastStreakBrokenColumn: getDateAsFormattedString(_lastStreakBroken),
+        lastStudiedColumn: getDateAsFormattedString(_lastStudied),
+        dailyGoalTasksColumn: _dailyGoalTasks,
+        dailyGoalFlashcardsColumn: _dailyGoalFlashcards,
+        flashcardsCompletedTodayColumn: _flashcardsCompletedToday,
+        tasksCompletedTodayColumn: _tasksCompletedToday,
+        dayStreakColumn: _dayStreak
+      };
 
   @override
   bool operator ==(covariant DatabaseUser other) => id == other.id;

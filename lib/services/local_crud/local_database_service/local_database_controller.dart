@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:stoodee/services/auth/auth_service.dart';
+import 'package:stoodee/services/cloud_crud/cloud_database_controller.dart';
+import 'package:stoodee/services/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -9,6 +11,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
+import 'package:stoodee/services/todo_service.dart';
 
 class LocalDbController {
   Database? _db;
@@ -47,7 +50,7 @@ class LocalDbController {
           tasksCompletedTodayColumn: 0,
           flashcardsCompletedTodayColumn: 0,
         },
-        where: '$idColumn = ?',
+        where: '$localIdColumn = ?',
         whereArgs: [user.id],
       );
 
@@ -62,7 +65,7 @@ class LocalDbController {
       final updateCount = await db.update(
         userTable,
         {dayStreakColumn: 0},
-        where: '$idColumn = ?',
+        where: '$localIdColumn = ?',
         whereArgs: [user.id],
       );
 
@@ -102,12 +105,13 @@ class LocalDbController {
     }
   }
 
-  Future<void> _updateUserStreakAfterChange(
-      {required DatabaseUser user}) async {
+  Future<void> _updateUserStreakAfterChange({
+    required DatabaseUser user,
+  }) async {
     final db = _getDatabaseOrThrow();
 
-    if (daysDifferenceFromNow(user.lastStudied) != 0) {
-      user.setLastStudied(DateTime.now());
+    if (daysDifferenceFromNow(user.lastStudied) == 0) {
+      _setUserLastStudied(user: user, lastStudied: DateTime.now());
     }
 
     if (daysDifferenceFromNow(user.lastStreakBroken) != 0 &&
@@ -147,7 +151,7 @@ class LocalDbController {
         flashcardsCompletedTodayColumn: newCompletedCount,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -174,7 +178,7 @@ class LocalDbController {
         tasksCompletedTodayColumn: newCompletedCount,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -251,9 +255,9 @@ class LocalDbController {
     final userId = await db.insert(userTable, {
       emailColumn: email.toLowerCase(),
     });
-
-    return DatabaseUser(
+    final newUser = DatabaseUser(
       id: userId,
+      cloudId: null,
       email: email,
       name: defaultUserName,
       lastSynced: parseStringToDateTime(defaultDateStr),
@@ -265,6 +269,8 @@ class LocalDbController {
       flashcardsCompletedToday: 0,
       dayStreak: 0,
     );
+
+    return newUser;
   }
 
   Future<DatabaseUser> loginOrCreateUser({required String email}) async {
@@ -299,6 +305,79 @@ class LocalDbController {
     return DatabaseUser.fromRow(result.first);
   }
 
+  Future<void> setUserCloudId({
+    required DatabaseUser user,
+    required String cloudId,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    if (user.cloudId != null) throw UserCloudIdAlreadyInitialized();
+
+    final updatesCount = await db.update(
+      userTable,
+      {cloudIdColumn: cloudId},
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updatesCount != 1) throw CouldNotUpdateUser();
+  }
+
+  Future<DatabaseUser> _setUserLastSynced({
+    required DatabaseUser user,
+    required DateTime lastSynced,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure task exists in database and isn't hard-coded
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    final updateCount = await db.update(
+      userTable,
+      {
+        lastSyncedColumn: getDateAsFormattedString(lastSynced),
+      },
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateTask();
+
+    user.setLastSynced(lastSynced);
+
+    return user;
+  }
+
+  Future<DatabaseUser> _setUserLastStudied({
+    required DatabaseUser user,
+    required DateTime lastStudied,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure task exists in database and isn't hard-coded
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    final updateCount = await db.update(
+      userTable,
+      {
+        lastStudiedColumn: getDateAsFormattedString(lastStudied),
+      },
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateTask();
+
+    user.setLastStudied(lastStudied);
+
+    return user;
+  }
+
   Future<DatabaseTask> createTask({
     required DatabaseUser owner,
     required String text,
@@ -328,7 +407,7 @@ class LocalDbController {
 
     final deletedCount = await db.delete(
       taskTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [task.id],
     );
 
@@ -342,7 +421,9 @@ class LocalDbController {
     return tasks.map((taskRow) => DatabaseTask.fromRow(taskRow)).toList();
   }
 
-  Future<List<DatabaseTask>> getUserTasks(DatabaseUser user) async {
+  Future<List<DatabaseTask>> getUserTasks({
+    required DatabaseUser user,
+  }) async {
     List<DatabaseTask> allTasks = await _getAllDbTasks();
     return allTasks.where((task) => task.userId == user.id).toList();
   }
@@ -370,7 +451,7 @@ class LocalDbController {
       {
         textColumn: text,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [task.id],
     );
 
@@ -398,6 +479,30 @@ class LocalDbController {
   }) async {
     List<DatabaseFlashcardSet> allFcSets = await _getAllDbFlashCardSets();
     return allFcSets.where((fcSet) => fcSet.userId == user.id).toList();
+  }
+
+  //FIXME: niezły syf. ADD USERID PROPERTY TO FLASHCARD!!
+  Future<List<DatabaseFlashcard>> getUserFlashcards({
+    required DatabaseUser user,
+  }) async {
+    final userFcSets = await getUserFlashcardSets(user: user);
+
+    List<DatabaseFlashcard> flashcards = await _getAllDbFlashcards();
+
+    // Filter flashcards based on the user's flashcard sets
+    List<DatabaseFlashcard> userFlashcards = [];
+    for (var flashcard in flashcards) {
+      // Fetch the flashcard set associated with the flashcard
+      final flashcardSet = userFcSets.firstWhere(
+        (set) => set.id == flashcard.flashcardSetId,
+      );
+      // If the flashcard set belongs to the user, add the flashcard to userFlashcards
+      if (flashcardSet.userId == user.id) {
+        userFlashcards.add(flashcard);
+      }
+    }
+
+    return userFlashcards;
   }
 
   Future<List<DatabaseFlashcard>> getFlashcardsFromSet({
@@ -456,7 +561,7 @@ class LocalDbController {
 
     final deletedCount = await db.delete(
       flashcardSetTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [fcSet.id],
     );
 
@@ -478,7 +583,7 @@ class LocalDbController {
       {
         nameColumn: name,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [fcSet.id],
     );
 
@@ -504,7 +609,7 @@ class LocalDbController {
         frontTextColumn: frontText,
         backTextColumn: backText,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [flashcard.id],
     );
 
@@ -519,7 +624,7 @@ class LocalDbController {
     final results = await db.query(
       flashcardSetTable,
       limit: 1,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [id],
     );
 
@@ -529,6 +634,7 @@ class LocalDbController {
   }
 
   Future<DatabaseFlashcard> createFlashcard({
+    required DatabaseUser user,
     required DatabaseFlashcardSet fcSet,
     required String frontText,
     required String backText,
@@ -541,6 +647,7 @@ class LocalDbController {
 
     final flashcardID = await db.insert(flashcardTable, {
       flashcardSetIdColumn: fcSet.id,
+      userIdColumn: user.id,
       backTextColumn: backText,
       frontTextColumn: frontText,
     });
@@ -549,7 +656,7 @@ class LocalDbController {
 
     await db.update(
       flashcardSetTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [fcSet.id],
       {
         pairCountColumn: fcSet.pairCount,
@@ -559,6 +666,7 @@ class LocalDbController {
     final flashcard = DatabaseFlashcard(
       id: flashcardID,
       flashcardSetId: fcSet.id,
+      userId: user.id,
       backText: backText,
       frontText: frontText,
       cardDifficulty: defaultFlashcardDifficulty,
@@ -573,11 +681,11 @@ class LocalDbController {
 
     final deletedCount = await db.delete(
       flashcardTable,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [flashcard.id],
     );
 
-    if (deletedCount != 1) throw CouldNotDeleteFlashCard();
+    if (deletedCount != 1) throw CouldNotFindFlashCard();
   }
 
   Future<DatabaseFlashcard> getFlashcard({required int id}) async {
@@ -586,7 +694,7 @@ class LocalDbController {
     final results = await db.query(
       flashcardTable,
       limit: 1,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [id],
     );
 
@@ -601,7 +709,7 @@ class LocalDbController {
     final results = await db.query(
       taskTable,
       limit: 1,
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [id],
     );
 
@@ -625,7 +733,7 @@ class LocalDbController {
       {
         nameColumn: name,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -649,7 +757,7 @@ class LocalDbController {
       {
         dailyGoalTasksColumn: taskGoal,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
@@ -673,13 +781,146 @@ class LocalDbController {
       {
         dailyGoalFlashcardsColumn: flashcardGoal,
       },
-      where: '$idColumn = ?',
+      where: '$localIdColumn = ?',
       whereArgs: [user.id],
     );
 
     user.setDailyFlashcardsGoal(flashcardGoal);
 
     if (updateCount != 1) throw CouldNotUpdateUser();
+  }
+
+  Future<void> syncWithCloud({required DatabaseUser user}) async {
+    log('Syncing with cloud\n');
+
+    if (user == await LocalDbController().getNullUser()) {
+      throw CannotSyncNullUser();
+    }
+
+    //If userId isn't stored in localdb:
+    if (user.cloudId == null) {
+      //Check if user exists in cloud db. If so, assign an id to them
+      final cloudId =
+          await CloudDbController().getUserIdByEmail(email: user.email);
+      if (cloudId != null) {
+        await setUserCloudId(user: user, cloudId: cloudId);
+
+        user = await getUser(email: user.email);
+      }
+    }
+
+    final cloudUser =
+        await CloudDbController().getUserOrNull(cloudId: user.cloudId);
+
+    if (cloudUser == null || cloudUser.lastSynced.isBefore(user.lastStudied)) {
+      await _saveAllToCloud(user: user);
+    } else {
+      await _loadAllFromCloud(user: user);
+    }
+  }
+
+  Future<void> _saveAllToCloud({required DatabaseUser user}) async {
+    log('Saved all to cloud');
+
+    await _setUserLastSynced(user: user, lastSynced: DateTime.now());
+    await _setUserLastStudied(user: user, lastStudied: DateTime.now());
+    await CloudDbController().saveAllToCloud(user: user);
+  }
+
+  Future<void> _updateUser({required DatabaseUser user}) async {
+    final db = _getDatabaseOrThrow();
+
+    await db.update(
+      userTable,
+      user.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+  }
+
+  Future<void> _updateOrCreateFcSet(
+      {required DatabaseFlashcardSet fcSet}) async {
+    final db = _getDatabaseOrThrow();
+
+    int rowsUpdated = await db.update(
+      flashcardSetTable,
+      fcSet.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [fcSet.id],
+    );
+
+    if (rowsUpdated == 0) {
+      await db.insert(
+        flashcardSetTable,
+        fcSet.toJson(),
+      );
+    }
+  }
+
+  Future<void> _updateOrCreateFlashcard(
+      {required DatabaseFlashcard flashcard}) async {
+    final db = _getDatabaseOrThrow();
+
+    int rowsUpdated = await db.update(
+      flashcardTable,
+      flashcard.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [flashcard.id],
+    );
+
+    if (rowsUpdated == 0) {
+      await db.insert(
+        flashcardTable,
+        flashcard.toJson(),
+      );
+    }
+  }
+
+  Future<void> _updateOrCreateTask({required DatabaseTask task}) async {
+    final db = _getDatabaseOrThrow();
+
+    int rowsUpdated = await db.update(
+      taskTable,
+      task.toJson(),
+      where: '$localIdColumn = ?',
+      whereArgs: [task.id],
+    );
+
+    // If no rows were updated, it means the task doesn't exist, so insert it instead
+    if (rowsUpdated == 0) {
+      await db.insert(
+        taskTable,
+        task.toJson(),
+      );
+    }
+  }
+
+  Future<void> _loadAllFromCloud({required DatabaseUser user}) async {
+    log('loaded all from cloud');
+
+    final cloudUserData =
+        await CloudDbController().loadAllFromCloud(user: user);
+
+    log(cloudUserData.toString());
+    await _updateUser(user: user);
+
+    for (final task in cloudUserData.tasks) {
+      log('updating task');
+      await _updateOrCreateTask(task: task);
+    }
+
+    for (final fcSet in cloudUserData.flashcardSets) {
+      log('updating fcset');
+      await _updateOrCreateFcSet(fcSet: fcSet);
+    }
+
+    for (final flashcard in cloudUserData.flashcards) {
+      log('updating flashcards');
+      await _updateOrCreateFlashcard(flashcard: flashcard);
+    }
+
+    await TodoService().reloadTasks();
+    await FlashcardsService().reloadFlashcardSets();
   }
 
   DatabaseUser get currentUser =>

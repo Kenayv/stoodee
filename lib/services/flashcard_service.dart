@@ -8,14 +8,14 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'local_crud/crud_exceptions.dart';
 
 class FlashcardsService {
-  late final List<DatabaseFlashcardSet>? _flashcardSets;
+  late List<DatabaseFlashcardSet>? _flashcardSets;
   bool _initialized = false;
 
-  //ToDoService should be only used via singleton //
+  //FlashcardsService should be only used via singleton //
   static final FlashcardsService _shared = FlashcardsService._sharedInstance();
   factory FlashcardsService() => _shared;
   FlashcardsService._sharedInstance();
-  //ToDoService should be only used via singleton //
+  //FlashcardsService should be only used via singleton //
 
   DatabaseFlashcard getRandFcFromList({
     required List<DatabaseFlashcard> fcList,
@@ -42,13 +42,15 @@ class FlashcardsService {
     );
   }
 
-  Future<List<DatabaseFlashcardSet>> getFlashcardSets() async {
-    await _loadFcSets();
+  Future<void> reloadFlashcardSets() async {
+    _flashcardSets = null;
 
-    return _flashcardSets!;
+    _flashcardSets = await LocalDbController().getUserFlashcardSets(
+      user: LocalDbController().currentUser,
+    );
   }
 
-  Future<List<DatabaseFlashcardSet>> _loadFcSets() async {
+  Future<List<DatabaseFlashcardSet>> getFlashcardSets() async {
     if (!_initialized) {
       _flashcardSets = await LocalDbController().getUserFlashcardSets(
         user: LocalDbController().currentUser,
@@ -131,6 +133,7 @@ class FlashcardsService {
 
     return await LocalDbController().createFlashcard(
       fcSet: fcSet,
+      user: LocalDbController().currentUser,
       frontText: frontText,
       backText: backText,
     );
@@ -149,9 +152,6 @@ class FlashcardsService {
       backText: backText,
     );
   }
-
-  List<DatabaseFlashcardSet> get fcSets =>
-      _initialized ? _flashcardSets! : throw FcServiceNotInitialized();
 
   int get fcsCompletedToday => _initialized
       ? LocalDbController().currentUser.flashcardsCompletedToday

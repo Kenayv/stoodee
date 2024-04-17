@@ -13,13 +13,19 @@ class DatabaseTask {
   }) : _text = text;
 
   DatabaseTask.fromRow(Map<String, Object?> map)
-      : id = map[idColumn] as int,
+      : id = map[localIdColumn] as int,
         userId = map[userIdColumn] as int,
         _text = map[textColumn] as String;
 
   @override
   String toString() =>
       "\nTaskId = [$id]:\n   text = [$_text],\n   userId = [$userId],\n";
+
+  Map<String, dynamic> toJson() => {
+        localIdColumn: id,
+        userIdColumn: userId,
+        textColumn: _text,
+      };
 
   @override
   bool operator ==(covariant DatabaseTask other) => id == other.id;

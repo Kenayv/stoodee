@@ -16,7 +16,7 @@ class DatabaseFlashcardSet {
         _name = name;
 
   DatabaseFlashcardSet.fromRow(Map<String, Object?> map)
-      : id = map[idColumn] as int,
+      : id = map[localIdColumn] as int,
         userId = map[userIdColumn] as int,
         _name = map[nameColumn] as String,
         _pairCount = map[pairCountColumn] as int;
@@ -24,6 +24,13 @@ class DatabaseFlashcardSet {
   @override
   String toString() =>
       "FcSetId = [$id]:\n   name = [$_name],\n   userId = [$userId]\n   pairCount = [$_pairCount]\n"; // Access _pairCount directly
+
+  Map<String, dynamic> toJson() => {
+        localIdColumn: id,
+        userIdColumn: userId,
+        nameColumn: _name,
+        pairCountColumn: _pairCount,
+      };
 
   @override
   bool operator ==(covariant DatabaseFlashcardSet other) => id == other.id;

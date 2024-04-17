@@ -39,7 +39,7 @@ class _ToDoPage extends State<ToDoPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DatabaseTask>>(
-        future: TodoService().loadTasks(),
+        future: TodoService().getTasks(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
