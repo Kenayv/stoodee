@@ -47,7 +47,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
   }
 
   Future <void> deleteSet(List<DatabaseFlashcardSet> l) async{
-    await genericDeleteSetDialog(context: context, title: "lol",fcsets: l);
+    await genericDeleteSetDialog(context: context,fcsets: l);
     setState(() {});
   }
 
@@ -60,42 +60,32 @@ class _FlashcardsPage extends State<FlashcardsPage> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Scaffold(
+              floatingActionButton: StoodeeButton(
+        onPressed:(){
+        deleteSet(flashcardSets);
+        }, child: Icon(Icons.delete,color: Colors.white,),
+        ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
               body: SingleChildScrollView(
-                child: Stack(
-                  children: [Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      CustomGridLayout(
-                        crossAxisCount: 2,
-                        items: flashcardSetListView(
-                          context: context,
-                          fcSets: flashcardSets,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      StoodeeButton(
-                        onPressed: addFcSet,
-                        child:
-                            const Icon(Icons.add, color: Colors.white, size: 30),
-                      ),
-
-                      const SizedBox(height: 15),
-                    ],
-                  ),
-                    Expanded(child: Container()),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: StoodeeButton(
-                        onPressed:(){
-                          deleteSet(flashcardSets);
-                        }, child: Icon(Icons.delete,color: Colors.white,),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    CustomGridLayout(
+                      crossAxisCount: 2,
+                      items: flashcardSetListView(
+                        context: context,
+                        fcSets: flashcardSets,
                       ),
                     ),
+                    const SizedBox(height: 15),
+                    StoodeeButton(
+                      onPressed: addFcSet,
+                      child:
+                          const Icon(Icons.add, color: Colors.white, size: 30),
+                    ),
 
+                    const SizedBox(height: 15),
                   ],
-
-
-
                 ),
               ),
             );

@@ -108,7 +108,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                   alignment: Alignment.topCenter,
                   height: 35,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 8,
@@ -125,24 +125,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                               size: 20,
                               color: Colors.white,
                             )),
-                      ),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width / 8,
-                          child: TextButton(
-                              onPressed: () {
-                                log("favorite");
-                              },
-                              child: const Icon(Icons.star,
-                                  size: 20, color: Colors.white))),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width / 8,
-                          child: TextButton(
-                              onPressed: () {
-                                log("lock");
-                              },
-                              child: const Icon(Icons.lock,
-                                  size: 20, color: Colors.white))),
-                    ],
+                      ),],
                   ),
                 ),
                 Container(

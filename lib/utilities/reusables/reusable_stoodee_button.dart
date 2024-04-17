@@ -7,7 +7,7 @@ class StoodeeButton extends StatelessWidget {
   final Size size;
 
   final Color color1 = primaryAppColor;
-  final Color color2 = const Color.fromRGBO(83, 0, 189, 1.0);
+  final Color color2 = const Color.fromRGBO(92, 0, 208, 1.0);
 
   const StoodeeButton(
       {super.key,
@@ -54,11 +54,7 @@ class StoodeeButton extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           child: Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [color1, color2],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [0.9, 1]),
+                color: color1,
                 border: Border(
                   bottom: BorderSide(
                     color: color2,
