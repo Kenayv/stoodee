@@ -3,20 +3,18 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stoodee/services/router/route_functions.dart';
 
 import '../../services/local_crud/local_database_service/database_flashcard_set.dart';
 import '../containers.dart';
 import '../dialogs/add_flashcard_dialog.dart';
 import '../globals.dart';
+import 'package:stoodee/utilities/dialogs/delete_set_dialog.dart';
 
 void tap(BuildContext context, SetContainer container) {
   context.go('/flash_cards_reader', extra: container);
 }
 
-void deletingfunction() {
-  //FIXME: ONLY DEBUGGING OPTION, LINK IT TO A REAL FUNCTION LATER
-  log("deleted");
-}
 
 class FlashCardSetWidget extends StatefulWidget {
   const FlashCardSetWidget({
@@ -35,6 +33,19 @@ class FlashCardSetWidget extends StatefulWidget {
 }
 
 class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
+
+
+
+
+  Future<void> deletingfunction() async {
+    //FIXME: ONLY DEBUGGING OPTION, LINK IT TO A REAL FUNCTION LATER
+    log("deleteingfunction");
+
+    setState(() {
+
+    });
+    log("deleteingfunction");
+  }
 
 
   List<BoxShadow> resolveWidgetShadows(){

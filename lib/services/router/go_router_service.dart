@@ -13,9 +13,11 @@ import 'package:stoodee/pages/account_page.dart';
 import 'package:stoodee/pages/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/dialogs/achievement_dialog.dart';
 import 'package:stoodee/utilities/dialogs/side_sheet_page.dart';
+import '../../utilities/dialogs/deleting_set_dialog.dart';
 import '../../utilities/dialogs/dialog_page.dart';
 import '../../utilities/dialogs/not_for_production_use/custom_dialog.dart';
 
@@ -134,6 +136,37 @@ final GoRouter goRouterService = GoRouter(
                 },
               );
             },
+              routes: [
+                GoRoute(
+                  path: "dialog",
+
+                  //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
+                  pageBuilder: (BuildContext context, GoRouterState state) {
+                    var extras=state.extra as SetContainer;
+                    String name=extras.name;
+                    DatabaseFlashcardSet fcset=extras.getSet();
+
+                    return SideSheetPage(transitionsBuilder:  (context, animation, secondaryAnimation, child) {
+                      return SlideTransition(
+                        position: Tween(
+                          begin: const Offset(0, 1),
+                          end: const Offset(0, 0),
+                        ).animate(
+                          animation,
+                        ),
+                        child: child,
+                      );
+                    }, child: DeleteSetDialog(fcset: fcset,
+
+                    ),
+                    barrierColor: null,
+
+                    );
+                  },
+                ),
+              ]
+
+
           ),
 
           //Main
@@ -207,30 +240,11 @@ final GoRouter goRouterService = GoRouter(
 
                   //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
                   pageBuilder: (BuildContext context, GoRouterState state) {
-                    /*
                     var extras=state.extra as AchievementTileContainer;
-
                     String name=extras.name;
                     String path=extras.path;
                     String desc=extras.desc;
-
-
-                    return DialogPage(
-                      builder: (_) => AchievementDialog(
-                          name: name,
-                          path: path,
-                          desc:desc
-                      ),
-                    );
-                     */
-                    var extras=state.extra as AchievementTileContainer;
-
-                    String name=extras.name;
-                    String path=extras.path;
-                    String desc=extras.desc;
-
                     return SideSheetPage(transitionsBuilder:  (context, animation, secondaryAnimation, child) {
-
                       return SlideTransition(
                         position: Tween(
                           begin: const Offset(0, 1),
@@ -245,9 +259,6 @@ final GoRouter goRouterService = GoRouter(
                         path: path,
                         desc:desc
                     ),);
-
-
-
                   },
                 ),
               ]

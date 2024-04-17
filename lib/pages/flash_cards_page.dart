@@ -3,6 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_flas
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import '../services/flashcard_service.dart';
+import '../utilities/dialogs/delete_set_dialog.dart';
 import '../utilities/reusables/reusable_stoodee_button.dart';
 import '../utilities/reusables/custom_flash_card_set_widget.dart';
 
@@ -45,6 +46,11 @@ class _FlashcardsPage extends State<FlashcardsPage> {
     setState(() {});
   }
 
+  Future <void> deleteSet(List<DatabaseFlashcardSet> l) async{
+    await genericDeleteSetDialog(context: context, title: "lol",fcsets: l);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DatabaseFlashcardSet>>(
@@ -55,24 +61,41 @@ class _FlashcardsPage extends State<FlashcardsPage> {
           case ConnectionState.done:
             return Scaffold(
               body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    CustomGridLayout(
-                      crossAxisCount: 2,
-                      items: flashcardSetListView(
-                        context: context,
-                        fcSets: flashcardSets,
+                child: Stack(
+                  children: [Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      CustomGridLayout(
+                        crossAxisCount: 2,
+                        items: flashcardSetListView(
+                          context: context,
+                          fcSets: flashcardSets,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      StoodeeButton(
+                        onPressed: addFcSet,
+                        child:
+                            const Icon(Icons.add, color: Colors.white, size: 30),
+                      ),
+
+                      const SizedBox(height: 15),
+                    ],
+                  ),
+                    Expanded(child: Container()),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: StoodeeButton(
+                        onPressed:(){
+                          deleteSet(flashcardSets);
+                        }, child: Icon(Icons.delete,color: Colors.white,),
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    StoodeeButton(
-                      onPressed: addFcSet,
-                      child:
-                          const Icon(Icons.add, color: Colors.white, size: 30),
-                    ),
-                    const SizedBox(height: 15),
+
                   ],
+
+
+
                 ),
               ),
             );

@@ -36,13 +36,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.17.7
-<<<<<<< HEAD
-  cloud_firestore: ^4.15.8  
-  go_router: 12.1.3
-=======
   cloud_firestore: 4.15.8
   go_router: ^13.2.0
->>>>>>> cloud_database_service
   firebase_core: ^2.27.0
   flutter_svg_provider: ^1.0.7
   sqflite: ^2.3.2
