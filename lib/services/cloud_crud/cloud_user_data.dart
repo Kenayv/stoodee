@@ -15,4 +15,9 @@ class CloudUserData {
     required this.flashcardSets,
     required this.flashcards,
   });
+
+  @override
+  String toString() {
+    return 'CLOUD DATA:\n\n\n$user\n\n$tasks\n\n$flashcardSets\n\n$flashcards\n\n\n';
+  }
 }

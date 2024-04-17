@@ -3,6 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseFlashcard {
   final int id;
   final int flashcardSetId;
+  final int userId;
   late String _frontText; //FIXME: make those changable in localdbcontroller
   late String _backText;
   late int _cardDifficulty;
@@ -11,6 +12,7 @@ class DatabaseFlashcard {
   DatabaseFlashcard({
     required this.id,
     required this.flashcardSetId,
+    required this.userId,
     required String frontText,
     required String backText,
     required int cardDifficulty,
@@ -23,6 +25,7 @@ class DatabaseFlashcard {
   DatabaseFlashcard.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
         flashcardSetId = map[flashcardSetIdColumn] as int,
+        userId = map[userIdColumn] as int,
         _frontText = map[frontTextColumn] as String,
         _backText = map[backTextColumn] as String,
         _cardDifficulty = map[cardDifficultyColumn] as int,
@@ -39,9 +42,10 @@ class DatabaseFlashcard {
   Map<String, dynamic> toJson() => {
         localIdColumn: id,
         flashcardSetIdColumn: flashcardSetId,
+        userIdColumn: userId,
         frontTextColumn: _frontText,
         backTextColumn: _backText,
-        cardDifficultyColumn: _cardDifficulty.toString(),
+        cardDifficultyColumn: _cardDifficulty,
         displayAfterDateColumn: getDateAsFormattedString(_displayAfterDate),
       };
 

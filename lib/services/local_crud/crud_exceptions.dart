@@ -53,3 +53,5 @@ class UserNotFound implements Exception {}
 class UserCloudIdAlreadyInitialized implements Exception {}
 
 class CannotSyncNullUser implements Exception {}
+
+class UserDoesNotExistInCloud implements Exception {}

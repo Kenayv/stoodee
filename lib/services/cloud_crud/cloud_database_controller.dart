@@ -16,6 +16,24 @@ class CloudDbController {
 
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;
 
+  Future<String?> getUserIdByEmail({required String email}) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection(usersCollection)
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.id;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error getting user ID by email: $e");
+      return null;
+    }
+  }
+
   Future<DatabaseUser?> getUserOrNull({required String? cloudId}) async {
     if (cloudId == null) return null;
 
@@ -36,6 +54,7 @@ class CloudDbController {
 
     final fcSets = await LocalDbController().getUserFlashcardSets(user: user);
     final tasks = await LocalDbController().getUserTasks(user: user);
+    final flashcards = await LocalDbController().getUserFlashcards(user: user);
 
     await _saveUserToBatch(user: user, batch: batch);
 
@@ -45,22 +64,21 @@ class CloudDbController {
 
     for (final fcSet in fcSets) {
       await _saveFlashcardSetToBatch(user: user, fcSet: fcSet, batch: batch);
-
-      final flashcards =
-          await LocalDbController().getFlashcardsFromSet(fcSet: fcSet);
-
-      for (final flashcard in flashcards) {
-        await _saveFlashcardToBatch(
-          user: user,
-          fcSet: fcSet,
-          flashcard: flashcard,
-          batch: batch,
-        );
-      }
     }
 
+    for (final flashcard in flashcards) {
+      await _saveFlashcardToBatch(
+        user: user,
+        flashcard: flashcard,
+        batch: batch,
+      );
+    }
+
+    await _deleteObsoleteTasksFromBatch(user: user, batch: batch);
+    await _deleteObsoleteFlashcardsFromBatch(user: user, batch: batch);
+    await _deleteObsoleteFcSetsFromBatch(user: user, batch: batch);
+
     await batch.commit();
-    await _deleteObsoleteFromCloud(user: user);
   }
 
   Future<void> _saveUserToBatch({
@@ -70,8 +88,9 @@ class CloudDbController {
     final userDoc = _firestore.collection(usersCollection).doc(user.cloudId);
 
     if (user.cloudId == null) {
-      LocalDbController().setUserCloudId(user: user, cloudId: userDoc.id);
+      await LocalDbController().setUserCloudId(user: user, cloudId: userDoc.id);
     }
+
     if (await _docExists(userDoc) == false) {
       batch.set(userDoc, user.toJson());
     } else {
@@ -99,15 +118,12 @@ class CloudDbController {
 
   Future<void> _saveFlashcardToBatch({
     required DatabaseUser user,
-    required DatabaseFlashcardSet fcSet,
     required DatabaseFlashcard flashcard,
     required WriteBatch batch,
   }) async {
     final flashcardDoc = _firestore
         .collection(usersCollection)
         .doc(user.cloudId)
-        .collection(flashcardSetsCollection)
-        .doc(fcSet.id.toString())
         .collection(flashcardsCollection)
         .doc(flashcard.id.toString());
 
@@ -142,22 +158,17 @@ class CloudDbController {
   }
 
   Future<CloudUserData> loadAllFromCloud({required DatabaseUser user}) async {
-    try {
-      final userData = await _loadUserData(user);
-      final tasks = await _loadTasks(user);
-      final flashcardSets = await _loadFlashcardSets(user);
-      final flashcards = await _loadFlashcards(user, flashcardSets);
+    final userData = await _loadUserData(user);
+    final tasks = await _loadTasks(user);
+    final flashcardSets = await _loadFlashcardSets(user);
+    final flashcards = await _loadFlashcards(user);
 
-      return CloudUserData(
-        user: userData,
-        tasks: tasks,
-        flashcardSets: flashcardSets,
-        flashcards: flashcards,
-      );
-    } catch (e) {
-      print("Error loading data from cloud: $e");
-      rethrow;
-    }
+    return CloudUserData(
+      user: userData,
+      tasks: tasks,
+      flashcardSets: flashcardSets,
+      flashcards: flashcards,
+    );
   }
 
   Future<DatabaseUser> _loadUserData(DatabaseUser user) async {
@@ -201,88 +212,137 @@ class CloudDbController {
     }).toList();
   }
 
-  Future<List<DatabaseFlashcard>> _loadFlashcards(
-    DatabaseUser user,
-    List<DatabaseFlashcardSet> flashcardSets,
-  ) async {
-    final List<DatabaseFlashcard> flashcards = [];
+  Future<List<DatabaseFlashcard>> _loadFlashcards(DatabaseUser user) async {
+    final setsCollection = _firestore
+        .collection(usersCollection)
+        .doc(user.cloudId)
+        .collection(flashcardsCollection);
 
-    for (final fcSet in flashcardSets) {
-      final flashcardCollection = _firestore
-          .collection(usersCollection)
-          .doc(user.cloudId)
-          .collection(flashcardSetsCollection)
-          .doc(fcSet.id.toString())
-          .collection(flashcardsCollection);
+    final querySnapshot = await setsCollection.get();
 
-      final querySnapshot = await flashcardCollection.get();
-      final fcSetFlashcards = querySnapshot.docs.map((doc) {
-        final flashcardData = doc.data();
-        return DatabaseFlashcard.fromRow(flashcardData);
-      }).toList();
-
-      flashcards.addAll(fcSetFlashcards);
-    }
-
-    return flashcards;
+    return querySnapshot.docs.map((doc) {
+      final setData = doc.data();
+      return DatabaseFlashcard.fromRow(setData);
+    }).toList();
   }
 
-  Future<void> _deleteObsoleteFromCloud({
+  Future<void> _deleteObsoleteTasksFromBatch({
     required DatabaseUser user,
+    required WriteBatch batch,
   }) async {
-    final cloudUserData = await loadAllFromCloud(user: user);
+    final firestoreObjectIds = await _getFirestoreTaskIds(user);
+    final localTaskIds = await _getLocalDbTaskIds(user);
 
+    // Identify obsolete object IDs.
+    final obsoleteTaskIds =
+        firestoreObjectIds.where((id) => !localTaskIds.contains(id));
+
+    _deleteObjectsByIdList(
+      batch: batch,
+      user: user,
+      collection: tasksCollection,
+      idList: obsoleteTaskIds,
+    );
+  }
+
+  Future<void> _deleteObsoleteFlashcardsFromBatch({
+    required DatabaseUser user,
+    required WriteBatch batch,
+  }) async {
+    final firestoreFlashcardIds = await _getFirestoreFlashcardIds(user);
+    final localFlashcardIds = await _getLocalDbFlashcardIds(user);
+
+    // Identify obsolete object IDs.
+    final obsoleteFlashcardIds =
+        firestoreFlashcardIds.where((id) => !localFlashcardIds.contains(id));
+
+    _deleteObjectsByIdList(
+      batch: batch,
+      user: user,
+      collection: flashcardsCollection,
+      idList: obsoleteFlashcardIds,
+    );
+  }
+
+  Future<void> _deleteObsoleteFcSetsFromBatch({
+    required DatabaseUser user,
+    required WriteBatch batch,
+  }) async {
+    final firestoreFlashcardSetIds = await _getFirestoreFcSetIds(user);
+    final localFlashcardSetIds = await _getLocalDbFcSetIds(user);
+
+    // Identify obsolete object IDs.
+    final obsoleteFcSetsIds = firestoreFlashcardSetIds
+        .where((id) => !localFlashcardSetIds.contains(id));
+
+    _deleteObjectsByIdList(
+      batch: batch,
+      user: user,
+      collection: flashcardSetsCollection,
+      idList: obsoleteFcSetsIds,
+    );
+  }
+
+  // Iterate over the obsolete object IDs and delete them from the batch.
+  void _deleteObjectsByIdList({
+    required WriteBatch batch,
+    required DatabaseUser user,
+    required String collection,
+    required Iterable<String> idList,
+  }) {
+    for (final id in idList) {
+      final docRef = _firestore
+          .collection(usersCollection)
+          .doc(user.cloudId)
+          .collection(collection)
+          .doc(id);
+
+      batch.delete(docRef);
+    }
+  }
+
+  Future<List<String>> _getFirestoreTaskIds(DatabaseUser user) async {
+    final querySnapshot = await _firestore
+        .collection(usersCollection)
+        .doc(user.cloudId)
+        .collection(tasksCollection)
+        .get();
+
+    return querySnapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  Future<List<String>> _getFirestoreFlashcardIds(DatabaseUser user) async {
+    final querySnapshot = await _firestore
+        .collection(usersCollection)
+        .doc(user.cloudId)
+        .collection(flashcardsCollection)
+        .get();
+
+    return querySnapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  Future<List<String>> _getFirestoreFcSetIds(DatabaseUser user) async {
+    final querySnapshot = await _firestore
+        .collection(usersCollection)
+        .doc(user.cloudId)
+        .collection(flashcardSetsCollection)
+        .get();
+
+    return querySnapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  Future<List<String>> _getLocalDbTaskIds(DatabaseUser user) async {
     final tasks = await LocalDbController().getUserTasks(user: user);
+    return tasks.map((task) => task.id.toString()).toList();
+  }
+
+  Future<List<String>> _getLocalDbFlashcardIds(DatabaseUser user) async {
     final flashcards = await LocalDbController().getUserFlashcards(user: user);
-    final flashcardSets =
-        await LocalDbController().getUserFlashcardSets(user: user);
+    return flashcards.map((flashcard) => flashcard.id.toString()).toList();
+  }
 
-    // Identify obsolete tasks
-    final obsoleteTasks = cloudUserData.tasks.where((cloudTask) {
-      return tasks.any((localTask) => localTask.id == cloudTask.id);
-    }).toList();
-
-    // Identify obsolete flashcard sets
-    final obsoleteFlashcardSets = cloudUserData.flashcardSets.where((cloudSet) {
-      return flashcardSets.any((localSet) => localSet.id == cloudSet.id);
-    }).toList();
-
-    // Identify obsolete flashcards
-    final obsoleteFlashcards = cloudUserData.flashcards.where((cloudFlashcard) {
-      return flashcards
-          .any((localFlashcard) => localFlashcard.id == cloudFlashcard.id);
-    }).toList();
-
-    // Delete obsolete tasks
-    await Future.forEach(obsoleteTasks, (task) async {
-      final taskDoc = FirebaseFirestore.instance
-          .collection(usersCollection)
-          .doc(user.cloudId)
-          .collection(tasksCollection)
-          .doc(task.id.toString());
-      await taskDoc.delete();
-    });
-
-    // Delete obsolete flashcard sets
-    await Future.forEach(obsoleteFlashcardSets, (fcSet) async {
-      final fcSetDoc = FirebaseFirestore.instance
-          .collection(usersCollection)
-          .doc(user.cloudId)
-          .collection(flashcardSetsCollection)
-          .doc(fcSet.id.toString());
-      await fcSetDoc.delete();
-    });
-
-    // Delete obsolete flashcards
-    await Future.forEach(obsoleteFlashcards, (flashcard) async {
-      final flashcardDoc = FirebaseFirestore.instance
-          .collection(usersCollection)
-          .doc(user.cloudId)
-          .collection(flashcardSetsCollection)
-          .doc(flashcard.flashcardSetId.toString())
-          .collection(flashcardsCollection)
-          .doc(flashcard.id.toString());
-      await flashcardDoc.delete();
-    });
+  Future<List<String>> _getLocalDbFcSetIds(DatabaseUser user) async {
+    final fcSets = await LocalDbController().getUserFlashcardSets(user: user);
+    return fcSets.map((flashcardSet) => flashcardSet.id.toString()).toList();
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/cloud_crud/cloud_database_controller.dart';
-import 'package:stoodee/services/cloud_crud/cloud_user_data.dart';
 import 'package:stoodee/services/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
@@ -635,6 +634,7 @@ class LocalDbController {
   }
 
   Future<DatabaseFlashcard> createFlashcard({
+    required DatabaseUser user,
     required DatabaseFlashcardSet fcSet,
     required String frontText,
     required String backText,
@@ -647,6 +647,7 @@ class LocalDbController {
 
     final flashcardID = await db.insert(flashcardTable, {
       flashcardSetIdColumn: fcSet.id,
+      userIdColumn: user.id,
       backTextColumn: backText,
       frontTextColumn: frontText,
     });
@@ -665,6 +666,7 @@ class LocalDbController {
     final flashcard = DatabaseFlashcard(
       id: flashcardID,
       flashcardSetId: fcSet.id,
+      userId: user.id,
       backText: backText,
       frontText: frontText,
       cardDifficulty: defaultFlashcardDifficulty,
@@ -790,8 +792,21 @@ class LocalDbController {
 
   Future<void> syncWithCloud({required DatabaseUser user}) async {
     log('Syncing with cloud\n');
+
     if (user == await LocalDbController().getNullUser()) {
       throw CannotSyncNullUser();
+    }
+
+    //If userId isn't stored in localdb:
+    if (user.cloudId == null) {
+      //Check if user exists in cloud db. If so, assign an id to them
+      final cloudId =
+          await CloudDbController().getUserIdByEmail(email: user.email);
+      if (cloudId != null) {
+        await setUserCloudId(user: user, cloudId: cloudId);
+
+        user = await getUser(email: user.email);
+      }
     }
 
     final cloudUser =
@@ -823,37 +838,61 @@ class LocalDbController {
     );
   }
 
-  Future<void> _updateFcSet({required DatabaseFlashcardSet fcSet}) async {
+  Future<void> _updateOrCreateFcSet(
+      {required DatabaseFlashcardSet fcSet}) async {
     final db = _getDatabaseOrThrow();
 
-    await db.update(
+    int rowsUpdated = await db.update(
       flashcardSetTable,
       fcSet.toJson(),
       where: '$localIdColumn = ?',
       whereArgs: [fcSet.id],
     );
+
+    if (rowsUpdated == 0) {
+      await db.insert(
+        flashcardSetTable,
+        fcSet.toJson(),
+      );
+    }
   }
 
-  Future<void> _updateFlashcard({required DatabaseFlashcard flashcard}) async {
+  Future<void> _updateOrCreateFlashcard(
+      {required DatabaseFlashcard flashcard}) async {
     final db = _getDatabaseOrThrow();
 
-    db.update(
+    int rowsUpdated = await db.update(
       flashcardTable,
       flashcard.toJson(),
       where: '$localIdColumn = ?',
       whereArgs: [flashcard.id],
     );
+
+    if (rowsUpdated == 0) {
+      await db.insert(
+        flashcardTable,
+        flashcard.toJson(),
+      );
+    }
   }
 
-  Future<void> _updatetask({required DatabaseTask task}) async {
+  Future<void> _updateOrCreateTask({required DatabaseTask task}) async {
     final db = _getDatabaseOrThrow();
 
-    db.update(
+    int rowsUpdated = await db.update(
       taskTable,
       task.toJson(),
       where: '$localIdColumn = ?',
       whereArgs: [task.id],
     );
+
+    // If no rows were updated, it means the task doesn't exist, so insert it instead
+    if (rowsUpdated == 0) {
+      await db.insert(
+        taskTable,
+        task.toJson(),
+      );
+    }
   }
 
   Future<void> _loadAllFromCloud({required DatabaseUser user}) async {
@@ -862,16 +901,22 @@ class LocalDbController {
     final cloudUserData =
         await CloudDbController().loadAllFromCloud(user: user);
 
+    log(cloudUserData.toString());
     await _updateUser(user: user);
 
-    for (final fcSet in cloudUserData.flashcardSets) {
-      _updateFcSet(fcSet: fcSet);
-    }
     for (final task in cloudUserData.tasks) {
-      _updatetask(task: task);
+      log('updating task');
+      await _updateOrCreateTask(task: task);
     }
+
+    for (final fcSet in cloudUserData.flashcardSets) {
+      log('updating fcset');
+      await _updateOrCreateFcSet(fcSet: fcSet);
+    }
+
     for (final flashcard in cloudUserData.flashcards) {
-      _updateFlashcard(flashcard: flashcard);
+      log('updating flashcards');
+      await _updateOrCreateFlashcard(flashcard: flashcard);
     }
 
     await TodoService().reloadTasks();

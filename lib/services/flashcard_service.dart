@@ -133,6 +133,7 @@ class FlashcardsService {
 
     return await LocalDbController().createFlashcard(
       fcSet: fcSet,
+      user: LocalDbController().currentUser,
       frontText: frontText,
       backText: backText,
     );

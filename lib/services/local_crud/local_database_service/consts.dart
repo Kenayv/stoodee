@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug17_tasks.db';
+const dbName = 'debug18_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -94,6 +94,7 @@ const createFlashcardTable = '''
   CREATE TABLE  IF NOT EXISTS"$flashcardTable" (
     "$localIdColumn"	INTEGER NOT NULL UNIQUE,
     "$flashcardSetIdColumn"	INTEGER NOT NULL,
+    "$userIdColumn"	INTEGER NOT NULL,
     "$frontTextColumn"	TEXT NOT NULL,
     "$backTextColumn"	TEXT NOT NULL,
     "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT "$defaultFlashcardDifficulty",
