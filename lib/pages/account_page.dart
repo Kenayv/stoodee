@@ -72,18 +72,52 @@ class _AccountPage extends State<AccountPage> {
             const Gap(30),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                        )
-                      ]),
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: const Text("stats placeholder")),
+              child:Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        'Statystyki:',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Divider(),
+
+                    Gap(15),
+              Container(
+                padding: EdgeInsets.all(5),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(1,1),
+                      )
+                    ]),
+                
+                child: Column(
+                  children: [
+                    buildStatItem('Obecny Streak',"!placeholder!"),
+                    buildStatItem('Ukończone zadania',"!placeholder!"),
+                    buildStatItem('Nieukończone zadania',"!placeholder!"),
+                    buildStatItem('Wykonanych zadań',"!placeholder!"),
+                    buildStatItem('Rekord Fiszki Rush',"!placeholder!"),
+                    buildStatItem('Ukończone Fiszki',"!placeholder!"),
+                    buildStatItem('Najdłuższy Streak', "!placeholder!"),
+                  ],
+                )
+
+              )],
+                ),
+              ),
             ),
             Expanded(child: Container()),
             Row(
@@ -106,4 +140,29 @@ class _AccountPage extends State<AccountPage> {
       ),
     );
   }
+}
+
+
+
+
+Widget buildStatItem(String title, String value) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Text(
+        "$title:",
+        style: TextStyle(
+          fontSize: 16,
+
+        ),
+      ),
+      Gap(20),
+      Text(
+        value,
+        style: TextStyle(
+          fontSize: 16,
+        ),
+      ),
+    ],
+  );
 }
