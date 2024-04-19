@@ -77,7 +77,7 @@ class _AccountPage extends State<AccountPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
+                    const Center(
                       child: Text(
                         'Statystyki:',
                         style: TextStyle(
@@ -87,11 +87,11 @@ class _AccountPage extends State<AccountPage> {
                         ),
                       ),
                     ),
-                    Divider(),
+                    const Divider(color: Colors.grey,thickness: 2,),
 
-                    Gap(15),
+                    const Gap(15),
               Container(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -146,23 +146,26 @@ class _AccountPage extends State<AccountPage> {
 
 
 Widget buildStatItem(String title, String value) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Text(
-        "$title:",
-        style: TextStyle(
-          fontSize: 16,
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          "$title:",
+          style: const TextStyle(
+            fontSize: 16,
 
+          ),
         ),
-      ),
-      Gap(20),
-      Text(
-        value,
-        style: TextStyle(
-          fontSize: 16,
+        const Gap(20),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }
