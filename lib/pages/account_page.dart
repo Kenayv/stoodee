@@ -44,8 +44,12 @@ class _AccountPage extends State<AccountPage> {
     }
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
+    double imgSize=MediaQuery.of(context).size.height*0.15;
     return Scaffold(
       body: Center(
         child: Column(
@@ -56,7 +60,7 @@ class _AccountPage extends State<AccountPage> {
               Align(
                   alignment: Alignment.center,
                   child: Image.asset('lib/assets/BurnOutSorry.png',
-                      width: 200, height: 200)),
+                      width: imgSize, height: imgSize)),
               Align(
                   alignment: Alignment.topRight,
                   child: Padding(
@@ -73,49 +77,53 @@ class _AccountPage extends State<AccountPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child:Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Center(child: Text("!username!",style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),)),
+
+
+
                     const Center(
                       child: Text(
                         'Statystyki:',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+
                       ),
                     ),
                     const Divider(color: Colors.grey,thickness: 2,),
 
                     const Gap(15),
-              Container(
-                padding: const EdgeInsets.all(5),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(1,1),
-                      )
-                    ]),
-                
-                child: Column(
-                  children: [
-                    buildStatItem('Obecny Streak',"!placeholder!"),
-                    buildStatItem('Ukończone zadania',"!placeholder!"),
-                    buildStatItem('Nieukończone zadania',"!placeholder!"),
-                    buildStatItem('Wykonanych zadań',"!placeholder!"),
-                    buildStatItem('Rekord Fiszki Rush',"!placeholder!"),
-                    buildStatItem('Ukończone Fiszki',"!placeholder!"),
-                    buildStatItem('Najdłuższy Streak', "!placeholder!"),
-                  ],
-                )
+                    Container(
+                        padding: const EdgeInsets.all(5),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(1,1),
+                              )
+                            ]),
 
-              )],
+                        child: Column(
+                          children: [
+                            buildStatItem('Obecny Streak',"!placeholder!"),
+                            buildStatItem('Ukończone zadania',"!placeholder!"),
+                            buildStatItem('Nieukończone zadania',"!placeholder!"),
+                            buildStatItem('Wykonanych zadań',"!placeholder!"),
+                            buildStatItem('Rekord Fiszki Rush',"!placeholder!"),
+                            buildStatItem('Ukończone Fiszki',"!placeholder!"),
+                            buildStatItem('Najdłuższy Streak', "!placeholder!"),
+                          ],
+                        )
+
+                    )],
                 ),
               ),
             ),
@@ -147,7 +155,7 @@ class _AccountPage extends State<AccountPage> {
 
 Widget buildStatItem(String title, String value) {
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 3.0),
+    padding: const EdgeInsets.symmetric(vertical: 1.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
