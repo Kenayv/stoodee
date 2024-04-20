@@ -1,8 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcard_service/fc_difficulty.dart';
 import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
@@ -34,11 +32,15 @@ class _FlashCardsReader extends State<FlashCardsReader>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
   late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
+  late final DatabaseFlashcardSet currentFcSet;
 
   @override
   void initState() {
     super.initState();
     imageCache.clear();
+
+    currentFcSet = widget.fcSet;
+
     _controller =
         AnimationController(vsync: this, duration: Durations.extralong4);
     _loadFlashcardsFuture =
@@ -214,7 +216,8 @@ class _FlashCardsReader extends State<FlashCardsReader>
                 final List<DatabaseFlashcard> flashcards = snapshot.data ?? [];
                 final int totalFlashcardsCount = flashcards.length + completed;
 
-                if (completed == totalFlashcardsCount && completed != 0) {
+                if (completed == totalFlashcardsCount &&
+                    currentFcSet.pairCount != 0) {
                   log("SET DONE!!!");
                   FlashcardsService().incrFcsCompletedToday();
                   var ticker = _controller.forward();
