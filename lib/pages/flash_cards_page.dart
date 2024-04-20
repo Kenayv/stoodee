@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import '../services/flashcard_service/flashcard_service.dart';
+import '../utilities/dialogs/delete_fcset_dialog.dart';
 import '../utilities/dialogs/delete_set_dialog.dart';
 import '../utilities/reusables/reusable_stoodee_button.dart';
 import '../utilities/reusables/custom_flash_card_set_widget.dart';
@@ -32,6 +35,14 @@ class _FlashcardsPage extends State<FlashcardsPage> {
           context: context,
           fcSet: fcSets[i],
           name: fcSets[i].name,
+          fun: () async{
+            log("longpressed");
+          if (await showDeleteFcSetDialog(context: context, fcSet: fcSets[i])) {
+          await FlashcardsService().removeFcSet(fcSets[i]);
+            }
+          setState(() {});
+          },
+
         ),
       );
     }

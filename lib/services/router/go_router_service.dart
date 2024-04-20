@@ -334,6 +334,36 @@ final GoRouter goRouterService = GoRouter(
           },
         );
       },
+
+        routes: [
+          GoRoute(
+            path: "dialog",
+
+            pageBuilder: (BuildContext context, GoRouterState state) {
+
+
+              return SideSheetPage(
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return SlideTransition(
+                    position: Tween(
+                      begin: const Offset(0, 1),
+                      end: const Offset(0, 0),
+                    ).animate(
+                      animation,
+                    ),
+                    child: child,
+                  );
+                },
+                child: CustomDialog(title: '', content: '',
+
+                ),
+                barrierColor: null,
+              );
+            },
+          ),
+        ]
+
     ),
     GoRoute(
         path: '/login',

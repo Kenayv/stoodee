@@ -12,7 +12,7 @@ class CustomErrorSnackBar extends StatelessWidget {
     return Stack(children: [
       Container(
           padding: const EdgeInsets.all(16),
-          height: 90,
+
           decoration: const BoxDecoration(
               color: Color(0xFFC72C41),
               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -60,7 +60,7 @@ class CustomSuccessSnackBar extends StatelessWidget {
     return Stack(children: [
       Container(
           padding: const EdgeInsets.all(16),
-          height: 90,
+
           decoration: const BoxDecoration(
               color: Color(0xFF0DB71B),
               borderRadius: BorderRadius.all(Radius.circular(20)),

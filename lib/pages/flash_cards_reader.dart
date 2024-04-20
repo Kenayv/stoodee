@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcard_service/fc_difficulty.dart';
 import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
@@ -15,6 +17,7 @@ import 'package:stoodee/utilities/reusables/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
 import '../services/local_crud/crud_exceptions.dart';
+import '../utilities/containers.dart';
 import '../utilities/reusables/empty_flashcard_reader_scaffold.dart';
 import '../utilities/snackbar/create_snackbar.dart';
 
@@ -68,6 +71,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
   int cardIndex = 0;
   bool shownav = false;
 
+
   void onSetDone() {
     log("SET DONE!!!");
     if (completed == widget.fcSet.pairCount) {
@@ -80,7 +84,7 @@ class _FlashCardsReader extends State<FlashCardsReader>
   void addProgress() {
     completed++;
     setState(() {
-      onSetDone();
+      //onSetDone();
     });
   }
 
@@ -179,9 +183,19 @@ class _FlashCardsReader extends State<FlashCardsReader>
                 final int totalFlashcardsCount = flashcards.length + completed;
 
                 if (completed == totalFlashcardsCount && completed != 0) {
-                  return Container(
-                    child: const Text("completed!"),
-                  );
+                    log("SET DONE!!!");
+                    FlashcardsService().incrFcsCompletedToday();
+                    var ticker = _controller.forward();
+                    ticker.whenComplete(() => _controller.reset());
+                    //doesnt work because it redirects to empty reader page instantly, and for some reason this "if" is called 2 times??
+
+/*
+                    WidgetsBinding.instance.addPostFrameCallback(
+                          (_) =>context.go("/flash_cards_reader/dialog",extra: SetContainer(currentSet: widget.fcSet, name: widget.fcSet.name))
+                    );
+                     //will make tihs work when paircount is all done
+
+ */
                 }
 
                 final DatabaseFlashcard currentFlashcard =
@@ -300,7 +314,6 @@ class _FlashCardsReader extends State<FlashCardsReader>
                         "Current set is empty. Add some flashcards before studying!"),
                   ),
                 );
-
                 return EmptyReaderScaffold(fcset: widget.fcSet);
               }
 

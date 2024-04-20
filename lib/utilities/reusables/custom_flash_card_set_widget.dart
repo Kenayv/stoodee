@@ -18,6 +18,7 @@ class FlashCardSetWidget extends StatefulWidget {
     required this.context,
     required this.fcSet,
     required this.name,
+    required this.fun,
   });
 
   @override
@@ -26,6 +27,7 @@ class FlashCardSetWidget extends StatefulWidget {
   final BuildContext context;
   final DatabaseFlashcardSet fcSet;
   final String name;
+  final Future<Null> Function() fun;
 }
 
 class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
@@ -135,7 +137,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
       onTap: () => tap(
           context, SetContainer(currentSet: widget.fcSet, name: widget.name)),
       splashColor: Colors.transparent,
-      onLongPress: deleteSet,
+      onLongPress: () => widget.fun()//deleteSet,
     );
   }
 }
