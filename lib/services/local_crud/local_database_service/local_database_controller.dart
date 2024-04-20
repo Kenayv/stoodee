@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/cloud_crud/cloud_database_controller.dart';
-import 'package:stoodee/services/flashcard_service.dart';
+import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -645,6 +645,46 @@ class LocalDbController {
     return DatabaseFlashcardSet.fromRow(results.first);
   }
 
+  Future<void> setFcdifficulty({
+    required DatabaseFlashcard flashcard,
+    required int difficulty,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure flashcard exists in database and isn't hard-coded
+    final dbFlashcard = await getFlashcard(id: flashcard.id);
+    if (dbFlashcard != flashcard) throw CouldNotFindFlashCard();
+
+    final updateCount = await db.update(
+      flashcardTable,
+      {cardDifficultyColumn: difficulty},
+      where: '$localIdColumn = ?',
+      whereArgs: [flashcard.id],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateFlashCard();
+  }
+
+  Future<void> setFcDisplayDate({
+    required DatabaseFlashcard flashcard,
+    required DateTime displayDate,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure flashcard exists in database and isn't hard-coded
+    final dbFlashcard = await getFlashcard(id: flashcard.id);
+    if (dbFlashcard != flashcard) throw CouldNotFindFlashCard();
+
+    final updateCount = await db.update(
+      flashcardTable,
+      {displayDateColumn: getDateAsFormattedString(displayDate)},
+      where: '$localIdColumn = ?',
+      whereArgs: [flashcard.id],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateFlashCard();
+  }
+
   Future<DatabaseFlashcard> createFlashcard({
     required DatabaseUser user,
     required DatabaseFlashcardSet fcSet,
@@ -682,7 +722,7 @@ class LocalDbController {
       backText: backText,
       frontText: frontText,
       cardDifficulty: defaultFlashcardDifficulty,
-      displayAfterDate: parseStringToDateTime(defaultDateStr),
+      displayDate: parseStringToDateTime(defaultDateStr),
     );
 
     return flashcard;
@@ -802,7 +842,9 @@ class LocalDbController {
     if (updateCount != 1) throw CouldNotUpdateUser();
   }
 
-  Future<void> syncWithCloud({required DatabaseUser user}) async {
+  Future<void> syncWithCloud({
+    required DatabaseUser user,
+  }) async {
     log('Syncing with cloud\n');
 
     if (user == await LocalDbController().getNullUser()) {
@@ -831,7 +873,9 @@ class LocalDbController {
     }
   }
 
-  Future<void> _saveAllToCloud({required DatabaseUser user}) async {
+  Future<void> _saveAllToCloud({
+    required DatabaseUser user,
+  }) async {
     log('Saved all to cloud');
 
     await _setUserLastSynced(user: user, lastSynced: DateTime.now());
@@ -839,7 +883,9 @@ class LocalDbController {
     await CloudDbController().saveAllToCloud(user: user);
   }
 
-  Future<void> _updateUser({required DatabaseUser user}) async {
+  Future<void> _updateUser({
+    required DatabaseUser user,
+  }) async {
     final db = _getDatabaseOrThrow();
 
     await db.update(
@@ -850,8 +896,9 @@ class LocalDbController {
     );
   }
 
-  Future<void> _updateOrCreateFcSet(
-      {required DatabaseFlashcardSet fcSet}) async {
+  Future<void> _updateOrCreateFcSet({
+    required DatabaseFlashcardSet fcSet,
+  }) async {
     final db = _getDatabaseOrThrow();
 
     int rowsUpdated = await db.update(
@@ -869,8 +916,9 @@ class LocalDbController {
     }
   }
 
-  Future<void> _updateOrCreateFlashcard(
-      {required DatabaseFlashcard flashcard}) async {
+  Future<void> _updateOrCreateFlashcard({
+    required DatabaseFlashcard flashcard,
+  }) async {
     final db = _getDatabaseOrThrow();
 
     int rowsUpdated = await db.update(
@@ -888,7 +936,9 @@ class LocalDbController {
     }
   }
 
-  Future<void> _updateOrCreateTask({required DatabaseTask task}) async {
+  Future<void> _updateOrCreateTask({
+    required DatabaseTask task,
+  }) async {
     final db = _getDatabaseOrThrow();
 
     int rowsUpdated = await db.update(
@@ -907,11 +957,14 @@ class LocalDbController {
     }
   }
 
-  Future<void> _loadAllFromCloud({required DatabaseUser user}) async {
+  Future<void> _loadAllFromCloud({
+    required DatabaseUser user,
+  }) async {
     log('loaded all from cloud');
 
-    final cloudUserData =
-        await CloudDbController().loadAllFromCloud(user: user);
+    final cloudUserData = await CloudDbController().loadAllFromCloud(
+      user: user,
+    );
 
     log(cloudUserData.toString());
     await _updateUser(user: user);

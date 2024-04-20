@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug18_tasks.db';
+const dbName = 'debug19_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -36,7 +36,7 @@ const flashcardSetIdColumn = 'flashcard_set_id';
 const frontTextColumn = 'front_text';
 const backTextColumn = 'back_text';
 
-const displayAfterDateColumn = 'display_after_date';
+const displayDateColumn = 'display_date';
 const cardDifficultyColumn = 'card_difficulty';
 const pairCountColumn = 'pair_count';
 
@@ -95,7 +95,7 @@ const createFlashcardTable = '''
     "$frontTextColumn"	TEXT NOT NULL,
     "$backTextColumn"	TEXT NOT NULL,
     "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT "$defaultFlashcardDifficulty",
-    "$displayAfterDateColumn"	TEXT NOT NULL DEFAULT "$defaultDateStr",
+    "$displayDateColumn"	TEXT NOT NULL DEFAULT "$defaultDateStr",
     PRIMARY KEY("$localIdColumn" AUTOINCREMENT),
     FOREIGN KEY("$flashcardSetIdColumn") REFERENCES "$flashcardSetTable"("$localIdColumn")
   );

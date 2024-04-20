@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stoodee/services/flashcard_service.dart';
+import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
 import 'package:stoodee/utilities/dialogs/delete_fcset_dialog.dart';
 import '../../services/local_crud/local_database_service/database_flashcard_set.dart';
 import '../containers.dart';

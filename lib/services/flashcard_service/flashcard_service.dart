@@ -1,11 +1,10 @@
 import 'dart:developer' as dart_developer;
 import 'dart:math';
-
+import 'package:stoodee/services/flashcard_service/fc_difficulty.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-
-import 'local_crud/crud_exceptions.dart';
+import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 
 class FlashcardsService {
   late List<DatabaseFlashcardSet>? _flashcardSets;
@@ -19,18 +18,11 @@ class FlashcardsService {
 
   DatabaseFlashcard getRandFcFromList({
     required List<DatabaseFlashcard> fcList,
-    bool canReturnCardBeforeDisplayDate = false,
   }) {
     if (!_initialized) throw FcServiceNotInitialized();
     if (fcList.isEmpty) throw FlashcardListEmpty();
 
     int randIndex = Random().nextInt(fcList.length);
-
-    if (!canReturnCardBeforeDisplayDate) {
-      while (fcList[randIndex].displayAfterDate.isAfter(DateTime.now())) {
-        randIndex = Random().nextInt(fcList.length);
-      }
-    }
 
     return fcList[randIndex];
   }
@@ -68,7 +60,7 @@ class FlashcardsService {
     return _flashcardSets!;
   }
 
-  Future<List<DatabaseFlashcard>> loadFlashcardsFromSet({
+  Future<List<DatabaseFlashcard>> loadAllFlashcardsFromSet({
     required DatabaseFlashcardSet fcSet,
   }) async {
     final flashcards = await LocalDbController().getFlashcardsFromSet(
@@ -83,6 +75,23 @@ class FlashcardsService {
     dart_developer.log(debugLogStart + debugLogFlashcards + debugLogEnd);
 
     return flashcards.where((card) => card.flashcardSetId == fcSet.id).toList();
+  }
+
+  Future<List<DatabaseFlashcard>> loadActiveFlashcardsFromSet({
+    required DatabaseFlashcardSet fcSet,
+  }) async {
+    dart_developer.log('invoked');
+    final flashcards = await LocalDbController().getFlashcardsFromSet(
+      fcSet: fcSet,
+    );
+
+    final now = DateTime.now();
+    return flashcards
+        .where(
+          (card) =>
+              card.flashcardSetId == fcSet.id && now.isAfter(card.displayDate),
+        )
+        .toList();
   }
 
   Future<DatabaseFlashcardSet> createFcSet({required String name}) async {
@@ -153,6 +162,25 @@ class FlashcardsService {
       frontText: frontText,
       backText: backText,
     );
+  }
+
+  Future<void> calcFcDisplayDate({
+    required DatabaseFlashcard fc,
+    required int newDifficulty,
+  }) async {
+    final newDisplayDate = calculateDateToShowFc(cardDifficulty: newDifficulty);
+
+    await LocalDbController().setFcdifficulty(
+      flashcard: fc,
+      difficulty: newDifficulty,
+    );
+    await LocalDbController().setFcDisplayDate(
+      flashcard: fc,
+      displayDate: newDisplayDate,
+    );
+
+    fc.setCardDifficulty(newDifficulty);
+    fc.setDisplay(newDisplayDate);
   }
 
   int get fcsCompletedToday => _initialized

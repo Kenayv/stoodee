@@ -2,7 +2,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:lottie/lottie.dart';
-import 'package:stoodee/services/flashcard_service.dart';
+import 'package:stoodee/services/flashcard_service/fc_difficulty.dart';
+import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/router/route_functions.dart';
@@ -29,8 +30,7 @@ class FlashCardsReader extends StatefulWidget {
 class _FlashCardsReader extends State<FlashCardsReader>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
-  late Future<List<DatabaseFlashcard>> _initializeWidgetFuture;
-
+  late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
 
   @override
   void initState() {
@@ -38,8 +38,8 @@ class _FlashCardsReader extends State<FlashCardsReader>
     imageCache.clear();
     _controller =
         AnimationController(vsync: this, duration: Durations.extralong4);
-    _initializeWidgetFuture=FlashcardsService().loadFlashcardsFromSet(fcSet: widget.fcSet);
-
+    _loadFlashcardsFuture =
+        FlashcardsService().loadActiveFlashcardsFromSet(fcSet: widget.fcSet);
   }
 
   @override
@@ -66,50 +66,40 @@ class _FlashCardsReader extends State<FlashCardsReader>
 
   int completed = 0;
   int cardIndex = 0;
-  bool shownav=false;
+  bool shownav = false;
 
-
-
-
-  void onSetDone(){
+  void onSetDone() {
     log("SET DONE!!!");
     if (completed == widget.fcSet.pairCount) {
       FlashcardsService().incrFcsCompletedToday();
       var ticker = _controller.forward();
-      ticker.whenComplete(
-              () => _controller.reset());
+      ticker.whenComplete(() => _controller.reset());
     }
   }
 
-
-
-  void addProgress(){
-      completed++;
-      setState(() {
-        onSetDone();
-      });
-
-  }
-
-  void setNavFalse(){
-
+  void addProgress() {
+    completed++;
     setState(() {
-      shownav=false;
+      onSetDone();
     });
-
   }
 
+  void setNavFalse() {
+    setState(() {
+      shownav = false;
+    });
+  }
 
-
-  Container difficultyRow(){
-
-    if(shownav==true){
+  Container difficultyRow({
+    required Function removeCurrentFcFromSet,
+    required DatabaseFlashcard flashcard,
+  }) {
+    if (shownav == true) {
       return Container(
         decoration: const BoxDecoration(
-          borderRadius:
-          BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
-        padding: const EdgeInsets.only(left:16,right:16,bottom:120),
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 120),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -117,81 +107,89 @@ class _FlashCardsReader extends State<FlashCardsReader>
               children: [
                 StoodeeButton(
                   child: Text("Latwe", style: biggerButtonTextStyle),
-                  onPressed: () {
+                  onPressed: () async {
                     addProgress();
                     setNavFalse();
+                    removeCurrentFcFromSet();
 
-
-                    //easy function
+                    await FlashcardsService().calcFcDisplayDate(
+                      fc: flashcard,
+                      newDifficulty: flashcard.cardDifficulty - 1,
+                    );
                   },
                 ),
-                const Text("1")
               ],
             ),
             Column(
               children: [
                 StoodeeButton(
                   child: Text("Srednie", style: biggerButtonTextStyle),
-                  onPressed: () {
+                  onPressed: () async {
                     addProgress();
                     setNavFalse();
+                    removeCurrentFcFromSet();
 
-
-                    //medium function
+                    await FlashcardsService().calcFcDisplayDate(
+                      fc: flashcard,
+                      newDifficulty: flashcard.cardDifficulty,
+                    );
                   },
                 ),
-                const Text("2"),
               ],
             ),
             Column(
               children: [
                 StoodeeButton(
                   child: Text("Trudne", style: biggerButtonTextStyle),
-                  onPressed: () {
+                  onPressed: () async {
                     addProgress();
                     setNavFalse();
+                    removeCurrentFcFromSet();
 
-
-                    //hard function
+                    await FlashcardsService().calcFcDisplayDate(
+                      fc: flashcard,
+                      newDifficulty: flashcard.cardDifficulty + 2,
+                    );
                   },
                 ),
-                const Text("3"),
               ],
             ),
-
           ],
         ),
       );
-    }
-    else {
+    } else {
       return Container();
     }
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return BackButtonListener(
-      onBackButtonPressed: () async{
+      onBackButtonPressed: () async {
         goRouterToMain(context);
         return true;
       },
-      child:FutureBuilder<List<DatabaseFlashcard>>(
-        future: _initializeWidgetFuture,
+      child: FutureBuilder<List<DatabaseFlashcard>>(
+        future: _loadFlashcardsFuture,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               try {
                 final List<DatabaseFlashcard> flashcards = snapshot.data ?? [];
+                final int totalFlashcardsCount = flashcards.length + completed;
 
-                final DatabaseFlashcard currentFlashCard =
-                FlashcardsService().getRandFcFromList(fcList: flashcards);
+                if (completed == totalFlashcardsCount && completed != 0) {
+                  return Container(
+                    child: const Text("completed!"),
+                  );
+                }
+
+                final DatabaseFlashcard currentFlashcard =
+                    FlashcardsService().getRandFcFromList(fcList: flashcards);
 
                 final DatabaseFlashcardSet currentSet = widget.fcSet;
-                double indicatorValue = isNotZero(
-                    completed, currentSet.pairCount);
+                double indicatorValue =
+                    isNotZero(completed, currentSet.pairCount);
 
                 return Scaffold(
                   appBar: CustomAppBar(
@@ -222,16 +220,16 @@ class _FlashCardsReader extends State<FlashCardsReader>
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 15),
-                              child: Text("$completed/${currentSet.pairCount}"),
+                              child: Text("$completed/$totalFlashcardsCount"),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
                                 borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
+                                    const BorderRadius.all(Radius.circular(10)),
                                 child: LinearPercentIndicator(
                                   backgroundColor:
-                                  primaryAppColor.withOpacity(0.08),
+                                      primaryAppColor.withOpacity(0.08),
                                   percent: indicatorValue,
                                   linearGradient: const LinearGradient(
                                     colors: [
@@ -265,17 +263,19 @@ class _FlashCardsReader extends State<FlashCardsReader>
                                 side: CardSide.FRONT,
                                 direction: FlipDirection.HORIZONTAL,
                                 front: ReusableCard(
-                                  text: currentFlashCard.frontText,
+                                  text: currentFlashcard.frontText,
                                 ),
                                 back: ReusableCard(
-                                  text: currentFlashCard.backText,
+                                  text: currentFlashcard.backText,
                                 ),
                               ),
                             ),
-
                             const Expanded(child: Text("")),
-                            difficultyRow(),
-
+                            difficultyRow(
+                              flashcard: currentFlashcard,
+                              removeCurrentFcFromSet: () =>
+                                  flashcards.remove(currentFlashcard),
+                            ),
                           ],
                         ),
                       ),
@@ -284,14 +284,8 @@ class _FlashCardsReader extends State<FlashCardsReader>
                           alignment: Alignment.center,
                           'lib/assets/sparkle.json',
                           controller: _controller,
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.45,
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.45,
+                          width: MediaQuery.of(context).size.width * 0.45,
                           fit: BoxFit.cover,
                           repeat: false,
                         ),
@@ -299,17 +293,16 @@ class _FlashCardsReader extends State<FlashCardsReader>
                     ],
                   ),
                 );
-              } on FlashcardListEmpty{
-
-                WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
+              } on FlashcardListEmpty {
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => ScaffoldMessenger.of(context).showSnackBar(
                     createErrorSnackbar(
-                        "Empty Set,add some flashcards first")));
+                        "Current set is empty. Add some flashcards before studying!"),
+                  ),
+                );
 
-
-                return EmptyReaderScaffold(fcset:widget.fcSet);
-
+                return EmptyReaderScaffold(fcset: widget.fcSet);
               }
-
 
             default:
               return const CircularProgressIndicator();

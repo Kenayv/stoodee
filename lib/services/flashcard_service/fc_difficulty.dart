@@ -4,41 +4,29 @@ DateTime calculateDateToShowFc({required int cardDifficulty}) {
   if (cardDifficulty <= 1) cardDifficulty = 1;
 
   final dateToDisplay = DateTime.now();
-
   switch (cardDifficulty) {
     case 10:
-      break; //If the card is very difficult, display it instantly.
+      return dateToDisplay;
     case 9:
-      dateToDisplay.add(const Duration(seconds: 30));
-      break;
+      return dateToDisplay.add(const Duration(seconds: 30));
     case 8:
-      dateToDisplay.add(const Duration(minutes: 1, seconds: 30));
-      break;
+      return dateToDisplay.add(const Duration(minutes: 1, seconds: 30));
     case 7:
-      dateToDisplay.add(const Duration(minutes: 5));
-      break;
+      return dateToDisplay.add(const Duration(minutes: 5));
     case 6:
-      dateToDisplay.add(const Duration(minutes: 15));
-      break;
+      return dateToDisplay.add(const Duration(minutes: 15));
     case 5:
-      dateToDisplay.add(const Duration(hours: 1));
-      break;
+      return dateToDisplay.add(const Duration(hours: 1));
     case 4:
-      dateToDisplay.add(const Duration(hours: 3));
-      break;
+      return dateToDisplay.add(const Duration(hours: 3));
     case 3:
-      dateToDisplay.add(const Duration(days: 1));
-      break;
+      return dateToDisplay.add(const Duration(days: 1));
     case 2:
-      dateToDisplay.add(const Duration(days: 7));
-      break;
+      return dateToDisplay.add(const Duration(days: 7));
     case 1:
-      dateToDisplay.add(const Duration(days: 30));
-      break;
+      return dateToDisplay.add(const Duration(days: 30));
 
     default:
       throw ArgumentError();
   }
-
-  return dateToDisplay;
 }

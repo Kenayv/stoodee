@@ -7,7 +7,7 @@ class DatabaseFlashcard {
   late String _frontText; //FIXME: make those changable in localdbcontroller
   late String _backText;
   late int _cardDifficulty;
-  late DateTime _displayAfterDate;
+  late DateTime _displayDate;
 
   DatabaseFlashcard({
     required this.id,
@@ -16,11 +16,11 @@ class DatabaseFlashcard {
     required String frontText,
     required String backText,
     required int cardDifficulty,
-    required DateTime displayAfterDate,
+    required DateTime displayDate,
   })  : _frontText = frontText,
         _backText = backText,
         _cardDifficulty = cardDifficulty,
-        _displayAfterDate = displayAfterDate;
+        _displayDate = displayDate;
 
   DatabaseFlashcard.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
@@ -29,12 +29,11 @@ class DatabaseFlashcard {
         _frontText = map[frontTextColumn] as String,
         _backText = map[backTextColumn] as String,
         _cardDifficulty = map[cardDifficultyColumn] as int,
-        _displayAfterDate =
-            parseStringToDateTime(map[displayAfterDateColumn] as String);
+        _displayDate = parseStringToDateTime(map[displayDateColumn] as String);
 
   @override
   String toString() =>
-      "Flashcard id = [$id]\n   Set id = [$flashcardSetId]\n   text = [f: $frontText |b: $backText]\n   difficulty = [$cardDifficulty]\n   display after: $displayAfterDate\n";
+      "Flashcard id = [$id]\n   Set id = [$flashcardSetId]\n   text = [f: $frontText |b: $backText]\n   difficulty = [$cardDifficulty]\n   display : $displayDate\n";
 
   @override
   bool operator ==(covariant DatabaseFlashcard other) => id == other.id;
@@ -46,7 +45,7 @@ class DatabaseFlashcard {
         frontTextColumn: _frontText,
         backTextColumn: _backText,
         cardDifficultyColumn: _cardDifficulty,
-        displayAfterDateColumn: getDateAsFormattedString(_displayAfterDate),
+        displayDateColumn: getDateAsFormattedString(_displayDate),
       };
 
   @override
@@ -55,12 +54,11 @@ class DatabaseFlashcard {
   int get cardDifficulty => _cardDifficulty;
   String get frontText => _frontText;
   String get backText => _backText;
-  DateTime get displayAfterDate => _displayAfterDate;
+  DateTime get displayDate => _displayDate;
 
   void setCardDifficulty(int cardDifficulty) =>
       _cardDifficulty = cardDifficulty;
   void setFrontText(String frontText) => _frontText = frontText;
   void setBackText(String backText) => _backText = backText;
-  void setDisplayAfter(DateTime displayAfterDate) =>
-      _displayAfterDate = displayAfterDate;
+  void setDisplay(DateTime displayDate) => _displayDate = displayDate;
 }

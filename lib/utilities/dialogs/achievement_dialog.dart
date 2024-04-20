@@ -26,7 +26,7 @@ class AchievementDialog extends StatelessWidget {
         backgroundColor: analogusColor,
         title: Center(
             child: Text(name,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold))),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -38,7 +38,7 @@ class AchievementDialog extends StatelessWidget {
               height: 150.0,
             ),
             const SizedBox(height: 10.0),
-            Text(desc, style: TextStyle(color: Colors.white)),
+            Text(desc, style: const TextStyle(color: Colors.white)),
           ],
         ),
       ),

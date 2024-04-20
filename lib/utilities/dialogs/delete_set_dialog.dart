@@ -15,7 +15,7 @@ Future<dynamic> genericDeleteSetDialog({
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text("Select a set to delete:"),
+        title: const Text("Select a set to delete:"),
         content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return Column(mainAxisSize: MainAxisSize.min, children: [
@@ -48,7 +48,7 @@ Future<dynamic> genericDeleteSetDialog({
             onPressed: () async {
               try {
                 await FlashcardsService().removeFcSet(selectedSet!);
-              } catch (Exception) {
+              } on Exception {
                 ScaffoldMessenger.of(context).showSnackBar(
                     createErrorSnackbar("Please select a set >:("));
               }
