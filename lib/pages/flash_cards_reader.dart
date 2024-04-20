@@ -14,10 +14,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:stoodee/utilities/reusables/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
-import '../services/local_crud/crud_exceptions.dart';
-import '../utilities/containers.dart';
-import '../utilities/reusables/empty_flashcard_reader_scaffold.dart';
-import '../utilities/snackbar/create_snackbar.dart';
+import 'package:stoodee/services/local_crud/crud_exceptions.dart';
+import 'package:stoodee/utilities/reusables/empty_flashcard_reader_scaffold.dart';
+import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
 class FlashCardsReader extends StatefulWidget {
   const FlashCardsReader({super.key, required this.fcSet});
