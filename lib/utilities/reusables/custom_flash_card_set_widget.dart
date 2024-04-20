@@ -71,73 +71,74 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: analogusColor,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            boxShadow: resolveWidgetShadows(),
-          ),
-          child: Center(
-            child: Column(
-              children: [
-                const Gap(10),
-                Container(
-                  alignment: Alignment.topCenter,
-                  height: 35,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 8,
-                        child: TextButton(
-                            onPressed: () async {
-                              await showAddFlashcardDialog(
-                                context: context,
-                                fcSet: widget.fcSet,
-                              );
-                              setState(() {});
-                            },
-                            child: const Icon(
-                              Icons.add,
-                              size: 20,
-                              color: Colors.white,
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Text(
-                    widget.name,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    height: 100,
-                    child: Text(
-                      'Pair count: ${widget.fcSet.pairCount}',
-                      style: const TextStyle(fontSize: 16, color: Colors.white),
+        title: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: analogusColor,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              boxShadow: resolveWidgetShadows(),
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  const Gap(10),
+                  Container(
+                    alignment: Alignment.topCenter,
+                    height: 35,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 8,
+                          child: TextButton(
+                              onPressed: () async {
+                                await showAddFlashcardDialog(
+                                  context: context,
+                                  fcSet: widget.fcSet,
+                                );
+                                setState(() {});
+                              },
+                              child: const Icon(
+                                Icons.add,
+                                size: 20,
+                                color: Colors.white,
+                              )),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Text(
+                      widget.name,
+                      style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      height: 100,
+                      child: Text(
+                        'Total pairs: ${widget.fcSet.pairCount}',
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      onTap: () => tap(
-          context, SetContainer(currentSet: widget.fcSet, name: widget.name)),
-      splashColor: Colors.transparent,
-      onLongPress: () => widget.fun()//deleteSet,
-    );
+        onTap: () => tap(
+            context, SetContainer(currentSet: widget.fcSet, name: widget.name)),
+        splashColor: Colors.transparent,
+        onLongPress: () => widget.fun() //deleteSet,
+        );
   }
 }

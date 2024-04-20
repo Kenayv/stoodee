@@ -71,7 +71,6 @@ class _FlashCardsReader extends State<FlashCardsReader>
   int cardIndex = 0;
   bool shownav = false;
 
-
   void onSetDone() {
     log("SET DONE!!!");
     if (completed == widget.fcSet.pairCount) {
@@ -92,6 +91,21 @@ class _FlashCardsReader extends State<FlashCardsReader>
     setState(() {
       shownav = false;
     });
+  }
+
+  String getDisplayDateText({required DateTime displayDate}) {
+    DateTime now = DateTime.now();
+    Duration difference = displayDate.difference(now);
+
+    if (difference.inDays > 1) {
+      return "show in:\n ${difference.inDays} ${difference.inDays > 1 ? "Days" : "Day"}";
+    } else if (difference.inHours > 1) {
+      return "show in:\n ${difference.inHours}h ${difference.inHours > 1 ? "Hours" : "Hour"}";
+    } else if (difference.inMinutes > 1) {
+      return "show in:\n ${difference.inMinutes}  ${difference.inMinutes > 1 ? "Minutes" : "Minute"}";
+    } else {
+      return "Show now";
+    }
   }
 
   Container difficultyRow({
@@ -122,6 +136,12 @@ class _FlashCardsReader extends State<FlashCardsReader>
                     );
                   },
                 ),
+                Text(
+                  getDisplayDateText(
+                    displayDate: calculateDateToShowFc(
+                        cardDifficulty: flashcard.cardDifficulty - 1),
+                  ),
+                ),
               ],
             ),
             Column(
@@ -139,6 +159,12 @@ class _FlashCardsReader extends State<FlashCardsReader>
                     );
                   },
                 ),
+                Text(
+                  getDisplayDateText(
+                    displayDate: calculateDateToShowFc(
+                        cardDifficulty: flashcard.cardDifficulty),
+                  ),
+                ),
               ],
             ),
             Column(
@@ -155,6 +181,12 @@ class _FlashCardsReader extends State<FlashCardsReader>
                       newDifficulty: flashcard.cardDifficulty + 2,
                     );
                   },
+                ),
+                Text(
+                  getDisplayDateText(
+                    displayDate: calculateDateToShowFc(
+                        cardDifficulty: flashcard.cardDifficulty + 2),
+                  ),
                 ),
               ],
             ),
@@ -183,11 +215,11 @@ class _FlashCardsReader extends State<FlashCardsReader>
                 final int totalFlashcardsCount = flashcards.length + completed;
 
                 if (completed == totalFlashcardsCount && completed != 0) {
-                    log("SET DONE!!!");
-                    FlashcardsService().incrFcsCompletedToday();
-                    var ticker = _controller.forward();
-                    ticker.whenComplete(() => _controller.reset());
-                    //doesnt work because it redirects to empty reader page instantly, and for some reason this "if" is called 2 times??
+                  log("SET DONE!!!");
+                  FlashcardsService().incrFcsCompletedToday();
+                  var ticker = _controller.forward();
+                  ticker.whenComplete(() => _controller.reset());
+                  //doesnt work because it redirects to empty reader page instantly, and for some reason this "if" is called 2 times??
 
 /*
                     WidgetsBinding.instance.addPostFrameCallback(
