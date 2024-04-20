@@ -7,14 +7,12 @@ import 'package:stoodee/utilities/reusables/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
-import '../dialogs/add_flashcard_dialog.dart';
-import '../globals.dart';
+import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
+import 'package:stoodee/utilities/globals.dart';
 import 'custom_appbar.dart';
-import '../globals.dart';
 
-class EmptyReaderScaffold extends StatefulWidget{
-   const EmptyReaderScaffold({super.key,required this.fcset});
-
+class EmptyReaderScaffold extends StatefulWidget {
+  const EmptyReaderScaffold({super.key, required this.fcset});
 
   final DatabaseFlashcardSet fcset;
 
@@ -23,9 +21,7 @@ class EmptyReaderScaffold extends StatefulWidget{
 }
 
 class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
-  void nothing(){
-
-  }
+  void nothing() {}
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +46,10 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: StoodeeButton(
-                      onPressed: (){
+                      onPressed: () {
                         goRouterToMain(context);
                       },
-                      child: const Icon(Icons.arrow_back,
-                          color: Colors.white),
+                      child: const Icon(Icons.arrow_back, color: Colors.white),
                     ),
                   ),
                 ),
@@ -65,17 +60,12 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
-                    borderRadius:
-                    const BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: LinearPercentIndicator(
-                      backgroundColor:
-                      primaryAppColor.withOpacity(0.08),
+                      backgroundColor: primaryAppColor.withOpacity(0.08),
                       percent: 0,
                       linearGradient: const LinearGradient(
-                        colors: [
-                          primaryAppColor,
-                          secondaryAppColor
-                        ],
+                        colors: [primaryAppColor, secondaryAppColor],
                       ),
                       animation: true,
                       lineHeight: 20,
@@ -95,9 +85,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                   height: 300,
                   child: FlipCard(
                     speed: 250,
-                    onFlip: () {
-
-                    },
+                    onFlip: () {},
                     side: CardSide.FRONT,
                     direction: FlipDirection.HORIZONTAL,
                     front: const ReusableCard(
@@ -115,39 +103,36 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                         fcSet: widget.fcset,
                       );
 
-                      if(widget.fcset.pairCount>0){
-                       /*
+                      if (widget.fcset.pairCount > 0) {
+                        /*
                         WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
                             createSuccessSnackbar(
                                 "Flashcard added :3")));
 
                         */
-                        ScaffoldMessenger.of(context).showSnackBar(createSuccessSnackbar("flashcard added :3"));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            createSuccessSnackbar("flashcard added :3"));
                         goRouterToMain(context);
-                      }
-                      else {
+                      } else {
                         /*
                         WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
                             createErrorSnackbar(
                                 "Flashcard still not added :3")));
 
                          */
-                        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("Flashcard still not added :3"));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            createErrorSnackbar(
+                                "Flashcard still not added :3"));
                       }
-
-
-
-
                     },
-                    child:  Text("Add flashcard",style: buttonTextStyle,)),
-
+                    child: Text(
+                      "Add flashcard",
+                      style: buttonTextStyle,
+                    )),
                 const Expanded(child: Text("")),
-
-
               ],
             ),
           ),
-
         ],
       ),
     );

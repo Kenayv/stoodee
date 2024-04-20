@@ -24,11 +24,13 @@ class AchievementDialog extends StatelessWidget {
         shadowColor: Colors.black,
         elevation: 200,
         backgroundColor: analogusColor,
-        title: Center(child: Text(name,style: TextStyle(color:Colors.white,fontWeight: FontWeight.bold))),
+        title: Center(
+            child: Text(name,
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold))),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-
             const SizedBox(height: 10.0),
             SvgPicture.asset(
               path,
@@ -39,8 +41,6 @@ class AchievementDialog extends StatelessWidget {
             Text(desc, style: TextStyle(color: Colors.white)),
           ],
         ),
-
-
       ),
     );
   }

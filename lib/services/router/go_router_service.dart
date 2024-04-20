@@ -37,12 +37,12 @@ String resolveSwipeDirection(Object from, int where) {
     } else if (fromIndex < where) {
       return "toLeft";
     }
-  }on FormatException {
-    return'notResolved';
+  } on FormatException {
+    return 'notResolved';
   }
 
-    return "notResolved";
-  }
+  return "notResolved";
+}
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "root");
 final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "shell");
@@ -107,67 +107,67 @@ final GoRouter goRouterService = GoRouter(
 
           //FLASHCARDSPAGE
           GoRoute(
-            path: '/Flashcards',
-            parentNavigatorKey: _shellNavigatorKey,
-            pageBuilder: (context, state) {
-              final fromIndex = state.extra ?? "3";
-              int whereIndex = 2;
+              path: '/Flashcards',
+              parentNavigatorKey: _shellNavigatorKey,
+              pageBuilder: (context, state) {
+                final fromIndex = state.extra ?? "3";
+                int whereIndex = 2;
 
-              String direction = resolveSwipeDirection(fromIndex, whereIndex);
+                String direction = resolveSwipeDirection(fromIndex, whereIndex);
 
-              return CustomTransitionPage(
-                transitionDuration: const Duration(milliseconds: 400),
-                key: state.pageKey,
-                child: const FlashcardsPage(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  var begin = const Offset(1.0, 0.0);
+                return CustomTransitionPage(
+                  transitionDuration: const Duration(milliseconds: 400),
+                  key: state.pageKey,
+                  child: const FlashcardsPage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var begin = const Offset(1.0, 0.0);
 
-                  if (direction == "toLeft") begin = const Offset(1.0, 0.0);
-                  if (direction == "toRight") begin = const Offset(-1.0, 0.0);
+                    if (direction == "toLeft") begin = const Offset(1.0, 0.0);
+                    if (direction == "toRight") begin = const Offset(-1.0, 0.0);
 
-                  const end = Offset.zero;
-                  const curve = Curves.easeOutQuint;
-                  var tween = Tween(begin: begin, end: end)
-                      .chain(CurveTween(curve: curve));
+                    const end = Offset.zero;
+                    const curve = Curves.easeOutQuint;
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
 
-                  return SlideTransition(
-                      position: animation.drive(tween), child: child);
-                },
-              );
-            },
+                    return SlideTransition(
+                        position: animation.drive(tween), child: child);
+                  },
+                );
+              },
               routes: [
                 GoRoute(
                   path: "dialog",
 
                   //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
                   pageBuilder: (BuildContext context, GoRouterState state) {
-                    var extras=state.extra as SetContainer;
-                    String name=extras.name;
-                    DatabaseFlashcardSet fcset=extras.getSet();
+                    var extras = state.extra as SetContainer;
+                    String name = extras.name;
+                    DatabaseFlashcardSet fcset = extras.getSet();
 
-                    return SideSheetPage(transitionsBuilder:  (context, animation, secondaryAnimation, child) {
-                      return SlideTransition(
-                        position: Tween(
-                          begin: const Offset(0, 1),
-                          end: const Offset(0, 0),
-                        ).animate(
-                          animation,
-                        ),
-                        child: child,
-                      );
-                    }, child: DeleteSetDialog(fcset: fcset,
-
-                    ),
-                    barrierColor: null,
-
+                    return SideSheetPage(
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return SlideTransition(
+                          position: Tween(
+                            begin: const Offset(0, 1),
+                            end: const Offset(0, 0),
+                          ).animate(
+                            animation,
+                          ),
+                          child: child,
+                        );
+                      },
+                      child: DeleteSetDialog(
+                        fcSet: fcset,
+                        fcset: fcset,
+                      ),
+                      barrierColor: null,
                     );
                   },
                 ),
-              ]
-
-
-          ),
+              ]),
 
           //Main
           GoRoute(
@@ -204,65 +204,65 @@ final GoRouter goRouterService = GoRouter(
 
           //Achievements
           GoRoute(
-            parentNavigatorKey: _shellNavigatorKey,
-            path: '/Achievements',
-            pageBuilder: (context, state) {
-              final fromIndex = state.extra ?? "none";
+              parentNavigatorKey: _shellNavigatorKey,
+              path: '/Achievements',
+              pageBuilder: (context, state) {
+                final fromIndex = state.extra ?? "none";
 
-              int whereIndex = 4;
+                int whereIndex = 4;
 
-              String direction = resolveSwipeDirection(fromIndex, whereIndex);
+                String direction = resolveSwipeDirection(fromIndex, whereIndex);
 
-              return CustomTransitionPage(
-                transitionDuration: const Duration(milliseconds: 400),
-                key: state.pageKey,
-                child: const AchievementsPage(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  var begin = const Offset(1.0, 0.0);
+                return CustomTransitionPage(
+                  transitionDuration: const Duration(milliseconds: 400),
+                  key: state.pageKey,
+                  child: const AchievementsPage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var begin = const Offset(1.0, 0.0);
 
-                  if (direction == "toLeft") begin = const Offset(1.0, 0.0);
-                  if (direction == "toRight") begin = const Offset(-1.0, 0.0);
+                    if (direction == "toLeft") begin = const Offset(1.0, 0.0);
+                    if (direction == "toRight") begin = const Offset(-1.0, 0.0);
 
-                  const end = Offset.zero;
-                  const curve = Curves.easeOutQuint;
-                  var tween = Tween(begin: begin, end: end)
-                      .chain(CurveTween(curve: curve));
+                    const end = Offset.zero;
+                    const curve = Curves.easeOutQuint;
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
 
-                  return SlideTransition(
-                      position: animation.drive(tween), child: child);
-                },
-              );
-            },
+                    return SlideTransition(
+                        position: animation.drive(tween), child: child);
+                  },
+                );
+              },
               routes: [
                 GoRoute(
                   path: "dialog",
 
                   //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
                   pageBuilder: (BuildContext context, GoRouterState state) {
-                    var extras=state.extra as AchievementTileContainer;
-                    String name=extras.name;
-                    String path=extras.path;
-                    String desc=extras.desc;
-                    return SideSheetPage(transitionsBuilder:  (context, animation, secondaryAnimation, child) {
-                      return SlideTransition(
-                        position: Tween(
-                          begin: const Offset(0, 1),
-                          end: const Offset(0, 0),
-                        ).animate(
-                          animation,
-                        ),
-                        child: child,
-                      );
-                    }, child: AchievementDialog(
-                        name: name,
-                        path: path,
-                        desc:desc
-                    ),);
+                    var extras = state.extra as AchievementTileContainer;
+                    String name = extras.name;
+                    String path = extras.path;
+                    String desc = extras.desc;
+                    return SideSheetPage(
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return SlideTransition(
+                          position: Tween(
+                            begin: const Offset(0, 1),
+                            end: const Offset(0, 0),
+                          ).animate(
+                            animation,
+                          ),
+                          child: child,
+                        );
+                      },
+                      child:
+                          AchievementDialog(name: name, path: path, desc: desc),
+                    );
                   },
                 ),
-              ]
-          ),
+              ]),
 
           //Account
           GoRoute(

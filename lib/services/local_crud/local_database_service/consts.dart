@@ -40,10 +40,7 @@ const displayAfterDateColumn = 'display_after_date';
 const cardDifficultyColumn = 'card_difficulty';
 const pairCountColumn = 'pair_count';
 
-const minFlashCardDifficulty = 0;
-const defaultFlashcardDifficulty = 5;
-const maxFlashCardDifficulty = 10;
-
+const defaultFlashcardDifficulty = 8;
 const defaultDailyTaskGoal = 5;
 const defaultDailyFlashcardsGoal = 15;
 

@@ -1,20 +1,16 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stoodee/services/router/route_functions.dart';
-
+import 'package:stoodee/services/flashcard_service.dart';
+import 'package:stoodee/utilities/dialogs/delete_fcset_dialog.dart';
 import '../../services/local_crud/local_database_service/database_flashcard_set.dart';
 import '../containers.dart';
 import '../dialogs/add_flashcard_dialog.dart';
 import '../globals.dart';
-import 'package:stoodee/utilities/dialogs/delete_set_dialog.dart';
 
 void tap(BuildContext context, SetContainer container) {
   context.go('/flash_cards_reader', extra: container);
 }
-
 
 class FlashCardSetWidget extends StatefulWidget {
   const FlashCardSetWidget({
@@ -33,61 +29,42 @@ class FlashCardSetWidget extends StatefulWidget {
 }
 
 class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
-
-
-
-
-  Future<void> deletingfunction() async {
-    //FIXME: ONLY DEBUGGING OPTION, LINK IT TO A REAL FUNCTION LATER
-    log("deleteingfunction");
-
-    setState(() {
-
-    });
-    log("deleteingfunction");
+  Future<void> deleteSet() async {
+    if (await showDeleteFcSetDialog(context: context, fcSet: widget.fcSet)) {
+      await FlashcardsService().removeFcSet(widget.fcSet);
+    }
+    setState(() {});
   }
 
+  List<BoxShadow> resolveWidgetShadows() {
+    List<BoxShadow> l = [];
 
-  List<BoxShadow> resolveWidgetShadows(){
-
-    List<BoxShadow> l=[];
-
-
-    if(widget.fcSet.pairCount>2){
+    if (widget.fcSet.pairCount > 2) {
       l.add(const BoxShadow(
         color: Color.fromRGBO(75, 0, 178, 1.0),
         spreadRadius: 1,
-        offset: Offset(9.0, 3.0),));
+        offset: Offset(9.0, 3.0),
+      ));
     }
 
-
-
-
-    if(widget.fcSet.pairCount>1){
+    if (widget.fcSet.pairCount > 1) {
       l.add(const BoxShadow(
         color: Color.fromRGBO(92, 0, 206, 1.0),
         spreadRadius: 1,
-        offset: Offset(5.0, 2),));
+        offset: Offset(5.0, 2),
+      ));
     }
 
-
-    if(widget.fcSet.pairCount>0){
+    if (widget.fcSet.pairCount > 0) {
       l.add(const BoxShadow(
         color: primaryAppColor,
         spreadRadius: 1,
-        offset: Offset(2.0, 1),));
+        offset: Offset(2.0, 1),
+      ));
     }
-
-
-
-
-
-
 
     return l;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +72,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
       title: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Container(
-          decoration:  BoxDecoration(
+          decoration: BoxDecoration(
             color: analogusColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             boxShadow: resolveWidgetShadows(),
@@ -125,7 +102,8 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                               size: 20,
                               color: Colors.white,
                             )),
-                      ),],
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -157,7 +135,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
       onTap: () => tap(
           context, SetContainer(currentSet: widget.fcSet, name: widget.name)),
       splashColor: Colors.transparent,
-      onLongPress: deletingfunction,
+      onLongPress: deleteSet,
     );
   }
 }

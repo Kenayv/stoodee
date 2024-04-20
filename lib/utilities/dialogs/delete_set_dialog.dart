@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
-import '../../services/flashcard_service.dart';
+import '../../services/flashcard_service/flashcard_service.dart';
 
 Future<dynamic> genericDeleteSetDialog({
   required BuildContext context,
   required List<DatabaseFlashcardSet> fcsets,
-
-
-
   TextButton? additionalButton,
 }) {
   DatabaseFlashcardSet? selectedSet;
@@ -20,28 +17,24 @@ Future<dynamic> genericDeleteSetDialog({
       return AlertDialog(
         title: Text("Select a set to delete:"),
         content: StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState){
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children:[
-                DropdownButton<DatabaseFlashcardSet>(
-                  value: selectedSet,
-                  onChanged: (DatabaseFlashcardSet? newValue) {
-                    setState(() {
-                      selectedSet = newValue;
-                    });
-                  },
-                  items: fcsets.map((DatabaseFlashcardSet set) {
-                    return DropdownMenuItem<DatabaseFlashcardSet>(
-                      value: set,
-                      child: Text(set.name),
-                    );
-                  }).toList(),
-                ),
-              ]
-            );
-          }
-        ),
+            builder: (BuildContext context, StateSetter setState) {
+          return Column(mainAxisSize: MainAxisSize.min, children: [
+            DropdownButton<DatabaseFlashcardSet>(
+              value: selectedSet,
+              onChanged: (DatabaseFlashcardSet? newValue) {
+                setState(() {
+                  selectedSet = newValue;
+                });
+              },
+              items: fcsets.map((DatabaseFlashcardSet set) {
+                return DropdownMenuItem<DatabaseFlashcardSet>(
+                  value: set,
+                  child: Text(set.name),
+                );
+              }).toList(),
+            ),
+          ]);
+        }),
         actions: [
           TextButton(
             child: const Text('Nevermind'),
@@ -53,10 +46,11 @@ Future<dynamic> genericDeleteSetDialog({
           TextButton(
             child: const Text('Delete'),
             onPressed: () async {
-              try{
+              try {
                 await FlashcardsService().removeFcSet(selectedSet!);
-              } catch (Exception){
-                ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("Please select a set >:("));
+              } catch (Exception) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    createErrorSnackbar("Please select a set >:("));
               }
               Navigator.of(context).pop(null);
             },

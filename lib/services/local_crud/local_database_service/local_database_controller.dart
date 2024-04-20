@@ -568,6 +568,18 @@ class LocalDbController {
     if (deletedCount != 1) throw CouldNotDeleteFcSet();
   }
 
+  Future<void> deleteFlashcardsBySetId({required int fcSetId}) async {
+    final db = _getDatabaseOrThrow();
+
+    final deletedCount = await db.delete(
+      flashcardTable,
+      where: '$flashcardSetIdColumn = ?',
+      whereArgs: [fcSetId],
+    );
+
+    if (deletedCount <= 0) throw CouldNotDeleteFcSet();
+  }
+
   Future<DatabaseFlashcardSet> updateFcSet({
     required DatabaseFlashcardSet fcSet,
     required String name,

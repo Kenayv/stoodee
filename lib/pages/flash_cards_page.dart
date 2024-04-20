@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
-import '../services/flashcard_service.dart';
+import '../services/flashcard_service/flashcard_service.dart';
 import '../utilities/dialogs/delete_set_dialog.dart';
 import '../utilities/reusables/reusable_stoodee_button.dart';
 import '../utilities/reusables/custom_flash_card_set_widget.dart';
@@ -18,24 +18,27 @@ class FlashcardsPage extends StatefulWidget {
   State<FlashcardsPage> createState() => _FlashcardsPage();
 }
 
-List<Widget> flashcardSetListView({
-  required BuildContext context,
-  required List<DatabaseFlashcardSet> fcSets,
-}) {
-  List<Widget> flashcardList = [];
+class _FlashcardsPage extends State<FlashcardsPage> {
+  List<Widget> flashcardSetListView({
+    required BuildContext context,
+    required List<DatabaseFlashcardSet> fcSets,
+  }) {
+    List<Widget> flashcardList = [];
 
-  for (int i = 0; i < fcSets.length; i++) {
-    flashcardList.add(FlashCardSetWidget(
-      context: context,
-      fcSet: fcSets[i],
-      name: fcSets[i].name,
-    ));
+    for (int i = 0; i < fcSets.length; i++) {
+      flashcardList.add(
+        FlashCardSetWidget(
+          //FIXME: onLongPressed function could be passed right there as an argument.to allow setting state.
+          context: context,
+          fcSet: fcSets[i],
+          name: fcSets[i].name,
+        ),
+      );
+    }
+
+    return flashcardList;
   }
 
-  return flashcardList;
-}
-
-class _FlashcardsPage extends State<FlashcardsPage> {
   @override
   void initState() {
     super.initState();
@@ -46,8 +49,8 @@ class _FlashcardsPage extends State<FlashcardsPage> {
     setState(() {});
   }
 
-  Future <void> deleteSet(List<DatabaseFlashcardSet> l) async{
-    await genericDeleteSetDialog(context: context,fcsets: l);
+  Future<void> deleteSet(List<DatabaseFlashcardSet> l) async {
+    await genericDeleteSetDialog(context: context, fcsets: l);
     setState(() {});
   }
 
@@ -60,12 +63,8 @@ class _FlashcardsPage extends State<FlashcardsPage> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Scaffold(
-              floatingActionButton: StoodeeButton(
-        onPressed:(){
-        deleteSet(flashcardSets);
-        }, child: Icon(Icons.delete,color: Colors.white,),
-        ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.startFloat,
               body: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -83,7 +82,6 @@ class _FlashcardsPage extends State<FlashcardsPage> {
                       child:
                           const Icon(Icons.add, color: Colors.white, size: 30),
                     ),
-
                     const SizedBox(height: 15),
                   ],
                 ),
