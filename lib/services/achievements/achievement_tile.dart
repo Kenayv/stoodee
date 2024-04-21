@@ -81,7 +81,7 @@ class AchievementTile extends StatelessWidget {
   }
 }
 
-List<AchievementTile> getUserAchievements(DatabaseUser user) {
+List<AchievementTile> getUserAchievementTiles(DatabaseUser user) {
   if (LocalDbController().isNullUser(user)) throw NullUserException();
 
   final totaluserTasks = user.totalTasksCompleted;
