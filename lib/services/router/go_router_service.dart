@@ -6,7 +6,7 @@ import 'package:stoodee/pages/intro_screen_page.dart';
 import 'package:stoodee/pages/starting_page.dart';
 import 'package:stoodee/pages/to_do_page.dart';
 import 'package:stoodee/pages/email_verification_page.dart';
-import 'package:stoodee/pages/login_test_page.dart';
+import 'package:stoodee/pages/login_page.dart';
 import 'package:stoodee/pages/main_page.dart';
 import 'package:stoodee/pages/achievements_page.dart';
 import 'package:stoodee/pages/account_page.dart';
@@ -368,7 +368,7 @@ final GoRouter goRouterService = GoRouter(
           return CustomTransitionPage(
             transitionDuration: const Duration(milliseconds: 400),
             key: state.pageKey,
-            child: const OogaBoogaLoginTest(),
+            child: const LoginPage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(1.0, 0.0);
