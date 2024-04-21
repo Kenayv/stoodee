@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/flashcards/fc_set_widget.dart';
 import 'package:stoodee/utilities/globals.dart';
 
 import 'flashcard_widget.dart';
@@ -13,20 +12,11 @@ ListView taskListView_intro({
     itemCount: 3,
     itemBuilder: (context, index) {
       return taskItem(
-        text: "task${index+1}",
-
+        text: "task${index + 1}",
       );
     },
   );
 }
-
-
-
-
-
-
-
-
 
 ListTile taskItem({
   required String text,
@@ -72,8 +62,6 @@ ListTile taskItem({
               size: 30,
             ),
           ),
-
-
           child: Container(
             decoration: const BoxDecoration(
               color: analogusColor,
@@ -96,16 +84,10 @@ ListTile taskItem({
         ),
       ),
     ),
-    onTap: () {
-
-    },
-    onLongPress: () {
-
-    },
+    onTap: () {},
+    onLongPress: () {},
   );
 }
-
-
 
 List<Widget> flashcardSetListView_intro({
   required BuildContext context,
@@ -118,15 +100,12 @@ List<Widget> flashcardSetListView_intro({
         //FIXME: onLongPressed function could be passed right there as an argument.to allow setting state.
         context: context,
         name: "set$i",
-        fcSetlength: 3-i,
-
-
+        fcSetlength: 3 - i,
       ),
     );
   }
 
   flashcardList.add(const Padding(padding: EdgeInsets.only(bottom: 20)));
-
 
   return flashcardList;
 }
