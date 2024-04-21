@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:gap/gap.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -7,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
-import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
-
-import '../introduction_assets/introduction_assets.dart';
-import '../utilities/reusables/custom_grid_view.dart';
+import 'package:stoodee/introduction_assets/introduction_assets.dart';
+import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 
 class IntroductionScreens extends StatefulWidget {
   const IntroductionScreens({super.key});
@@ -20,6 +17,9 @@ class IntroductionScreens extends StatefulWidget {
 }
 
 class _IntroductionScreensState extends State<IntroductionScreens> {
+  //FIXME: NIE DISPOSUJA SIE
+  //FIXME: NIE DISPOSUJA SIE
+  //FIXME: NIE DISPOSUJA SIE
   late TextEditingController nameController;
   late TextEditingController taskController;
   late TextEditingController flashCardsController;
@@ -27,6 +27,9 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
   @override
   void initState() {
     super.initState();
+    //FIXME: NIE DISPOSUJA SIE
+    //FIXME: NIE DISPOSUJA SIE
+    //FIXME: NIE DISPOSUJA SIE
     nameController = TextEditingController();
     taskController = TextEditingController();
     flashCardsController = TextEditingController();
@@ -40,226 +43,229 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(children: [
-      ClipPath(
-        clipper: BackgroundWaveClipper(),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 140,
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              gradient: LinearGradient(
-                colors: [primaryAppColor, secondaryAppColor],
-              )),
-        ),
-      ),
-      Expanded(
-        child: IntroductionScreen(
-          pages: [
-            PageViewModel(
-              titleWidget: Align(
-                alignment: Alignment.centerLeft,
-                child: DefaultTextStyle(
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 60,
-                      fontFamily: 'Roboto Mono',
-                      height: 0.8,
-                      letterSpacing: 1.4),
-                  child: AnimatedTextKit(
-                      repeatForever: false,
-                      totalRepeatCount: 1,
-                      animatedTexts: [
-                        TyperAnimatedText("Stoodee",
-                            speed: const Duration(milliseconds: 300))
-                      ]),
-                ),
-              ),
-              bodyWidget: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Co to jest?',
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 20,
-                        fontFamily: 'Roboto'),
-                    textAlign: TextAlign.left,
+      body: Column(
+        children: [
+          ClipPath(
+            clipper: BackgroundWaveClipper(),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 140,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  gradient: LinearGradient(
+                    colors: [primaryAppColor, secondaryAppColor],
                   )),
-              image: Center(
-                  child: Image.asset(
-                'lib/assets/BaseLogoSwan.png',
-                scale: 1,
-              )),
-              footer: Padding(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05,
-                    bottom: MediaQuery.of(context).size.height * 0.05),
-                child: const Text('Pomożemy ci w nauce 😎',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                        fontFamily: 'Roboto',
-                        height: 0.8,
-                        letterSpacing: 0.8)),
-              ),
-              decoration: getPageDecoration1(),
             ),
-            PageViewModel(
-              titleWidget: Stack(children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  child: SingleChildScrollView(
-                      child: taskListView_intro(context: context)),
-                ),
-              ]),
-              bodyWidget: const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Lista zadań',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50,
-                      fontFamily: 'Roboto Mono',
-                      height: 0.8,
-                      letterSpacing: 1.4),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              footer: Padding(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text('Usystematyzuj naukę',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                        fontFamily: 'Roboto',
-                        height: 0.8,
-                        letterSpacing: 0.8)),
-              ),
-              decoration: getPageDecoration1(),
-            ),
-            PageViewModel(
-              titleWidget: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.35,
-                child: SingleChildScrollView(
-                    child: CustomGridLayout(
-                  crossAxisCount: 2,
-                  items: flashcardSetListView_intro(context: context),
-                )),
-              ),
-              bodyWidget: const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Fiszki',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50,
-                      fontFamily: 'Roboto Mono',
-                      height: 0.8,
-                      letterSpacing: 1.4),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              footer: Padding(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text('Utrwalaj wiedzę',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                        fontFamily: 'Roboto',
-                        height: 0.8,
-                        letterSpacing: 0.8)),
-              ),
-              decoration: getPageDecoration1(),
-            ),
-            PageViewModel(
-              title: 'Jeszcze chwilka i możemy zaczynać',
-              bodyWidget: Column(
-                children: [
-                  Gap(10),
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    autocorrect: false,
-                    decoration: InputDecoration(
-                      hintText: 'Name',
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryAppColor),
-                      ),
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
+          ),
+          Expanded(
+            child: IntroductionScreen(
+              pages: [
+                PageViewModel(
+                  titleWidget: Align(
+                    alignment: Alignment.centerLeft,
+                    child: DefaultTextStyle(
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 60,
+                          fontFamily: 'Roboto Mono',
+                          height: 0.8,
+                          letterSpacing: 1.4),
+                      child: AnimatedTextKit(
+                          repeatForever: false,
+                          totalRepeatCount: 1,
+                          animatedTexts: [
+                            TyperAnimatedText("Stoodee",
+                                speed: const Duration(milliseconds: 300))
+                          ]),
                     ),
-                    controller: nameController,
                   ),
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    autocorrect: false,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: 'todo',
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryAppColor),
-                      ),
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
+                  bodyWidget: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Co to jest?',
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 20,
+                            fontFamily: 'Roboto'),
+                        textAlign: TextAlign.left,
+                      )),
+                  image: Center(
+                      child: Image.asset(
+                    'lib/assets/BaseLogoSwan.png',
+                    scale: 1,
+                  )),
+                  footer: Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05,
+                        bottom: MediaQuery.of(context).size.height * 0.05),
+                    child: const Text('Pomożemy ci w nauce 😎',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            fontFamily: 'Roboto',
+                            height: 0.8,
+                            letterSpacing: 0.8)),
+                  ),
+                  decoration: getPageDecoration1(),
+                ),
+                PageViewModel(
+                  titleWidget: Stack(children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child: SingleChildScrollView(
+                          child: taskListView_intro(context: context)),
                     ),
-                    controller: taskController,
-                  ),
-                  TextField(
-                    textInputAction: TextInputAction.done,
-                    autocorrect: false,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: 'flashCard',
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: primaryAppColor),
-                      ),
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
+                  ]),
+                  bodyWidget: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Lista zadań',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50,
+                          fontFamily: 'Roboto Mono',
+                          height: 0.8,
+                          letterSpacing: 1.4),
+                      textAlign: TextAlign.left,
                     ),
-                    controller: flashCardsController,
                   ),
-                ],
-              ),
-              image: Icon(Icons.settings,
-                  color: primaryAppColor,
-                  size: MediaQuery.of(context).size.width * 0.35), //120
-              decoration: getPageDecoration2(),
-            ),
-          ],
-          onDone: () async {
-            goRouterToLogin(context);
-            await SharedPrefs().setHasSeenIntro(value: true);
-          },
-          //ClampingScrollPhysics prevent the scroll offset from exceeding the bounds of the content.
+                  footer: Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05),
+                    child: const Text('Usystematyzuj naukę',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            fontFamily: 'Roboto',
+                            height: 0.8,
+                            letterSpacing: 0.8)),
+                  ),
+                  decoration: getPageDecoration1(),
+                ),
+                PageViewModel(
+                  titleWidget: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    child: SingleChildScrollView(
+                        child: CustomGridLayout(
+                      crossAxisCount: 2,
+                      items: flashcardSetListView_intro(context: context),
+                    )),
+                  ),
+                  bodyWidget: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Fiszki',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50,
+                          fontFamily: 'Roboto Mono',
+                          height: 0.8,
+                          letterSpacing: 1.4),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  footer: Padding(
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05),
+                    child: const Text('Utrwalaj wiedzę',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            fontFamily: 'Roboto',
+                            height: 0.8,
+                            letterSpacing: 0.8)),
+                  ),
+                  decoration: getPageDecoration1(),
+                ),
+                PageViewModel(
+                  title: 'Jeszcze chwilka i możemy zaczynać',
+                  bodyWidget: Column(
+                    children: [
+                      Gap(10),
+                      TextField(
+                        textInputAction: TextInputAction.next,
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          hintText: 'Name',
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: primaryAppColor),
+                          ),
+                          fillColor: Colors.grey.shade200,
+                          filled: true,
+                        ),
+                        controller: nameController,
+                      ),
+                      TextField(
+                        textInputAction: TextInputAction.next,
+                        autocorrect: false,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'todo',
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: primaryAppColor),
+                          ),
+                          fillColor: Colors.grey.shade200,
+                          filled: true,
+                        ),
+                        controller: taskController,
+                      ),
+                      TextField(
+                        textInputAction: TextInputAction.done,
+                        autocorrect: false,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'flashCard',
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: primaryAppColor),
+                          ),
+                          fillColor: Colors.grey.shade200,
+                          filled: true,
+                        ),
+                        controller: flashCardsController,
+                      ),
+                    ],
+                  ),
+                  image: Icon(Icons.settings,
+                      color: primaryAppColor,
+                      size: MediaQuery.of(context).size.width * 0.35), //120
+                  decoration: getPageDecoration2(),
+                ),
+              ],
+              onDone: () async {
+                goRouterToLogin(context);
+                await SharedPrefs().setHasSeenIntro(value: true);
+              },
+              //ClampingScrollPhysics prevent the scroll offset from exceeding the bounds of the content.
 
-          scrollPhysics: const ClampingScrollPhysics(),
-          showDoneButton: true,
-          showNextButton: false,
-          showBackButton: false,
-          back: const Icon(Icons.arrow_back),
-          next: const Icon(Icons.forward),
-          done: const Text('Done',
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, color: primaryAppColor)),
-          dotsDecorator: getDotsDecorator(),
-        ),
-      )
-    ]));
+              scrollPhysics: const ClampingScrollPhysics(),
+              showDoneButton: true,
+              showNextButton: false,
+              showBackButton: false,
+              back: const Icon(Icons.arrow_back),
+              next: const Icon(Icons.forward),
+              done: const Text('Done',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: primaryAppColor)),
+              dotsDecorator: getDotsDecorator(),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   //method to customise the page style
