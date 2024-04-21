@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-import 'package:stoodee/utilities/account_widgets.dart';
+import 'package:stoodee/utilities/pages_widgets/account_widgets.dart';
 
 void nothing() {/*FIXME: delete */}
 

@@ -11,11 +11,11 @@ import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:stoodee/services/flashcards/reusable_card.dart';
+import 'package:stoodee/utilities/pages_widgets/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
-import 'package:stoodee/services/flashcards/empty_flashcard_reader_scaffold.dart';
+import 'package:stoodee/utilities/pages_widgets/flashcards/empty_flashcard_reader_scaffold.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
 class FlashCardsReader extends StatefulWidget {

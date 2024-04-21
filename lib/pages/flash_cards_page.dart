@@ -1,28 +1,34 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/flashcards/fc_set_widget.dart';
+import 'package:stoodee/utilities/pages_widgets/flashcards/fc_set_widget.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/utilities/dialogs/delete_fcset_dialog.dart';
-import 'package:stoodee/utilities/dialogs/delete_set_dialog.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
-const double iconSize = 40;
-
 class FlashcardsPage extends StatefulWidget {
-  const FlashcardsPage({
-    super.key,
-  });
+  const FlashcardsPage({super.key});
 
   @override
   State<FlashcardsPage> createState() => _FlashcardsPage();
 }
 
 class _FlashcardsPage extends State<FlashcardsPage> {
-  List<Widget> flashcardSetListView({
+  Future<void> deleteSetDialog(
+    BuildContext context,
+    DatabaseFlashcardSet fcSet,
+  ) async {
+    log("longpressed");
+    if (await showDeleteFcSetDialog(context: context, fcSet: fcSet)) {
+      await FlashcardsService().removeFcSet(fcSet);
+      setState(() {});
+    }
+  }
+
+  List<Widget> buildFlashcardSetListView({
     required BuildContext context,
     required List<DatabaseFlashcardSet> fcSets,
   }) {
@@ -31,18 +37,13 @@ class _FlashcardsPage extends State<FlashcardsPage> {
     for (int i = 0; i < fcSets.length; i++) {
       flashcardList.add(
         FlashCardSetWidget(
-          //FIXME: onLongPressed function could be passed right there as an argument.to allow setting state.
           context: context,
           fcSet: fcSets[i],
           name: fcSets[i].name,
-          fun: () async {
-            log("longpressed");
-            if (await showDeleteFcSetDialog(
-                context: context, fcSet: fcSets[i])) {
-              await FlashcardsService().removeFcSet(fcSets[i]);
-            }
-            setState(() {});
-          },
+          onLongPressed: () async => deleteSetDialog(
+            context,
+            fcSets[i],
+          ),
         ),
       );
     }
@@ -50,19 +51,18 @@ class _FlashcardsPage extends State<FlashcardsPage> {
     return flashcardList;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<void> addFcSet() async {
-    await showAddFcSetDialog(context: context);
-    setState(() {});
-  }
-
-  Future<void> deleteSet(List<DatabaseFlashcardSet> l) async {
-    await genericDeleteSetDialog(context: context, fcsets: l);
-    setState(() {});
+  StoodeeButton addFcSetButton() {
+    return StoodeeButton(
+      onPressed: () async {
+        await showAddFcSetDialog(context: context);
+        setState(() {});
+      },
+      child: const Icon(
+        Icons.add,
+        color: Colors.white,
+        size: 30,
+      ),
+    );
   }
 
   @override
@@ -82,26 +82,20 @@ class _FlashcardsPage extends State<FlashcardsPage> {
                     const SizedBox(height: 10),
                     CustomGridLayout(
                       crossAxisCount: 2,
-                      items: flashcardSetListView(
+                      items: buildFlashcardSetListView(
                         context: context,
                         fcSets: flashcardSets,
                       ),
                     ),
                     const SizedBox(height: 15),
-                    StoodeeButton(
-                      onPressed: addFcSet,
-                      child:
-                          const Icon(Icons.add, color: Colors.white, size: 30),
-                    ),
+                    addFcSetButton(),
                     const SizedBox(height: 15),
                   ],
                 ),
               ),
             );
           default:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
         }
       },
     );

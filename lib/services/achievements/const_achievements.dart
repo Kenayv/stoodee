@@ -1,27 +1,28 @@
-import 'package:stoodee/services/achievements/achievement_tile.dart';
+import 'package:stoodee/utilities/pages_widgets/achievement_widgets.dart';
 
 const woodTaskAch = AchievementTile(
   name: "WoodTask",
   path: "lib/assets/wood_tasks.svg",
   desc: 'Ukończ 1 zadanie',
 );
+
 const copperTaskAch = AchievementTile(
   name: "CopperTask",
   path: "lib/assets/copper_tasks.svg",
   desc: 'Ukończ 5 zadań',
 );
+
 const silverTaskAch = AchievementTile(
   name: "SilverTask",
   path: "lib/assets/silver_tasks.svg",
   desc: 'Ukończ 20 zadań',
 );
+
 const goldTaskAch = AchievementTile(
   name: "GoldTask",
   path: "lib/assets/gold_tasks.svg",
   desc: 'Ukończ 50 zadań',
 );
-
-//
 
 const woodFcAch = AchievementTile(
   name: "WoodFc",
@@ -46,17 +47,19 @@ const goldFcAch = AchievementTile(
   path: "lib/assets/gold_flashcards.svg",
   desc: 'Odgadnij 250 fiszek',
 );
-//
+
 const woodRushAch = AchievementTile(
   name: "WoodRush",
   path: "lib/assets/wood_rush.svg",
   desc: 'Osiągnij rekord 5 Fiszki Rush',
 );
+
 const copperRushAch = AchievementTile(
   name: "CopperRush",
   path: "lib/assets/copper_rush.svg",
   desc: 'Osiągnij rekord 15 Fiszki Rush',
 );
+
 const silverRushAch = AchievementTile(
   name: "SilverRush",
   path: "lib/assets/silver_rush.svg",
@@ -76,11 +79,13 @@ const woodStreakAch = AchievementTile(
   path: "lib/assets/wood_streak.svg",
   desc: 'Zdobądź 1-dniowy Streak',
 );
+
 const copperStreakAch = AchievementTile(
   name: "CopperSteak",
   path: "lib/assets/copper_streak.svg",
   desc: 'Zdobądź 3-dniowy Streak',
 );
+
 const silverStreakAch = AchievementTile(
   name: "SilverStreak",
   path: "lib/assets/silver_streak.svg",

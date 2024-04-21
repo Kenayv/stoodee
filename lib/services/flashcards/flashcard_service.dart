@@ -110,7 +110,9 @@ class FlashcardsService {
     if (!_initialized) throw FcServiceNotInitialized();
 
     await LocalDbController().deleteFcSet(fcSet: fcSet);
-    await LocalDbController().deleteFlashcardsBySetId(fcSetId: fcSet.id);
+    if (fcSet.pairCount > 0) {
+      await LocalDbController().deleteFlashcardsBySetId(fcSetId: fcSet.id);
+    }
 
     _flashcardSets!.removeWhere((fcSetToRemove) => fcSetToRemove == fcSet);
   }
