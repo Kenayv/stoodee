@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
 
-import '../../services/todo_service.dart';
+import '../../services/todoTasks/todo_service.dart';
 
 Future<String?> showEditTaskDialog(
     {required BuildContext context, required DatabaseTask task}) async {

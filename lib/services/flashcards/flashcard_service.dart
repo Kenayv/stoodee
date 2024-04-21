@@ -1,6 +1,6 @@
 import 'dart:developer' as dart_developer;
 import 'dart:math';
-import 'package:stoodee/services/flashcard_service/fc_difficulty.dart';
+import 'package:stoodee/services/flashcards/fc_difficulty.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';

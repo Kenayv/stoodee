@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/cloud_crud/cloud_database_controller.dart';
-import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
+import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -11,7 +11,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
-import 'package:stoodee/services/todo_service.dart';
+import 'package:stoodee/services/todoTasks/todo_service.dart';
 
 class LocalDbController {
   Database? _db;

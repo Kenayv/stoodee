@@ -2,7 +2,7 @@
 import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/todo_service.dart';
+import '../../services/todoTasks/todo_service.dart';
 
 Future<void> showAddTaskDialog({
   required BuildContext context,

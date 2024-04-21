@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:go_router/go_router.dart';
-import 'package:stoodee/services/cloud_crud/cloud_exceptions.dart';
-import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
+import 'package:stoodee/services/achievements/achievement_tile.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-import 'package:stoodee/utilities/containers.dart';
-import 'package:stoodee/utilities/globals.dart';
 
 class AchievementsPage extends StatefulWidget {
   const AchievementsPage({

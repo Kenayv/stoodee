@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
+import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 
 class DeleteSetDialog extends StatefulWidget {
