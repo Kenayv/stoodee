@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/router/route_functions.dart';
+import 'package:stoodee/stoodee_icons_icons.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 
@@ -81,31 +82,31 @@ class _PageScaffold extends State<PageScaffold> {
                 showUnselectedLabels: false,
                 selectedFontSize: 0,
                 unselectedIconTheme: IconThemeData(
-                    color: CupertinoColors.inactiveGray.withOpacity(0.85),
-                    size: 22),
-                selectedIconTheme: const IconThemeData(size: 30),
+                    color: CupertinoColors.inactiveGray.withOpacity(0.75),
+                    size: 18),
+                selectedIconTheme: const IconThemeData(size: 26),
                 onTap: changeTab,
                 backgroundColor: const Color(0xff230734),
                 currentIndex: currentIndex,
                 items: const [
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.list),
+                      icon: Icon(StoodeeIcons.tasks),
                       label: 'ToDo',
                       backgroundColor: Colors.transparent),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.add_circle),
+                      icon: Icon(StoodeeIcons.flashcards),
                       label: 'Flashcards',
                       backgroundColor: Colors.transparent),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
+                      icon: Icon(StoodeeIcons.home),
                       label: 'Home',
                       backgroundColor: Colors.transparent),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.add_chart),
+                      icon: Icon(StoodeeIcons.trophy),
                       label: 'Achievements',
                       backgroundColor: Colors.transparent),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.account_box_rounded),
+                      icon: Icon(StoodeeIcons.user),
                       label: 'Account',
                       backgroundColor: Colors.transparent),
                 ],
