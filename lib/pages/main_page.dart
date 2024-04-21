@@ -1,6 +1,6 @@
+import 'package:stoodee/utilities/page_utilities/mainpage_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:stoodee/utilities/page_utilities/mainpage_widgets.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
