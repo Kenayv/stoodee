@@ -10,7 +10,7 @@ import 'package:stoodee/pages/login_page.dart';
 import 'package:stoodee/pages/main_page.dart';
 import 'package:stoodee/pages/achievements_page.dart';
 import 'package:stoodee/pages/account_page.dart';
-import 'package:stoodee/pages/page_scaffold.dart';
+import 'package:stoodee/utilities/reusables/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
 import 'package:stoodee/utilities/page_utilities/achievement_widgets.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
