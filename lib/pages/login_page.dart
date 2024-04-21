@@ -48,7 +48,7 @@ class _LoginPage extends State<LoginPage> {
               const Gap(25),
               buildWelcomeAnimation(),
               const Gap(10),
-              const Text("Log-in ", style: TextStyle(color: Colors.grey)),
+              const Text("Log-in s", style: TextStyle(color: Colors.grey)),
               buildEmailInput(emailController),
               buildPasswordInput(passwordController),
               buildRememberMeCheckbox(rememberBool),
