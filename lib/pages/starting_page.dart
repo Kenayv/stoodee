@@ -38,6 +38,8 @@ class _StartingPage extends State<StartingPage> {
 
 
 
+    //WidgetsBinding.instance.addPostFrameCallback((_) => goRouterToIntro(context));
+
 
   }
 

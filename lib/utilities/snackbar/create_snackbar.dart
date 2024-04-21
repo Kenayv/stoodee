@@ -26,3 +26,18 @@ SnackBar createSuccessSnackbar(String errorText) {
 
   return snackbar;
 }
+
+
+
+
+SnackBar createNeutralSnackbar(String errorText) {
+  SnackBar snackbar = SnackBar(
+      content: CustomNeutralSnackBar(
+        neutralText: errorText,
+      ),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0);
+
+  return snackbar;
+}
