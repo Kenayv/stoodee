@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/cloud_crud/cloud_database_controller.dart';
-import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
+import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -11,7 +11,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
-import 'package:stoodee/services/todo_service.dart';
+import 'package:stoodee/services/todoTasks/todo_service.dart';
 
 class LocalDbController {
   Database? _db;
@@ -64,7 +64,7 @@ class LocalDbController {
 
       final updateCount = await db.update(
         userTable,
-        {dayStreakColumn: 0},
+        {currentDayStreakColumn: 0},
         where: '$localIdColumn = ?',
         whereArgs: [user.id],
       );
@@ -74,12 +74,12 @@ class LocalDbController {
     }
 
     String resetLog =
-        "[START] RESET LOG [START]\n\nReseted(OR NOT) user's streak data from:\n[dayStreak: ${user.dayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\nto\n";
+        "[START] RESET LOG [START]\n\nReseted(OR NOT) user's streak data from:\n[dayStreak: ${user.currentDayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\nto\n";
     //reload user's data
     user = await getUser(email: user.email);
 
     resetLog +=
-        "[dayStreak: ${user.dayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\n\n with updatesCount: $___debugInt___\n\n[END] RESET LOG [END]";
+        "[dayStreak: ${user.currentDayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\n\n with updatesCount: $___debugInt___\n\n[END] RESET LOG [END]";
 
     log(resetLog);
 
@@ -121,7 +121,7 @@ class LocalDbController {
         userTable,
         {
           lastStreakBrokenColumn: getCurrentDateAsFormattedString(),
-          dayStreakColumn: user.dayStreak + 1,
+          currentDayStreakColumn: user.currentDayStreak + 1,
         },
         where: 'id = ?',
         whereArgs: [user.id],
@@ -129,7 +129,7 @@ class LocalDbController {
 
       if (updateCount != 1) throw CouldNotUpdateUser();
 
-      user.setDayStreak(user.dayStreak + 1);
+      user.setCurrentDayStreak(user.currentDayStreak + 1);
       user.setLastStreakBroken(DateTime.now());
     }
   }
@@ -267,7 +267,10 @@ class LocalDbController {
       dailyGoalTasks: defaultDailyTaskGoal,
       tasksCompletedToday: 0,
       flashcardsCompletedToday: 0,
-      dayStreak: 0,
+      currentDayStreak: 0,
+      totalFlashcardsCompleted: 0,
+      totalTasksCompleted: 0,
+      streakHighscore: 0,
     );
 
     return newUser;
@@ -987,6 +990,8 @@ class LocalDbController {
     await TodoService().reloadTasks();
     await FlashcardsService().reloadFlashcardSets();
   }
+
+  bool isNullUser(DatabaseUser user) => user.email == defaultNullUserEmail;
 
   DatabaseUser get currentUser =>
       initialized ? _currentUser! : throw DatabaseIsNotOpened();

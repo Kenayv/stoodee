@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug19_tasks.db';
+const dbName = 'debug22_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -20,13 +20,16 @@ const lastSyncedColumn = 'last_synced_column';
 const lastStreakBrokenColumn = 'last_streak_broken';
 const lastStudiedColumn = 'last_studied';
 
+const totalFlashcardsCompletedColumn = 'total_flashcards_completed';
+const totalTasksCompletedColumn = 'total_tasks_completed';
+
 const nameColumn = 'name';
 const dailyGoalFlashcardsColumn = 'daily_goal_flashcards';
 const dailyGoalTasksColumn = 'daily_goal_tasks';
 
 const tasksCompletedTodayColumn = 'tasks_completed_today';
 const flashcardsCompletedTodayColumn = 'flashcards_completed_today';
-const dayStreakColumn = 'day_streak';
+const currentDayStreakColumn = 'current_day_streak';
 
 const textColumn = 'text';
 const userIdColumn = 'user_id';
@@ -35,6 +38,7 @@ const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 const flashcardSetIdColumn = 'flashcard_set_id';
 const frontTextColumn = 'front_text';
 const backTextColumn = 'back_text';
+const streakHighscoreColumn = 'streak_highscore';
 
 const displayDateColumn = 'display_date';
 const cardDifficultyColumn = 'card_difficulty';
@@ -61,7 +65,10 @@ const createUserTable = '''
     "$dailyGoalTasksColumn" INTEGER NOT NULL DEFAULT "$defaultDailyTaskGoal",
     "$flashcardsCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
     "$tasksCompletedTodayColumn" INTEGER NOT NULL DEFAULT 0,
-    "$dayStreakColumn" INTEGER NOT NULL DEFAULT 0,
+    "$currentDayStreakColumn" INTEGER NOT NULL DEFAULT 0,
+    "$streakHighscoreColumn" INTEGER NOT NULL DEFAULT 0,
+    "$totalFlashcardsCompletedColumn" INTEGER NOT NULL DEFAULT 0,
+    "$totalTasksCompletedColumn" INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$localIdColumn" AUTOINCREMENT)
   );
 ''';

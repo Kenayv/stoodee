@@ -12,6 +12,7 @@ import 'package:stoodee/pages/achievements_page.dart';
 import 'package:stoodee/pages/account_page.dart';
 import 'package:stoodee/pages/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
+import 'package:stoodee/services/achievements/achievement_tile.dart';
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/containers.dart';
@@ -313,35 +314,32 @@ final GoRouter goRouterService = GoRouter(
           ),
         ]),
     GoRoute(
-      path: '/flash_cards_reader',
-      pageBuilder: (context, state) {
-        SetContainer container = state.extra as SetContainer;
-        return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 400),
-          key: state.pageKey,
-          child: FlashCardsReader(
-            fcSet: container.getSet(),
-          ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(0, 1.0);
-            const end = Offset.zero;
-            const curve = Curves.easeOutQuint;
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        path: '/flash_cards_reader',
+        pageBuilder: (context, state) {
+          SetContainer container = state.extra as SetContainer;
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 400),
+            key: state.pageKey,
+            child: FlashCardsReader(
+              fcSet: container.getSet(),
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0, 1.0);
+              const end = Offset.zero;
+              const curve = Curves.easeOutQuint;
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-            return SlideTransition(
-                position: animation.drive(tween), child: child);
-          },
-        );
-      },
-
+              return SlideTransition(
+                  position: animation.drive(tween), child: child);
+            },
+          );
+        },
         routes: [
           GoRoute(
             path: "dialog",
-
             pageBuilder: (BuildContext context, GoRouterState state) {
-
-
               return SideSheetPage(
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
@@ -355,16 +353,15 @@ final GoRouter goRouterService = GoRouter(
                     child: child,
                   );
                 },
-                child: CustomDialog(title: '', content: '',
-
+                child: CustomDialog(
+                  title: '',
+                  content: '',
                 ),
                 barrierColor: null,
               );
             },
           ),
-        ]
-
-    ),
+        ]),
     GoRoute(
         path: '/login',
         pageBuilder: (context, state) {

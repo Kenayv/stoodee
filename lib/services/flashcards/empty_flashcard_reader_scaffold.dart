@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/router/route_functions.dart';
-import 'package:stoodee/utilities/reusables/reusable_card.dart';
+import 'package:stoodee/services/flashcards/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
 import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/globals.dart';
-import 'custom_appbar.dart';
+import '../../utilities/reusables/custom_appbar.dart';
 
 class EmptyReaderScaffold extends StatefulWidget {
   const EmptyReaderScaffold({super.key, required this.fcset});

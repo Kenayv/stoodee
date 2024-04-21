@@ -7,7 +7,7 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
-import '../services/todo_service.dart';
+import '../services/todoTasks/todo_service.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({
@@ -105,15 +105,13 @@ ListTile taskItem({
     minVerticalPadding: 10,
     splashColor: Colors.transparent,
     title: Container(
-      decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(80, 80, 80, 1.0),
-            blurRadius: 1,
-            offset: Offset(1,2),)
-        ],
-            borderRadius:BorderRadius.circular(15.0)
-      ),
+      decoration: BoxDecoration(boxShadow: const [
+        BoxShadow(
+          color: Color.fromRGBO(80, 80, 80, 1.0),
+          blurRadius: 1,
+          offset: Offset(1, 2),
+        )
+      ], borderRadius: BorderRadius.circular(15.0)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15.0),
         child: Dismissible(
