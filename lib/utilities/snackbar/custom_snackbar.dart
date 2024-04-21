@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/utilities/globals.dart';
 
 class CustomErrorSnackBar extends StatelessWidget {
   const CustomErrorSnackBar({
@@ -85,6 +86,54 @@ class CustomSuccessSnackBar extends StatelessWidget {
                     ]),
               ),
             ],
+          ))
+    ]);
+  }
+}
+
+
+
+
+
+class CustomNeutralSnackBar extends StatelessWidget {
+  const CustomNeutralSnackBar({
+    super.key,
+    required this.neutralText,
+  });
+  final String neutralText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Container(
+          padding: const EdgeInsets.all(16),
+
+          decoration: const BoxDecoration(
+              color: analogusColor,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(color: Colors.grey,offset: Offset(1,2.0))            ]
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Hey!",
+                          style: TextStyle(fontSize: 18, color: Colors.white)),
+                      Text(
+                        neutralText,
+                        style:
+                        const TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ]),
+              ),
+
+
+
+            ],
+
           ))
     ]);
   }

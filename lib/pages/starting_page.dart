@@ -19,7 +19,7 @@ class _StartingPage extends State<StartingPage> {
   void initState() {
     super.initState();
 
-
+/*
     if(!SharedPrefs().rememberHasSeenIntro){
       WidgetsBinding.instance.addPostFrameCallback((_) => goRouterToIntro(context));
       //yeah wtf does that mean, it runs a function after last frame of build is finished
@@ -35,8 +35,10 @@ class _StartingPage extends State<StartingPage> {
     }
 
 
+ */
 
 
+    WidgetsBinding.instance.addPostFrameCallback((_) => goRouterToIntro(context));
 
 
   }

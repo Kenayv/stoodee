@@ -1,11 +1,16 @@
 import 'dart:developer';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:gap/gap.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
+import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
+
+import '../introduction_assets/introduction_assets.dart';
+import '../utilities/reusables/custom_grid_view.dart';
 
 
 
@@ -114,22 +119,13 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     titleWidget: Stack(children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.35,
-                        child: const SingleChildScrollView(
-                          child: Text("ToDoPlaceHolder")
+                        child: SingleChildScrollView(
+                          child: taskListView_intro(
+                              context: context
+                          )
                         ),
                       ),
-                      Positioned(
-                          bottom: 16,
-                          right: 16,
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.12,
-                              height: MediaQuery.of(context).size.width * 0.12,
-                              child: const FloatingActionButton(
-                                  onPressed: testingFunction,
-                                  child: (Icon(
-                                    Icons.add,
-                                    color: primaryAppColor,
-                                  ))))),
+
                     ]),
                     bodyWidget: const Align(
                       alignment: Alignment.centerLeft,
@@ -162,22 +158,16 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     titleWidget: Stack(children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.35,
-                        child: const SingleChildScrollView(
-                          child: Text("FlashcardsPlaceholder")
+                        child:  SingleChildScrollView(
+                          child: CustomGridLayout(crossAxisCount: 2,
+                            items:
+                              flashcardSetListView_intro(context: context)
+
+                            ,
+
+                          )
                         ),
                       ),
-                      Positioned(
-                          bottom: 16,
-                          right: 16,
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.12,
-                              height: MediaQuery.of(context).size.width * 0.12,
-                              child: const FloatingActionButton(
-                                  onPressed: testingFunction,
-                                  child: (Icon(
-                                    Icons.add,
-                                    color: primaryAppColor,
-                                  ))))),
                     ]),
                     bodyWidget: const Align(
                       alignment: Alignment.centerLeft,
@@ -210,6 +200,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     title: 'Jeszcze chwilka i możemy zaczynać',
                     bodyWidget: Column(
                       children: [
+                        Gap(10),
                         TextField(
                           textInputAction: TextInputAction.next,
 
@@ -245,7 +236,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                           controller: taskController,
                         ),
                         TextField(
-                          textInputAction: TextInputAction.next,
+                          textInputAction: TextInputAction.done,
                           autocorrect: false,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
