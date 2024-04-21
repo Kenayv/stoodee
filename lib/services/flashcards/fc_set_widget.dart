@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stoodee/services/flashcard_service/flashcard_service.dart';
+import 'package:stoodee/services/flashcards/flashcard_service.dart';
+import 'package:stoodee/utilities/containers.dart';
+import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/dialogs/delete_fcset_dialog.dart';
-import '../../services/local_crud/local_database_service/database_flashcard_set.dart';
-import '../containers.dart';
-import '../dialogs/add_flashcard_dialog.dart';
-import '../globals.dart';
+import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 
-void tap(BuildContext context, SetContainer container) {
+void tap(
+  BuildContext context,
+  SetContainer container,
+) {
   context.go('/flash_cards_reader', extra: container);
 }
 

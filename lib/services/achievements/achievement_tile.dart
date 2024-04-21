@@ -5,8 +5,19 @@ import 'package:stoodee/services/achievements/const_achievements.dart';
 import 'package:stoodee/services/cloud_crud/cloud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/globals.dart';
+
+class AchievementTileContainer {
+  final String name;
+  final String path;
+  final String desc;
+
+  AchievementTileContainer({
+    required this.name,
+    required this.path,
+    required this.desc,
+  });
+}
 
 class AchievementTile extends StatelessWidget {
   const AchievementTile({
@@ -25,7 +36,11 @@ class AchievementTile extends StatelessWidget {
       onTap: () {
         context.go(
           "/Achievements/dialog",
-          extra: AchievementTileContainer(name: name, path: path, desc: desc),
+          extra: AchievementTileContainer(
+            name: name,
+            path: path,
+            desc: desc,
+          ),
         );
       },
       child: Container(

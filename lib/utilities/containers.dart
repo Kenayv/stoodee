@@ -15,21 +15,11 @@ class SetContainer {
   }
 }
 
-
-
-
-class AchievementTileContainer{
-
+class AchievementTileContainer {
   final String name;
   final String path;
   final String desc;
 
-
-  AchievementTileContainer({
-    required this.name,
-    required this.path,
-    required this.desc
-});
-
-
+  AchievementTileContainer(
+      {required this.name, required this.path, required this.desc});
 }
