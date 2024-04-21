@@ -64,7 +64,7 @@ class LocalDbController {
 
       final updateCount = await db.update(
         userTable,
-        {dayStreakColumn: 0},
+        {currentDayStreakColumn: 0},
         where: '$localIdColumn = ?',
         whereArgs: [user.id],
       );
@@ -74,12 +74,12 @@ class LocalDbController {
     }
 
     String resetLog =
-        "[START] RESET LOG [START]\n\nReseted(OR NOT) user's streak data from:\n[dayStreak: ${user.dayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\nto\n";
+        "[START] RESET LOG [START]\n\nReseted(OR NOT) user's streak data from:\n[dayStreak: ${user.currentDayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\nto\n";
     //reload user's data
     user = await getUser(email: user.email);
 
     resetLog +=
-        "[dayStreak: ${user.dayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\n\n with updatesCount: $___debugInt___\n\n[END] RESET LOG [END]";
+        "[dayStreak: ${user.currentDayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\n\n with updatesCount: $___debugInt___\n\n[END] RESET LOG [END]";
 
     log(resetLog);
 
@@ -121,7 +121,7 @@ class LocalDbController {
         userTable,
         {
           lastStreakBrokenColumn: getCurrentDateAsFormattedString(),
-          dayStreakColumn: user.dayStreak + 1,
+          currentDayStreakColumn: user.currentDayStreak + 1,
         },
         where: 'id = ?',
         whereArgs: [user.id],
@@ -129,7 +129,7 @@ class LocalDbController {
 
       if (updateCount != 1) throw CouldNotUpdateUser();
 
-      user.setDayStreak(user.dayStreak + 1);
+      user.setCurrentDayStreak(user.currentDayStreak + 1);
       user.setLastStreakBroken(DateTime.now());
     }
   }
@@ -267,7 +267,10 @@ class LocalDbController {
       dailyGoalTasks: defaultDailyTaskGoal,
       tasksCompletedToday: 0,
       flashcardsCompletedToday: 0,
-      dayStreak: 0,
+      currentDayStreak: 0,
+      totalFlashcardsCompleted: 0,
+      totalTasksCompleted: 0,
+      streakHighscore: 0,
     );
 
     return newUser;
@@ -987,6 +990,8 @@ class LocalDbController {
     await TodoService().reloadTasks();
     await FlashcardsService().reloadFlashcardSets();
   }
+
+  bool isNullUser(DatabaseUser user) => user.email == defaultNullUserEmail;
 
   DatabaseUser get currentUser =>
       initialized ? _currentUser! : throw DatabaseIsNotOpened();
