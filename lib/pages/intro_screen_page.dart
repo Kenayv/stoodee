@@ -155,20 +155,16 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     decoration: getPageDecoration1(),
                   ),
                   PageViewModel(
-                    titleWidget: Stack(children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.35,
-                        child:  SingleChildScrollView(
-                          child: CustomGridLayout(crossAxisCount: 2,
-                            items:
-                              flashcardSetListView_intro(context: context)
+                    titleWidget: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      child:  SingleChildScrollView(
+                        child: CustomGridLayout(crossAxisCount: 2,
+                          items:
+                            flashcardSetListView_intro(context: context),
 
-                            ,
-
-                          )
-                        ),
+                        )
                       ),
-                    ]),
+                    ),
                     bodyWidget: const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
