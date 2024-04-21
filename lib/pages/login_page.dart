@@ -179,7 +179,7 @@ StoodeeButton buildSignInButton({
           password,
         );
 
-        await SharedPrefs().setRememberLogin(value: rememberBool);
+        await SharedPrefs().setRememberLogin(value: remember);
 
         if (AuthService.firebase().currentUser == null) {
           throw UserNotLoggedInAuthException();
