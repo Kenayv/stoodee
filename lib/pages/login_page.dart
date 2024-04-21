@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/pages_widgets/login_widgets.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPage();
@@ -48,10 +49,34 @@ class _LoginPage extends State<LoginPage> {
               const Gap(25),
               buildWelcomeAnimation(),
               const Gap(10),
-              const Text("Log-in s", style: TextStyle(color: Colors.grey)),
+              const Text("Log-in", style: TextStyle(color: Colors.grey)),
               buildEmailInput(emailController),
               buildPasswordInput(passwordController),
-              buildRememberMeCheckbox(rememberBool),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text("Remember me",
+                      style: TextStyle(color: Colors.grey.shade400)),
+                  Checkbox(
+                    value: rememberBool,
+                    onChanged: (newValue) {
+                      setState(() {
+                        rememberBool = newValue!;
+                      });
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    side: MaterialStateBorderSide.resolveWith(
+                      (states) => const BorderSide(
+                        width: 2.0,
+                        color: primaryAppColor,
+                      ),
+                    ),
+                  ),
+                  const Gap(20),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

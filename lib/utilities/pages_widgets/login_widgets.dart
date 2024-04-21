@@ -93,31 +93,46 @@ Padding buildPasswordInput(TextEditingController passwordController) {
   );
 }
 
-Row buildRememberMeCheckbox(bool rememberBool) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: [
-      Text("Remember me", style: TextStyle(color: Colors.grey.shade400)),
-      StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-        return Checkbox(
-          value: rememberBool,
-          onChanged: (newValue) async {
+class RememberMeCheckbox extends StatefulWidget {
+  const RememberMeCheckbox({super.key});
+
+  @override
+  State<RememberMeCheckbox> createState() => _RememberMeCheckboxState();
+}
+
+class _RememberMeCheckboxState extends State<RememberMeCheckbox> {
+  bool rememberBool = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text("Remember me", style: TextStyle(color: Colors.grey.shade400)),
+        Checkbox(
+          value: widget.rememberBool,
+          onChanged: (newValue) {
             setState(() {
-              rememberBool = newValue!;
+              widget.rememberBool = newValue!;
             });
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4.0),
           ),
           side: MaterialStateBorderSide.resolveWith(
-            (states) => const BorderSide(width: 2.0, color: primaryAppColor),
+            (states) => const BorderSide(
+              width: 2.0,
+              color: primaryAppColor,
+            ),
           ),
-        );
-      }),
-      const Gap(20),
-    ],
-  );
+        ),
+        const Gap(20),
+      ],
+    );
+  }
 }
+
+RememberMeCheckbox a = const RememberMeCheckbox();
 
 Future<void> _signUp(String email, String password) =>
     AuthService.firebase().createUser(email: email, password: password);
