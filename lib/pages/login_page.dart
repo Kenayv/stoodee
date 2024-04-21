@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/globals.dart';
-import 'package:stoodee/utilities/pages_widgets/login_widgets.dart';
+import 'package:stoodee/utilities/page_utilities/login_widgets.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

@@ -4,7 +4,6 @@ import 'dart:developer';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
@@ -92,47 +91,6 @@ Padding buildPasswordInput(TextEditingController passwordController) {
     ),
   );
 }
-
-class RememberMeCheckbox extends StatefulWidget {
-  const RememberMeCheckbox({super.key});
-
-  @override
-  State<RememberMeCheckbox> createState() => _RememberMeCheckboxState();
-}
-
-class _RememberMeCheckboxState extends State<RememberMeCheckbox> {
-  bool rememberBool = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text("Remember me", style: TextStyle(color: Colors.grey.shade400)),
-        Checkbox(
-          value: widget.rememberBool,
-          onChanged: (newValue) {
-            setState(() {
-              widget.rememberBool = newValue!;
-            });
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          side: MaterialStateBorderSide.resolveWith(
-            (states) => const BorderSide(
-              width: 2.0,
-              color: primaryAppColor,
-            ),
-          ),
-        ),
-        const Gap(20),
-      ],
-    );
-  }
-}
-
-RememberMeCheckbox a = const RememberMeCheckbox();
 
 Future<void> _signUp(String email, String password) =>
     AuthService.firebase().createUser(email: email, password: password);

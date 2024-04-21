@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:stoodee/utilities/pages_widgets/flashcards/fc_set_widget.dart';
+import 'package:stoodee/utilities/page_utilities/flashcards/fc_set_widget.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';

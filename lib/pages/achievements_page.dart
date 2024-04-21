@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/utilities/pages_widgets/achievement_widgets.dart';
+import 'package:stoodee/utilities/page_utilities/achievement_widgets.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 
 class AchievementsPage extends StatefulWidget {

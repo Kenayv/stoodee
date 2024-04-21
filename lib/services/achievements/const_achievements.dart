@@ -1,4 +1,4 @@
-import 'package:stoodee/utilities/pages_widgets/achievement_widgets.dart';
+import 'package:stoodee/utilities/page_utilities/achievement_widgets.dart';
 
 const woodTaskAch = AchievementTile(
   name: "WoodTask",
