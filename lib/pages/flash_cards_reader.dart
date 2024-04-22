@@ -7,10 +7,10 @@ import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/router/route_functions.dart';
+import 'package:stoodee/utilities/page_utilities/flashcards/fc_reader_widget.dart';
 
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/globals.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:stoodee/utilities/page_utilities/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 
@@ -50,18 +50,6 @@ class _FlashCardsReader extends State<FlashCardsReader>
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  double isNotZero(int completed, int toBeCompleted) {
-    if (toBeCompleted == 0) {
-      return 0;
-    } else if (completed / toBeCompleted > 1) {
-      return 1;
-    } else if (completed / toBeCompleted < 0) {
-      return 0;
-    } else {
-      return completed / toBeCompleted;
-    }
   }
 
   void sendToFlashCards() {
@@ -236,8 +224,6 @@ class _FlashCardsReader extends State<FlashCardsReader>
                     FlashcardsService().getRandFcFromList(fcList: flashcards);
 
                 final DatabaseFlashcardSet currentSet = widget.fcSet;
-                double indicatorValue =
-                    isNotZero(completed, currentSet.pairCount);
 
                 return Scaffold(
                   appBar: CustomAppBar(
@@ -259,41 +245,14 @@ class _FlashCardsReader extends State<FlashCardsReader>
                               padding: const EdgeInsets.all(8),
                               child: Align(
                                 alignment: Alignment.bottomLeft,
-                                child: StoodeeButton(
+                                child: buildReturnButton(
                                   onPressed: sendToFlashCards,
-                                  child: const Icon(Icons.arrow_back,
-                                      color: Colors.white),
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 15),
-                              child: Text("$completed/$totalFlashcardsCount"),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                child: LinearPercentIndicator(
-                                  backgroundColor:
-                                      primaryAppColor.withOpacity(0.08),
-                                  percent: indicatorValue,
-                                  linearGradient: const LinearGradient(
-                                    colors: [
-                                      primaryAppColor,
-                                      secondaryAppColor
-                                    ],
-                                  ),
-                                  animation: true,
-                                  lineHeight: 20,
-                                  restartAnimation: false,
-                                  animationDuration: 150,
-                                  curve: Curves.easeOut,
-                                  barRadius: const Radius.circular(10),
-                                  animateFromLastPercent: true,
-                                ),
-                              ),
+                            buildProgressBar(
+                              completed: completed,
+                              totalCount: totalFlashcardsCount,
                             ),
                             const SizedBox(
                               height: 20,

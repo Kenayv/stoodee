@@ -271,6 +271,8 @@ class LocalDbController {
       totalFlashcardsCompleted: 0,
       totalTasksCompleted: 0,
       streakHighscore: 0,
+      totalIncompleteTasks: 0,
+      flashcardRushHighscore: 0,
     );
 
     return newUser;

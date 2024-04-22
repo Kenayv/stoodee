@@ -16,6 +16,8 @@ class DatabaseUser {
   late int _flashcardsCompletedToday;
   late int _currentDayStreak;
   late int _streakHighScore;
+  late int _flashcardRushHighscore;
+  late int _totalIncompleteTasks;
 
   DatabaseUser({
     required this.id,
@@ -33,6 +35,8 @@ class DatabaseUser {
     required int totalFlashcardsCompleted,
     required int totalTasksCompleted,
     required int streakHighscore,
+    required int flashcardRushHighscore,
+    required int totalIncompleteTasks,
   })  : _cloudId = cloudId,
         _name = name,
         _lastSynced = lastSynced,
@@ -45,7 +49,9 @@ class DatabaseUser {
         _currentDayStreak = currentDayStreak,
         _totalFlashcardsCompleted = totalFlashcardsCompleted,
         _totalTasksCompleted = totalTasksCompleted,
-        _streakHighScore = streakHighscore;
+        _streakHighScore = streakHighscore,
+        _flashcardRushHighscore = flashcardRushHighscore,
+        _totalIncompleteTasks = totalIncompleteTasks;
 
   DatabaseUser.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
@@ -63,7 +69,9 @@ class DatabaseUser {
         _currentDayStreak = map[currentDayStreakColumn] as int,
         _totalFlashcardsCompleted = map[totalFlashcardsCompletedColumn] as int,
         _totalTasksCompleted = map[totalTasksCompletedColumn] as int,
-        _streakHighScore = map[streakHighscoreColumn] as int;
+        _streakHighScore = map[streakHighscoreColumn] as int,
+        _totalIncompleteTasks = map[totalIncompleteTasksColumn] as int,
+        _flashcardRushHighscore = map[flashcardRushHighscoreColumn] as int;
 
   String get name => _name;
   DateTime get lastSynced => _lastSynced;
@@ -78,6 +86,8 @@ class DatabaseUser {
   int get totalTasksCompleted => _totalTasksCompleted;
   int get totalFlashcardsCompleted => _totalFlashcardsCompleted;
   int get streakHighscore => _streakHighScore;
+  int get flashcardRushHighscore => _flashcardRushHighscore;
+  int get totalIncompleteTasks => _totalIncompleteTasks;
 
   void setLastSynced(DateTime date) => _lastSynced = date;
 
@@ -97,7 +107,7 @@ class DatabaseUser {
 
   @override
   String toString() =>
-      'UserID = [$id],\n   cloudId = [$cloudId],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$currentDayStreak]\n totalTasksCompleted = [$_totalTasksCompleted]\n   TotalFlashcardsCompleted = [$_totalFlashcardsCompleted]\n   streakHighScore = [$_streakHighScore]\n';
+      'UserID = [$id],\n   cloudId = [$cloudId],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$currentDayStreak]\n totalTasksCompleted = [$_totalTasksCompleted]\n   TotalFlashcardsCompleted = [$_totalFlashcardsCompleted]\n   streakHighScore = [$_streakHighScore]\n    incomplete tasks = [$_totalIncompleteTasks]\n   flashcardRush highscore = [$_flashcardRushHighscore]\n';
 
   Map<String, dynamic> toJson() => {
         localIdColumn: id,

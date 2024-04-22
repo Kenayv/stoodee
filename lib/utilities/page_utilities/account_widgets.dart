@@ -34,6 +34,29 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
 }
 
 Container buildStatsContainer(DatabaseUser user) {
+  const String defaultStatString = 'Log-in to see!';
+
+  String currentStreak = defaultStatString;
+  String completedTasks = defaultStatString;
+  String incompleteTasks = defaultStatString;
+  String taskCompletion = defaultStatString;
+  String fcRushHighscore = defaultStatString;
+  String completedFlashcards = defaultStatString;
+  String longestStreak = defaultStatString;
+
+  if (!LocalDbController().isNullUser(user)) {
+    currentStreak = user.currentDayStreak.toString();
+    completedTasks = user.totalTasksCompleted.toString();
+    incompleteTasks = user.totalIncompleteTasks.toString();
+    taskCompletion = (user.totalTasksCompleted /
+            (user.totalTasksCompleted + user.totalIncompleteTasks) *
+            100)
+        .toString();
+    fcRushHighscore = user.flashcardRushHighscore.toString();
+    completedFlashcards = user.totalFlashcardsCompleted.toString();
+    longestStreak = user.streakHighscore.toString();
+  }
+
   return Container(
     padding: const EdgeInsets.all(5),
     width: double.infinity,
@@ -48,13 +71,13 @@ Container buildStatsContainer(DatabaseUser user) {
         ]),
     child: Column(
       children: [
-        buildStatItem('Obecny Streak', "!placeholder!"),
-        buildStatItem('Ukończone zadania', "!placeholder!"),
-        buildStatItem('Nieukończone zadania', "!placeholder!"),
-        buildStatItem('Wykonanych zadań', "!placeholder!"),
-        buildStatItem('Rekord Fiszki Rush', "!placeholder!"),
-        buildStatItem('Ukończone Fiszki', "!placeholder!"),
-        buildStatItem('Najdłuższy Streak', "!placeholder!"),
+        buildStatItem('Current streak', currentStreak),
+        buildStatItem('Completed tasks', completedTasks),
+        buildStatItem('Incomplete tasks', incompleteTasks),
+        buildStatItem('Task completion', taskCompletion),
+        buildStatItem('Flashcards Rush highscore', fcRushHighscore),
+        buildStatItem('Completed flashcards', completedFlashcards),
+        buildStatItem('Longest streak', longestStreak),
       ],
     ),
   );

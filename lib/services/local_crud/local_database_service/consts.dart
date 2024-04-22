@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug22_tasks.db';
+const dbName = 'debug23_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -38,7 +38,10 @@ const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 const flashcardSetIdColumn = 'flashcard_set_id';
 const frontTextColumn = 'front_text';
 const backTextColumn = 'back_text';
+
 const streakHighscoreColumn = 'streak_highscore';
+const flashcardRushHighscoreColumn = 'flashcard_rush_highscore';
+const totalIncompleteTasksColumn = 'total_incomplete_tasks';
 
 const displayDateColumn = 'display_date';
 const cardDifficultyColumn = 'card_difficulty';
@@ -69,6 +72,8 @@ const createUserTable = '''
     "$streakHighscoreColumn" INTEGER NOT NULL DEFAULT 0,
     "$totalFlashcardsCompletedColumn" INTEGER NOT NULL DEFAULT 0,
     "$totalTasksCompletedColumn" INTEGER NOT NULL DEFAULT 0,
+    "$totalIncompleteTasksColumn" INTEGER NOT NULL DEFAULT 0,
+    "$flashcardRushHighscoreColumn INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$localIdColumn" AUTOINCREMENT)
   );
 ''';
