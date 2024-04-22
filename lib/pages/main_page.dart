@@ -1,6 +1,7 @@
 import 'package:stoodee/utilities/page_utilities/mainpage_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -26,6 +27,16 @@ class _MainPage extends State<MainPage> {
             const Text("Did you know...", style: TextStyle(color: Colors.grey)),
             const Gap(5),
             buildFunFactBox(context: context),
+            Gap(20),
+
+            buildGaugeRow(),
+
+
+
+
+
+
+
           ],
         ),
       ),
