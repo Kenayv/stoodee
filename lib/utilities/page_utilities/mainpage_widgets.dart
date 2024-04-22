@@ -1,5 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:stoodee/stoodee_icons_icons.dart';
+import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/utilities/reusables/stoodee_gauge.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 const Duration defaultWriterSpeed = Duration(milliseconds: 80);
 
@@ -181,4 +185,30 @@ Container buildFunFactBox({
       ),
     ),
   );
+}
+
+Row buildGaugeRow() {
+  Row row = Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Container(
+          width: 150,
+          height: 250,
+          child: StoodeeGauge(5, 10,
+              Icon(StoodeeIcons.tasks, color: primaryAppColor, size: 30))),
+      Container(
+          width: 150,
+          height: 250,
+          child: StoodeeGauge(
+              1,
+              3,
+              Icon(
+                StoodeeIcons.flashcards,
+                color: primaryAppColor,
+                size: 30,
+              ))),
+    ],
+  );
+
+  return row;
 }
