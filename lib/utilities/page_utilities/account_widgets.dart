@@ -99,7 +99,7 @@ Padding buildStatItem(String title, String value) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 1.0),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           "$title:",
