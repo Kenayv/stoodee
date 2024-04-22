@@ -9,12 +9,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();
 
-  debug___Print___info(
-    sharedprefs: true,
-    authService: true,
-    localDbUser: true,
-  );
-
   runApp(const MyApp());
 }
 
