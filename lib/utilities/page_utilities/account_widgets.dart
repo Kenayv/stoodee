@@ -34,7 +34,7 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
 }
 
 Container buildStatsContainer(DatabaseUser user) {
-  const String defaultStatString = 'Log-in to see!';
+  const String defaultStatString = 'Log-in to see stats!';
 
   String currentStreak = defaultStatString;
   String completedTasks = defaultStatString;
@@ -48,10 +48,16 @@ Container buildStatsContainer(DatabaseUser user) {
     currentStreak = user.currentDayStreak.toString();
     completedTasks = user.totalTasksCompleted.toString();
     incompleteTasks = user.totalIncompleteTasks.toString();
-    taskCompletion = (user.totalTasksCompleted /
-            (user.totalTasksCompleted + user.totalIncompleteTasks) *
-            100)
-        .toString();
+
+    if (user.totalIncompleteTasks == 0) {
+      taskCompletion = "0.00";
+    } else {
+      taskCompletion = (user.totalTasksCompleted /
+              (user.totalTasksCompleted + user.totalIncompleteTasks) *
+              100)
+          .toDouble()
+          .toString();
+    }
     fcRushHighscore = user.flashcardRushHighscore.toString();
     completedFlashcards = user.totalFlashcardsCompleted.toString();
     longestStreak = user.streakHighscore.toString();
@@ -71,13 +77,19 @@ Container buildStatsContainer(DatabaseUser user) {
         ]),
     child: Column(
       children: [
-        buildStatItem('Current streak', currentStreak),
+        buildStatItem('Completed flashcards', completedFlashcards),
+        buildStatItem('Flashcards Rush highscore', fcRushHighscore),
         buildStatItem('Completed tasks', completedTasks),
         buildStatItem('Incomplete tasks', incompleteTasks),
-        buildStatItem('Task completion', taskCompletion),
-        buildStatItem('Flashcards Rush highscore', fcRushHighscore),
-        buildStatItem('Completed flashcards', completedFlashcards),
-        buildStatItem('Longest streak', longestStreak),
+        buildStatItem('Task completion', '$taskCompletion%'),
+        buildStatItem(
+          'Current streak',
+          '$currentStreak ${currentStreak == '1' ? 'day' : 'days'}',
+        ),
+        buildStatItem(
+          'Longest streak',
+          '$longestStreak ${longestStreak == '1' ? 'dayy' : 'days'}',
+        ),
       ],
     ),
   );

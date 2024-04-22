@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug23_tasks.db';
+const dbName = 'debug25_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -73,7 +73,7 @@ const createUserTable = '''
     "$totalFlashcardsCompletedColumn" INTEGER NOT NULL DEFAULT 0,
     "$totalTasksCompletedColumn" INTEGER NOT NULL DEFAULT 0,
     "$totalIncompleteTasksColumn" INTEGER NOT NULL DEFAULT 0,
-    "$flashcardRushHighscoreColumn INTEGER NOT NULL DEFAULT 0,
+    "$flashcardRushHighscoreColumn" INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$localIdColumn" AUTOINCREMENT)
   );
 ''';
