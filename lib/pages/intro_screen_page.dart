@@ -6,10 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
-<<<<<<< HEAD
-import 'package:stoodee/utilities/page_utilities/introduction_assets/introduction_assets.dart';
-=======
->>>>>>> 9d6079ead332fb01765a26298d34db194152e581
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import 'package:stoodee/utilities/page_utilities/introduction_assets/flashcard_widget.dart';
 import 'package:stoodee/utilities/page_utilities/introduction_assets/introduction_assets.dart';
