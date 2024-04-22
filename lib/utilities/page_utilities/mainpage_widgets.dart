@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/stoodee_gauge.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 const Duration defaultWriterSpeed = Duration(milliseconds: 80);
 
@@ -167,6 +166,7 @@ Container buildFunFactBox({
   funFacts.shuffle();
 
   return Container(
+    height: MediaQuery.of(context).size.height*0.1,
     padding: const EdgeInsets.all(10),
     width: MediaQuery.of(context).size.width * 0.9,
     decoration: BoxDecoration(
@@ -178,35 +178,49 @@ Container buildFunFactBox({
             offset: Offset(1, 1),
           )
         ]),
-    child: Center(
-      child: AnimatedTextKit(
-        repeatForever: true,
-        animatedTexts: funFacts,
+    child: SingleChildScrollView(
+      child: Center(
+        child: AnimatedTextKit(
+          repeatForever: true,
+          animatedTexts: funFacts,
+        ),
       ),
     ),
   );
 }
 
-Row buildGaugeRow() {
+
+
+
+
+Row buildGaugeRow(BuildContext context) {
+  double gaugeContainerWidth= MediaQuery.of(context).size.width*0.45;
+  double gaugeContainerHeight=MediaQuery.of(context).size.height*0.35;
   Row row = Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       Container(
-          width: 150,
-          height: 250,
+          width: gaugeContainerWidth,
+          height: gaugeContainerHeight,
           child: StoodeeGauge(5, 10,
-              Icon(StoodeeIcons.tasks, color: primaryAppColor, size: 30))),
+              const Icon(StoodeeIcons.tasks, color: primaryAppColor, size: 38),
+            gaugeContainerHeight
+          )
+
+      ),
       Container(
-          width: 150,
-          height: 250,
+          width: gaugeContainerWidth,
+          height: gaugeContainerHeight,
           child: StoodeeGauge(
-              1,
-              3,
-              Icon(
+              50,
+              205,
+              const Icon(
                 StoodeeIcons.flashcards,
                 color: primaryAppColor,
-                size: 30,
-              ))),
+                size: 38,
+              ),gaugeContainerHeight)
+
+      ),
     ],
   );
 

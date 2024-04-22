@@ -1,7 +1,6 @@
 import 'package:stoodee/utilities/page_utilities/mainpage_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -15,29 +14,29 @@ class _MainPage extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Gap(MediaQuery.of(context).size.width * 0.05),
-            const Text(
-              "Stoodee",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-            ),
-            const Gap(20),
-            const Text("Did you know...", style: TextStyle(color: Colors.grey)),
-            const Gap(5),
-            buildFunFactBox(context: context),
-            Gap(20),
-
-            buildGaugeRow(),
-
-
-
-
-
-
-
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Gap(MediaQuery.of(context).size.width * 0.05),
+              const Text(
+                "Stoodee",
+                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              ),
+              const Gap(40),
+              const Text("Did you know...", style: TextStyle(color: Colors.grey)),
+              const Gap(5),
+              buildFunFactBox(context: context),
+              const Gap(30),
+              const Text("Dzisiaj zrobione: ",style:TextStyle(fontWeight: FontWeight.bold,fontSize: 30)),
+              const Gap(20),
+              buildGaugeRow(context),
+          
+          
+          
+          
+            ],
+          ),
         ),
       ),
     );
