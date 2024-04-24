@@ -16,7 +16,7 @@ class FlashcardsService {
   FlashcardsService._sharedInstance();
   //FlashcardsService should be only used via singleton //
 
-  DatabaseFlashcard getRandFcFromList({
+  DatabaseFlashcard getRandFromList({
     required List<DatabaseFlashcard> fcList,
   }) {
     if (!_initialized) throw FcServiceNotInitialized();

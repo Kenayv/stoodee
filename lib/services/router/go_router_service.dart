@@ -321,7 +321,7 @@ final GoRouter goRouterService = GoRouter(
             transitionDuration: const Duration(milliseconds: 400),
             key: state.pageKey,
             child: FlashCardsReader(
-              fcSet: container.getSet(),
+              flashcardSet: container.getSet(),
             ),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {

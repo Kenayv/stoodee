@@ -3,7 +3,6 @@ import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/router/go_router_service.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
-import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
