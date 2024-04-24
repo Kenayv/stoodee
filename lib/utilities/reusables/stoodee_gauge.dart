@@ -5,41 +5,39 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter/material.dart';
 
-double truncateToDecimalPlaces(num value, int fractionalDigits) => (value * pow(10,
-    fractionalDigits)).truncate() / pow(10, fractionalDigits);
+double truncateToDecimalPlaces(num value, int fractionalDigits) =>
+    (value * pow(10, fractionalDigits)).truncate() / pow(10, fractionalDigits);
 
-bool isNotMaxedOut(int value,int max){
-  if(value/max!=1){
+bool isNotMaxedOut(int value, int max) {
+  if (value / max != 1) {
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
 
-
-Column StoodeeGauge(int value, int max,Icon titleIcon,double containerHeight){
-
-
+Column stoodeeGauge({
+  required int value,
+  required int max,
+  required Icon titleIcon,
+  required double containerHeight,
+}) {
   //math
-  double degree=180*(value/max);
-  double percent=value/max;
-  double displaypercent=truncateToDecimalPlaces(percent*100, 2);
+  double degree = 180 * (value / max);
+  double percent = value / max;
+  double displaypercent = truncateToDecimalPlaces(percent * 100, 2);
   //ewwwww
   dart_dev.log("degree: $degree");
 
   return Column(
     children: [
       Container(
-        height:containerHeight*0.4,
+        height: containerHeight * 0.4,
         child: titleIcon,
       ),
-
-
       Container(
-        height:containerHeight*0.6,
+        height: containerHeight * 0.6,
         child: SfRadialGauge(
-
           enableLoadingAnimation: true,
           axes: <RadialAxis>[
             RadialAxis(
@@ -51,32 +49,30 @@ Column StoodeeGauge(int value, int max,Icon titleIcon,double containerHeight){
                 maximum: 180,
                 axisLineStyle: const AxisLineStyle(
                     cornerStyle: CornerStyle.startCurve, thickness: 10),
-
                 annotations: <GaugeAnnotation>[
                   GaugeAnnotation(
                       angle: 90,
-                      widget: Text("$displaypercent%",style: const TextStyle(fontWeight: FontWeight.bold),)
-
-                  ),
+                      widget: Text(
+                        "$displaypercent%",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      )),
                   const GaugeAnnotation(
                     angle: 180,
                     positionFactor: 1.2,
-                    widget:
-                    Text('0', style: TextStyle()),
+                    widget: Text('0', style: TextStyle()),
                   ),
                   GaugeAnnotation(
-                    angle: 180+degree,
+                    angle: 180 + degree,
                     positionFactor: 1.3,
-                    widget:
-                    Text('$value', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    widget: Text('$value',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
-                  if(isNotMaxedOut(value,max))   GaugeAnnotation(
-                    angle: 0,
-                    positionFactor: 1.25,
-                    widget: Text('$max',
-                        style: const TextStyle()),
-                  ),
-
+                  if (isNotMaxedOut(value, max))
+                    GaugeAnnotation(
+                      angle: 0,
+                      positionFactor: 1.25,
+                      widget: Text('$max', style: const TextStyle()),
+                    ),
                 ],
                 pointers: <GaugePointer>[
                   RangePointer(
@@ -86,18 +82,11 @@ Column StoodeeGauge(int value, int max,Icon titleIcon,double containerHeight){
                     cornerStyle: CornerStyle.bothCurve,
                     color: primaryAppColor,
                     //maybe gradient
-
                   ),
-
-
                 ]),
           ],
         ),
       ),
     ],
   );
-
-
-
-
 }

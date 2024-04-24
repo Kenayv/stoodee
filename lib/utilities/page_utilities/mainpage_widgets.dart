@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/stoodee_gauge.dart';
@@ -166,7 +167,7 @@ Container buildFunFactBox({
   funFacts.shuffle();
 
   return Container(
-    height: MediaQuery.of(context).size.height*0.1,
+    height: MediaQuery.of(context).size.height * 0.1,
     padding: const EdgeInsets.all(10),
     width: MediaQuery.of(context).size.width * 0.9,
     decoration: BoxDecoration(
@@ -189,37 +190,48 @@ Container buildFunFactBox({
   );
 }
 
+Row buildGaugeRow(BuildContext context, DatabaseUser user) {
+  double gaugeContainerWidth = MediaQuery.of(context).size.width * 0.45;
+  double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.35;
 
+  //if user has exceeded dailyGoal, assign the daily goal value
+  int tasksGaugeValue = user.tasksCompletedToday > user.dailyGoalTasks
+      ? user.dailyGoalTasks
+      : user.tasksCompletedToday;
 
+  //if user has exceeded dailyGoal, assign the daily goal value
+  int flashcardsGaugeValue =
+      user.flashcardsCompletedToday > user.dailyGoalFlashcards
+          ? user.dailyGoalFlashcards
+          : user.flashcardsCompletedToday;
 
-
-Row buildGaugeRow(BuildContext context) {
-  double gaugeContainerWidth= MediaQuery.of(context).size.width*0.45;
-  double gaugeContainerHeight=MediaQuery.of(context).size.height*0.35;
   Row row = Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      Container(
-          width: gaugeContainerWidth,
-          height: gaugeContainerHeight,
-          child: StoodeeGauge(5, 10,
+      SizedBox(
+        width: gaugeContainerWidth,
+        height: gaugeContainerHeight,
+        child: stoodeeGauge(
+          value: tasksGaugeValue,
+          max: user.dailyGoalTasks,
+          titleIcon:
               const Icon(StoodeeIcons.tasks, color: primaryAppColor, size: 38),
-            gaugeContainerHeight
-          )
-
+          containerHeight: gaugeContainerHeight,
+        ),
       ),
-      Container(
-          width: gaugeContainerWidth,
-          height: gaugeContainerHeight,
-          child: StoodeeGauge(
-              50,
-              205,
-              const Icon(
-                StoodeeIcons.flashcards,
-                color: primaryAppColor,
-                size: 38,
-              ),gaugeContainerHeight)
-
+      SizedBox(
+        width: gaugeContainerWidth,
+        height: gaugeContainerHeight,
+        child: stoodeeGauge(
+          value: flashcardsGaugeValue,
+          max: user.dailyGoalFlashcards,
+          titleIcon: const Icon(
+            StoodeeIcons.flashcards,
+            color: primaryAppColor,
+            size: 38,
+          ),
+          containerHeight: gaugeContainerHeight,
+        ),
       ),
     ],
   );
