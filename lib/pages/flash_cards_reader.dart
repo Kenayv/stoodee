@@ -46,8 +46,8 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     super.dispose();
   }
 
-  void navigateToFlashCards(BuildContext context) {
-    goRouterToFlashCards(context, "l");
+  void navigateToMain(BuildContext context) {
+    goRouterToMain(context, "l");
   }
 
   int _completedCount = 0;
@@ -71,7 +71,9 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
 
                 if (totalFcsCount != 0 && _completedCount == totalFcsCount) {
                   _handleSetDone(context);
-                  return Container(); //Black scrreen jest tu dlatego, że najpierw się renderuje empty scaffold, a później handle setDone nawiguje do
+                  return Container(
+                    color: const Color.fromRGBO(255, 255, 255, 1),
+                  );
                 } else {
                   final fc = FlashcardsService().getRandFromList(fcList: fcs);
 
@@ -97,7 +99,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
 
   void _handleSetDone(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      navigateToFlashCards(context);
+      navigateToMain(context);
     });
   }
 
@@ -214,7 +216,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
       padding: const EdgeInsets.all(8),
       child: Align(
         alignment: Alignment.bottomLeft,
-        child: buildReturnButton(onPressed: () => navigateToFlashCards),
+        child: buildReturnButton(onPressed: () => navigateToMain(context)),
       ),
     );
   }
