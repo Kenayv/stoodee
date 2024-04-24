@@ -318,5 +318,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
       fc: currentFlashcard,
       newDifficulty: currentFlashcard.cardDifficulty + difficultyChange,
     );
+
+    await FlashcardsService().incrFcsCompleted();
   }
 }

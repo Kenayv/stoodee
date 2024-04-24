@@ -49,8 +49,10 @@ Container buildStatsContainer(DatabaseUser user) {
     completedTasks = user.totalTasksCompleted.toString();
     incompleteTasks = user.totalIncompleteTasks.toString();
 
-    if (user.totalIncompleteTasks == 0) {
+    if (user.totalTasksCompleted == 0) {
       taskCompletion = "0.00";
+    } else if (user.totalIncompleteTasks == 0) {
+      taskCompletion = "100.00";
     } else {
       taskCompletion = (user.totalTasksCompleted /
               (user.totalTasksCompleted + user.totalIncompleteTasks) *

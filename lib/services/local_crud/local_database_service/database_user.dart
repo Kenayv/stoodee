@@ -99,6 +99,11 @@ class DatabaseUser {
   void setCurrentDayStreak(int streak) => _currentDayStreak = streak;
   void setStreakHighscore(int streak) => _streakHighScore = streak;
 
+  void setTotalFcsCompleted(int newCount) =>
+      _totalFlashcardsCompleted = newCount;
+
+  void setTotalTasksCompleted(int newCount) => _totalTasksCompleted = newCount;
+
   void setFcCompletedToday(int completed) =>
       _flashcardsCompletedToday = completed;
 

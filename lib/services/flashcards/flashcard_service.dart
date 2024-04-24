@@ -27,9 +27,9 @@ class FlashcardsService {
     return fcList[randIndex];
   }
 
-  Future<void> incrFcsCompletedToday() async {
+  Future<void> incrFcsCompleted() async {
     final user = LocalDbController().currentUser;
-    await LocalDbController().incrFcsCompletedToday(
+    await LocalDbController().incrFcsCompleted(
       user: user,
     );
   }
