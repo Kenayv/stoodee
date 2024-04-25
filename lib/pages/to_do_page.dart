@@ -19,6 +19,12 @@ class _ToDoPage extends State<ToDoPage> {
     setState(() {});
   }
 
+  Future<void> dismissTask(DatabaseTask task) async {
+    await TodoService().removeTask(task);
+    await TodoService().incrIncompleteTasks();
+    setState(() {});
+  }
+
   Future<void> addTask() async {
     await showAddTaskDialog(context: context);
     setState(() {});
@@ -47,6 +53,7 @@ class _ToDoPage extends State<ToDoPage> {
                       taskListView(
                         context: context,
                         tasks: tasks,
+                        onCompleted: dismissTask,
                         onDismissed: completeTask,
                       ),
                       const Gap(5),

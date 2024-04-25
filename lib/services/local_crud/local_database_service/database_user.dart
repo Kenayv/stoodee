@@ -104,6 +104,9 @@ class DatabaseUser {
 
   void setTotalTasksCompleted(int newCount) => _totalTasksCompleted = newCount;
 
+  void setTotalIncompleteTasks(int newCount) =>
+      _totalIncompleteTasks = newCount;
+
   void setFcCompletedToday(int completed) =>
       _flashcardsCompletedToday = completed;
 

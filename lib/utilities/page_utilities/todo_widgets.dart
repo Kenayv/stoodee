@@ -8,6 +8,7 @@ import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 ListView taskListView({
   required BuildContext context,
   required List<DatabaseTask> tasks,
+  required Function onCompleted,
   required Function onDismissed,
 }) {
   return ListView.builder(
@@ -16,9 +17,12 @@ ListView taskListView({
     itemCount: tasks.length,
     itemBuilder: (context, index) {
       return taskItem(
-        text: tasks[index].text,
+        task: tasks[index],
         onDismissed: () async {
           await onDismissed(tasks[index]);
+        },
+        onCompleted: () async {
+          await onCompleted(tasks[index]);
         },
       );
     },
@@ -26,8 +30,9 @@ ListView taskListView({
 }
 
 ListTile taskItem({
-  required String text,
+  required DatabaseTask task,
   required Function onDismissed,
+  required Function onCompleted,
 }) {
   return ListTile(
     contentPadding: const EdgeInsets.symmetric(horizontal: 18),
@@ -70,8 +75,14 @@ ListTile taskItem({
               size: 30,
             ),
           ),
-          onDismissed: (_) {
-            onDismissed();
+          onDismissed: (direction) {
+            if (direction == DismissDirection.startToEnd) {
+              // Swiped from left to right
+              onDismissed();
+            } else if (direction == DismissDirection.endToStart) {
+              // Swiped from right to left
+              onCompleted();
+            }
           },
           child: Container(
             decoration: const BoxDecoration(
@@ -82,7 +93,7 @@ ListTile taskItem({
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  text,
+                  task.text,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -96,10 +107,10 @@ ListTile taskItem({
       ),
     ),
     onTap: () {
-      log("tapped on task : $text");
+      log("tapped on task : ${task.text}");
     },
     onLongPress: () {
-      log("longpressed on task : $text");
+      log("longpressed on task : ${task.text}");
     },
   );
 }

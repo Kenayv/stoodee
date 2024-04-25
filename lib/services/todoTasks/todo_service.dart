@@ -79,4 +79,10 @@ class TodoService {
       user: LocalDbController().currentUser,
     );
   }
+
+  Future<void> incrIncompleteTasks() async {
+    await LocalDbController().incrIncompleteTasks(
+      user: LocalDbController().currentUser,
+    );
+  }
 }

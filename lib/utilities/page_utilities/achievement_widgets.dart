@@ -85,7 +85,7 @@ List<AchievementTile> getUserAchievementTiles(DatabaseUser user) {
   if (LocalDbController().isNullUser(user)) throw NullUserException();
 
   final totaluserTasks = user.totalTasksCompleted;
-  final totaluserFlashcards = user.totalTasksCompleted;
+  final totaluserFlashcards = user.totalFlashcardsCompleted;
   final userStreakHighscore = user.streakHighscore;
 
   final List<AchievementTile> userAchivs = [];

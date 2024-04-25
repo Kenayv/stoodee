@@ -59,6 +59,17 @@ Container buildStatsContainer(DatabaseUser user) {
               100)
           .toDouble()
           .toString();
+
+      //Ensure that the format is "00.00"
+      final divided = taskCompletion.split('.');
+      if (divided[0].length < 2) {
+        taskCompletion = '0$taskCompletion';
+      }
+      if (divided[1].length < 2) {
+        taskCompletion = '${taskCompletion}0';
+      }
+
+      taskCompletion = taskCompletion.substring(0, 5);
     }
     fcRushHighscore = user.flashcardRushHighscore.toString();
     completedFlashcards = user.totalFlashcardsCompleted.toString();
@@ -90,7 +101,7 @@ Container buildStatsContainer(DatabaseUser user) {
         ),
         buildStatItem(
           'Longest streak',
-          '$longestStreak ${longestStreak == '1' ? 'dayy' : 'days'}',
+          '$longestStreak ${longestStreak == '1' ? 'day' : 'days'}',
         ),
       ],
     ),

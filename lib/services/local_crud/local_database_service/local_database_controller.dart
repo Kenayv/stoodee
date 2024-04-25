@@ -151,13 +151,11 @@ class LocalDbController {
     final dbUser = await getUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
-    final newCompletedTodayCount = user.flashcardsCompletedToday + 1;
     final newTotalCompletedCount = user.totalFlashcardsCompleted + 1;
 
     final updatesCount = await db.update(
       userTable,
       {
-        flashcardsCompletedTodayColumn: newCompletedTodayCount,
         totalFlashcardsCompletedColumn: newTotalCompletedCount,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
@@ -167,7 +165,6 @@ class LocalDbController {
 
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
 
-    user.setFcCompletedToday(newCompletedTodayCount);
     user.setTotalFcsCompleted(newTotalCompletedCount);
     await _updateUserStreakAfterChange(user: user);
   }
@@ -181,13 +178,11 @@ class LocalDbController {
     final dbUser = await getUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
-    final newCompletedTodayCount = user.tasksCompletedToday + 1;
     final newTotalCompletedCount = user.totalTasksCompleted + 1;
 
     final updatesCount = await db.update(
       userTable,
       {
-        tasksCompletedTodayColumn: newCompletedTodayCount,
         totalTasksCompletedColumn: newTotalCompletedCount,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
@@ -197,13 +192,42 @@ class LocalDbController {
 
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
 
-    user.setTasksCompletedToday(newCompletedTodayCount);
     user.setTotalTasksCompleted(newTotalCompletedCount);
 
     if (daysDifferenceFromNow(user.lastStudied) != 0) {
       user.setLastStudied(DateTime.now());
     }
     await _updateUserStreakAfterChange(user: user);
+  }
+
+  Future<void> incrIncompleteTasks({
+    required DatabaseUser user,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure owner exists in database and isn't hard-coded
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    final newIncompleteTasksCount = user.totalIncompleteTasks + 1;
+
+    final updatesCount = await db.update(
+      userTable,
+      {
+        totalIncompleteTasksColumn: newIncompleteTasksCount,
+        lastStudiedColumn: getCurrentDateAsFormattedString(),
+      },
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
+
+    user.setTotalIncompleteTasks(newIncompleteTasksCount);
+
+    if (daysDifferenceFromNow(user.lastStudied) != 0) {
+      user.setLastStudied(DateTime.now());
+    }
   }
 
   Future<void> openDb() async {
