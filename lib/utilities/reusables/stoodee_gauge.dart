@@ -16,6 +16,8 @@ bool isNotMaxedOut(int value, int max) {
   }
 }
 
+
+
 Column stoodeeGauge({
   required int value,
   required int max,
@@ -32,21 +34,23 @@ Column stoodeeGauge({
   return Column(
     children: [
       Container(
-        height: containerHeight * 0.4,
+        height: containerHeight * 0.3,
         child: titleIcon,
       ),
       Container(
-        height: containerHeight * 0.6,
+        height: containerHeight * 0.7,
         child: SfRadialGauge(
           enableLoadingAnimation: true,
           axes: <RadialAxis>[
             RadialAxis(
+
                 showLabels: false,
                 showTicks: false,
                 startAngle: 180,
                 endAngle: 0,
                 radiusFactor: 0.8,
                 maximum: 180,
+                canScaleToFit: true,
                 axisLineStyle: const AxisLineStyle(
                     cornerStyle: CornerStyle.startCurve, thickness: 10),
                 annotations: <GaugeAnnotation>[
@@ -56,6 +60,8 @@ Column stoodeeGauge({
                         "$displaypercent%",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       )),
+
+                  if(value!=0)
                   const GaugeAnnotation(
                     angle: 180,
                     positionFactor: 1.2,
@@ -67,6 +73,7 @@ Column stoodeeGauge({
                     widget: Text('$value',
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
+
                   if (isNotMaxedOut(value, max))
                     GaugeAnnotation(
                       angle: 0,
@@ -74,6 +81,7 @@ Column stoodeeGauge({
                       widget: Text('$max', style: const TextStyle()),
                     ),
                 ],
+
                 pointers: <GaugePointer>[
                   RangePointer(
                     value: degree,
@@ -83,7 +91,9 @@ Column stoodeeGauge({
                     color: primaryAppColor,
                     //maybe gradient
                   ),
-                ]),
+                ]
+
+            ),
           ],
         ),
       ),

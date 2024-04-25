@@ -4,6 +4,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:stoodee/stoodee_icons_icons.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/stoodee_gauge.dart';
+import 'package:stoodee/utilities/reusables/stoodee_linear_gauge.dart';
 
 const Duration defaultWriterSpeed = Duration(milliseconds: 80);
 
@@ -192,7 +193,8 @@ Container buildFunFactBox({
 
 Row buildGaugeRow(BuildContext context, DatabaseUser user) {
   double gaugeContainerWidth = MediaQuery.of(context).size.width * 0.45;
-  double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.35;
+  double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.25;
+  double iconSize=38;
 
   //if user has exceeded dailyGoal, assign the daily goal value
   int tasksGaugeValue = user.tasksCompletedToday > user.dailyGoalTasks
@@ -215,7 +217,7 @@ Row buildGaugeRow(BuildContext context, DatabaseUser user) {
           value: tasksGaugeValue,
           max: user.dailyGoalTasks,
           titleIcon:
-              const Icon(StoodeeIcons.tasks, color: primaryAppColor, size: 38),
+               Icon(StoodeeIcons.tasks, color: primaryAppColor, size: iconSize),
           containerHeight: gaugeContainerHeight,
         ),
       ),
@@ -225,16 +227,41 @@ Row buildGaugeRow(BuildContext context, DatabaseUser user) {
         child: stoodeeGauge(
           value: flashcardsGaugeValue,
           max: user.dailyGoalFlashcards,
-          titleIcon: const Icon(
+          titleIcon:  Icon(
             StoodeeIcons.flashcards,
             color: primaryAppColor,
-            size: 38,
+            size: iconSize,
           ),
           containerHeight: gaugeContainerHeight,
         ),
       ),
     ],
   );
+
+  return row;
+}
+
+
+
+
+
+Row buildStreakGauge(BuildContext context){
+
+  double gaugeContainerWidth = MediaQuery.of(context).size.width * 0.45;
+  double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.25;
+
+
+  Row row=Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      stoodeeLinearGauge(value: 1, max: 10, titleIcon: Icon(Icons.account_circle_rounded), containerHeight: gaugeContainerHeight)
+    ],
+
+
+
+  );
+
+
 
   return row;
 }
