@@ -22,17 +22,18 @@ class _AchievementsPage extends State<AchievementsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'You have achieved ${userAchivs.length} out of 12 achievements!',
+              'You have unlocked ${userAchivs.length} out of 12 achievements!',
               style: const TextStyle(fontSize: 13),
             ),
             Expanded(
               child: GridView.count(
-                  primary: false,
-                  padding: const EdgeInsets.all(20),
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  crossAxisCount: 3,
-                  children: userAchivs),
+                primary: false,
+                padding: const EdgeInsets.all(20),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                crossAxisCount: 3,
+                children: userAchivs,
+              ),
             ),
           ],
         ),

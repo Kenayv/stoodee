@@ -3,7 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseUser {
   final int id;
   final String email;
-  late String? _cloudId;
+  final String? _cloudId;
   late String _name;
   late DateTime _lastSynced;
   late DateTime _lastStreakBroken;
@@ -119,20 +119,22 @@ class DatabaseUser {
 
   Map<String, dynamic> toJson() => {
         localIdColumn: id,
-        cloudIdColumn: cloudId,
         emailColumn: email,
+        cloudIdColumn: cloudId,
         nameColumn: _name,
         lastSyncedColumn: getDateAsFormattedString(_lastSynced),
         lastStreakBrokenColumn: getDateAsFormattedString(_lastStreakBroken),
-        lastStudiedColumn: getDateAsFormattedString(_lastStudied),
-        dailyGoalTasksColumn: _dailyGoalTasks,
-        dailyGoalFlashcardsColumn: _dailyGoalFlashcards,
-        flashcardsCompletedTodayColumn: _flashcardsCompletedToday,
-        tasksCompletedTodayColumn: _tasksCompletedToday,
-        currentDayStreakColumn: _currentDayStreak,
         totalFlashcardsCompletedColumn: _totalFlashcardsCompleted,
         totalTasksCompletedColumn: _totalTasksCompleted,
+        lastStudiedColumn: getDateAsFormattedString(_lastStudied),
+        dailyGoalFlashcardsColumn: _dailyGoalFlashcards,
+        dailyGoalTasksColumn: _dailyGoalTasks,
+        tasksCompletedTodayColumn: _tasksCompletedToday,
+        flashcardsCompletedTodayColumn: _flashcardsCompletedToday,
+        currentDayStreakColumn: _currentDayStreak,
         streakHighscoreColumn: _streakHighScore,
+        flashcardRushHighscoreColumn: _flashcardRushHighscore,
+        totalIncompleteTasksColumn: _totalIncompleteTasks,
       };
 
   @override

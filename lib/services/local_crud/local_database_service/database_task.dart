@@ -3,8 +3,8 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseTask {
   final int id;
   final int userId;
-  late String
-      _text; //FIXME: make this changable in localdbcontroller using setText
+  late String _text;
+  //FIXME: make this changable in localdbcontroller using setText
 
   DatabaseTask({
     required this.id,
