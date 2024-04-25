@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/page_utilities/account_widgets.dart';
 
-void nothing() {/*FIXME: delete */}
+void doNothing() {/*FIXME: delete */}
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -26,7 +26,7 @@ class _AccountPage extends State<AccountPage> {
             Stack(
               children: [
                 buildProfilePic(context),
-                buildSettingsButton(onPressed: nothing),
+                buildSettingsButton(onPressed: doNothing),
               ],
             ),
             const Gap(30),

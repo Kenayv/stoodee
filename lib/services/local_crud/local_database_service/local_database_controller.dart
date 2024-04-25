@@ -37,10 +37,9 @@ class LocalDbController {
 
   //FIXME: split it into 2 methods. one for streak one for tasks and fcs
   Future<void> initAndSetUserStreak({required DatabaseUser user}) async {
-    var ___debugInt___ = 0;
+    var totalUpdatesCount = 0;
 
     //Resets user's Fcs and tasks completed today to 0 if user hadn't studied today.
-    print("first difference: ${daysDifferenceFromNow(user.lastStudied)}");
     if (daysDifferenceFromNow(user.lastStudied) <= -1) {
       final db = _getDatabaseOrThrow();
 
@@ -54,7 +53,7 @@ class LocalDbController {
         whereArgs: [user.id],
       );
 
-      ___debugInt___ += updateCount;
+      totalUpdatesCount += updateCount;
       if (updateCount != 1) throw CouldNotUpdateTask();
     }
 
@@ -69,21 +68,11 @@ class LocalDbController {
         whereArgs: [user.id],
       );
 
-      ___debugInt___ += updateCount;
+      totalUpdatesCount += updateCount;
       if (updateCount != 1) throw CouldNotUpdateTask();
     }
 
-    String resetLog =
-        "[START] RESET LOG [START]\n\nReseted(OR NOT) user's streak data from:\n[dayStreak: ${user.currentDayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\nto\n";
-    //reload user's data
-    user = await getUser(email: user.email);
-
-    resetLog +=
-        "[dayStreak: ${user.currentDayStreak}, FcsToday: ${user.flashcardsCompletedToday}, TasksToday: ${user.tasksCompletedToday},]\n\n with updatesCount: $___debugInt___\n\n[END] RESET LOG [END]";
-
-    log(resetLog);
-
-    if (___debugInt___ > 0) await reloadCurrentUser();
+    if (totalUpdatesCount > 0) await reloadCurrentUser();
   }
 
   Future<void> reloadCurrentUser() async {
@@ -120,7 +109,7 @@ class LocalDbController {
       final newDayStreak = user.currentDayStreak + 1;
       int userStreakHighscore = user.streakHighscore;
 
-      if (newDayStreak > userStreakHighscore) {
+      if (newDayStreak >= userStreakHighscore) {
         userStreakHighscore = newDayStreak;
       }
 
@@ -138,6 +127,9 @@ class LocalDbController {
       if (updateCount != 1) throw CouldNotUpdateUser();
 
       user.setCurrentDayStreak(user.currentDayStreak + 1);
+      if (userStreakHighscore == newDayStreak) {
+        user.setStreakHighscore(userStreakHighscore);
+      }
       user.setLastStreakBroken(DateTime.now());
     }
   }
@@ -152,11 +144,13 @@ class LocalDbController {
     if (dbUser != user) throw CouldNotFindUser();
 
     final newTotalCompletedCount = user.totalFlashcardsCompleted + 1;
+    final newFlashcardsCompletedToday = user.flashcardsCompletedToday + 1;
 
     final updatesCount = await db.update(
       userTable,
       {
         totalFlashcardsCompletedColumn: newTotalCompletedCount,
+        flashcardsCompletedTodayColumn: newFlashcardsCompletedToday,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
       where: '$localIdColumn = ?',
@@ -166,6 +160,8 @@ class LocalDbController {
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
 
     user.setTotalFcsCompleted(newTotalCompletedCount);
+    user.setFcCompletedToday(newFlashcardsCompletedToday);
+
     await _updateUserStreakAfterChange(user: user);
   }
 
@@ -179,11 +175,13 @@ class LocalDbController {
     if (dbUser != user) throw CouldNotFindUser();
 
     final newTotalCompletedCount = user.totalTasksCompleted + 1;
+    final newTasksCompletedToday = user.tasksCompletedToday + 1;
 
     final updatesCount = await db.update(
       userTable,
       {
         totalTasksCompletedColumn: newTotalCompletedCount,
+        tasksCompletedTodayColumn: newTasksCompletedToday,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
       where: '$localIdColumn = ?',
@@ -193,6 +191,7 @@ class LocalDbController {
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
 
     user.setTotalTasksCompleted(newTotalCompletedCount);
+    user.setTasksCompletedToday(newTasksCompletedToday);
 
     if (daysDifferenceFromNow(user.lastStudied) != 0) {
       user.setLastStudied(DateTime.now());

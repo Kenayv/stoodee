@@ -94,7 +94,7 @@ Container buildStatsContainer(DatabaseUser user) {
         buildStatItem('Flashcards Rush highscore', fcRushHighscore),
         buildStatItem('Completed tasks', completedTasks),
         buildStatItem('Incomplete tasks', incompleteTasks),
-        buildStatItem('Task completion', '$taskCompletion%'),
+        buildStatItem('Task completion rate', '$taskCompletion%'),
         buildStatItem(
           'Current streak',
           '$currentStreak ${currentStreak == '1' ? 'day' : 'days'}',
