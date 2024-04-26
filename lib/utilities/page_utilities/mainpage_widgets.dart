@@ -164,11 +164,12 @@ List<TypewriterAnimatedText> funFactsList = [
 Container buildFunFactBox({
   required BuildContext context,
 }) {
+  //FIXME: add max length to a single funfact text
   final funFacts = funFactsList;
   funFacts.shuffle();
 
   return Container(
-    height: MediaQuery.of(context).size.height * 0.1,
+    height: MediaQuery.of(context).size.height * 0.11,
     padding: const EdgeInsets.all(10),
     width: MediaQuery.of(context).size.width * 0.9,
     decoration: BoxDecoration(
@@ -180,13 +181,9 @@ Container buildFunFactBox({
             offset: Offset(1, 1),
           )
         ]),
-    child: SingleChildScrollView(
-      child: Center(
-        child: AnimatedTextKit(
-          repeatForever: true,
-          animatedTexts: funFacts,
-        ),
-      ),
+    child: AnimatedTextKit(
+      repeatForever: true,
+      animatedTexts: funFacts,
     ),
   );
 }
@@ -194,7 +191,7 @@ Container buildFunFactBox({
 Row buildGaugeRow(BuildContext context, DatabaseUser user) {
   double gaugeContainerWidth = MediaQuery.of(context).size.width * 0.45;
   double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.25;
-  double iconSize=38;
+  double iconSize = 38;
 
   //if user has exceeded dailyGoal, assign the daily goal value
   int tasksGaugeValue = user.tasksCompletedToday > user.dailyGoalTasks
@@ -217,7 +214,7 @@ Row buildGaugeRow(BuildContext context, DatabaseUser user) {
           value: tasksGaugeValue,
           max: user.dailyGoalTasks,
           titleIcon:
-               Icon(StoodeeIcons.tasks, color: primaryAppColor, size: iconSize),
+              Icon(StoodeeIcons.tasks, color: primaryAppColor, size: iconSize),
           containerHeight: gaugeContainerHeight,
         ),
       ),
@@ -227,7 +224,7 @@ Row buildGaugeRow(BuildContext context, DatabaseUser user) {
         child: stoodeeGauge(
           value: flashcardsGaugeValue,
           max: user.dailyGoalFlashcards,
-          titleIcon:  Icon(
+          titleIcon: Icon(
             StoodeeIcons.flashcards,
             color: primaryAppColor,
             size: iconSize,
@@ -241,27 +238,23 @@ Row buildGaugeRow(BuildContext context, DatabaseUser user) {
   return row;
 }
 
-
-
-
-
-Row buildStreakGauge(BuildContext context){
-
+Row buildStreakGauge({
+  required BuildContext context,
+  required DatabaseUser user,
+}) {
   double gaugeContainerWidth = MediaQuery.of(context).size.width * 0.45;
   double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.25;
 
-
-  Row row=Row(
+  Row row = Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      stoodeeLinearGauge(value: 1, max: 10, titleIcon: Icon(Icons.account_circle_rounded), containerHeight: gaugeContainerHeight)
+      stoodeeLinearGauge(
+          value: user.currentDayStreak,
+          max: user.streakHighscore,
+          titleIcon: const Icon(Icons.account_circle_rounded),
+          containerHeight: gaugeContainerHeight)
     ],
-
-
-
   );
-
-
 
   return row;
 }

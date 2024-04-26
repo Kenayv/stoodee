@@ -74,6 +74,7 @@ class DatabaseUser {
         _flashcardRushHighscore = map[flashcardRushHighscoreColumn] as int;
 
   String get name => _name;
+  String? get cloudId => _cloudId;
   DateTime get lastSynced => _lastSynced;
   DateTime get lastStreakBroken => _lastStreakBroken;
   DateTime get lastStudied => _lastStudied;
@@ -82,7 +83,6 @@ class DatabaseUser {
   int get flashcardsCompletedToday => _flashcardsCompletedToday;
   int get tasksCompletedToday => _tasksCompletedToday;
   int get currentDayStreak => _currentDayStreak;
-  String? get cloudId => _cloudId;
   int get totalTasksCompleted => _totalTasksCompleted;
   int get totalFlashcardsCompleted => _totalFlashcardsCompleted;
   int get streakHighscore => _streakHighScore;
@@ -90,7 +90,6 @@ class DatabaseUser {
   int get totalIncompleteTasks => _totalIncompleteTasks;
 
   void setLastSynced(DateTime date) => _lastSynced = date;
-
   void setLastStreakBroken(DateTime date) => _lastStreakBroken = date;
   void setLastStudied(DateTime date) => _lastStudied = date;
   void setName(String name) => _name = name;
@@ -98,18 +97,13 @@ class DatabaseUser {
   void setDailyTaskGoal(int goal) => _dailyGoalTasks = goal;
   void setCurrentDayStreak(int streak) => _currentDayStreak = streak;
   void setStreakHighscore(int streak) => _streakHighScore = streak;
-
   void setTotalFcsCompleted(int newCount) =>
       _totalFlashcardsCompleted = newCount;
-
   void setTotalTasksCompleted(int newCount) => _totalTasksCompleted = newCount;
-
   void setTotalIncompleteTasks(int newCount) =>
       _totalIncompleteTasks = newCount;
-
   void setFcCompletedToday(int completed) =>
       _flashcardsCompletedToday = completed;
-
   void setTasksCompletedToday(int completed) =>
       _tasksCompletedToday = completed;
 

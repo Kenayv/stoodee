@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
+import 'package:stoodee/utilities/dialogs/user_settings_dialog.dart';
 import 'package:stoodee/utilities/page_utilities/account_widgets.dart';
-
-void doNothing() {/*FIXME: delete */}
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -26,7 +25,15 @@ class _AccountPage extends State<AccountPage> {
             Stack(
               children: [
                 buildProfilePic(context),
-                buildSettingsButton(onPressed: doNothing),
+                buildSettingsButton(
+                  onPressed: () async {
+                    await showUserSettingsDialog(
+                      context: context,
+                      user: currentUser,
+                    );
+                    setState(() {});
+                  },
+                ),
               ],
             ),
             const Gap(30),

@@ -13,9 +13,14 @@ class SharedPrefs {
 
   static const _hasSeenIntroKey = 'has_seen_intro';
   static const _rememberLoginDataKey = 'remember_login_data';
+  static const _preferredThemeKey = 'preffered_theme';
+
+  static const lightTheme = 'light_theme';
+  static const darkTheme = 'dark_theme';
 
   late bool _rememberLoginData;
   late bool _hasSeenIntro;
+  late String _preferredTheme;
 
   Future<void> init() async {
     if (_initialized) throw PrefsAlreadyInitialized();
@@ -23,6 +28,7 @@ class SharedPrefs {
     _prefs = await SharedPreferences.getInstance();
     _rememberLoginData = _prefs.getBool(_rememberLoginDataKey) ?? false;
     _hasSeenIntro = _prefs.getBool(_hasSeenIntroKey) ?? false;
+    _preferredTheme = _prefs.getString(_preferredThemeKey) ?? lightTheme;
 
     _initialized = true;
   }
@@ -34,6 +40,16 @@ class SharedPrefs {
     await _prefs.setBool(_rememberLoginDataKey, value);
   }
 
+  Future<void> setPrefferedTheme({required String value}) async {
+    if (!_initialized) throw PrefsNotInitialized();
+    if (value != lightTheme && value != darkTheme) {
+      throw Exception('not existing theme argument!');
+    }
+
+    _preferredTheme = value;
+    await _prefs.setString(_preferredThemeKey, value);
+  }
+
   Future<void> setHasSeenIntro({required bool value}) async {
     if (!_initialized) throw PrefsNotInitialized();
 
@@ -43,4 +59,5 @@ class SharedPrefs {
 
   bool get rememberLoginData => _rememberLoginData;
   bool get rememberHasSeenIntro => _hasSeenIntro;
+  String get prefferedTheme => _preferredTheme;
 }

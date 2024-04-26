@@ -155,17 +155,18 @@ Text buildUsername(DatabaseUser user) {
   );
 }
 
-Align buildSettingsButton({required Function onPressed}) {
+Align buildSettingsButton({required void Function() onPressed}) {
   return Align(
     alignment: Alignment.topRight,
     child: Padding(
       padding: const EdgeInsets.all(12.0),
       child: StoodeeButton(
-          onPressed: () => onPressed,
-          child: const Icon(
-            Icons.settings,
-            color: Colors.white,
-          )),
+        onPressed: onPressed,
+        child: const Icon(
+          Icons.settings,
+          color: Colors.white,
+        ),
+      ),
     ),
   );
 }

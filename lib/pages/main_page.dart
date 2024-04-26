@@ -13,6 +13,7 @@ class MainPage extends StatefulWidget {
 class _MainPage extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
+    final currentUser = LocalDbController().currentUser;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -23,30 +24,24 @@ class _MainPage extends State<MainPage> {
               "Stoodee",
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
             ),
-            const Gap(30),
-            const Text("Did you know...",
-                style: TextStyle(color: Colors.grey)),
+            const Text("Did you know...", style: TextStyle(color: Colors.grey)),
             const Gap(5),
             buildFunFactBox(context: context),
-            const Gap(20),
+            const Gap(25),
             const Text("Today's goal: ",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26)),
-
-            buildGaugeRow(context, LocalDbController().currentUser),
-
-            const Gap(40),
-            Row(
+            buildGaugeRow(context, currentUser),
+            const Gap(25),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Current streak:",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26)),
-
+                Text(
+                  "Current days streak:",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+                ),
               ],
             ),
-
-
-            buildStreakGauge(context)
-
-
+            buildStreakGauge(context: context, user: currentUser)
           ],
         ),
       ),
