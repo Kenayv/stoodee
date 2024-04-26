@@ -25,7 +25,7 @@ Future<void> initApp() async {
   await LocalDbController().init();
 
 
-/*
+
 if(SharedPrefs().prefferedTheme==SharedPrefs.lightTheme){
   usertheme=whitetheme;
 
@@ -34,9 +34,8 @@ else{
   usertheme=blacktheme;
 }
 
- */
 
-  usertheme=blacktheme;
+
 
 }
 
