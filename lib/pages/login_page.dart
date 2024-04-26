@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/page_utilities/login_widgets.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,6 +27,7 @@ class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: usertheme.backgroundColor,
       body: Center(
         child: SafeArea(
           child: Column(

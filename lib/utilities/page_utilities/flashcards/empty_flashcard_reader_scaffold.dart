@@ -9,6 +9,7 @@ import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
 import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 import '../../reusables/custom_appbar.dart';
 
 class EmptyReaderScaffold extends StatefulWidget {
@@ -26,6 +27,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: usertheme.backgroundColor,
       appBar: CustomAppBar(
         leading: const Text(""),
         titleWidget: Text(

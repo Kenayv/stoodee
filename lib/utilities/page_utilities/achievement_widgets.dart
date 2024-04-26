@@ -6,6 +6,7 @@ import 'package:stoodee/services/cloud_crud/cloud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class AchievementTileContainer {
   final String name;
@@ -44,12 +45,12 @@ class AchievementTile extends StatelessWidget {
         );
       },
       child: Container(
-        decoration: const BoxDecoration(
-            color: analogusColor,
+        decoration:  BoxDecoration(
+            color: usertheme.analogousColor,
             borderRadius: BorderRadius.all(Radius.circular(16)),
             boxShadow: [
               BoxShadow(
-                color: Color.fromRGBO(80, 80, 80, 1.0),
+                color: usertheme.basicShaddow,
                 blurRadius: 1,
                 offset: Offset(1, 2),
               )

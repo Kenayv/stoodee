@@ -4,6 +4,7 @@ import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/page_utilities/todo_widgets.dart';
 import 'package:stoodee/services/todoTasks/todo_service.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class ToDoPage extends StatefulWidget {
   const ToDoPage({super.key});
@@ -44,6 +45,7 @@ class _ToDoPage extends State<ToDoPage> {
           case ConnectionState.done:
             List<DatabaseTask> tasks = snapshot.data ?? [];
             return Scaffold(
+              backgroundColor: usertheme.backgroundColor,
               body: SingleChildScrollView(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Center(

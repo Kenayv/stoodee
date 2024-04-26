@@ -4,6 +4,7 @@ import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 //Opens a new pop-up window allowing user to change user settings.
 Future<void> showUserSettingsDialog({
@@ -21,7 +22,9 @@ Future<void> showUserSettingsDialog({
     inputs: [
       TextField(
         controller: nameController,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
+
+          hintStyle: TextStyle(color:usertheme.textColor.withOpacity(0.3)),
           hintText: 'New username',
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 StoodeeButton buildReturnButton({required void Function() onPressed}) {
   return StoodeeButton(
@@ -30,17 +31,17 @@ Column buildProgressBar({
     children: [
       Container(
         margin: const EdgeInsets.only(top: 15),
-        child: Text("$completed/$totalCount"),
+        child: Text("$completed/$totalCount",style:TextStyle(color:usertheme.textColor)),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           child: LinearPercentIndicator(
-            backgroundColor: primaryAppColor.withOpacity(0.08),
+            backgroundColor: usertheme.analogousColor.withOpacity(0.08),
             percent: isNotZero(completed, totalCount),
-            linearGradient: const LinearGradient(
-              colors: [primaryAppColor, secondaryAppColor],
+            linearGradient:  LinearGradient(
+              colors: [usertheme.primaryAppColor, usertheme.analogousColor],
             ),
             animation: true,
             lineHeight: 20,

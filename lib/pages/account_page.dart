@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/dialogs/user_settings_dialog.dart';
 import 'package:stoodee/utilities/page_utilities/account_widgets.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -17,6 +18,7 @@ class _AccountPage extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: usertheme.backgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +47,7 @@ class _AccountPage extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(child: buildUsername(currentUser)),
-                    const Center(child: Text('Statystyki:')),
+                    const Center(child: Text('Statystyki:',style: TextStyle(color: Colors.grey),)),
                     const Divider(color: Colors.grey, thickness: 2),
                     const Gap(15),
                     buildStatsContainer(currentUser),

@@ -14,6 +14,7 @@ import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/utilities/page_utilities/flashcards/empty_flashcard_reader_scaffold.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class FlashCardsReader extends StatefulWidget {
   const FlashCardsReader({super.key, required this.flashcardSet});
@@ -72,7 +73,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
                 if (totalFcsCount != 0 && _completedCount == totalFcsCount) {
                   _handleSetDone(context);
                   return Container(
-                    color: const Color.fromRGBO(255, 255, 255, 1),
+                    color: usertheme.backgroundColor,
                   );
                 } else {
                   final fc = FlashcardsService().getRandFromList(fcList: fcs);
@@ -119,6 +120,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     required DatabaseFlashcard currentFlashcard,
   }) {
     return Scaffold(
+      backgroundColor: usertheme.backgroundColor,
       appBar: CustomAppBar(
         leading: const Text(''),
         titleWidget: Text(
@@ -167,9 +169,12 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           ),
           const SizedBox(height: 20),
           SizedBox(
+
             width: 300,
             height: 300,
             child: FlipCard(
+
+
               speed: 250,
               onFlip: () {
                 setState(() {
@@ -289,7 +294,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           onPressed: onPressed,
           child: Text(buttonText, style: biggerButtonTextStyle),
         ),
-        Text(displayDateText),
+        Text(displayDateText,style: TextStyle(color: usertheme.textColor),),
       ],
     );
   }

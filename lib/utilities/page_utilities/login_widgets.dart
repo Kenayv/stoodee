@@ -12,6 +12,7 @@ import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 SizedBox buildWelcomeAnimation() {
   return SizedBox(
@@ -30,13 +31,16 @@ SizedBox buildWelcomeAnimation() {
           TypewriterAnimatedText('Thanks for being with us :D',
               speed: const Duration(milliseconds: 150),
               curve: Curves.decelerate,
+              textStyle: TextStyle(color:usertheme.textColor),
               cursor: "|"),
           TypewriterAnimatedText('It means a lot! ^^',
               speed: const Duration(milliseconds: 100),
+              textStyle: TextStyle(color:usertheme.textColor),
               curve: Curves.decelerate,
               cursor: "|"),
           TypewriterAnimatedText('~Stoodee team',
               speed: const Duration(milliseconds: 100),
+              textStyle: TextStyle(color:usertheme.textColor),
               curve: Curves.decelerate,
               cursor: "|"),
         ],

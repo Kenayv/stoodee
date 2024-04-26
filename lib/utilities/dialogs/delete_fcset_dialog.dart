@@ -11,8 +11,8 @@ Future<bool> showDeleteFcSetDialog({
         title: "Deleting ${fcSet.name}?",
         content: "are you sure you want to delete this set?",
         optionBuilder: () => {
-          'cancel': false,
-          'delete': true,
+          'Cancel': false,
+          'Delete': true,
         },
       ) ??
       false;

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:developer' as dart_dev;
 
 import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter/material.dart';
 
@@ -55,25 +56,25 @@ Column stoodeeGauge({
                       angle: 90,
                       widget: Text(
                         "$displaypercent%",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style:  TextStyle(fontWeight: FontWeight.bold,color: usertheme.textColor),
                       )),
                   if (value != 0)
-                    const GaugeAnnotation(
+                     GaugeAnnotation(
                       angle: 180,
                       positionFactor: 1.2,
-                      widget: Text('0', style: TextStyle()),
+                      widget: Text('0', style: TextStyle(color: usertheme.textColor)),
                     ),
                   GaugeAnnotation(
                     angle: 180 + degree,
                     positionFactor: 1.3,
                     widget: Text('$value',
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                        style:  TextStyle(fontWeight: FontWeight.bold,color: usertheme.textColor)),
                   ),
                   if (isNotMaxedOut(value, max))
                     GaugeAnnotation(
                       angle: 0,
                       positionFactor: 1.25,
-                      widget: Text('$max', style: const TextStyle()),
+                      widget: Text('$max', style: TextStyle(color: usertheme.textColor)),
                     ),
                 ],
                 pointers: <GaugePointer>[
@@ -82,7 +83,7 @@ Column stoodeeGauge({
                     width: 10,
                     pointerOffset: 0,
                     cornerStyle: CornerStyle.bothCurve,
-                    color: primaryAppColor,
+                    color: usertheme.primaryAppColor,
                     //maybe gradient
                   ),
                 ]),

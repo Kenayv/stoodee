@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/globals.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class StoodeeButton extends StatelessWidget {
   final Widget child;
   final VoidCallback onPressed;
   final Size size;
 
-  final Color color1 = primaryAppColor;
-  final Color color2 = const Color.fromRGBO(92, 0, 208, 1.0);
+  final Color color1 = usertheme.primaryAppColor;
+  final Color color2 = usertheme.primaryAppColor.withOpacity(0.3);
 
-  const StoodeeButton(
+  StoodeeButton(
       {super.key,
       required this.child,
       required this.onPressed,
@@ -40,11 +41,11 @@ class StoodeeButton extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onPressed,
       child: Container(
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(16)),
           boxShadow: [
             BoxShadow(
-              color: Color.fromRGBO(80, 80, 80, 1.0),
+              color: usertheme.basicShaddow,
               blurRadius: 1,
               offset: Offset(1,2),
             )

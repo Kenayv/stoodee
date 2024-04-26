@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 Future<dynamic> genericInputDialog({
   required BuildContext context,
@@ -13,7 +14,8 @@ Future<dynamic> genericInputDialog({
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text(title),
+        backgroundColor: usertheme.backgroundColor,
+        title: Text(title,style: TextStyle(color:usertheme.textColor),),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: inputs,
@@ -21,13 +23,13 @@ Future<dynamic> genericInputDialog({
         actions: [
           additionalButton ?? voidWidget,
           TextButton(
-            child: const Text('Cancel'),
+            child:  Text('Cancel',style: TextStyle(color: usertheme.textColor),),
             onPressed: () {
               Navigator.of(context).pop(null);
             },
           ),
           TextButton(
-            child: const Text('OK'),
+            child:  Text('OK',style: TextStyle(color: usertheme.textColor),),
             onPressed: () {
               Navigator.of(context).pop(function());
             },

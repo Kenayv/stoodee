@@ -7,6 +7,7 @@ import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/dialogs/delete_fcset_dialog.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 void tap(
   BuildContext context,
@@ -78,7 +79,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
           padding: const EdgeInsets.all(2.0),
           child: Container(
             decoration: BoxDecoration(
-              color: analogusColor,
+              color: usertheme.analogousColor,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               boxShadow: resolveWidgetShadows(),
             ),

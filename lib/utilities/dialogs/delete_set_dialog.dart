@@ -3,6 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_flas
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
 import '../../services/flashcards/flashcard_service.dart';
+import '../theme/theme.dart';
 
 Future<dynamic> genericDeleteSetDialog({
   required BuildContext context,
@@ -37,7 +38,7 @@ Future<dynamic> genericDeleteSetDialog({
         }),
         actions: [
           TextButton(
-            child: const Text('Nevermind'),
+            child:  Text('Nevermind',style:TextStyle(color: usertheme.primaryAppColor)),
             onPressed: () {
               print("not deleted");
               Navigator.of(context).pop(null);

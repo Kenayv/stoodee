@@ -8,6 +8,7 @@ import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/utilities/dialogs/delete_fcset_dialog.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class FlashcardsPage extends StatefulWidget {
   const FlashcardsPage({super.key});
@@ -35,8 +36,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
     List<Widget> flashcardList = [];
 
     for (int i = 0; i < fcSets.length; i++) {
-      flashcardList.add(
-        FlashCardSetWidget(
+      var flashCardSetWidget = FlashCardSetWidget(
           context: context,
           fcSet: fcSets[i],
           name: fcSets[i].name,
@@ -44,7 +44,9 @@ class _FlashcardsPage extends State<FlashcardsPage> {
             context,
             fcSets[i],
           ),
-        ),
+        );
+      flashcardList.add(
+        flashCardSetWidget,
       );
     }
 
@@ -74,6 +76,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Scaffold(
+              backgroundColor: usertheme.backgroundColor,
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.startFloat,
               body: SingleChildScrollView(

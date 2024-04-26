@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class ReusableCard extends StatelessWidget {
   const ReusableCard({super.key, required this.text});
@@ -9,13 +10,15 @@ class ReusableCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Card(
+        color: usertheme.cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        elevation: 7,
-        shadowColor: Colors.grey,
+        elevation: 2,
+        shadowColor: usertheme.basicShaddow,
+
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(
-            child: Text(text, textAlign: TextAlign.center),
+            child: Text(text, textAlign: TextAlign.center,style: TextStyle(color: usertheme.textColor),),
           ),
         ),
       ),

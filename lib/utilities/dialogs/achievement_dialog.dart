@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class AchievementDialog extends StatelessWidget {
   final String name;
@@ -23,7 +24,7 @@ class AchievementDialog extends StatelessWidget {
       child: AlertDialog(
         shadowColor: Colors.black,
         elevation: 200,
-        backgroundColor: analogusColor,
+        backgroundColor: usertheme.analogousColor,
         title: Center(
             child: Text(name,
                 style: const TextStyle(
@@ -38,7 +39,7 @@ class AchievementDialog extends StatelessWidget {
               height: 150.0,
             ),
             const SizedBox(height: 10.0),
-            Text(desc, style: const TextStyle(color: Colors.white)),
+            Text(desc, style: const TextStyle(color: Colors.white,fontSize: 16)),
           ],
         ),
       ),

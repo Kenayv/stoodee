@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 typedef DialogOptionBuilder<T> = Map<String, T?> Function();
 
@@ -13,8 +14,9 @@ Future<T?> genericDialog<T>({
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text(title),
-        content: Text(content),
+        backgroundColor: usertheme.backgroundColor,
+        title: Text(title,style: TextStyle(color: usertheme.textColor)),
+        content: Text(content,style: TextStyle(color: usertheme.textColor)),
         actions: options.keys.map(
           (optionTitle) {
             final T value = options[optionTitle]!;
@@ -26,7 +28,7 @@ Future<T?> genericDialog<T>({
                   Navigator.of(context).pop();
                 }
               },
-              child: Text(optionTitle),
+              child: Text(optionTitle,style: TextStyle(color: usertheme.textColor),),
             );
           },
         ).toList(),

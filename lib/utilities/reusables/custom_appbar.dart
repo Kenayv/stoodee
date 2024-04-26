@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../globals.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
+
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -22,8 +23,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       height: 90, //TODO: In Future remove the height
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-      decoration: const BoxDecoration(
-        color: primaryAppColor,
+      decoration: BoxDecoration(
+        color: usertheme.primaryAppColor,
         borderRadius: BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           /*

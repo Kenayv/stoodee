@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/services/router/route_functions.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class StartingPage extends StatefulWidget {
   const StartingPage({super.key, required this.title});
@@ -33,5 +34,5 @@ class _StartingPage extends State<StartingPage> {
   }
 
   @override
-  Widget build(BuildContext context) => const Scaffold();
+  Widget build(BuildContext context) => Scaffold(backgroundColor: usertheme.backgroundColor,);
 }

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
-import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class PageScaffold extends StatefulWidget {
   const PageScaffold({required this.child, super.key});
@@ -52,10 +52,11 @@ class _PageScaffold extends State<PageScaffold> {
         }
       },
       child: Scaffold(
+        backgroundColor: usertheme.backgroundColor,
         appBar: CustomAppBar(
           title: indexToTitle(currentIndex + 1),
           titleWidget: Text(indexToTitle(currentIndex + 1),
-              style: const TextStyle(
+              style:  const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold)),
           leading: const Text(''),
         ),
@@ -72,8 +73,8 @@ class _PageScaffold extends State<PageScaffold> {
               padding:
                   const EdgeInsets.only(top: 4, bottom: 4, left: 18, right: 18),
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: const BoxDecoration(
-                color: primaryAppColor,
+              decoration:  BoxDecoration(
+                color: usertheme.primaryAppColor,
                 borderRadius: BorderRadius.all(Radius.circular(24)),
               ),
               child: BottomNavigationBar(

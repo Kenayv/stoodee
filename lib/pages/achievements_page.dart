@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import'package:flutter/material.dart';
 import 'package:stoodee/utilities/page_utilities/achievement_widgets.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 class AchievementsPage extends StatefulWidget {
   const AchievementsPage({super.key});
@@ -17,13 +18,14 @@ class _AchievementsPage extends State<AchievementsPage> {
     );
 
     return Scaffold(
+      backgroundColor: usertheme.backgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'You have unlocked ${userAchivs.length} out of 12 achievements!',
-              style: const TextStyle(fontSize: 13),
+              style:  TextStyle(fontSize: 13,color:usertheme.textColor),
             ),
             Expanded(
               child: GridView.count(

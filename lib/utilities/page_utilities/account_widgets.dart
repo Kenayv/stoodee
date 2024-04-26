@@ -7,6 +7,7 @@ import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
+import 'package:stoodee/utilities/theme/theme.dart';
 
 StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
   if (AuthService.firebase().currentUser == null) {
@@ -81,10 +82,11 @@ Container buildStatsContainer(DatabaseUser user) {
     width: double.infinity,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-        boxShadow: const [
+        color: usertheme.backgroundColor.withOpacity(0.9),
+        boxShadow: [
           BoxShadow(
-            color: Colors.grey,
+            color: usertheme.basicShaddow
+            ,
             offset: Offset(1, 1),
           )
         ]),
@@ -116,15 +118,17 @@ Padding buildStatItem(String title, String value) {
       children: [
         Text(
           "$title:",
-          style: const TextStyle(
+          style:  TextStyle(
             fontSize: 16,
+            color: usertheme.textColor
           ),
         ),
         const Gap(20),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
+            color: usertheme.textColor
           ),
         ),
       ],
@@ -147,10 +151,10 @@ Align buildProfilePic(BuildContext context) {
 Text buildUsername(DatabaseUser user) {
   return Text(
     user.name,
-    style: const TextStyle(
+    style: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: usertheme.textColor,
     ),
   );
 }
