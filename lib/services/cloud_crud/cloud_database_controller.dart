@@ -89,6 +89,7 @@ class CloudDbController {
 
     if (user.cloudId == null) {
       await LocalDbController().setUserCloudId(user: user, cloudId: userDoc.id);
+      user.setCloudId(userDoc.id);
     }
 
     if (await _docExists(userDoc) == false) {

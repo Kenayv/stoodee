@@ -3,7 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseUser {
   final int id;
   final String email;
-  final String? _cloudId;
+  late String? _cloudId;
   late String _name;
   late DateTime _lastSynced;
   late DateTime _lastStreakBroken;
@@ -106,6 +106,8 @@ class DatabaseUser {
       _flashcardsCompletedToday = completed;
   void setTasksCompletedToday(int completed) =>
       _tasksCompletedToday = completed;
+
+  void setCloudId(String cloudId) => _cloudId = cloudId;
 
   @override
   String toString() =>
