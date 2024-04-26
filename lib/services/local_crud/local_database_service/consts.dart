@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug27_tasks.db';
+const dbName = 'debug31_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';

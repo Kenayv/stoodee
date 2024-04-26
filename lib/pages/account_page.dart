@@ -59,7 +59,7 @@ class _AccountPage extends State<AccountPage> {
               children: [
                 Container(width: MediaQuery.of(context).size.width * 0.2),
                 buildLoginOrLogoutButton(context),
-                buildSyncWithCloudButton(currentUser),
+                buildSyncWithCloudButton(),
               ],
             ),
             const Gap(20),

@@ -1,4 +1,3 @@
-import 'dart:developer' as dart_developer;
 import 'dart:math';
 import 'package:stoodee/services/flashcards/fc_difficulty.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -50,13 +49,6 @@ class FlashcardsService {
       _initialized = true;
     }
 
-    //FIXME: debug log
-    String debugLogStart = "[START] loading FlashcardSets [START]\n\n";
-    String debugLogFlashcardSets = "$_flashcardSets\n\n";
-    String debugLogEnd = "[END] loading FlashcardSets [END]\n.";
-
-    dart_developer.log(debugLogStart + debugLogFlashcardSets + debugLogEnd);
-
     return _flashcardSets!;
   }
 
@@ -67,20 +59,12 @@ class FlashcardsService {
       fcSet: fcSet,
     );
 
-    //FIXME: debug log
-    String debugLogStart = "[START] loading Flashcards [START]\n\n";
-    String debugLogFlashcards = "$flashcards\n\n";
-    String debugLogEnd = "[END] loading Flashcards [END]\n.";
-
-    dart_developer.log(debugLogStart + debugLogFlashcards + debugLogEnd);
-
     return flashcards.where((card) => card.flashcardSetId == fcSet.id).toList();
   }
 
   Future<List<DatabaseFlashcard>> loadActiveFlashcardsFromSet({
     required DatabaseFlashcardSet fcSet,
   }) async {
-    dart_developer.log('invoked');
     final flashcards = await LocalDbController().getFlashcardsFromSet(
       fcSet: fcSet,
     );
@@ -110,9 +94,6 @@ class FlashcardsService {
     if (!_initialized) throw FcServiceNotInitialized();
 
     await LocalDbController().deleteFcSet(fcSet: fcSet);
-    if (fcSet.pairCount > 0) {
-      await LocalDbController().deleteFlashcardsBySetId(fcSetId: fcSet.id);
-    }
 
     _flashcardSets!.removeWhere((fcSetToRemove) => fcSetToRemove == fcSet);
   }
@@ -184,8 +165,4 @@ class FlashcardsService {
     fc.setCardDifficulty(newDifficulty);
     fc.setDisplay(newDisplayDate);
   }
-
-  int get fcsCompletedToday => _initialized
-      ? LocalDbController().currentUser.flashcardsCompletedToday
-      : throw FcServiceNotInitialized();
 }

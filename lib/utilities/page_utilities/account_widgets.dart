@@ -50,7 +50,7 @@ Container buildStatsContainer(DatabaseUser user) {
     incompleteTasks = user.totalIncompleteTasks.toString();
 
     if (user.totalTasksCompleted == 0) {
-      taskCompletion = "0.00";
+      taskCompletion = "00.00";
     } else if (user.totalIncompleteTasks == 0) {
       taskCompletion = "100.00";
     } else {
@@ -171,11 +171,11 @@ Align buildSettingsButton({required void Function() onPressed}) {
   );
 }
 
-StoodeeButton buildSyncWithCloudButton(DatabaseUser user) {
+StoodeeButton buildSyncWithCloudButton() {
   return StoodeeButton(
     child: const Icon(Icons.sync, color: Colors.white),
     onPressed: () async {
-      await LocalDbController().syncWithCloud(user: user);
+      await LocalDbController().syncWithCloud();
     },
   );
 }

@@ -55,3 +55,7 @@ class UserCloudIdAlreadyInitialized implements Exception {}
 class CannotSyncNullUser implements Exception {}
 
 class UserDoesNotExistInCloud implements Exception {}
+
+class CouldNotDeleteFlashcard implements Exception {}
+
+class CannotSyncSoFrequently implements Exception {}
