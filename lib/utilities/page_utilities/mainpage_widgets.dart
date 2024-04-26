@@ -242,7 +242,6 @@ Row buildStreakGauge({
   required BuildContext context,
   required DatabaseUser user,
 }) {
-  double gaugeContainerWidth = MediaQuery.of(context).size.width * 0.45;
   double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.25;
 
   Row row = Row(
