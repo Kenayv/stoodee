@@ -116,7 +116,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.35,
                       child: SingleChildScrollView(
-                          child: taskListView_intro(context: context)),
+                          child: taskListViewIntro(context: context)),
                     ),
                   ]),
                   bodyWidget: const Align(
@@ -152,7 +152,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     child: SingleChildScrollView(
                         child: CustomGridLayout(
                       crossAxisCount: 2,
-                      items: flashcardSetListView_intro(context: context),
+                      items: flashcardSetListViewIntro(context: context),
                     )),
                   ),
                   bodyWidget: const Align(
@@ -186,7 +186,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   title: 'Jeszcze chwilka i możemy zaczynać',
                   bodyWidget: Column(
                     children: [
-                      Gap(10),
+                      const Gap(10),
                       TextField(
                         textInputAction: TextInputAction.next,
                         autocorrect: false,

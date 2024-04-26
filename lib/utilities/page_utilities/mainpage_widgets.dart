@@ -249,10 +249,11 @@ Row buildStreakGauge({
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       stoodeeLinearGauge(
-          value: user.currentDayStreak,
-          max: user.streakHighscore,
-          titleIcon: const Icon(Icons.account_circle_rounded),
-          containerHeight: gaugeContainerHeight)
+        value: user.currentDayStreak,
+        max: user.streakHighscore,
+        titleIcon: const Icon(Icons.account_circle_rounded),
+        containerHeight: gaugeContainerHeight,
+      )
     ],
   );
 

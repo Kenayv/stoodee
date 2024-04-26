@@ -14,8 +14,8 @@ void tap(
   context.go('/flash_cards_reader', extra: container);
 }
 
-class FlashCardSetWidget_intro extends StatefulWidget {
-  const FlashCardSetWidget_intro({
+class FlashCardSetWidgetIntro extends StatefulWidget {
+  const FlashCardSetWidgetIntro({
     super.key,
     required this.context,
     required this.fcSetlength,
@@ -23,14 +23,14 @@ class FlashCardSetWidget_intro extends StatefulWidget {
   });
 
   @override
-  State<FlashCardSetWidget_intro> createState() => _FlashCardSetWidgetState();
+  State<FlashCardSetWidgetIntro> createState() => _FlashCardSetWidgetState();
 
   final BuildContext context;
   final int fcSetlength;
   final String name;
 }
 
-class _FlashCardSetWidgetState extends State<FlashCardSetWidget_intro> {
+class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
   List<BoxShadow> resolveWidgetShadows() {
     List<BoxShadow> l = [];
 

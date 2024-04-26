@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/StoodeeIcons.ttf
 ///
-/// 
+///
 /// * Entypo, Copyright (C) 2012 by Daniel Bruce
 ///         Author:    Daniel Bruce
 ///         License:   SIL (http://scripts.sil.org/OFL)
@@ -25,6 +25,8 @@
 ///         License:   SIL (https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt)
 ///         Homepage:  http://fortawesome.github.com/Font-Awesome/
 ///
+library;
+
 import 'package:flutter/widgets.dart';
 
 class StoodeeIcons {
@@ -33,9 +35,14 @@ class StoodeeIcons {
   static const _kFontFam = 'StoodeeIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData home = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData user = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData trophy = IconData(0xf091, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData tasks = IconData(0xf0ae, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData flashcards = IconData(0xf24d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData home =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData user =
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData trophy =
+      IconData(0xf091, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData tasks =
+      IconData(0xf0ae, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData flashcards =
+      IconData(0xf24d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

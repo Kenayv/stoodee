@@ -3,7 +3,7 @@ import 'package:stoodee/utilities/globals.dart';
 
 import 'flashcard_widget.dart';
 
-ListView taskListView_intro({
+ListView taskListViewIntro({
   required BuildContext context,
 }) {
   return ListView.builder(
@@ -89,14 +89,14 @@ ListTile taskItem({
   );
 }
 
-List<Widget> flashcardSetListView_intro({
+List<Widget> flashcardSetListViewIntro({
   required BuildContext context,
 }) {
   List<Widget> flashcardList = [];
 
   for (int i = 0; i < 4; i++) {
     flashcardList.add(
-      FlashCardSetWidget_intro(
+      FlashCardSetWidgetIntro(
         //FIXME: onLongPressed function could be passed right there as an argument.to allow setting state.
         context: context,
         name: "set$i",

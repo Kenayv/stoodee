@@ -16,8 +16,6 @@ bool isNotMaxedOut(int value, int max) {
   }
 }
 
-
-
 Column stoodeeGauge({
   required int value,
   required int max,
@@ -33,17 +31,16 @@ Column stoodeeGauge({
 
   return Column(
     children: [
-      Container(
+      SizedBox(
         height: containerHeight * 0.3,
         child: titleIcon,
       ),
-      Container(
+      SizedBox(
         height: containerHeight * 0.7,
         child: SfRadialGauge(
           enableLoadingAnimation: true,
           axes: <RadialAxis>[
             RadialAxis(
-
                 showLabels: false,
                 showTicks: false,
                 startAngle: 180,
@@ -60,20 +57,18 @@ Column stoodeeGauge({
                         "$displaypercent%",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       )),
-
-                  if(value!=0)
-                  const GaugeAnnotation(
-                    angle: 180,
-                    positionFactor: 1.2,
-                    widget: Text('0', style: TextStyle()),
-                  ),
+                  if (value != 0)
+                    const GaugeAnnotation(
+                      angle: 180,
+                      positionFactor: 1.2,
+                      widget: Text('0', style: TextStyle()),
+                    ),
                   GaugeAnnotation(
                     angle: 180 + degree,
                     positionFactor: 1.3,
                     widget: Text('$value',
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
-
                   if (isNotMaxedOut(value, max))
                     GaugeAnnotation(
                       angle: 0,
@@ -81,7 +76,6 @@ Column stoodeeGauge({
                       widget: Text('$max', style: const TextStyle()),
                     ),
                 ],
-
                 pointers: <GaugePointer>[
                   RangePointer(
                     value: degree,
@@ -91,9 +85,7 @@ Column stoodeeGauge({
                     color: primaryAppColor,
                     //maybe gradient
                   ),
-                ]
-
-            ),
+                ]),
           ],
         ),
       ),

@@ -4,7 +4,7 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/page_utilities/login_widgets.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPage();

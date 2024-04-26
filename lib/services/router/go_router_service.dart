@@ -140,11 +140,8 @@ final GoRouter goRouterService = GoRouter(
               routes: [
                 GoRoute(
                   path: "dialog",
-
-                  //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     var extras = state.extra as SetContainer;
-                    String name = extras.name;
                     DatabaseFlashcardSet fcset = extras.getSet();
 
                     return SideSheetPage(
@@ -238,8 +235,6 @@ final GoRouter goRouterService = GoRouter(
               routes: [
                 GoRoute(
                   path: "dialog",
-
-                  //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     var extras = state.extra as AchievementTileContainer;
                     String name = extras.name;
@@ -353,7 +348,7 @@ final GoRouter goRouterService = GoRouter(
                     child: child,
                   );
                 },
-                child: CustomDialog(
+                child: const CustomDialog(
                   title: '',
                   content: '',
                 ),
@@ -385,8 +380,6 @@ final GoRouter goRouterService = GoRouter(
         routes: [
           GoRoute(
             path: "dialog",
-
-            //TODO: TUTAJ SOBIE POZMIENIAJ JAK CHCESZ Z JAKIMIS FUTURE VOIDAMI CZY COS NIE WIEM
             pageBuilder: (BuildContext context, GoRouterState state) {
               return DialogPage(
                 builder: (_) => const CustomDialog(
