@@ -50,7 +50,7 @@ Column stoodeeGauge({
                 maximum: 180,
                 canScaleToFit: true,
                 axisLineStyle: const AxisLineStyle(
-                    cornerStyle: CornerStyle.startCurve, thickness: 10),
+                    cornerStyle: CornerStyle.bothCurve, thickness: 10),
                 annotations: <GaugeAnnotation>[
                   GaugeAnnotation(
                       angle: 90,

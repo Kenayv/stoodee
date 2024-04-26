@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/globals.dart';
 
+import '../../services/shared_prefs/shared_prefs.dart';
+
 class StoodeeTheme {
 
   final Color primaryAppColor;
@@ -62,4 +64,20 @@ Dark theme: #1f2a5f         31, 42, 95)
 */
 
 late StoodeeTheme usertheme;
+
+
+
+
+void reEvalTheme(){
+
+
+  if(SharedPrefs().prefferedTheme==SharedPrefs.lightTheme){
+    usertheme=whitetheme;
+
+  }
+  else{
+    usertheme=blacktheme;
+  }
+
+}
 

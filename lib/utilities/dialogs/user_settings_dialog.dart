@@ -15,6 +15,7 @@ Future<void> showUserSettingsDialog({
   TextEditingController fcGoalController = TextEditingController();
   TextEditingController taskGoalController = TextEditingController();
   TextEditingController userThemeController = TextEditingController();
+  String selectedTheme=SharedPrefs().prefferedTheme;
 
   return genericInputDialog(
     context: context,
@@ -31,25 +32,30 @@ Future<void> showUserSettingsDialog({
       TextField(
         //FIXME: placeholders should indicate previous value
         //sliders would work best
+        keyboardType: TextInputType.number,
         controller: taskGoalController,
-        decoration: const InputDecoration(
+        decoration:  InputDecoration(
+
           hintText: 'warning! change resets today\'s progress.',
           labelText: 'daily tasks goal',
-          hintStyle: TextStyle(fontSize: 14),
-          labelStyle: TextStyle(fontSize: 14),
+          hintStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
+          labelStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
         ),
       ),
       TextField(
         //FIXME: placeholders should indicate previous value
         //sliders would work best
+        keyboardType: TextInputType.number,
         controller: fcGoalController,
-        decoration: const InputDecoration(
+        decoration:  InputDecoration(
           hintText: 'warning! change resets today\'s progress.',
           labelText: 'daily flashcards goal',
-          hintStyle: TextStyle(fontSize: 14),
-          labelStyle: TextStyle(fontSize: 14),
+          hintStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
+          labelStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
         ),
       ),
+
+      /*
       TextField(
         controller: userThemeController,
         decoration: const InputDecoration(
@@ -57,16 +63,44 @@ Future<void> showUserSettingsDialog({
           labelStyle: TextStyle(fontSize: 12),
         ),
       ),
+
+       */
+
+
     ],
+    selectmenus: DropdownButtonFormField<String>(
+      style: TextStyle(
+        color:usertheme.textColor
+      ),
+      value: selectedTheme,
+      decoration: InputDecoration(
+        labelText: 'Select Theme',
+        labelStyle: TextStyle(fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
+      ),
+      dropdownColor: usertheme.backgroundColor,
+      items: const [
+        DropdownMenuItem(
+          value: "dark_theme",
+          child: Text('Dark Theme'),
+        ),
+        DropdownMenuItem(
+          value: "light_theme",
+          child: Text('Light Theme'),
+        ),
+      ],
+      onChanged: (value) {
+        if (value != null) {
+          selectedTheme = value;
+        }
+      },
+    ),
     function: () async {
       if (nameController.text.isNotEmpty &&
           fcGoalController.text.isNotEmpty &&
-          taskGoalController.text.isNotEmpty &&
-          userThemeController.text.isNotEmpty) {
+          taskGoalController.text.isNotEmpty) {
         final newName = nameController.text;
         final newFcGoal = int.parse(fcGoalController.text);
         final newTaskGoal = int.parse(taskGoalController.text);
-        final prefTheme = userThemeController.text;
 
         await LocalDbController().setUserName(user: user, name: newName);
         await LocalDbController()
@@ -74,10 +108,11 @@ Future<void> showUserSettingsDialog({
         await LocalDbController()
             .setUserDailyFlashcardGoal(user: user, flashcardGoal: newFcGoal);
 
-        await SharedPrefs().setPrefferedTheme(value: prefTheme);
+        await SharedPrefs().setPrefferedTheme(value: selectedTheme);
         user.setName(newName);
         user.setDailyFlashcardsGoal(newFcGoal);
         user.setDailyTaskGoal(newTaskGoal);
+        reEvalTheme();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           createErrorSnackbar("make sure all fields are filled"),
