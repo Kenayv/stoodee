@@ -5,6 +5,7 @@ Future<dynamic> genericInputDialog({
   required BuildContext context,
   required String title,
   required List<TextField> inputs,
+  DropdownButtonFormField<String>? selectmenus,
   required Function()
       function, // Change the signature of the function to return a value
   TextButton? additionalButton,
@@ -18,7 +19,13 @@ Future<dynamic> genericInputDialog({
         title: Text(title,style: TextStyle(color:usertheme.textColor),),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: inputs,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: inputs,
+            ),
+            selectmenus ?? Container(),
+          ],
         ),
         actions: [
           additionalButton ?? voidWidget,
