@@ -18,6 +18,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_flas
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/dialogs/achievement_dialog.dart';
 import 'package:stoodee/utilities/dialogs/side_sheet_page.dart';
+import '../../pages/flash_card_rush_page.dart';
 import '../../utilities/dialogs/deleting_set_dialog.dart';
 import '../../utilities/dialogs/dialog_page.dart';
 import '../../utilities/dialogs/not_for_production_use/custom_dialog.dart';
@@ -357,6 +358,58 @@ final GoRouter goRouterService = GoRouter(
             },
           ),
         ]),
+
+    GoRoute(
+        path: '/flash_cards_rush',
+        pageBuilder: (context, state) {
+          SetContainer container = state.extra as SetContainer;
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 400),
+            key: state.pageKey,
+            child: FlashCardsRush(
+              flashcardSet: container.getSet(),
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0, 1.0);
+              const end = Offset.zero;
+              const curve = Curves.easeOutQuint;
+              var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                  position: animation.drive(tween), child: child);
+            },
+          );
+        },
+        routes: [
+          GoRoute(
+            path: "dialog",
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return SideSheetPage(
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return SlideTransition(
+                    position: Tween(
+                      begin: const Offset(0, 1),
+                      end: const Offset(0, 0),
+                    ).animate(
+                      animation,
+                    ),
+                    child: child,
+                  );
+                },
+                child: const CustomDialog(
+                  title: '',
+                  content: '',
+                ),
+                barrierColor: null,
+              );
+            },
+          ),
+        ]),
+
+
     GoRoute(
         path: '/login',
         pageBuilder: (context, state) {

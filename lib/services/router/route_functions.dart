@@ -61,6 +61,18 @@ void goRouterToAccount(BuildContext context,[Object? extra]){
 void goRouterToStart(BuildContext context,[Object? extra]){
   log("Going to: Starting Page");
   context.go('/', extra:extra);
-  
+
+
+}
+
+
+void goRouterToFlashCardRush(BuildContext context,[Object? extra]){
+  log("Going to: Flashcards Rush");
+  context.go('/flash_cards_rush', extra:extra);
+
+}
+void goRouterToFlashCardReader(BuildContext context,[Object? extra]){
+  log("Going to: Flashcards Readder");
+  context.go('/flash_cards_reader', extra:extra);
 
 }

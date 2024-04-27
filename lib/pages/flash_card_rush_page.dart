@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcards/fc_difficulty.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
@@ -13,22 +16,27 @@ import 'package:stoodee/utilities/page_utilities/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 import 'package:stoodee/utilities/page_utilities/flashcards/empty_flashcard_reader_scaffold.dart';
+import 'package:stoodee/utilities/reusables/timer.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
+import 'package:stoodee/utilities/page_utilities/flashcards/fc_rush_widdgets.dart';
 
-class FlashCardsReader extends StatefulWidget {
-  const FlashCardsReader({super.key, required this.flashcardSet});
+class FlashCardsRush extends StatefulWidget {
+  const FlashCardsRush({super.key, required this.flashcardSet});
 
   final DatabaseFlashcardSet flashcardSet;
 
   @override
-  State<FlashCardsReader> createState() => _FlashCardsReaderState();
+  State<FlashCardsRush> createState() => _FlashCardsRushState();
 }
 
-class _FlashCardsReaderState extends State<FlashCardsReader>
+class _FlashCardsRushState extends State<FlashCardsRush>
     with TickerProviderStateMixin {
   late final AnimationController _animationController;
   late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
+  int score=0;
+
+
 
   @override
   void initState() {
@@ -111,7 +119,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
 
   void _showEmptySetSnackbar(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ScaffoldMessenger.of(context).showSnackBar(
+          (_) => ScaffoldMessenger.of(context).showSnackBar(
         createErrorSnackbar(
             "Current set is empty. Add some flashcards before studying!"),
       ),
@@ -127,14 +135,15 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     return Scaffold(
       backgroundColor: usertheme.backgroundColor,
       appBar: CustomAppBar(
-        leading: const Text(''),
+        leading:  Text(widget.flashcardSet.name,style: TextStyle(color: usertheme.textColor),),
         titleWidget: Text(
-          widget.flashcardSet.name,
+          "-",
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
+        leftWidget: Text("FlashcardRush",style: TextStyle(color: usertheme.textColor)),
       ),
       body: Stack(
         children: [
@@ -159,6 +168,8 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     );
   }
 
+
+
   Widget _buildFlashcardStack({
     required DatabaseFlashcard currentFlashcard,
     required int totalFlashcardsCount,
@@ -168,14 +179,17 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
       child: Column(
         children: [
           _buildReturnButton(),
-          buildProgressBar(
-            completed: _completedCount,
-            totalCount: totalFlashcardsCount,
-          ),
+
+          TimerWidget(startingseconds: 300,func: (){
+            print("Timer outer: finished");
+          },),
+
+
+
           const SizedBox(height: 20),
           SizedBox(
-            width: 500,
-            height: 500,
+            width: 300,
+            height: 300,
             child: FlipCard(
               speed: 250,
               onFlip: () {
@@ -193,6 +207,23 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
               ),
             ),
           ),
+          Row(
+            children: [
+              Gap(MediaQuery.of(context).size.width*0.2),
+              Column(
+                children: [
+                  Text("Score:",style: TextStyle(color: usertheme.textColor),),
+                  Text("$score",style: TextStyle(color: usertheme.textColor),),
+                ],
+              ),
+              Expanded(child: Container(),flex: 3,),
+              BuildMissExes(1),
+              Expanded(child:Container(),flex: 2),
+
+            ],
+          ),
+
+
           const Expanded(child: Text("")),
           _buildDifficultyRow(
             currentFlashcard: currentFlashcard,
@@ -241,42 +272,13 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildDifficultyButton(
-              buttonText: "Easy",
-              onPressed: () => _handleDifficultyButtonPress(
-                currentFlashcard: currentFlashcard,
-                difficultyChange: -1,
-                removeFcFunction: removeFcFunction,
-              ),
-              displayDateText: getDisplayDateText(
-                calculateFcDisplayDate(
-                    cardDifficulty: currentFlashcard.cardDifficulty - 1),
-              ),
-            ),
-            _buildDifficultyButton(
-              buttonText: "Medium",
-              onPressed: () => _handleDifficultyButtonPress(
-                currentFlashcard: currentFlashcard,
-                difficultyChange: 0,
-                removeFcFunction: removeFcFunction,
-              ),
-              displayDateText: getDisplayDateText(
-                calculateFcDisplayDate(
-                    cardDifficulty: currentFlashcard.cardDifficulty),
-              ),
-            ),
-            _buildDifficultyButton(
-              buttonText: "Hard",
-              onPressed: () => _handleDifficultyButtonPress(
-                currentFlashcard: currentFlashcard,
-                difficultyChange: 2,
-                removeFcFunction: removeFcFunction,
-              ),
-              displayDateText: getDisplayDateText(
-                calculateFcDisplayDate(
-                    cardDifficulty: currentFlashcard.cardDifficulty + 2),
-              ),
-            ),
+
+            StoodeeButton(child: Text("zle"), onPressed: (){print("zle");}),
+
+
+            StoodeeButton(child: Text("dobrze"), onPressed: (){print("dobrze");})
+
+
           ],
         ),
       );

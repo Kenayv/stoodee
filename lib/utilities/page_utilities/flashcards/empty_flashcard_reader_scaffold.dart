@@ -57,7 +57,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 15),
-                  child: const Text("empty"),
+                  child: Text("empty",style:TextStyle(color:usertheme.textColor)),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),

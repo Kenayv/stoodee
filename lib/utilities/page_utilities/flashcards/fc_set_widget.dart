@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
+import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/dialogs/delete_fcset_dialog.dart';
@@ -13,7 +14,8 @@ void tap(
   BuildContext context,
   SetContainer container,
 ) {
-  context.go('/flash_cards_reader', extra: container);
+  goRouterToFlashCardReader(context,container);
+
 }
 
 class FlashCardSetWidget extends StatefulWidget {
