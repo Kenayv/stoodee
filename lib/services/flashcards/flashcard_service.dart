@@ -17,65 +17,57 @@ class FlashcardsService {
 
   DatabaseFlashcard getRandFromList({
     required List<DatabaseFlashcard> fcList,
+    bool? mustBeActive,
   }) {
     if (!_initialized) throw FcServiceNotInitialized();
     if (fcList.isEmpty) throw FlashcardListEmpty();
 
     int randIndex = Random().nextInt(fcList.length);
 
+    if (mustBeActive != null && mustBeActive) {
+      while (fcList[randIndex].displayDate.isBefore(DateTime.now())) {
+        randIndex = Random().nextInt(fcList.length);
+      }
+    }
+
     return fcList[randIndex];
   }
 
   Future<void> incrFcsCompleted() async {
     final user = LocalDbController().currentUser;
-    await LocalDbController().incrFcsCompleted(
-      user: user,
-    );
+
+    await LocalDbController().incrFcsCompleted(user: user);
   }
 
   Future<void> reloadFlashcardSets() async {
-    _flashcardSets = null;
-
-    _flashcardSets = await LocalDbController().getUserFlashcardSets(
-      user: LocalDbController().currentUser,
-    );
+    _flashcardSets = await LocalDbController()
+        .getUserFlashcardSets(user: LocalDbController().currentUser);
   }
 
   Future<List<DatabaseFlashcardSet>> getFlashcardSets() async {
     if (!_initialized) {
-      _flashcardSets = await LocalDbController().getUserFlashcardSets(
-        user: LocalDbController().currentUser,
-      );
+      _flashcardSets = await LocalDbController()
+          .getUserFlashcardSets(user: LocalDbController().currentUser);
       _initialized = true;
     }
 
     return _flashcardSets!;
   }
 
-  Future<List<DatabaseFlashcard>> loadAllFlashcardsFromSet({
+  Future<List<DatabaseFlashcard>> loadFlashcardsFromSet({
     required DatabaseFlashcardSet fcSet,
+    required bool mustBeActive,
   }) async {
     final flashcards = await LocalDbController().getFlashcardsFromSet(
       fcSet: fcSet,
     );
 
-    return flashcards.where((card) => card.flashcardSetId == fcSet.id).toList();
-  }
+    if (mustBeActive) {
+      final now = DateTime.now();
+      return flashcards.where((card) => now.isAfter(card.displayDate)).toList();
+    }
 
-  Future<List<DatabaseFlashcard>> loadActiveFlashcardsFromSet({
-    required DatabaseFlashcardSet fcSet,
-  }) async {
-    final flashcards = await LocalDbController().getFlashcardsFromSet(
-      fcSet: fcSet,
-    );
-
-    final now = DateTime.now();
-    return flashcards
-        .where(
-          (card) =>
-              card.flashcardSetId == fcSet.id && now.isAfter(card.displayDate),
-        )
-        .toList();
+    return flashcards;
   }
 
   Future<DatabaseFlashcardSet> createFcSet({required String name}) async {
@@ -108,6 +100,8 @@ class FlashcardsService {
       fcSet: fcSet,
       name: name,
     );
+
+    fcSet.setName(name);
   }
 
   Future<void> removeFlashcard({
@@ -151,7 +145,8 @@ class FlashcardsService {
     required DatabaseFlashcard fc,
     required int newDifficulty,
   }) async {
-    final newDisplayDate = calculateDateToShowFc(cardDifficulty: newDifficulty);
+    final newDisplayDate =
+        calculateFcDisplayDate(cardDifficulty: newDifficulty);
 
     await LocalDbController().setFcdifficulty(
       flashcard: fc,

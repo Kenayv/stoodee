@@ -37,8 +37,10 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
 
     _animationController =
         AnimationController(vsync: this, duration: Durations.extralong4);
-    _loadFlashcardsFuture = FlashcardsService()
-        .loadActiveFlashcardsFromSet(fcSet: widget.flashcardSet);
+    _loadFlashcardsFuture = FlashcardsService().loadFlashcardsFromSet(
+      fcSet: widget.flashcardSet,
+      mustBeActive: true,
+    );
   }
 
   @override
@@ -76,7 +78,10 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
                     color: usertheme.backgroundColor,
                   );
                 } else {
-                  final fc = FlashcardsService().getRandFromList(fcList: fcs);
+                  final fc = FlashcardsService().getRandFromList(
+                    fcList: fcs,
+                    mustBeActive: false,
+                  );
 
                   return _buildFlashcardsScaffold(
                     context: context,
@@ -169,12 +174,9 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           ),
           const SizedBox(height: 20),
           SizedBox(
-
             width: 300,
             height: 300,
             child: FlipCard(
-
-
               speed: 250,
               onFlip: () {
                 setState(() {
@@ -247,7 +249,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
                 removeFcFunction: removeFcFunction,
               ),
               displayDateText: getDisplayDateText(
-                calculateDateToShowFc(
+                calculateFcDisplayDate(
                     cardDifficulty: currentFlashcard.cardDifficulty - 1),
               ),
             ),
@@ -259,7 +261,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
                 removeFcFunction: removeFcFunction,
               ),
               displayDateText: getDisplayDateText(
-                calculateDateToShowFc(
+                calculateFcDisplayDate(
                     cardDifficulty: currentFlashcard.cardDifficulty),
               ),
             ),
@@ -271,7 +273,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
                 removeFcFunction: removeFcFunction,
               ),
               displayDateText: getDisplayDateText(
-                calculateDateToShowFc(
+                calculateFcDisplayDate(
                     cardDifficulty: currentFlashcard.cardDifficulty + 2),
               ),
             ),
@@ -294,7 +296,10 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           onPressed: onPressed,
           child: Text(buttonText, style: biggerButtonTextStyle),
         ),
-        Text(displayDateText,style: TextStyle(color: usertheme.textColor),),
+        Text(
+          displayDateText,
+          style: TextStyle(color: usertheme.textColor),
+        ),
       ],
     );
   }

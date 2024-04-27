@@ -1,4 +1,4 @@
-DateTime calculateDateToShowFc({required int cardDifficulty}) {
+DateTime calculateFcDisplayDate({required int cardDifficulty}) {
   //Cards might have higher/lower difficulty than 10/1. If so, set it to max/min
   if (cardDifficulty >= 10) cardDifficulty = 10;
   if (cardDifficulty <= 1) cardDifficulty = 1;
