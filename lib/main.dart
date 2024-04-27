@@ -5,13 +5,6 @@ import 'package:stoodee/services/router/go_router_service.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initApp();
-
-  runApp(const MyApp());
-}
-
 Future<void> initApp() async {
   await SharedPrefs().init();
   await AuthService.firebase().init();
@@ -24,19 +17,11 @@ Future<void> initApp() async {
 
   await LocalDbController().init();
 
-
-
-if(SharedPrefs().prefferedTheme==SharedPrefs.lightTheme){
-  usertheme=whitetheme;
-
-}
-else{
-  usertheme=blacktheme;
-}
-
-
-
-
+  if (SharedPrefs().prefferedTheme == SharedPrefs.lightTheme) {
+    usertheme = whitetheme;
+  } else {
+    usertheme = blacktheme;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -44,8 +29,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: goRouterService,
-    );
+    return MaterialApp.router(routerConfig: goRouterService);
   }
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initApp();
+
+  runApp(const MyApp());
 }

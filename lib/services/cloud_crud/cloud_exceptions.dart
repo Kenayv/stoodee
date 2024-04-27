@@ -19,3 +19,5 @@ class CouldNotFindCloudFcSet implements Exception {}
 class CouldNotDeleteCloudFc implements Exception {}
 
 class UserNotFoundException implements Exception {}
+
+class NullCloudIdException implements Exception {}
