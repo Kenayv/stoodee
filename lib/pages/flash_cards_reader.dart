@@ -1,3 +1,4 @@
+import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:lottie/lottie.dart';
@@ -30,6 +31,8 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
   late final AnimationController _animationController;
   late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
 
+  late FlipCardController flipCardController;
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +44,8 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
       fcSet: widget.flashcardSet,
       mustBeActive: true,
     );
+
+    flipCardController=FlipCardController();
   }
 
   @override
@@ -174,9 +179,10 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           ),
           const SizedBox(height: 20),
           SizedBox(
-            width: 500,
-            height: 500,
+            width: MediaQuery.of(context).size.width*0.85,
+            height: MediaQuery.of(context).size.height*0.45,
             child: FlipCard(
+              controller: flipCardController,
               speed: 250,
               onFlip: () {
                 setState(() {
@@ -320,6 +326,12 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     required int difficultyChange,
     required Function removeFcFunction,
   }) async {
+
+    if(!flipCardController.state!.isFront){
+      flipCardController.toggleCardWithoutAnimation();
+      _showNavigation = false;
+    }
+
     _addProgress();
     _setNavigationFalse();
     removeFcFunction();

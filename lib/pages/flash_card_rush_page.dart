@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:gap/gap.dart';
@@ -76,6 +77,8 @@ class _FlashCardsRushState extends State<FlashCardsRush>
   late final AnimationController _animationController;
   late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
 
+  late FlipCardController flipCardController;
+
   @override
   void initState() {
     super.initState();
@@ -87,6 +90,10 @@ class _FlashCardsRushState extends State<FlashCardsRush>
       fcSet: widget.flashcardSet,
       mustBeActive: false,
     );
+
+    flipCardController=FlipCardController();
+
+
   }
 
   @override
@@ -219,6 +226,13 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     void handleCorrectButtonPress() {
       score++;
       _showNavigation = false;
+
+      if(!flipCardController.state!.isFront){
+        flipCardController.toggleCardWithoutAnimation();
+        _showNavigation = false;
+      }
+
+
       fc = FlashcardsService().getRandFromList(fcList: flashcards);
       setState(() {});
     }
@@ -226,19 +240,25 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     void handleWrongButtonPress() {
       missCount++;
       _showNavigation = false;
+
+      if(!flipCardController.state!.isFront){
+        flipCardController.toggleCardWithoutAnimation();
+        _showNavigation = false;
+
+      }
+
       fc = FlashcardsService().getRandFromList(fcList: flashcards);
 
       setState(() {});
     }
 
-    FlipCard test;
 
     return Center(
       child: Column(
         children: [
           _buildReturnButton(),
           TimerWidget(
-            startingseconds: 6,
+            startingseconds: 100,
             func: () async {
               await showFinishScreen(
                 context: context,
@@ -250,9 +270,10 @@ class _FlashCardsRushState extends State<FlashCardsRush>
           ),
           const SizedBox(height: 20),
           SizedBox(
-            width: 300,
-            height: 300,
+            width: MediaQuery.of(context).size.width*0.85,
+            height: MediaQuery.of(context).size.height*0.45,
             child: FlipCard(
+              controller: flipCardController,
               speed: 250,
               onFlip: () {
                 setState(() {

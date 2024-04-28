@@ -14,7 +14,7 @@ void tap(
   BuildContext context,
   SetContainer container,
 ) {
-  goRouterToFlashCardRush(context, container);
+  goRouterToFlashCardReader(context, container);
 }
 
 class FlashCardSetWidget extends StatefulWidget {
