@@ -24,7 +24,7 @@ Future<dynamic> genericInputDialog({
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(contentText ?? ''),
+            Text(contentText ?? '',style:TextStyle(color:usertheme.textColor)),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: inputs,
