@@ -496,6 +496,28 @@ class LocalDbController {
     return task;
   }
 
+  Future<void> updateUserFcRushHighscore({
+    required DatabaseUser user,
+    required int value,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure user exists in database and isn't hard-coded
+    final dbUser = await getUser(email: user.email);
+    if (dbUser != user) throw CouldNotFindTask();
+
+    final updateCount = await db.update(
+      userTable,
+      {
+        flashcardRushHighscoreColumn: value,
+      },
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateTask();
+  }
+
   Future<DatabaseUser> getNullUser() async {
     return await getUser(email: defaultNullUserEmail);
   }

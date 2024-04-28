@@ -28,13 +28,17 @@ Future<void> showFinishScreen({
   required DatabaseUser user,
   required int score,
   required int missCount,
-}) async {
+}) {
   String titleText = "Rush is over! Score: $score";
   String contentText =
       "You have achieved a score of $score points!\nWith a miss count of: $missCount.\nYour previous highscore was ${user.flashcardRushHighscore}.";
 
   if (score > user.flashcardRushHighscore) {
     titleText = "New highscore! Score: $score ";
+    LocalDbController().updateUserFcRushHighscore(
+      user: user,
+      value: score,
+    );
   }
 
   return showDialog<void>(
