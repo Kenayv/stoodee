@@ -2,7 +2,6 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
-import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
