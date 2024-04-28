@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/page_utilities/flashcards/fc_set_widget.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
@@ -37,14 +38,14 @@ class _FlashcardsPage extends State<FlashcardsPage> {
 
     for (int i = 0; i < fcSets.length; i++) {
       var flashCardSetWidget = FlashCardSetWidget(
-          context: context,
-          fcSet: fcSets[i],
-          name: fcSets[i].name,
-          onLongPressed: () async => deleteSetDialog(
-            context,
-            fcSets[i],
-          ),
-        );
+        context: context,
+        fcSet: fcSets[i],
+        name: fcSets[i].name,
+        onLongPressed: () async => deleteSetDialog(
+          context,
+          fcSets[i],
+        ),
+      );
       flashcardList.add(
         flashCardSetWidget,
       );

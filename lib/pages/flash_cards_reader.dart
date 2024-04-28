@@ -30,6 +30,8 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     with TickerProviderStateMixin {
   late final AnimationController _animationController;
   late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
+  late DatabaseFlashcard currentFlashcard;
+  bool shouldRandomizeFc = true;
 
   late FlipCardController flipCardController;
 
@@ -45,7 +47,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
       mustBeActive: true,
     );
 
-    flipCardController=FlipCardController();
+    flipCardController = FlipCardController();
   }
 
   @override
@@ -83,16 +85,19 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
                     color: usertheme.backgroundColor,
                   );
                 } else {
-                  final fc = FlashcardsService().getRandFromList(
-                    fcList: fcs,
-                    mustBeActive: false,
-                  );
+                  if (shouldRandomizeFc) {
+                    currentFlashcard = FlashcardsService().getRandFromList(
+                      fcList: fcs,
+                      mustBeActive: false,
+                    );
+                    shouldRandomizeFc = false;
+                  }
 
                   return _buildFlashcardsScaffold(
                     context: context,
                     flashcards: fcs,
                     totalFlashcardsCount: totalFcsCount,
-                    currentFlashcard: fc,
+                    currentFlashcard: currentFlashcard,
                   );
                 }
               } on FlashcardListEmpty {
@@ -179,8 +184,8 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           ),
           const SizedBox(height: 20),
           SizedBox(
-            width: MediaQuery.of(context).size.width*0.85,
-            height: MediaQuery.of(context).size.height*0.45,
+            width: MediaQuery.of(context).size.width * 0.85,
+            height: MediaQuery.of(context).size.height * 0.38,
             child: FlipCard(
               controller: flipCardController,
               speed: 250,
@@ -326,12 +331,12 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     required int difficultyChange,
     required Function removeFcFunction,
   }) async {
-
-    if(!flipCardController.state!.isFront){
+    if (!flipCardController.state!.isFront) {
       flipCardController.toggleCardWithoutAnimation();
       _showNavigation = false;
     }
 
+    shouldRandomizeFc = true;
     _addProgress();
     _setNavigationFalse();
     removeFcFunction();

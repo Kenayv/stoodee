@@ -10,11 +10,40 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
-void tap(
+Future<void> showRegularOrFcRushDialog(
   BuildContext context,
   SetContainer container,
 ) {
-  goRouterToFlashCardReader(context, container);
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Select flashcards mode"),
+        content: const Text("Selech preffered game mode:"),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('normal mode'),
+            onPressed: () {
+              goRouterToFlashCardReader(context, container);
+            },
+          ),
+          TextButton(
+            child: const Text('flashcards Rush'),
+            onPressed: () {
+              goRouterToFlashCardRush(context, container);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void tap(
+  BuildContext context,
+  SetContainer container,
+) async {
+  await showRegularOrFcRushDialog(context, container);
 }
 
 class FlashCardSetWidget extends StatefulWidget {
