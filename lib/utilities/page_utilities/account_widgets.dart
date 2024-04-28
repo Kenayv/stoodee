@@ -40,12 +40,19 @@ Container buildStatsContainer(DatabaseUser user) {
   const String defaultStatString = 'Log-in to see stats!';
 
   String currentStreak = defaultStatString;
+
   String completedTasks = defaultStatString;
   String incompleteTasks = defaultStatString;
   String taskCompletion = defaultStatString;
   String fcRushHighscore = defaultStatString;
   String completedFlashcards = defaultStatString;
   String longestStreak = defaultStatString;
+
+  if (!LocalDbController().isNullUser(user)) {
+    currentStreak = currentStreak + currentStreak == '1' ? 'day' : 'days';
+    longestStreak = longestStreak + longestStreak == '1' ? 'day' : 'days';
+    taskCompletion = '$taskCompletion%';
+  }
 
   if (!LocalDbController().isNullUser(user)) {
     currentStreak = user.currentDayStreak.toString();
@@ -97,15 +104,9 @@ Container buildStatsContainer(DatabaseUser user) {
         buildStatItem('Flashcards Rush highscore', fcRushHighscore),
         buildStatItem('Completed tasks', completedTasks),
         buildStatItem('Incomplete tasks', incompleteTasks),
-        buildStatItem('Task completion rate', '$taskCompletion%'),
-        buildStatItem(
-          'Current streak',
-          '$currentStreak ${currentStreak == '1' ? 'day' : 'days'}',
-        ),
-        buildStatItem(
-          'Longest streak',
-          '$longestStreak ${longestStreak == '1' ? 'day' : 'days'}',
-        ),
+        buildStatItem('Task completion rate', taskCompletion),
+        buildStatItem('Current streak', currentStreak),
+        buildStatItem('Longest streak', longestStreak),
       ],
     ),
   );
