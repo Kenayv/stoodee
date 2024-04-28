@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
-import 'package:flutter/src/scheduler/binding.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
@@ -141,7 +140,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
       appBar: CustomAppBar(
         leading: Text(
           widget.flashcardSet.name,
-          style: TextStyle(color: usertheme.textColor),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         titleWidget: const Text(
           "-",
@@ -152,7 +151,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
         ),
         leftWidget: Text(
           "FlashcardRush",
-          style: TextStyle(color: usertheme.textColor),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: Stack(
@@ -302,6 +301,8 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     required Function handleWrongAnswerFunc,
     required Function handleCorrectAnswerFunc,
   }) {
+    double textSize = 25;
+
     if (_showNavigation) {
       return Container(
         decoration: const BoxDecoration(
@@ -312,13 +313,17 @@ class _FlashCardsRushState extends State<FlashCardsRush>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             StoodeeButton(
-                child: const Text("Wrong"),
+                child: Text(
+                  "Wrong",
+                  style: TextStyle(color: Colors.white, fontSize: textSize),
+                ),
                 onPressed: () {
                   handleWrongAnswerFunc();
                   shouldRandomizeFc = true;
                 }),
             StoodeeButton(
-                child: const Text("Correct"),
+                child: Text("Correct",
+                    style: TextStyle(color: Colors.white, fontSize: textSize)),
                 onPressed: () {
                   handleCorrectAnswerFunc();
                   shouldRandomizeFc = true;

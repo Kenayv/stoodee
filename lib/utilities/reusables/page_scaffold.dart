@@ -36,20 +36,28 @@ class _PageScaffold extends State<PageScaffold> {
         return "?";
     }
   }
+  bool isGestureHandled = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onHorizontalDragEnd: (DragEndDetails details) {
-        if (details.primaryVelocity! > 0) {
-          // Swiped right
-          changeTab(currentIndex - 1);
-          log("SwipeVelocity: ${details.velocity}");
-        } else if (details.primaryVelocity! < 0) {
-          // Swiped left
-          changeTab(currentIndex + 1);
-          log("SwipeVelocity: ${details.velocity}");
+      onHorizontalDragUpdate: (DragUpdateDetails details) {
+        if (!isGestureHandled) {
+          if (details.delta.dx > 0) {
+            // Swiped right
+            changeTab(currentIndex - 1);
+            log("SwipeVelocity: ${details.delta.dx}");
+          } else if (details.delta.dx < 0) {
+            // Swiped left
+            changeTab(currentIndex + 1);
+            log("SwipeVelocity: ${details.delta.dx}");
+          }
+          isGestureHandled = true; // Mark the gesture as handled
         }
+      },
+      onHorizontalDragEnd: (DragEndDetails details) {
+        // Reset the flag when the drag ends
+        isGestureHandled = false;
       },
       child: Scaffold(
         backgroundColor: usertheme.backgroundColor,

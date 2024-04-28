@@ -12,7 +12,7 @@ ListView taskListViewIntro({
     itemCount: 3,
     itemBuilder: (context, index) {
       return taskItem(
-        text: "task${index + 1}",
+        text: "task ${index + 1}",
       );
     },
   );
@@ -99,7 +99,7 @@ List<Widget> flashcardSetListViewIntro({
       FlashCardSetWidgetIntro(
         //FIXME: onLongPressed function could be passed right there as an argument.to allow setting state.
         context: context,
-        name: "set$i",
+        name: "set $i",
         fcSetlength: 3 - i,
       ),
     );

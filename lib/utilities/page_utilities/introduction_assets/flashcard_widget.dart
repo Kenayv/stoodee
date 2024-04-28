@@ -88,7 +88,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   createNeutralSnackbar(
-                                      "Its just a introduction. We can not add a flashcard. \nFor more, finish the preview :D"));
+                                      "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
                             },
                             child: const Icon(
                               Icons.add,
@@ -126,7 +126,14 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
         ),
       ),
       onTap: () {
-        "tapped";
+        ScaffoldMessenger.of(context).showSnackBar(
+            createNeutralSnackbar(
+                "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
+      },
+      onLongPress: (){
+        ScaffoldMessenger.of(context).showSnackBar(
+            createNeutralSnackbar(
+                "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
       },
       splashColor: Colors.transparent,
     );
