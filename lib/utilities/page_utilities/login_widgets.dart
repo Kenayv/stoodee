@@ -200,8 +200,8 @@ GestureDetector buildSkipLoginButton(BuildContext context) {
     child: Text(
       "skip log-in",
       style: TextStyle(
-          fontSize: 12,
-          color: Colors.grey.shade400,
+          fontSize: 20,
+          color: Colors.black54,
           decoration: TextDecoration.underline,
           decorationColor: Colors.grey.shade400),
     ),
