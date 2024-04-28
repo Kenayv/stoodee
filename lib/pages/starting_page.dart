@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/router/route_functions.dart';
+import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class StartingPage extends StatefulWidget {
@@ -15,7 +16,6 @@ class _StartingPage extends State<StartingPage> {
   void initState() {
     super.initState();
 
-/*
     if (!SharedPrefs().rememberHasSeenIntro) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => goRouterToIntro(context),
@@ -32,7 +32,6 @@ class _StartingPage extends State<StartingPage> {
       );
     }
 
- */
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => goRouterToIntro(context),
     );
