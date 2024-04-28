@@ -16,7 +16,7 @@ class _StartingPage extends State<StartingPage> {
   void initState() {
     super.initState();
 
-
+/*
     if (!SharedPrefs().rememberHasSeenIntro) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => goRouterToIntro(context),
@@ -33,6 +33,10 @@ class _StartingPage extends State<StartingPage> {
       );
     }
 
+ */
+    WidgetsBinding.instance.addPostFrameCallback(
+          (_) => goRouterToIntro(context),
+    );
 
 
 

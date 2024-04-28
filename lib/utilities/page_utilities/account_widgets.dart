@@ -9,7 +9,10 @@ import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
+import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
+
+import '../../services/local_crud/crud_exceptions.dart';
 
 StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
   if (AuthService.firebase().currentUser == null) {
@@ -171,11 +174,21 @@ Align buildSettingsButton({required void Function() onPressed}) {
   );
 }
 
-StoodeeButton buildSyncWithCloudButton() {
+StoodeeButton buildSyncWithCloudButton(BuildContext context) {
   return StoodeeButton(
     child: const Icon(Icons.sync, color: Colors.white),
     onPressed: () async {
-      await LocalDbController().syncWithCloud();
+      try{
+        await LocalDbController().syncWithCloud();
+        ScaffoldMessenger.of(context).showSnackBar(createSuccessSnackbar("Succesfully synced with cloud"));
+
+      } on CannotSyncNullUser{
+            ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("Log-in first"));
+      }
+      on CannotSyncSoFrequently{
+        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("cannot sync so frequently"));
+
+      }
     },
   );
 }

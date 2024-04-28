@@ -200,94 +200,23 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   decoration: getPageDecoration1(),
                 ),
                 PageViewModel(
-                  title: 'Just a second, and we are ready to go!',
-                  bodyWidget: Column(
-                    children: [
-                      const Gap(10),
-                      TextField(
-                        textInputAction: TextInputAction.next,
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          hintText: 'Your name',
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: primaryAppColor),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                        ),
-                        controller: nameController,
-                      ),
-                      TextField(
-                        textInputAction: TextInputAction.next,
-                        autocorrect: false,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: 'Goal for tasks per day',
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: primaryAppColor),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                        ),
-                        controller: taskController,
-                      ),
-                      TextField(
-                        textInputAction: TextInputAction.done,
-                        autocorrect: false,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: 'Goal for flashcards per day',
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: primaryAppColor),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                        ),
-                        controller: flashCardsController,
-                      ),
-                    ],
-                  ),
-                  image: Icon(Icons.settings,
-                      color: primaryAppColor,
-                      size: MediaQuery.of(context).size.width * 0.35), //120
-                  footer: Padding(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05),
-                    child: const Text('Have fun studying!',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            fontFamily: 'Roboto',
-                            height: 0.8,
-                            letterSpacing: 0.8)),
-                  ),
+
+                  title: "Have fun learning!",
+                  body: "In settings you will be able to set how many tasks and flashcards you can do per day",
+
                   decoration: getPageDecoration2(),
                 ),
               ],
               onDone: () async {
 
-                if(nameController.text.isNotEmpty&&
-                taskController.text.isNotEmpty&&
-                flashCardsController.text.isNotEmpty){
+
                   goRouterToLogin(context);
                   await SharedPrefs().setHasSeenIntro(value: true);
 
                   //backend here
 
-                }
-                else{
-                  ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("Wypelnij wszystkie pola"));
-                }
+
+
 
 
 
