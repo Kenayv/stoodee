@@ -4,6 +4,7 @@ import 'package:stoodee/utilities/theme/theme.dart';
 Future<dynamic> genericInputDialog({
   required BuildContext context,
   required String title,
+  String? contentText,
   required List<TextField> inputs,
   DropdownButtonFormField<String>? selectmenus,
   required Function()
@@ -16,10 +17,14 @@ Future<dynamic> genericInputDialog({
     builder: (context) {
       return AlertDialog(
         backgroundColor: usertheme.backgroundColor,
-        title: Text(title,style: TextStyle(color:usertheme.textColor),),
+        title: Text(
+          title,
+          style: TextStyle(color: usertheme.textColor),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(contentText ?? ''),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: inputs,
@@ -30,13 +35,19 @@ Future<dynamic> genericInputDialog({
         actions: [
           additionalButton ?? voidWidget,
           TextButton(
-            child:  Text('Cancel',style: TextStyle(color: usertheme.textColor),),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: usertheme.textColor),
+            ),
             onPressed: () {
               Navigator.of(context).pop(null);
             },
           ),
           TextButton(
-            child:  Text('OK',style: TextStyle(color: usertheme.textColor),),
+            child: Text(
+              'OK',
+              style: TextStyle(color: usertheme.textColor),
+            ),
             onPressed: () {
               Navigator.of(context).pop(function());
             },

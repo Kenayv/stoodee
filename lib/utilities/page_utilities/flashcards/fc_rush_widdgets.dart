@@ -1,11 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
-
-void handleTimeOut() {
-  print("ended lol");
-}
 
 Container buildTimer() {
   Container container = Container();

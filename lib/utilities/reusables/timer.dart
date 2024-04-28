@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class TimerWidget extends StatefulWidget {
-  TimerWidget({required this.startingseconds, required this.func});
+  const TimerWidget(
+      {super.key, required this.startingseconds, required this.func});
 
   final int startingseconds;
   final Function() func;
 
   @override
-  _TimerWidgetState createState() => _TimerWidgetState();
+  State<TimerWidget> createState() => _TimerWidgetState();
 }
 
 class _TimerWidgetState extends State<TimerWidget> {
@@ -19,6 +20,7 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   void initState() {
+    super.initState();
     startTimer();
   }
 
@@ -29,9 +31,8 @@ class _TimerWidgetState extends State<TimerWidget> {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_seconds <= 1) {
-        print("Timer internal: Finished");
         widget.func();
         _timer?.cancel();
         _seconds = 1;
@@ -48,6 +49,7 @@ class _TimerWidgetState extends State<TimerWidget> {
     _seconds = 0;
   }
 
+  @override
   Widget build(BuildContext context) {
     int minutes = _seconds ~/ 60;
     int seconds = _seconds % 60;

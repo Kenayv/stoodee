@@ -36,6 +36,7 @@ class _PageScaffold extends State<PageScaffold> {
         return "?";
     }
   }
+
   bool isGestureHandled = false;
 
   @override
@@ -64,7 +65,7 @@ class _PageScaffold extends State<PageScaffold> {
         appBar: CustomAppBar(
           title: indexToTitle(currentIndex + 1),
           titleWidget: Text(indexToTitle(currentIndex + 1),
-              style:  const TextStyle(
+              style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold)),
           leading: const Text(''),
         ),
@@ -73,7 +74,6 @@ class _PageScaffold extends State<PageScaffold> {
           data: ThemeData(
             splashColor: Colors.transparent,
             //highlightColor: Colors.transparent,
-
           ),
           child: SafeArea(
             child: Container(
@@ -81,9 +81,9 @@ class _PageScaffold extends State<PageScaffold> {
               padding:
                   const EdgeInsets.only(top: 4, bottom: 4, left: 18, right: 18),
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 color: usertheme.primaryAppColor,
-                borderRadius: BorderRadius.all(Radius.circular(24)),
+                borderRadius: const BorderRadius.all(Radius.circular(24)),
               ),
               child: BottomNavigationBar(
                 elevation: 0,
@@ -131,22 +131,22 @@ class _PageScaffold extends State<PageScaffold> {
     if (index >= 0 && index < 5) {
       switch (index) {
         case 0:
-          goRouterToToDo(context,currentIndex + 1);
+          goRouterToToDo(context, currentIndex + 1);
           break;
         case 1:
-          goRouterToFlashCards(context,currentIndex+1);
+          goRouterToFlashCards(context, currentIndex + 1);
           break;
 
         case 2:
-          goRouterToMain(context,currentIndex + 1);
+          goRouterToMain(context, currentIndex + 1);
           break;
 
         case 3:
-          goRouterToAchievements(context,currentIndex + 1);
+          goRouterToAchievements(context, currentIndex + 1);
           break;
 
         case 4:
-          goRouterToAccount(context,currentIndex + 1);
+          goRouterToAccount(context, currentIndex + 1);
           break;
 
         default:

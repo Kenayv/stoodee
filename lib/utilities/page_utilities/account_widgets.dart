@@ -98,13 +98,13 @@ Container buildStatsContainer(DatabaseUser user) {
         boxShadow: [
           BoxShadow(
             color: usertheme.basicShaddow,
-            offset: Offset(1, 1),
+            offset: const Offset(1, 1),
           )
         ]),
     child: Column(
       children: [
         buildStatItem('Completed flashcards', completedFlashcards),
-        buildStatItem('Flashcards Rush highscore', fcRushHighscore),
+        buildStatItem('Fc Rush highscore', fcRushHighscore),
         buildStatItem('Completed tasks', completedTasks),
         buildStatItem('Incomplete tasks', incompleteTasks),
         buildStatItem('Task completion rate', taskCompletion),
@@ -178,16 +178,16 @@ StoodeeButton buildSyncWithCloudButton(BuildContext context) {
   return StoodeeButton(
     child: const Icon(Icons.sync, color: Colors.white),
     onPressed: () async {
-      try{
+      try {
         await LocalDbController().syncWithCloud();
-        ScaffoldMessenger.of(context).showSnackBar(createSuccessSnackbar("Succesfully synced with cloud"));
-
-      } on CannotSyncNullUser{
-            ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("Log-in first"));
-      }
-      on CannotSyncSoFrequently{
-        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("cannot sync so frequently"));
-
+        ScaffoldMessenger.of(context).showSnackBar(
+            createSuccessSnackbar("Succesfully synced with cloud"));
+      } on CannotSyncNullUser {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(createErrorSnackbar("Log-in first"));
+      } on CannotSyncSoFrequently {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(createErrorSnackbar("cannot sync so frequently"));
       }
     },
   );

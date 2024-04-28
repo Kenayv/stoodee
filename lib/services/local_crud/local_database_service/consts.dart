@@ -1,11 +1,4 @@
-import 'dart:developer';
-
-import 'package:stoodee/services/auth/auth_service.dart';
-import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
-
-//FIXME: remove debug prefix
-const dbName = 'debug1_tasks.db';
+const dbName = 'tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -140,32 +133,6 @@ String getDateAsFormattedString(DateTime date) {
 
 String getCurrentDateAsFormattedString() {
   return getDateAsFormattedString(DateTime.now());
-}
-
-void debug___Print___info({
-  required bool sharedprefs,
-  required bool authService,
-  required bool localDbUser,
-}) {
-  String allDebugStrings;
-  allDebugStrings = '[START] ALL INFO PRINT [START]\n\n';
-
-  if (sharedprefs) {
-    allDebugStrings +=
-        'Initialized [sharedPrefs] with values:\n   remember has seen intro = [${SharedPrefs().rememberHasSeenIntro}]\n   remember Login Data = [${SharedPrefs().rememberLoginData}]\n\n\n';
-  }
-  if (authService) {
-    allDebugStrings +=
-        'Initialized AuthService with values:\n   Current user = [${AuthService.firebase().currentUser ?? 'null'}]\n\n\n';
-  }
-  if (localDbUser) {
-    allDebugStrings +=
-        'Initialized localdb with values:\n   Current user = [${LocalDbController().currentUser.toString()}]\n\n';
-  }
-
-  allDebugStrings += '[END] Debug log After Init [END]\n.';
-
-  log(allDebugStrings);
 }
 
 /// Returns the difference (in full days) between the provided date and today.

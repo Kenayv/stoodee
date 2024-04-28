@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +53,7 @@ Column stoodeeLinearGauge({
           maximum: couldBeZero(max),
           interval: determineInterval(max),
           showTicks: false,
-          axisLabelStyle: TextStyle(color:usertheme.textColor),
+          axisLabelStyle: TextStyle(color: usertheme.textColor),
           barPointers: [
             LinearBarPointer(
                 value: value.toDouble(),

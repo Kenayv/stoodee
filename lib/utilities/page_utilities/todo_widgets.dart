@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
-import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
@@ -40,11 +39,11 @@ ListTile taskItem({
     minVerticalPadding: 10,
     splashColor: Colors.transparent,
     title: Container(
-      decoration: BoxDecoration(boxShadow:  [
+      decoration: BoxDecoration(boxShadow: [
         BoxShadow(
           color: usertheme.basicShaddow,
           blurRadius: 1,
-          offset: Offset(1, 2),
+          offset: const Offset(1, 2),
         )
       ], borderRadius: BorderRadius.circular(15.0)),
       child: ClipRRect(
@@ -86,7 +85,7 @@ ListTile taskItem({
             }
           },
           child: Container(
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               color: usertheme.analogousColor,
             ),
             child: ListTile(

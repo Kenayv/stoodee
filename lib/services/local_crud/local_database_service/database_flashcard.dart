@@ -4,7 +4,7 @@ class DatabaseFlashcard {
   final int id;
   final int flashcardSetId;
   final int userId;
-  late String _frontText; //FIXME: make those changable in localdbcontroller
+  late String _frontText;
   late String _backText;
   late int _cardDifficulty;
   late DateTime _displayDate;

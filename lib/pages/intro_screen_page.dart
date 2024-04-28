@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:gap/gap.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,7 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import 'package:stoodee/utilities/page_utilities/introduction_assets/introduction_assets.dart';
-import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
-
-import '../utilities/reusables/bullet_list.dart';
+import 'package:stoodee/utilities/reusables/bullet_list.dart';
 
 class IntroductionScreens extends StatefulWidget {
   const IntroductionScreens({super.key});
@@ -73,7 +70,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                           letterSpacing: 1.4),
                       child: Column(
                         children: [
-                          Gap(40),
+                          const Gap(40),
                           AnimatedTextKit(
                               repeatForever: false,
                               totalRepeatCount: 1,
@@ -88,7 +85,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   bodyWidget: const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'We will help you with studying 😎',
+                        'We will help you study 😎',
                         style: TextStyle(
                             color: Colors.black54,
                             fontSize: 20,
@@ -123,11 +120,11 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                           child: taskListViewIntro(context: context)),
                     ),
                   ]),
-                  bodyWidget: Align(
+                  bodyWidget: const Align(
                     alignment: Alignment.centerLeft,
                     child: Column(
                       children: [
-                        const Text(
+                        Text(
                           'Task list',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -138,15 +135,17 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                           textAlign: TextAlign.left,
                         ),
                         Gap(20),
-                        BulletList(["Swpie left, task will be deleted.", "Swpie right, task will be finished."]),
-
+                        BulletList([
+                          "Swipe left, and the task will be deleted and marked as incomplete.",
+                          "Swipe right, and the task will be marked as finished."
+                        ]),
                       ],
                     ),
                   ),
                   footer: Padding(
                     padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * 0.05),
-                    child: const Text('Organize your studies',
+                    child: const Text('Organize your Stoodying',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
@@ -166,13 +165,13 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                       items: flashcardSetListViewIntro(context: context),
                     )),
                   ),
-                  bodyWidget:  Column(
+                  bodyWidget: const Column(
                     children: [
                       Gap(10),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Fiszki',
+                          'Flashcards',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 50,
@@ -181,8 +180,13 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                               letterSpacing: 1.4),
                           textAlign: TextAlign.left,
                         ),
-                      ),Gap(40),
-                      BulletList(["Press on a plus icon, flashcard will be added.", "Press on a whole set, you will open it. ","Press longer, set will be ddeleted"]),
+                      ),
+                      Gap(40),
+                      BulletList([
+                        "Tap on a plus icon, and flashcard will be added.",
+                        "Tap on the whole set, and you will open it. ",
+                        "Hold the set, and it will be deleted"
+                      ]),
                     ],
                   ),
                   footer: Padding(
@@ -200,26 +204,17 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   decoration: getPageDecoration1(),
                 ),
                 PageViewModel(
-
                   title: "Have fun learning!",
-                  body: "In settings you will be able to set how many tasks and flashcards you can do per day",
-
+                  body:
+                      "In settings you will be able to set how many tasks and flashcards you can do per day",
                   decoration: getPageDecoration2(),
                 ),
               ],
               onDone: () async {
+                goRouterToLogin(context);
+                await SharedPrefs().setHasSeenIntro(value: true);
 
-
-                  goRouterToLogin(context);
-                  await SharedPrefs().setHasSeenIntro(value: true);
-
-                  //backend here
-
-
-
-
-
-
+                //backend here
               },
               //ClampingScrollPhysics prevent the scroll offset from exceeding the bounds of the content.
 
@@ -273,13 +268,12 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
       footerFlex: 0,
       footerPadding: const EdgeInsets.only(top: 10),
       titleTextStyle: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: (MediaQuery.of(context).size.height) * 0.03,
-        fontFamily: 'Roboto Mono',
-        height: 0.8,
-        letterSpacing: 0
-      ),
-      titlePadding: const EdgeInsets.only(top: 0,bottom:20),
+          fontWeight: FontWeight.bold,
+          fontSize: (MediaQuery.of(context).size.height) * 0.03,
+          fontFamily: 'Roboto Mono',
+          height: 0.8,
+          letterSpacing: 0),
+      titlePadding: const EdgeInsets.only(top: 0, bottom: 20),
       imagePadding: const EdgeInsets.only(bottom: 30, top: 0),
       bodyTextStyle: const TextStyle(
           color: Colors.black54, fontSize: 15, fontFamily: 'Roboto'),

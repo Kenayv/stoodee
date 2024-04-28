@@ -2,7 +2,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
-import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/stoodee_gauge.dart';
 import 'package:stoodee/utilities/reusables/stoodee_linear_gauge.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
@@ -42,14 +41,13 @@ List<String> funFactsList = [
   "Rewarding yourself with small treats or breaks after completing study goals can provide motivation and reinforce positive study habits.",
 ];
 
-
 Container buildFunFactBox({
   required BuildContext context,
 }) {
   //FIXME: add max length to a single funfact text
 
   funFactsList.shuffle();
-  String animatedText=funFactsList[0];
+  String animatedText = funFactsList[0];
 
   return Container(
     height: MediaQuery.of(context).size.height * 0.11,
@@ -61,14 +59,17 @@ Container buildFunFactBox({
         boxShadow: [
           BoxShadow(
             color: usertheme.basicShaddow,
-            offset: Offset(1, 1),
+            offset: const Offset(1, 1),
           )
         ]),
     child: AnimatedTextKit(
       repeatForever: false,
       totalRepeatCount: 1,
       animatedTexts: [
-        TypewriterAnimatedText(animatedText,textStyle: TextStyle(color:usertheme.textColor),speed: defaultWriterSpeed,cursor: "|")
+        TypewriterAnimatedText(animatedText,
+            textStyle: TextStyle(color: usertheme.textColor),
+            speed: defaultWriterSpeed,
+            cursor: "|")
       ],
     ),
   );
@@ -99,8 +100,8 @@ Row buildGaugeRow(BuildContext context, DatabaseUser user) {
         child: stoodeeGauge(
           value: tasksGaugeValue,
           max: user.dailyGoalTasks,
-          titleIcon:
-              Icon(StoodeeIcons.tasks, color: usertheme.primaryAppColor, size: iconSize),
+          titleIcon: Icon(StoodeeIcons.tasks,
+              color: usertheme.primaryAppColor, size: iconSize),
           containerHeight: gaugeContainerHeight,
         ),
       ),

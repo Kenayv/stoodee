@@ -1,7 +1,6 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
 class DatabaseFlashcardSet {
-  //FIXME: in fcservice or localdbcontroller make it change on SetName
   final int id;
   final int userId;
   String _name;

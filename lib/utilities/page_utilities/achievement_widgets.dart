@@ -5,7 +5,6 @@ import 'package:stoodee/services/achievements/const_achievements.dart';
 import 'package:stoodee/services/cloud_crud/cloud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class AchievementTileContainer {
@@ -45,14 +44,14 @@ class AchievementTile extends StatelessWidget {
         );
       },
       child: Container(
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
             color: usertheme.analogousColor,
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
             boxShadow: [
               BoxShadow(
                 color: usertheme.basicShaddow,
                 blurRadius: 1,
-                offset: Offset(1, 2),
+                offset: const Offset(1, 2),
               )
             ]),
         child: Column(

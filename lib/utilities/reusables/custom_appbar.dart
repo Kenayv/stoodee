@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
-
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
@@ -25,17 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       decoration: BoxDecoration(
         color: usertheme.primaryAppColor,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        boxShadow: [
-          /*
-          BoxShadow(
-            color: primaryAppColor.withOpacity(0.3),
-            offset: const Offset(0, 5),
-            blurRadius: 20,
-          ),
-
-           */
-        ],
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25 / 2.5),

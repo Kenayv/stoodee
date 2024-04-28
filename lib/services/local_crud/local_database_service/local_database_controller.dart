@@ -241,10 +241,8 @@ class LocalDbController {
       await _db!.execute(createFlashcardSetTable);
       await _db!.execute(createFlashcardTable);
     } on MissingPlatformDirectoryException {
-      print('Could not open database!');
       rethrow;
     } catch (e) {
-      print('error ${e.toString()}');
       rethrow;
     }
   }
@@ -541,6 +539,7 @@ class LocalDbController {
 
     if (updateCount != 1) throw CouldNotUpdateTask();
 
+    user.setFlashcardRushHighscore(value);
     await _setUserLastChangesNow(user: user);
   }
 
@@ -565,28 +564,14 @@ class LocalDbController {
     return allFcSets.where((fcSet) => fcSet.userId == user.id).toList();
   }
 
-  //FIXME: niezły syf. ADD USERID PROPERTY TO FLASHCARD!!
   Future<List<DatabaseFlashcard>> getUserFlashcards({
     required DatabaseUser user,
   }) async {
-    final userFcSets = await getUserFlashcardSets(user: user);
-
     List<DatabaseFlashcard> flashcards = await _getAllDbFlashcards();
 
-    // Filter flashcards based on the user's flashcard sets
-    List<DatabaseFlashcard> userFlashcards = [];
-    for (var flashcard in flashcards) {
-      // Fetch the flashcard set associated with the flashcard
-      final flashcardSet = userFcSets.firstWhere(
-        (fcSet) => fcSet.id == flashcard.flashcardSetId,
-      );
-      // If the flashcard set belongs to the user, add the flashcard to userFlashcards
-      if (flashcardSet.userId == user.id) {
-        userFlashcards.add(flashcard);
-      }
-    }
-
-    return userFlashcards;
+    return flashcards
+        .where((flashcard) => flashcard.userId == user.id)
+        .toList();
   }
 
   Future<List<DatabaseFlashcard>> getFlashcardsFromSet({

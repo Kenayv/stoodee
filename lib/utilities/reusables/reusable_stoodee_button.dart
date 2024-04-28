@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class StoodeeButton extends StatelessWidget {
@@ -41,16 +40,15 @@ class StoodeeButton extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onPressed,
       child: Container(
-        decoration:  BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          boxShadow: [
-            BoxShadow(
-              color: usertheme.basicShaddow,
-              blurRadius: 1,
-              offset: Offset(1,2),
-            )
-          ]
-        ),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            boxShadow: [
+              BoxShadow(
+                color: usertheme.basicShaddow,
+                blurRadius: 1,
+                offset: const Offset(1, 2),
+              )
+            ]),
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           child: Container(

@@ -140,7 +140,8 @@ class _FlashCardsRushState extends State<FlashCardsRush>
       appBar: CustomAppBar(
         leading: Text(
           widget.flashcardSet.name,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         titleWidget: const Text(
           "-",
@@ -149,7 +150,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
             fontWeight: FontWeight.bold,
           ),
         ),
-        leftWidget: Text(
+        leftWidget: const Text(
           "FlashcardRush",
           style: TextStyle(color: Colors.white),
         ),

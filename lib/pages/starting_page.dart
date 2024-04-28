@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
@@ -35,15 +34,12 @@ class _StartingPage extends State<StartingPage> {
 
  */
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) => goRouterToIntro(context),
+      (_) => goRouterToIntro(context),
     );
-
-
-
-
-
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(backgroundColor: usertheme.backgroundColor,);
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: usertheme.backgroundColor,
+      );
 }

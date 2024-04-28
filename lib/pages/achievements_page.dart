@@ -1,4 +1,4 @@
-import'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:stoodee/services/cloud_crud/cloud_exceptions.dart';
 import 'package:stoodee/utilities/page_utilities/achievement_widgets.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
@@ -26,8 +26,7 @@ class _AchievementsPage extends State<AchievementsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'You have unlocked ${userAchivs
-                    .length} out of 12 achievements!',
+                'You have unlocked ${userAchivs.length} out of 12 achievements!',
                 style: TextStyle(fontSize: 13, color: usertheme.textColor),
               ),
               Expanded(
@@ -44,14 +43,13 @@ class _AchievementsPage extends State<AchievementsPage> {
           ),
         ),
       );
-    } on NullUserException{
+    } on NullUserException {
       return Scaffold(
         backgroundColor: usertheme.backgroundColor,
-        body: Center(
-         child:Text("log-in to see achievements"),
+        body: const Center(
+          child: Text("log-in to see achievements"),
         ),
       );
     }
-
   }
 }

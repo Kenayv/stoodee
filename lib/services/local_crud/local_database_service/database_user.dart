@@ -115,6 +115,7 @@ class DatabaseUser {
   void setLastSynced(DateTime date) => _lastSynced = date;
 
   void setCloudId(String cloudId) => _cloudId = cloudId;
+  void setFlashcardRushHighscore(int score) => _flashcardRushHighscore = score;
 
   @override
   String toString() =>

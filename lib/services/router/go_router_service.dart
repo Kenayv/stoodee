@@ -13,15 +13,14 @@ import 'package:stoodee/pages/account_page.dart';
 import 'package:stoodee/utilities/reusables/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
 import 'package:stoodee/utilities/page_utilities/achievement_widgets.dart';
-import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/dialogs/achievement_dialog.dart';
 import 'package:stoodee/utilities/dialogs/side_sheet_page.dart';
-import '../../pages/flash_card_rush_page.dart';
-import '../../utilities/dialogs/deleting_set_dialog.dart';
-import '../../utilities/dialogs/dialog_page.dart';
-import '../../utilities/dialogs/not_for_production_use/custom_dialog.dart';
+import 'package:stoodee/pages/flash_card_rush_page.dart';
+import 'package:stoodee/utilities/dialogs/deleting_set_dialog.dart';
+import 'package:stoodee/utilities/dialogs/dialog_page.dart';
+import 'package:stoodee/utilities/dialogs/not_for_production_use/custom_dialog.dart';
 
 String resolveSwipeDirection(Object from, int where) {
   String sTemp = from.toString();
@@ -268,20 +267,6 @@ final GoRouter goRouterService = GoRouter(
             pageBuilder: (context, state) {
               final fromIndex = state.extra ?? "none";
 
-              //FIXME
-              //FIXME
-              //FIXME
-
-              debug___Print___info(
-                sharedprefs: true,
-                authService: true,
-                localDbUser: true,
-              );
-
-              //FIXME
-              //FIXME
-              //FIXME
-
               int whereIndex = 5;
 
               String direction = resolveSwipeDirection(fromIndex, whereIndex);
@@ -358,7 +343,6 @@ final GoRouter goRouterService = GoRouter(
             },
           ),
         ]),
-
     GoRoute(
         path: '/flash_cards_rush',
         pageBuilder: (context, state) {
@@ -375,7 +359,7 @@ final GoRouter goRouterService = GoRouter(
               const end = Offset.zero;
               const curve = Curves.easeOutQuint;
               var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
               return SlideTransition(
                   position: animation.drive(tween), child: child);
@@ -408,8 +392,6 @@ final GoRouter goRouterService = GoRouter(
             },
           ),
         ]),
-
-
     GoRoute(
         path: '/login',
         pageBuilder: (context, state) {

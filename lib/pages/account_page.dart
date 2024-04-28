@@ -49,7 +49,7 @@ class _AccountPage extends State<AccountPage> {
                     Center(child: buildUsername(currentUser)),
                     const Center(
                         child: Text(
-                      'Statystyki:',
+                      'Your stats:',
                       style: TextStyle(color: Colors.grey),
                     )),
                     const Divider(color: Colors.grey, thickness: 2),

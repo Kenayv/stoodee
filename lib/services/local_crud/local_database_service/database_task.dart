@@ -3,8 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class DatabaseTask {
   final int id;
   final int userId;
-  late String _text;
-  //FIXME: make this changable in localdbcontroller using setText
+  final String _text;
 
   DatabaseTask({
     required this.id,
@@ -34,5 +33,4 @@ class DatabaseTask {
   int get hashCode => id.hashCode;
 
   String get text => _text;
-  void setText(String text) => _text = text;
 }

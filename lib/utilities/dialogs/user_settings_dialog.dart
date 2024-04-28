@@ -14,19 +14,18 @@ Future<void> showUserSettingsDialog({
   TextEditingController nameController = TextEditingController();
   TextEditingController fcGoalController = TextEditingController();
   TextEditingController taskGoalController = TextEditingController();
-  TextEditingController userThemeController = TextEditingController();
-  String selectedTheme=SharedPrefs().prefferedTheme;
+  String selectedTheme = SharedPrefs().prefferedTheme;
 
   return genericInputDialog(
     context: context,
+    contentText: 'Leave the fields below empty to keep them unchanged.',
     title: 'User settings',
     inputs: [
       TextField(
         style: TextStyle(color: usertheme.textColor),
         controller: nameController,
         decoration: InputDecoration(
-
-          hintStyle: TextStyle(color:usertheme.textColor.withOpacity(0.3)),
+          hintStyle: TextStyle(color: usertheme.textColor.withOpacity(0.3)),
           hintText: 'New username',
         ),
       ),
@@ -36,12 +35,13 @@ Future<void> showUserSettingsDialog({
         style: TextStyle(color: usertheme.textColor),
         keyboardType: TextInputType.number,
         controller: taskGoalController,
-        decoration:  InputDecoration(
-
+        decoration: InputDecoration(
           hintText: 'warning! change resets today\'s progress.',
           labelText: 'daily tasks goal',
-          hintStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
-          labelStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
+          hintStyle: TextStyle(
+              fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
+          labelStyle: TextStyle(
+              fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
         ),
       ),
       TextField(
@@ -50,11 +50,13 @@ Future<void> showUserSettingsDialog({
         //sliders would work best
         keyboardType: TextInputType.number,
         controller: fcGoalController,
-        decoration:  InputDecoration(
+        decoration: InputDecoration(
           hintText: 'warning! change resets today\'s progress.',
           labelText: 'daily flashcards goal',
-          hintStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
-          labelStyle: TextStyle(fontSize: 14,color: usertheme.textColor.withOpacity(0.3)),
+          hintStyle: TextStyle(
+              fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
+          labelStyle: TextStyle(
+              fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
         ),
       ),
 
@@ -68,17 +70,14 @@ Future<void> showUserSettingsDialog({
       ),
 
        */
-
-
     ],
     selectmenus: DropdownButtonFormField<String>(
-      style: TextStyle(
-        color:usertheme.textColor
-      ),
+      style: TextStyle(color: usertheme.textColor),
       value: selectedTheme,
       decoration: InputDecoration(
         labelText: 'Select Theme',
-        labelStyle: TextStyle(fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
+        labelStyle: TextStyle(
+            fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
       ),
       dropdownColor: usertheme.backgroundColor,
       items: const [
@@ -98,29 +97,35 @@ Future<void> showUserSettingsDialog({
       },
     ),
     function: () async {
-      if (nameController.text.isNotEmpty &&
-          fcGoalController.text.isNotEmpty &&
-          taskGoalController.text.isNotEmpty) {
+      if (nameController.text.isNotEmpty) {
         final newName = nameController.text;
-        final newFcGoal = int.parse(fcGoalController.text);
-        final newTaskGoal = int.parse(taskGoalController.text);
-
-        await LocalDbController().setUserName(user: user, name: newName);
-        await LocalDbController()
-            .setUserDailyTaskGoal(user: user, taskGoal: newTaskGoal);
-        await LocalDbController()
-            .setUserDailyFlashcardGoal(user: user, flashcardGoal: newFcGoal);
-
-        await SharedPrefs().setPrefferedTheme(value: selectedTheme);
-        user.setName(newName);
-        user.setDailyFlashcardsGoal(newFcGoal);
-        user.setDailyTaskGoal(newTaskGoal);
-        reEvalTheme();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          createErrorSnackbar("make sure all fields are filled"),
+        await LocalDbController().setUserName(
+          user: user,
+          name: newName,
         );
+        user.setName(newName);
       }
+
+      if (taskGoalController.text.isNotEmpty) {
+        final newTaskGoal = int.parse(taskGoalController.text);
+        await LocalDbController().setUserDailyTaskGoal(
+          user: user,
+          taskGoal: newTaskGoal,
+        );
+        user.setDailyTaskGoal(newTaskGoal);
+      }
+
+      if (fcGoalController.text.isNotEmpty) {
+        final newFcGoal = int.parse(fcGoalController.text);
+        await LocalDbController().setUserDailyFlashcardGoal(
+          user: user,
+          flashcardGoal: newFcGoal,
+        );
+        user.setDailyFlashcardsGoal(newFcGoal);
+      }
+
+      await SharedPrefs().setPrefferedTheme(value: selectedTheme);
+      reEvalTheme();
     },
   );
 }

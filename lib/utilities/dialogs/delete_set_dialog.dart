@@ -38,9 +38,9 @@ Future<dynamic> genericDeleteSetDialog({
         }),
         actions: [
           TextButton(
-            child:  Text('Nevermind',style:TextStyle(color: usertheme.primaryAppColor)),
+            child: Text('Nevermind',
+                style: TextStyle(color: usertheme.primaryAppColor)),
             onPressed: () {
-              print("not deleted");
               Navigator.of(context).pop(null);
             },
           ),
