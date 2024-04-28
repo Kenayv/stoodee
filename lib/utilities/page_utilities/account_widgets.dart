@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
@@ -85,8 +87,7 @@ Container buildStatsContainer(DatabaseUser user) {
         color: usertheme.backgroundColor.withOpacity(0.9),
         boxShadow: [
           BoxShadow(
-            color: usertheme.basicShaddow
-            ,
+            color: usertheme.basicShaddow,
             offset: Offset(1, 1),
           )
         ]),
@@ -118,18 +119,12 @@ Padding buildStatItem(String title, String value) {
       children: [
         Text(
           "$title:",
-          style:  TextStyle(
-            fontSize: 16,
-            color: usertheme.textColor
-          ),
+          style: TextStyle(fontSize: 16, color: usertheme.textColor),
         ),
         const Gap(20),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 16,
-            color: usertheme.textColor
-          ),
+          style: TextStyle(fontSize: 16, color: usertheme.textColor),
         ),
       ],
     ),

@@ -5,8 +5,9 @@ class DatabaseUser {
   final String email;
   late String? _cloudId;
   late String _name;
-  late DateTime _lastSynced;
+  late DateTime _lastChanges;
   late DateTime _lastStreakBroken;
+  late DateTime _lastSynced;
   late int _totalFlashcardsCompleted;
   late int _totalTasksCompleted;
   late DateTime _lastStudied;
@@ -17,6 +18,7 @@ class DatabaseUser {
   late int _currentDayStreak;
   late int _streakHighScore;
   late int _flashcardRushHighscore;
+
   late int _totalIncompleteTasks;
 
   DatabaseUser({
@@ -24,8 +26,9 @@ class DatabaseUser {
     required this.email,
     required String? cloudId,
     required String name,
-    required DateTime lastSynced,
+    required DateTime lastChanges,
     required DateTime lastStreakBroken,
+    required DateTime lastSynced,
     required DateTime lastStudied,
     required int dailyGoalFlashcards,
     required int dailyGoalTasks,
@@ -39,8 +42,9 @@ class DatabaseUser {
     required int totalIncompleteTasks,
   })  : _cloudId = cloudId,
         _name = name,
-        _lastSynced = lastSynced,
+        _lastChanges = lastChanges,
         _lastStreakBroken = lastStreakBroken,
+        _lastSynced = lastSynced,
         _dailyGoalFlashcards = dailyGoalFlashcards,
         _dailyGoalTasks = dailyGoalTasks,
         _flashcardsCompletedToday = flashcardsCompletedToday,
@@ -59,6 +63,7 @@ class DatabaseUser {
         email = map[emailColumn] as String,
         _name = map[nameColumn] as String,
         _lastSynced = parseStringToDateTime(map[lastSyncedColumn] as String),
+        _lastChanges = parseStringToDateTime(map[lastChangesColumn] as String),
         _lastStreakBroken =
             parseStringToDateTime(map[lastStreakBrokenColumn] as String),
         _lastStudied = parseStringToDateTime(map[lastStudiedColumn] as String),
@@ -75,8 +80,9 @@ class DatabaseUser {
 
   String get name => _name;
   String? get cloudId => _cloudId;
-  DateTime get lastSynced => _lastSynced;
+  DateTime get lastChanges => _lastChanges;
   DateTime get lastStreakBroken => _lastStreakBroken;
+  DateTime get lastSynced => _lastSynced;
   DateTime get lastStudied => _lastStudied;
   int get dailyGoalFlashcards => _dailyGoalFlashcards;
   int get dailyGoalTasks => _dailyGoalTasks;
@@ -89,7 +95,7 @@ class DatabaseUser {
   int get flashcardRushHighscore => _flashcardRushHighscore;
   int get totalIncompleteTasks => _totalIncompleteTasks;
 
-  void setLastSynced(DateTime date) => _lastSynced = date;
+  void setLastChanges(DateTime date) => _lastChanges = date;
   void setLastStreakBroken(DateTime date) => _lastStreakBroken = date;
   void setLastStudied(DateTime date) => _lastStudied = date;
   void setName(String name) => _name = name;
@@ -106,19 +112,20 @@ class DatabaseUser {
       _flashcardsCompletedToday = completed;
   void setTasksCompletedToday(int completed) =>
       _tasksCompletedToday = completed;
+  void setLastSynced(DateTime date) => _lastSynced = date;
 
   void setCloudId(String cloudId) => _cloudId = cloudId;
 
   @override
   String toString() =>
-      'UserID = [$id],\n   cloudId = [$cloudId],\n   email = [$email],\n   userName = [$_name]\n   lastSynced = [$lastSynced]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$currentDayStreak]\n totalTasksCompleted = [$_totalTasksCompleted]\n   TotalFlashcardsCompleted = [$_totalFlashcardsCompleted]\n   streakHighScore = [$_streakHighScore]\n    incomplete tasks = [$_totalIncompleteTasks]\n   flashcardRush highscore = [$_flashcardRushHighscore]\n';
+      'UserID = [$id],\n   cloudId = [$cloudId],\n   email = [$email],\n   userName = [$_name]\n   lastChanges = [$lastChanges]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$currentDayStreak]\n totalTasksCompleted = [$_totalTasksCompleted]\n   TotalFlashcardsCompleted = [$_totalFlashcardsCompleted]\n   streakHighScore = [$_streakHighScore]\n    incomplete tasks = [$_totalIncompleteTasks]\n   flashcardRush highscore = [$_flashcardRushHighscore]\n';
 
   Map<String, dynamic> toJson() => {
         localIdColumn: id,
         emailColumn: email,
         cloudIdColumn: cloudId,
         nameColumn: _name,
-        lastSyncedColumn: getDateAsFormattedString(_lastSynced),
+        lastChangesColumn: getDateAsFormattedString(_lastChanges),
         lastStreakBrokenColumn: getDateAsFormattedString(_lastStreakBroken),
         totalFlashcardsCompletedColumn: _totalFlashcardsCompleted,
         totalTasksCompletedColumn: _totalTasksCompleted,
@@ -131,6 +138,7 @@ class DatabaseUser {
         streakHighscoreColumn: _streakHighScore,
         flashcardRushHighscoreColumn: _flashcardRushHighscore,
         totalIncompleteTasksColumn: _totalIncompleteTasks,
+        lastSyncedColumn: getDateAsFormattedString(_lastSynced),
       };
 
   @override

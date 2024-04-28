@@ -44,7 +44,7 @@ class TodoService {
     if (!_initialized) throw TodoServiceNotInitialized();
 
     final task = await LocalDbController().createTask(
-      owner: LocalDbController().currentUser,
+      user: LocalDbController().currentUser,
       text: text,
     );
 

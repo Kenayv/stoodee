@@ -17,9 +17,6 @@ class IntroductionScreens extends StatefulWidget {
 }
 
 class _IntroductionScreensState extends State<IntroductionScreens> {
-  //FIXME: NIE DISPOSUJA SIE
-  //FIXME: NIE DISPOSUJA SIE
-  //FIXME: NIE DISPOSUJA SIE
   late TextEditingController nameController;
   late TextEditingController taskController;
   late TextEditingController flashCardsController;
@@ -27,9 +24,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
   @override
   void initState() {
     super.initState();
-    //FIXME: NIE DISPOSUJA SIE
-    //FIXME: NIE DISPOSUJA SIE
-    //FIXME: NIE DISPOSUJA SIE
+
     nameController = TextEditingController();
     taskController = TextEditingController();
     flashCardsController = TextEditingController();

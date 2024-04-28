@@ -78,7 +78,7 @@ class LocalDbController {
   Future<void> reloadCurrentUser() async {
     if (_currentUser == null) throw UserNotFound();
 
-    _currentUser = await getUser(email: _currentUser!.email);
+    _currentUser = await getUserByEmail(email: _currentUser!.email);
   }
 
   //Current user is set to nullUser before logging in.
@@ -140,7 +140,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final newTotalCompletedCount = user.totalFlashcardsCompleted + 1;
@@ -163,6 +163,7 @@ class LocalDbController {
     user.setFcCompletedToday(newFlashcardsCompletedToday);
 
     await _updateUserStreakAfterChange(user: user);
+    await _setUserLastChangesNow(user: user);
   }
 
   Future<void> incrTasksCompleted({
@@ -171,7 +172,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final newTotalCompletedCount = user.totalTasksCompleted + 1;
@@ -195,6 +196,7 @@ class LocalDbController {
 
     user.setLastStudied(DateTime.now());
     await _updateUserStreakAfterChange(user: user);
+    await _setUserLastChangesNow(user: user);
   }
 
   Future<void> incrIncompleteTasks({
@@ -203,7 +205,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final newIncompleteTasksCount = user.totalIncompleteTasks + 1;
@@ -222,6 +224,7 @@ class LocalDbController {
 
     user.setTotalIncompleteTasks(newIncompleteTasksCount);
     user.setLastStudied(DateTime.now());
+    await _setUserLastChangesNow(user: user);
   }
 
   Future<void> openDb() async {
@@ -293,6 +296,7 @@ class LocalDbController {
       email: email,
       name: defaultUserName,
       lastSynced: parseStringToDateTime(defaultDateStr),
+      lastChanges: parseStringToDateTime(defaultDateStr),
       lastStreakBroken: parseStringToDateTime(defaultDateStr),
       lastStudied: parseStringToDateTime(defaultDateStr),
       dailyGoalFlashcards: defaultDailyFlashcardsGoal,
@@ -318,12 +322,27 @@ class LocalDbController {
     return user;
   }
 
-  Future<DatabaseUser> getUser({required String email}) async {
+  Future<DatabaseUser> getUserByEmail({required String email}) async {
     final DatabaseUser? user = await getUserOrNull(email: email);
 
     if (user == null) throw CouldNotFindUser();
 
     return user;
+  }
+
+  Future<DatabaseUser> getUserById({required int id}) async {
+    final db = _getDatabaseOrThrow();
+
+    final result = await db.query(
+      userTable,
+      limit: 1,
+      where: '$localIdColumn = ?',
+      whereArgs: [id],
+    );
+
+    if (result.isEmpty) throw CouldNotFindUser();
+
+    return DatabaseUser.fromRow(result.first);
   }
 
   Future<DatabaseUser?> getUserOrNull({required String email}) async {
@@ -347,7 +366,7 @@ class LocalDbController {
   }) async {
     final db = _getDatabaseOrThrow();
 
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     if (user.cloudId != null) throw UserCloudIdAlreadyInitialized();
@@ -360,22 +379,24 @@ class LocalDbController {
     );
 
     if (updatesCount != 1) throw CouldNotUpdateUser();
+    await _setUserLastChangesNow(user: user);
   }
 
-  Future<DatabaseUser> _setUserLastSynced({
+  Future<DatabaseUser> _setUserLastChangesNow({
     required DatabaseUser user,
-    required DateTime lastSynced,
   }) async {
     final db = _getDatabaseOrThrow();
 
     //make sure task exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
+
+    final now = DateTime.now();
 
     final updateCount = await db.update(
       userTable,
       {
-        lastSyncedColumn: getDateAsFormattedString(lastSynced),
+        lastChangesColumn: getDateAsFormattedString(now),
       },
       where: '$localIdColumn = ?',
       whereArgs: [user.id],
@@ -383,7 +404,7 @@ class LocalDbController {
 
     if (updateCount != 1) throw CouldNotUpdateTask();
 
-    user.setLastSynced(lastSynced);
+    user.setLastChanges(now);
 
     return user;
   }
@@ -395,7 +416,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure task exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -410,31 +431,36 @@ class LocalDbController {
     if (updateCount != 1) throw CouldNotUpdateTask();
 
     user.setLastStudied(lastStudied);
+    await _setUserLastChangesNow(user: user);
 
     return user;
   }
 
   Future<DatabaseTask> createTask({
-    required DatabaseUser owner,
+    required DatabaseUser user,
     required String text,
   }) async {
     final db = _getDatabaseOrThrow();
 
     final taskId = await db.insert(taskTable, {
-      userIdColumn: owner.id,
+      userIdColumn: user.id,
       textColumn: text,
     });
 
     final task = DatabaseTask(
       id: taskId,
-      userId: owner.id,
+      userId: user.id,
       text: text,
     );
+
+    await _setUserLastChangesNow(user: user);
 
     return task;
   }
 
-  Future<void> deleteTask({required DatabaseTask task}) async {
+  Future<void> deleteTask({
+    required DatabaseTask task,
+  }) async {
     final db = _getDatabaseOrThrow();
 
     //make sure task exists in database and isn't hard-coded
@@ -448,6 +474,9 @@ class LocalDbController {
     );
 
     if (deletedCount != 1) throw CouldNotDeleteTask();
+
+    final owner = await getUserById(id: task.userId);
+    await _setUserLastChangesNow(user: owner);
   }
 
   Future<List<DatabaseTask>> _getAllDbTasks() async {
@@ -462,14 +491,6 @@ class LocalDbController {
   }) async {
     List<DatabaseTask> allTasks = await _getAllDbTasks();
     return allTasks.where((task) => task.userId == user.id).toList();
-  }
-
-  Future<void> deleteAllTasks() async {
-    final db = _getDatabaseOrThrow();
-
-    final deletedCount = await db.delete(taskTable);
-
-    if (deletedCount <= 0) throw CouldNotDeleteTask();
   }
 
   Future<DatabaseTask> updateTask({
@@ -493,6 +514,9 @@ class LocalDbController {
 
     if (updateCount != 1) throw CouldNotUpdateTask();
 
+    final owner = await getUserById(id: task.userId);
+    await _setUserLastChangesNow(user: owner);
+
     return task;
   }
 
@@ -503,7 +527,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindTask();
 
     final updateCount = await db.update(
@@ -516,17 +540,19 @@ class LocalDbController {
     );
 
     if (updateCount != 1) throw CouldNotUpdateTask();
+
+    await _setUserLastChangesNow(user: user);
   }
 
   Future<DatabaseUser> getNullUser() async {
-    return await getUser(email: defaultNullUserEmail);
+    return await getUserByEmail(email: defaultNullUserEmail);
   }
 
   Future<void> setCurrentUser(DatabaseUser user) async {
     if (_db == null) throw DatabaseIsNotOpened();
 
     //Make sure the user exists and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     _currentUser = dbUser;
@@ -580,7 +606,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUser(email: owner.email);
+    final dbUser = await getUserByEmail(email: owner.email);
     if (dbUser != owner) throw CouldNotFindUser();
 
     final fcSetId = await db.insert(flashcardSetTable, {
@@ -589,7 +615,13 @@ class LocalDbController {
     });
 
     final fcSet = DatabaseFlashcardSet(
-        id: fcSetId, userId: owner.id, name: name, pairCount: 0);
+      id: fcSetId,
+      userId: owner.id,
+      name: name,
+      pairCount: 0,
+    );
+
+    await _setUserLastChangesNow(user: owner);
 
     return fcSet;
   }
@@ -628,6 +660,9 @@ class LocalDbController {
     if (fcSet.pairCount > 0) {
       await _deleteFlashcardsBySetId(fcSetId: fcSet.id);
     }
+
+    final owner = await getUserById(id: fcSet.userId);
+    await _setUserLastChangesNow(user: owner);
   }
 
   Future<void> _deleteFlashcardsBySetId({required int fcSetId}) async {
@@ -663,6 +698,9 @@ class LocalDbController {
 
     if (updateCount != 1) throw CouldNotUpdateFcSet();
 
+    final user = await getUserById(id: fcSet.userId);
+    await _setUserLastChangesNow(user: user);
+
     return fcSet;
   }
 
@@ -688,6 +726,9 @@ class LocalDbController {
     );
 
     if (updateCount != 1) throw CouldNotUpdateFlashCard();
+
+    final user = await getUserById(id: flashcard.userId);
+    await _setUserLastChangesNow(user: user);
 
     return flashcard;
   }
@@ -724,6 +765,9 @@ class LocalDbController {
       whereArgs: [flashcard.id],
     );
 
+    final user = await getUserById(id: flashcard.userId);
+    await _setUserLastChangesNow(user: user);
+
     if (updateCount != 1) throw CouldNotUpdateFlashCard();
   }
 
@@ -743,6 +787,9 @@ class LocalDbController {
       where: '$localIdColumn = ?',
       whereArgs: [flashcard.id],
     );
+
+    final user = await getUserById(id: flashcard.userId);
+    await _setUserLastChangesNow(user: user);
 
     if (updateCount != 1) throw CouldNotUpdateFlashCard();
   }
@@ -787,6 +834,7 @@ class LocalDbController {
       displayDate: parseStringToDateTime(defaultDateStr),
     );
 
+    await _setUserLastChangesNow(user: user);
     return flashcard;
   }
 
@@ -811,6 +859,9 @@ class LocalDbController {
 
     if (deletedCount != 1) throw CouldNotFindFlashCard();
     if (updateCount != 1) throw CouldNotFindFcSet();
+
+    final user = await getUserById(id: flashcard.userId);
+    await _setUserLastChangesNow(user: user);
   }
 
   Future<DatabaseFlashcard> getFlashcard({required int id}) async {
@@ -865,7 +916,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -880,6 +931,31 @@ class LocalDbController {
     user.setName(name);
 
     if (updateCount != 1) throw CouldNotUpdateUser();
+    await _setUserLastChangesNow(user: user);
+  }
+
+  Future<void> setLastSynced({
+    required DatabaseUser user,
+    required DateTime date,
+  }) async {
+    final db = _getDatabaseOrThrow();
+
+    //make sure user exists in database and isn't hard-coded
+    final dbUser = await getUserByEmail(email: user.email);
+    if (dbUser != user) throw CouldNotFindUser();
+
+    final updateCount = await db.update(
+      userTable,
+      {
+        lastSyncedColumn: getDateAsFormattedString(date),
+      },
+      where: '$localIdColumn = ?',
+      whereArgs: [user.id],
+    );
+
+    user.setLastSynced(date);
+
+    if (updateCount != 1) throw CouldNotUpdateUser();
   }
 
   Future<void> setUserDailyTaskGoal({
@@ -889,7 +965,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -904,6 +980,7 @@ class LocalDbController {
     user.setDailyTaskGoal(taskGoal);
 
     if (updateCount != 1) throw CouldNotUpdateUser();
+    await _setUserLastChangesNow(user: user);
   }
 
   Future<void> setUserDailyFlashcardGoal({
@@ -913,7 +990,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUser(email: user.email);
+    final dbUser = await getUserByEmail(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -928,6 +1005,7 @@ class LocalDbController {
     user.setDailyFlashcardsGoal(flashcardGoal);
 
     if (updateCount != 1) throw CouldNotUpdateUser();
+    await _setUserLastChangesNow(user: user);
   }
 
   Future<void> syncWithCloud() async {
@@ -940,10 +1018,11 @@ class LocalDbController {
     }
 
     //throw if user syncs too frequently
-    if (DateTime.now().difference(user.lastSynced).inMinutes < 20) {
+    if (DateTime.now().difference(user.lastSynced).inMinutes < 15) {
       throw CannotSyncSoFrequently();
     }
 
+    await setLastSynced(user: user, date: DateTime.now());
     //If userCloudId is null locally but exists in cloud:
     if (user.cloudId == null) {
       //Check if user exists in cloud db. If so, assign an id to them
@@ -953,7 +1032,7 @@ class LocalDbController {
       if (cloudId != null) {
         //set id and reload user
         await setUserCloudId(user: user, cloudId: cloudId);
-        user = await getUser(email: user.email);
+        user = await getUserByEmail(email: user.email);
       }
     }
 
@@ -961,7 +1040,7 @@ class LocalDbController {
         await CloudDbController().getUserOrNull(cloudId: user.cloudId);
 
     //push if user==null or cloud data is outdated
-    if (cloudUser == null || cloudUser.lastSynced.isBefore(user.lastSynced)) {
+    if (cloudUser == null || cloudUser.lastChanges.isBefore(user.lastChanges)) {
       await _saveAllToCloud(user);
     } else {
       await _loadAllFromCloud(user);
@@ -971,7 +1050,7 @@ class LocalDbController {
   Future<void> _saveAllToCloud(DatabaseUser user) async {
     log('Saving all to cloud');
 
-    await _setUserLastSynced(user: user, lastSynced: DateTime.now());
+    await _setUserLastChangesNow(user: user);
     await _setUserLastStudied(user: user, lastStudied: DateTime.now());
     await CloudDbController().saveAllToCloud(user: user);
   }

@@ -47,7 +47,11 @@ class _AccountPage extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(child: buildUsername(currentUser)),
-                    const Center(child: Text('Statystyki:',style: TextStyle(color: Colors.grey),)),
+                    const Center(
+                        child: Text(
+                      'Statystyki:',
+                      style: TextStyle(color: Colors.grey),
+                    )),
                     const Divider(color: Colors.grey, thickness: 2),
                     const Gap(15),
                     buildStatsContainer(currentUser),

@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 
 //FIXME: remove debug prefix
-const dbName = 'debug31_tasks.db';
+const dbName = 'debug1_tasks.db';
 
 const userTable = 'user';
 const taskTable = 'task';
@@ -16,7 +16,7 @@ const localIdColumn = 'ID';
 const cloudIdColumn = 'cloud_db_id';
 
 const emailColumn = 'email';
-const lastSyncedColumn = 'last_synced_column';
+const lastChangesColumn = 'last_changes';
 const lastStreakBrokenColumn = 'last_streak_broken';
 const lastStudiedColumn = 'last_studied';
 
@@ -26,6 +26,7 @@ const totalTasksCompletedColumn = 'total_tasks_completed';
 const nameColumn = 'name';
 const dailyGoalFlashcardsColumn = 'daily_goal_flashcards';
 const dailyGoalTasksColumn = 'daily_goal_tasks';
+const lastSyncedColumn = 'last_synced';
 
 const tasksCompletedTodayColumn = 'tasks_completed_today';
 const flashcardsCompletedTodayColumn = 'flashcards_completed_today';
@@ -33,7 +34,6 @@ const currentDayStreakColumn = 'current_day_streak';
 
 const textColumn = 'text';
 const userIdColumn = 'user_id';
-const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 
 const flashcardSetIdColumn = 'flashcard_set_id';
 const frontTextColumn = 'front_text';
@@ -61,6 +61,7 @@ const createUserTable = '''
     "$cloudIdColumn" TEXT UNIQUE NULL,
     "$emailColumn"	TEXT NOT NULL UNIQUE,
     "$nameColumn" TEXT NOT NULL DEFAULT "$defaultUserName",
+    "$lastChangesColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
     "$lastSyncedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
     "$lastStreakBrokenColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
     "$lastStudiedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
