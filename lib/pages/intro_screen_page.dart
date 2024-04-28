@@ -8,6 +8,7 @@ import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import 'package:stoodee/utilities/page_utilities/introduction_assets/introduction_assets.dart';
+import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
 class IntroductionScreens extends StatefulWidget {
   const IntroductionScreens({super.key});
@@ -246,8 +247,19 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                 ),
               ],
               onDone: () async {
-                goRouterToLogin(context);
-                await SharedPrefs().setHasSeenIntro(value: true);
+
+                if(nameController.text.isNotEmpty&&
+                taskController.text.isNotEmpty&&
+                flashCardsController.text.isNotEmpty){
+                  goRouterToLogin(context);
+                  await SharedPrefs().setHasSeenIntro(value: true);
+                }
+                else{
+                  ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar("Wypelnij wszystkie pola"));
+                }
+
+
+
               },
               //ClampingScrollPhysics prevent the scroll offset from exceeding the bounds of the content.
 
