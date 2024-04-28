@@ -1,13 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
-import 'package:stoodee/services/flashcards/fc_difficulty.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
+import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/page_utilities/flashcards/fc_reader_widget.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
@@ -20,6 +20,43 @@ import 'package:stoodee/utilities/reusables/timer.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 import 'package:stoodee/utilities/page_utilities/flashcards/fc_rush_widdgets.dart';
+
+//FIXME:
+
+Future<void> showFinishScreen({
+  required BuildContext context,
+  required DatabaseUser user,
+  required int score,
+  required int missCount,
+}) async {
+  String titleText = "Rush is over! Score: $score";
+  String contentText =
+      "You have achieved a score of $score points!\nWith a miss count of: $missCount.\nYour previous highscore was ${user.flashcardRushHighscore}.";
+
+  if (score > user.flashcardRushHighscore) {
+    titleText = "New highscore! Score: $score ";
+  }
+
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(titleText),
+        content: Text(contentText),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Continue'),
+            onPressed: () {
+              goRouterToMain(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+//FIXME:
 
 class FlashCardsRush extends StatefulWidget {
   const FlashCardsRush({super.key, required this.flashcardSet});
@@ -34,9 +71,6 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     with TickerProviderStateMixin {
   late final AnimationController _animationController;
   late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
-  int score=0;
-
-
 
   @override
   void initState() {
@@ -47,7 +81,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
         AnimationController(vsync: this, duration: Durations.extralong4);
     _loadFlashcardsFuture = FlashcardsService().loadFlashcardsFromSet(
       fcSet: widget.flashcardSet,
-      mustBeActive: true,
+      mustBeActive: false,
     );
   }
 
@@ -61,6 +95,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     goRouterToMain(context, "l");
   }
 
+  int score = 0;
   int _completedCount = 0;
   bool _showNavigation = false;
 
@@ -86,16 +121,10 @@ class _FlashCardsRushState extends State<FlashCardsRush>
                     color: usertheme.backgroundColor,
                   );
                 } else {
-                  final fc = FlashcardsService().getRandFromList(
-                    fcList: fcs,
-                    mustBeActive: false,
-                  );
-
-                  return _buildFlashcardsScaffold(
+                  return _buildFcRushScaffold(
                     context: context,
                     flashcards: fcs,
                     totalFlashcardsCount: totalFcsCount,
-                    currentFlashcard: fc,
                   );
                 }
               } on FlashcardListEmpty {
@@ -119,38 +148,42 @@ class _FlashCardsRushState extends State<FlashCardsRush>
 
   void _showEmptySetSnackbar(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ScaffoldMessenger.of(context).showSnackBar(
+      (_) => ScaffoldMessenger.of(context).showSnackBar(
         createErrorSnackbar(
             "Current set is empty. Add some flashcards before studying!"),
       ),
     );
   }
 
-  Widget _buildFlashcardsScaffold({
+  Widget _buildFcRushScaffold({
     required BuildContext context,
     required List<DatabaseFlashcard> flashcards,
     required int totalFlashcardsCount,
-    required DatabaseFlashcard currentFlashcard,
   }) {
     return Scaffold(
       backgroundColor: usertheme.backgroundColor,
       appBar: CustomAppBar(
-        leading:  Text(widget.flashcardSet.name,style: TextStyle(color: usertheme.textColor),),
-        titleWidget: Text(
+        leading: Text(
+          widget.flashcardSet.name,
+          style: TextStyle(color: usertheme.textColor),
+        ),
+        titleWidget: const Text(
           "-",
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        leftWidget: Text("FlashcardRush",style: TextStyle(color: usertheme.textColor)),
+        leftWidget: Text(
+          "FlashcardRush",
+          style: TextStyle(color: usertheme.textColor),
+        ),
       ),
       body: Stack(
         children: [
           _buildFlashcardStack(
-            currentFlashcard: currentFlashcard,
             totalFlashcardsCount: totalFlashcardsCount,
-            removeFcFunction: () => flashcards.remove(currentFlashcard),
+            flashcards: flashcards,
           ),
           IgnorePointer(
             child: Lottie.asset(
@@ -168,24 +201,49 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     );
   }
 
-
-
   Widget _buildFlashcardStack({
-    required DatabaseFlashcard currentFlashcard,
+    required List<DatabaseFlashcard> flashcards,
     required int totalFlashcardsCount,
-    required Function removeFcFunction,
   }) {
+    int missCount = 0;
+
+    var fc = FlashcardsService().getRandFromList(
+      fcList: flashcards,
+      mustBeActive: false,
+    );
+
+    void handleCorrectButtonPress() {
+      score++;
+      _showNavigation = false;
+      fc = FlashcardsService().getRandFromList(fcList: flashcards);
+      setState(() {});
+    }
+
+    void handleWrongButtonPress() {
+      missCount++;
+      _showNavigation = false;
+      fc = FlashcardsService().getRandFromList(fcList: flashcards);
+
+      setState(() {});
+    }
+
+    FlipCard test;
+
     return Center(
       child: Column(
         children: [
           _buildReturnButton(),
-
-          TimerWidget(startingseconds: 300,func: (){
-            print("Timer outer: finished");
-          },),
-
-
-
+          TimerWidget(
+            startingseconds: 6,
+            func: () async {
+              await showFinishScreen(
+                context: context,
+                user: LocalDbController().currentUser,
+                score: score,
+                missCount: missCount,
+              );
+            },
+          ),
           const SizedBox(height: 20),
           SizedBox(
             width: 300,
@@ -200,34 +258,41 @@ class _FlashCardsRushState extends State<FlashCardsRush>
               side: CardSide.FRONT,
               direction: FlipDirection.HORIZONTAL,
               front: ReusableCard(
-                text: currentFlashcard.frontText,
+                text: fc.frontText,
               ),
               back: ReusableCard(
-                text: currentFlashcard.backText,
+                text: fc.backText,
               ),
             ),
           ),
           Row(
             children: [
-              Gap(MediaQuery.of(context).size.width*0.2),
+              Gap(MediaQuery.of(context).size.width * 0.2),
               Column(
                 children: [
-                  Text("Score:",style: TextStyle(color: usertheme.textColor),),
-                  Text("$score",style: TextStyle(color: usertheme.textColor),),
+                  Text(
+                    "Score:",
+                    style: TextStyle(color: usertheme.textColor),
+                  ),
+                  Text(
+                    "$score",
+                    style: TextStyle(color: usertheme.textColor),
+                  ),
                 ],
               ),
-              Expanded(child: Container(),flex: 3,),
-              BuildMissExes(1),
-              Expanded(child:Container(),flex: 2),
-
+              Expanded(
+                flex: 3,
+                child: Container(),
+              ),
+              buildMissCount(missCount),
+              Expanded(flex: 2, child: Container()),
             ],
           ),
-
-
           const Expanded(child: Text("")),
           _buildDifficultyRow(
-            currentFlashcard: currentFlashcard,
-            removeFcFunction: removeFcFunction,
+            currentFlashcard: fc,
+            handleCorrectAnswerFunc: handleCorrectButtonPress,
+            handleWrongAnswerFunc: handleWrongButtonPress,
           ),
         ],
       ),
@@ -261,7 +326,8 @@ class _FlashCardsRushState extends State<FlashCardsRush>
 
   Widget _buildDifficultyRow({
     required DatabaseFlashcard currentFlashcard,
-    required Function removeFcFunction,
+    required Function handleWrongAnswerFunc,
+    required Function handleCorrectAnswerFunc,
   }) {
     if (_showNavigation) {
       return Container(
@@ -272,13 +338,16 @@ class _FlashCardsRushState extends State<FlashCardsRush>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-
-            StoodeeButton(child: Text("zle"), onPressed: (){print("zle");}),
-
-
-            StoodeeButton(child: Text("dobrze"), onPressed: (){print("dobrze");})
-
-
+            StoodeeButton(
+                child: const Text("Wrong"),
+                onPressed: () {
+                  handleWrongAnswerFunc();
+                }),
+            StoodeeButton(
+                child: const Text("Correct"),
+                onPressed: () {
+                  handleCorrectAnswerFunc();
+                })
           ],
         ),
       );
@@ -320,11 +389,9 @@ class _FlashCardsRushState extends State<FlashCardsRush>
   void _handleDifficultyButtonPress({
     required DatabaseFlashcard currentFlashcard,
     required int difficultyChange,
-    required Function removeFcFunction,
   }) async {
     _addProgress();
     _setNavigationFalse();
-    removeFcFunction();
 
     await FlashcardsService().calcFcDisplayDate(
       fc: currentFlashcard,
