@@ -29,6 +29,7 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
         await AuthService.firebase().logOut();
         final loggedOutUser = await LocalDbController().getNullUser();
         await LocalDbController().setCurrentUser(user: loggedOutUser);
+
         goRouterToLogin(context);
       },
       child: Text(
@@ -187,7 +188,6 @@ StoodeeButton buildSyncWithCloudButton(BuildContext context) {
         ScaffoldMessenger.of(context)
             .showSnackBar(createErrorSnackbar("cannot sync so frequently"));
       }
-
     },
   );
 }

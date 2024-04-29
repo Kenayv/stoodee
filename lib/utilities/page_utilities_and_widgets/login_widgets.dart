@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
@@ -31,16 +29,16 @@ SizedBox buildWelcomeAnimation() {
           TypewriterAnimatedText('Thanks for being with us :D',
               speed: const Duration(milliseconds: 150),
               curve: Curves.decelerate,
-              textStyle: TextStyle(color:usertheme.textColor),
+              textStyle: TextStyle(color: usertheme.textColor),
               cursor: "|"),
           TypewriterAnimatedText('It means a lot! ^^',
               speed: const Duration(milliseconds: 100),
-              textStyle: TextStyle(color:usertheme.textColor),
+              textStyle: TextStyle(color: usertheme.textColor),
               curve: Curves.decelerate,
               cursor: "|"),
           TypewriterAnimatedText('~Stoodee team',
               speed: const Duration(milliseconds: 100),
-              textStyle: TextStyle(color:usertheme.textColor),
+              textStyle: TextStyle(color: usertheme.textColor),
               curve: Curves.decelerate,
               cursor: "|"),
         ],
@@ -138,6 +136,9 @@ StoodeeButton buildSignUpButton({
         ScaffoldMessenger.of(context).showSnackBar(
           createErrorSnackbar("Password must contain at least 8 characters"),
         );
+      } on NoNetworkConnectionException {
+        ScaffoldMessenger.of(context).showSnackBar(
+            createErrorSnackbar("Could not find network connection"));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           createErrorSnackbar(e.toString()),
@@ -171,9 +172,6 @@ StoodeeButton buildSignInButton({
           throw UserNotLoggedInAuthException();
         }
 
-        //FIXME: DEBUG LOG
-        log('Logging in with: ${LocalDbController().currentUser}');
-
         if (!AuthService.firebase().currentUser!.isEmailVerified) {
           goRouterToEmailVerification(context);
         } else {
@@ -185,6 +183,9 @@ StoodeeButton buildSignInButton({
       } on GenericAuthException {
         ScaffoldMessenger.of(context).showSnackBar(
             createErrorSnackbar("Enter email and password to log-in"));
+      } on NoNetworkConnectionException {
+        ScaffoldMessenger.of(context).showSnackBar(
+            createErrorSnackbar("Could not find network connection"));
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(createErrorSnackbar(e.toString()));
@@ -196,7 +197,19 @@ StoodeeButton buildSignInButton({
 
 GestureDetector buildSkipLoginButton(BuildContext context) {
   return GestureDetector(
-    onTap: () => goRouterToMain(context),
+    onTap: () async {
+      if (AuthService.firebase().currentUser != null) {
+        AuthService.firebase().logOut();
+      }
+
+      if (!LocalDbController().isNullUser(LocalDbController().currentUser)) {
+        LocalDbController().setCurrentUser(
+          user: await LocalDbController().getNullUser(),
+        );
+      }
+
+      goRouterToMain(context);
+    },
     child: Text(
       "skip log-in",
       style: TextStyle(

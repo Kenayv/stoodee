@@ -36,7 +36,9 @@ class FlashcardsService {
   Future<void> incrFcsCompleted() async {
     final user = LocalDbController().currentUser;
 
-    await LocalDbController().incrUserFcsCompleted(user: user);
+    if (!LocalDbController().isNullUser(user)) {
+      await LocalDbController().incrUserFcsCompleted(user: user);
+    }
   }
 
   Future<void> reloadFlashcardSets() async {

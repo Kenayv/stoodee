@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/dialogs/user_settings_dialog.dart';
 import 'package:stoodee/utilities/page_utilities_and_widgets/account_widgets.dart';
+import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class AccountPage extends StatefulWidget {
@@ -13,10 +14,9 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPage extends State<AccountPage> {
-  final currentUser = LocalDbController().currentUser;
-
   @override
   Widget build(BuildContext context) {
+    final currentUser = LocalDbController().currentUser;
     return Scaffold(
       backgroundColor: usertheme.backgroundColor,
       body: Center(
@@ -29,11 +29,16 @@ class _AccountPage extends State<AccountPage> {
                 buildProfilePic(context),
                 buildSettingsButton(
                   onPressed: () async {
-                    await showUserSettingsDialog(
-                      context: context,
-                      user: currentUser,
-                    );
-                    setState(() {});
+                    if (LocalDbController().isNullUser(currentUser)) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(createErrorSnackbar("Log-in first"));
+                    } else {
+                      await showUserSettingsDialog(
+                        context: context,
+                        user: currentUser,
+                      );
+                      setState(() {});
+                    }
                   },
                 ),
               ],

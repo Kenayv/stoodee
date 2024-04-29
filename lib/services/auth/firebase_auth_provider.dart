@@ -31,6 +31,8 @@ class FirebaseAuthProvider implements AuthProvider {
           throw EmailAlreadyInUseAuthException();
         case 'invalid-email':
           throw InvalidEmailAuthException();
+        case 'network-request-failed':
+          throw NoNetworkConnectionException();
         default:
           throw GenericAuthException();
       }
@@ -69,6 +71,8 @@ class FirebaseAuthProvider implements AuthProvider {
         case 'invalid-credential':
         case 'invalid-email':
           throw InvalidCredentialsAuthException();
+        case 'network-request-failed':
+          throw NoNetworkConnectionException();
         default:
           throw GenericAuthException();
       }

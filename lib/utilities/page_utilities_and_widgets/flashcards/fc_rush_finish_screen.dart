@@ -19,7 +19,8 @@ Future<void> showFinishScreen({
       user: user,
       value: score,
     );
-    user.setStreakHighscore(score);
+
+    user.setFlashcardRushHighscore(score);
   }
 
   return showDialog<void>(
