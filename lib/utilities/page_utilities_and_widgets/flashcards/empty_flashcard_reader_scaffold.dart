@@ -26,10 +26,10 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
   void nothing() {}
 
   @override
-  void initState(){
-    beforeCards=widget.fcset.pairCount;
+  void initState() {
+    super.initState();
+    beforeCards = widget.fcset.pairCount;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                         fcSet: widget.fcset,
                       );
 
-                      if (beforeCards<widget.fcset.pairCount) {
+                      if (beforeCards < widget.fcset.pairCount) {
                         /*
                         WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
                             createSuccessSnackbar(
@@ -132,7 +132,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                          */
                         ScaffoldMessenger.of(context).showSnackBar(
                             createErrorSnackbar(
-                                "Flashcard still not added :3"));
+                                "Flashcard could not be added"));
                       }
                     },
                     child: Text(

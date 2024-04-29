@@ -59,3 +59,5 @@ class UserDoesNotExistInCloud implements Exception {}
 class CouldNotDeleteFlashcard implements Exception {}
 
 class CannotSyncSoFrequently implements Exception {}
+
+class NoInternetConnectionException implements Exception {}

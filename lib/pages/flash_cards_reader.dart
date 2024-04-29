@@ -130,10 +130,16 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     );
   }
 
-  void deleteLogic(){
-    print("delete logic");
-  }
+  Future<void> deleteFlashcardFunc({
+    required Flashcard flashcard,
+    required List<Flashcard> flashcards,
+  }) async {
+    await FlashcardsService().removeFlashcard(flashcard: flashcard);
+    flashcards.removeWhere((fc) => fc.id == flashcard.id);
+    shouldRandomizeFc = true;
 
+    await FlashcardsService().reloadFlashcardSets();
+  }
 
   Widget _buildFlashcardsScaffold({
     required BuildContext context,
@@ -152,15 +158,22 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
             fontWeight: FontWeight.bold,
           ),
         ),
-        leftWidget: ElevatedButton(child:Text("delete"),onPressed: () async {
-          await showAreYouSureDialog(context: context, fun: deleteLogic);
+        leftWidget: ElevatedButton(
+          child: const Text("delete"),
+          onPressed: () async {
+            await showDeleteFcDialog(
+                context: context,
+                fun: () async {
+                  await deleteFlashcardFunc(
+                    flashcard: currentFlashcard,
+                    flashcards: flashcards,
+                  );
+                  setState(() {});
+                });
 
-          setState(() {
-
-          });
-
-
-        },),
+            setState(() {});
+          },
+        ),
       ),
       body: Stack(
         children: [

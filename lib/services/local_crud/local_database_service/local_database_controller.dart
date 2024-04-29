@@ -11,6 +11,7 @@ import 'package:stoodee/services/local_crud/local_database_service/database_user
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
+import 'package:stoodee/services/network/network_controller.dart';
 import 'package:stoodee/services/todoTasks/todo_service.dart';
 
 class LocalDbController {
@@ -792,7 +793,10 @@ class LocalDbController {
     if (user == await LocalDbController().getNullUser()) {
       throw CannotSyncNullUser();
     }
-
+    final hasInternet = await hasInternetConectivity();
+    if (!hasInternet) {
+      throw NoInternetConnectionException();
+    }
     //throw if user syncs too frequently
     if (DateTime.now().difference(user.lastSynced).inMinutes < 15) {
       throw CannotSyncSoFrequently();
@@ -827,13 +831,13 @@ class LocalDbController {
   Future<void> _deleteFlashcardsBySetId({required int fcSetId}) async {
     final db = _getDatabaseOrThrow();
 
-    final deletedCount = await db.delete(
+    await db.delete(
       flashcardTable,
       where: '$flashcardSetIdColumn = ?',
       whereArgs: [fcSetId],
     );
 
-    if (deletedCount == 0) throw CouldNotDeleteFlashcard();
+    // if (deletedCount == 0) throw CouldNotDeleteFlashcard();
   }
 
   Future<List<Task>> _getAllDbTasks() async {

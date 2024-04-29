@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
+import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
+import 'package:stoodee/services/todoTasks/todo_service.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
@@ -19,6 +21,8 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
     return StoodeeButton(
         onPressed: () async {
           await SharedPrefs().setRememberLogin(value: false);
+          await FlashcardsService().reloadFlashcardSets();
+          await TodoService().reloadTasks();
           goRouterToLogin(context);
         },
         child: Text("Log-in", style: buttonTextStyle));
@@ -29,7 +33,8 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
         await AuthService.firebase().logOut();
         final loggedOutUser = await LocalDbController().getNullUser();
         await LocalDbController().setCurrentUser(user: loggedOutUser);
-
+        await FlashcardsService().reloadFlashcardSets();
+        await TodoService().reloadTasks();
         goRouterToLogin(context);
       },
       child: Text(
@@ -187,6 +192,13 @@ StoodeeButton buildSyncWithCloudButton(BuildContext context) {
       } on CannotSyncSoFrequently {
         ScaffoldMessenger.of(context)
             .showSnackBar(createErrorSnackbar("cannot sync so frequently"));
+      } on NoInternetConnectionException {
+        ScaffoldMessenger.of(context).showSnackBar(
+            createErrorSnackbar("could not find internet connection"));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          createErrorSnackbar("Error: code: ${e.toString()}"),
+        );
       }
     },
   );

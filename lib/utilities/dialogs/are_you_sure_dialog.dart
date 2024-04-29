@@ -2,7 +2,7 @@
 import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
 import 'package:flutter/material.dart';
 
-Future<void> showAreYouSureDialog({
+Future<void> showDeleteFcDialog({
   required BuildContext context,
   required Function() fun,
 }) {
@@ -11,7 +11,7 @@ Future<void> showAreYouSureDialog({
     title: "Are you sure you want to delete this flashcar?",
     inputs: [],
     function: () async {
-      fun();
+      await fun();
     },
   );
 }

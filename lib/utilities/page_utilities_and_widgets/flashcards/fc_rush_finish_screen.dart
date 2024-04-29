@@ -13,14 +13,16 @@ Future<void> showFinishScreen({
   String contentText =
       "You have achieved a score of $score points!\nWith a miss count of: $missCount.\nYour previous highscore was ${user.flashcardRushHighscore}.";
 
-  if (score > user.flashcardRushHighscore) {
-    titleText = "New highscore! Score: $score ";
-    LocalDbController().updateUserFcRushHighscore(
-      user: user,
-      value: score,
-    );
+  if (!LocalDbController().isNullUser(user)) {
+    if (score > user.flashcardRushHighscore) {
+      titleText = "New highscore! Score: $score ";
+      LocalDbController().updateUserFcRushHighscore(
+        user: user,
+        value: score,
+      );
 
-    user.setFlashcardRushHighscore(score);
+      user.setFlashcardRushHighscore(score);
+    }
   }
 
   return showDialog<void>(
