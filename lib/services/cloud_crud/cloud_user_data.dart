@@ -4,10 +4,10 @@ import 'package:stoodee/services/local_crud/local_database_service/database_task
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 
 class CloudUserData {
-  final DatabaseUser user;
-  final List<DatabaseTask> tasks;
-  final List<DatabaseFlashcardSet> flashcardSets;
-  final List<DatabaseFlashcard> flashcards;
+  final User user;
+  final List<Task> tasks;
+  final List<FlashcardSet> flashcardSets;
+  final List<Flashcard> flashcards;
 
   CloudUserData({
     required this.user,

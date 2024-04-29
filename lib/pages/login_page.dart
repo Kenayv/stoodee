@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/globals.dart';
-import 'package:stoodee/utilities/page_utilities/login_widgets.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/login_widgets.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class LoginPage extends StatefulWidget {

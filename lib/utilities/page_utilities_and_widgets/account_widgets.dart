@@ -12,7 +12,7 @@ import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
-import '../../services/local_crud/crud_exceptions.dart';
+import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 
 StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
   if (AuthService.firebase().currentUser == null) {
@@ -28,7 +28,7 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
         await SharedPrefs().setRememberLogin(value: false);
         await AuthService.firebase().logOut();
         final loggedOutUser = await LocalDbController().getNullUser();
-        await LocalDbController().setCurrentUser(loggedOutUser);
+        await LocalDbController().setCurrentUser(user: loggedOutUser);
         goRouterToLogin(context);
       },
       child: Text(
@@ -39,7 +39,7 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
   }
 }
 
-Container buildStatsContainer(DatabaseUser user) {
+Container buildStatsContainer(User user) {
   const String defaultStatString = 'Log-in to see stats!';
 
   String currentStreak = defaultStatString;
@@ -50,12 +50,6 @@ Container buildStatsContainer(DatabaseUser user) {
   String fcRushHighscore = defaultStatString;
   String completedFlashcards = defaultStatString;
   String longestStreak = defaultStatString;
-
-  if (!LocalDbController().isNullUser(user)) {
-    currentStreak = currentStreak + currentStreak == '1' ? 'day' : 'days';
-    longestStreak = longestStreak + longestStreak == '1' ? 'day' : 'days';
-    taskCompletion = '$taskCompletion%';
-  }
 
   if (!LocalDbController().isNullUser(user)) {
     currentStreak = user.currentDayStreak.toString();
@@ -87,6 +81,10 @@ Container buildStatsContainer(DatabaseUser user) {
     fcRushHighscore = user.flashcardRushHighscore.toString();
     completedFlashcards = user.totalFlashcardsCompleted.toString();
     longestStreak = user.streakHighscore.toString();
+
+    currentStreak = '$currentStreak ${currentStreak == '1' ? 'day' : 'days'}';
+    longestStreak = '$longestStreak ${longestStreak == '1' ? 'day' : 'days'}';
+    taskCompletion = '$taskCompletion%';
   }
 
   return Container(
@@ -147,7 +145,7 @@ Align buildProfilePic(BuildContext context) {
   );
 }
 
-Text buildUsername(DatabaseUser user) {
+Text buildUsername(User user) {
   return Text(
     user.name,
     style: TextStyle(

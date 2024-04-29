@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:stoodee/utilities/page_utilities/flashcards/fc_set_widget.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/flashcards/fc_set_widget.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_set_dialog.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
@@ -20,7 +20,7 @@ class FlashcardsPage extends StatefulWidget {
 class _FlashcardsPage extends State<FlashcardsPage> {
   Future<void> deleteSetDialog(
     BuildContext context,
-    DatabaseFlashcardSet fcSet,
+    FlashcardSet fcSet,
   ) async {
     log("longpressed");
     if (await showDeleteFcSetDialog(context: context, fcSet: fcSet)) {
@@ -31,7 +31,7 @@ class _FlashcardsPage extends State<FlashcardsPage> {
 
   List<Widget> buildFlashcardSetListView({
     required BuildContext context,
-    required List<DatabaseFlashcardSet> fcSets,
+    required List<FlashcardSet> fcSets,
   }) {
     List<Widget> flashcardList = [];
 
@@ -69,10 +69,10 @@ class _FlashcardsPage extends State<FlashcardsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<DatabaseFlashcardSet>>(
+    return FutureBuilder<List<FlashcardSet>>(
       future: FlashcardsService().getFlashcardSets(),
       builder: (context, snapshot) {
-        List<DatabaseFlashcardSet> flashcardSets = snapshot.data ?? [];
+        List<FlashcardSet> flashcardSets = snapshot.data ?? [];
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return Scaffold(

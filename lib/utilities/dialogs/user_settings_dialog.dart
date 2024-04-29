@@ -8,7 +8,7 @@ import 'package:stoodee/utilities/theme/theme.dart';
 //Opens a new pop-up window allowing user to change user settings.
 Future<void> showUserSettingsDialog({
   required BuildContext context,
-  required DatabaseUser user,
+  required User user,
 }) {
   TextEditingController nameController = TextEditingController();
   TextEditingController fcGoalController = TextEditingController();
@@ -98,7 +98,7 @@ Future<void> showUserSettingsDialog({
     function: () async {
       if (nameController.text.isNotEmpty) {
         final newName = nameController.text;
-        await LocalDbController().setUserName(
+        await LocalDbController().updateUserName(
           user: user,
           name: newName,
         );
@@ -107,7 +107,7 @@ Future<void> showUserSettingsDialog({
 
       if (taskGoalController.text.isNotEmpty) {
         final newTaskGoal = int.parse(taskGoalController.text);
-        await LocalDbController().setUserDailyTaskGoal(
+        await LocalDbController().updateUserDailyTaskGoal(
           user: user,
           taskGoal: newTaskGoal,
         );
@@ -116,7 +116,7 @@ Future<void> showUserSettingsDialog({
 
       if (fcGoalController.text.isNotEmpty) {
         final newFcGoal = int.parse(fcGoalController.text);
-        await LocalDbController().setUserDailyFlashcardGoal(
+        await LocalDbController().updateUserDailyFlashcardGoal(
           user: user,
           flashcardGoal: newFcGoal,
         );

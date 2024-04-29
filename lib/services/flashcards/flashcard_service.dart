@@ -6,7 +6,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
 
 class FlashcardsService {
-  late List<DatabaseFlashcardSet>? _flashcardSets;
+  late List<FlashcardSet>? _flashcardSets;
   bool _initialized = false;
 
   //FlashcardsService should be only used via singleton //
@@ -15,8 +15,8 @@ class FlashcardsService {
   FlashcardsService._sharedInstance();
   //FlashcardsService should be only used via singleton //
 
-  DatabaseFlashcard getRandFromList({
-    required List<DatabaseFlashcard> fcList,
+  Flashcard getRandFromList({
+    required List<Flashcard> fcList,
     bool? mustBeActive,
   }) {
     if (!_initialized) throw FcServiceNotInitialized();
@@ -36,7 +36,7 @@ class FlashcardsService {
   Future<void> incrFcsCompleted() async {
     final user = LocalDbController().currentUser;
 
-    await LocalDbController().incrFcsCompleted(user: user);
+    await LocalDbController().incrUserFcsCompleted(user: user);
   }
 
   Future<void> reloadFlashcardSets() async {
@@ -44,7 +44,7 @@ class FlashcardsService {
         .getUserFlashcardSets(user: LocalDbController().currentUser);
   }
 
-  Future<List<DatabaseFlashcardSet>> getFlashcardSets() async {
+  Future<List<FlashcardSet>> getFlashcardSets() async {
     if (!_initialized) {
       _flashcardSets = await LocalDbController()
           .getUserFlashcardSets(user: LocalDbController().currentUser);
@@ -54,8 +54,8 @@ class FlashcardsService {
     return _flashcardSets!;
   }
 
-  Future<List<DatabaseFlashcard>> loadFlashcardsFromSet({
-    required DatabaseFlashcardSet fcSet,
+  Future<List<Flashcard>> loadFlashcardsFromSet({
+    required FlashcardSet fcSet,
     required bool mustBeActive,
   }) async {
     final flashcards = await LocalDbController().getFlashcardsFromSet(
@@ -70,7 +70,7 @@ class FlashcardsService {
     return flashcards;
   }
 
-  Future<DatabaseFlashcardSet> createFcSet({required String name}) async {
+  Future<FlashcardSet> createFcSet({required String name}) async {
     if (!_initialized) throw FcServiceNotInitialized();
 
     final fcSet = await LocalDbController().createFcSet(
@@ -82,7 +82,7 @@ class FlashcardsService {
     return fcSet;
   }
 
-  Future<void> removeFcSet(DatabaseFlashcardSet fcSet) async {
+  Future<void> removeFcSet(FlashcardSet fcSet) async {
     if (!_initialized) throw FcServiceNotInitialized();
 
     await LocalDbController().deleteFcSet(fcSet: fcSet);
@@ -91,7 +91,7 @@ class FlashcardsService {
   }
 
   Future<void> renameFcSet({
-    required DatabaseFlashcardSet fcSet,
+    required FlashcardSet fcSet,
     required String name,
   }) async {
     if (!_initialized) throw FcServiceNotInitialized();
@@ -105,15 +105,15 @@ class FlashcardsService {
   }
 
   Future<void> removeFlashcard({
-    required DatabaseFlashcard flashcard,
+    required Flashcard flashcard,
   }) async {
     if (!_initialized) throw FcServiceNotInitialized();
 
     await LocalDbController().deleteFlashcard(flashcard: flashcard);
   }
 
-  Future<DatabaseFlashcard> createFlashcard({
-    required DatabaseFlashcardSet fcSet,
+  Future<Flashcard> createFlashcard({
+    required FlashcardSet fcSet,
     required String frontText,
     required String backText,
   }) async {
@@ -128,7 +128,7 @@ class FlashcardsService {
   }
 
   Future<void> updateFlashcard({
-    required DatabaseFlashcard flashcard,
+    required Flashcard flashcard,
     required String frontText,
     required String backText,
   }) async {
@@ -142,17 +142,17 @@ class FlashcardsService {
   }
 
   Future<void> calcFcDisplayDate({
-    required DatabaseFlashcard fc,
+    required Flashcard fc,
     required int newDifficulty,
   }) async {
     final newDisplayDate =
         calculateFcDisplayDate(cardDifficulty: newDifficulty);
 
-    await LocalDbController().setFcdifficulty(
+    await LocalDbController().updateFcdifficulty(
       flashcard: fc,
       difficulty: newDifficulty,
     );
-    await LocalDbController().setFcDisplayDate(
+    await LocalDbController().updateFcDisplayDate(
       flashcard: fc,
       displayDate: newDisplayDate,
     );

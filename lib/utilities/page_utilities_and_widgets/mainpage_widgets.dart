@@ -75,7 +75,7 @@ Container buildFunFactBox({
   );
 }
 
-Row buildGaugeRow(BuildContext context, DatabaseUser user) {
+Row buildGaugeRow(BuildContext context, User user) {
   double gaugeContainerWidth = MediaQuery.of(context).size.width * 0.45;
   double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.25;
   double iconSize = 38;
@@ -127,7 +127,7 @@ Row buildGaugeRow(BuildContext context, DatabaseUser user) {
 
 Row buildStreakGauge({
   required BuildContext context,
-  required DatabaseUser user,
+  required User user,
 }) {
   double gaugeContainerHeight = MediaQuery.of(context).size.height * 0.25;
 

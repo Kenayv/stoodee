@@ -1,6 +1,6 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
-class DatabaseFlashcard {
+class Flashcard {
   final int id;
   final int flashcardSetId;
   final int userId;
@@ -9,7 +9,7 @@ class DatabaseFlashcard {
   late int _cardDifficulty;
   late DateTime _displayDate;
 
-  DatabaseFlashcard({
+  Flashcard({
     required this.id,
     required this.flashcardSetId,
     required this.userId,
@@ -22,7 +22,7 @@ class DatabaseFlashcard {
         _cardDifficulty = cardDifficulty,
         _displayDate = displayDate;
 
-  DatabaseFlashcard.fromRow(Map<String, Object?> map)
+  Flashcard.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
         flashcardSetId = map[flashcardSetIdColumn] as int,
         userId = map[userIdColumn] as int,
@@ -36,7 +36,7 @@ class DatabaseFlashcard {
       "Flashcard id = [$id]\n   Set id = [$flashcardSetId]\n   text = [f: $frontText |b: $backText]\n   difficulty = [$cardDifficulty]\n   display : $displayDate\n";
 
   @override
-  bool operator ==(covariant DatabaseFlashcard other) => id == other.id;
+  bool operator ==(covariant Flashcard other) => id == other.id;
 
   Map<String, dynamic> toJson() => {
         localIdColumn: id,

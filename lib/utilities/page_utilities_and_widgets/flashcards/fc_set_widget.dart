@@ -58,7 +58,7 @@ class FlashCardSetWidget extends StatefulWidget {
   State<FlashCardSetWidget> createState() => _FlashCardSetWidgetState();
 
   final BuildContext context;
-  final DatabaseFlashcardSet fcSet;
+  final FlashcardSet fcSet;
   final String name;
   final Future<void> Function() onLongPressed;
 }

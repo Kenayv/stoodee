@@ -7,7 +7,7 @@ import 'package:stoodee/utilities/theme/theme.dart';
 
 ListView taskListView({
   required BuildContext context,
-  required List<DatabaseTask> tasks,
+  required List<Task> tasks,
   required Function onCompleted,
   required Function onDismissed,
 }) {
@@ -30,7 +30,7 @@ ListView taskListView({
 }
 
 ListTile taskItem({
-  required DatabaseTask task,
+  required Task task,
   required Function onDismissed,
   required Function onCompleted,
 }) {

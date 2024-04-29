@@ -4,7 +4,7 @@ import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_dialog.
 
 Future<bool> showDeleteFcSetDialog({
   required BuildContext context,
-  required DatabaseFlashcardSet fcSet,
+  required FlashcardSet fcSet,
 }) async {
   return await genericDialog(
         context: context,

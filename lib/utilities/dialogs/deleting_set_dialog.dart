@@ -4,12 +4,12 @@ import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 
 class DeleteSetDialog extends StatefulWidget {
-  final DatabaseFlashcardSet fcset;
+  final FlashcardSet fcset;
 
   const DeleteSetDialog({
     super.key,
     required this.fcset,
-    required DatabaseFlashcardSet fcSet,
+    required FlashcardSet fcSet,
   });
 
   @override

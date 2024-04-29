@@ -5,7 +5,7 @@ import 'package:stoodee/services/local_crud/local_database_service/local_databas
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 
 class TodoService {
-  late List<DatabaseTask>? _tasks;
+  late List<Task>? _tasks;
   bool _initialized = false;
 
   //ToDoService should be only used via singleton //
@@ -14,7 +14,7 @@ class TodoService {
   TodoService._sharedInstance();
   //ToDoService should be only used via singleton //
 
-  Future<List<DatabaseTask>> getTasks() async {
+  Future<List<Task>> getTasks() async {
     if (!_initialized) {
       _tasks = await LocalDbController().getUserTasks(
         user: LocalDbController().currentUser,
@@ -40,7 +40,7 @@ class TodoService {
     );
   }
 
-  Future<DatabaseTask> createTask({required String text}) async {
+  Future<Task> createTask({required String text}) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
     final task = await LocalDbController().createTask(
@@ -52,7 +52,7 @@ class TodoService {
     return task;
   }
 
-  Future<void> removeTask(DatabaseTask task) async {
+  Future<void> removeTask(Task task) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
     await LocalDbController().deleteTask(task: task);
@@ -60,28 +60,28 @@ class TodoService {
   }
 
   Future<void> updateTask({
-    required DatabaseTask task,
+    required Task task,
     required String text,
   }) async {
     if (!_initialized) throw TodoServiceNotInitialized();
 
-    await LocalDbController().updateTask(task: task, text: text);
+    await LocalDbController().updateTaskText(task: task, text: text);
   }
 
-  List<DatabaseTask> get tasks {
+  List<Task> get tasks {
     if (!_initialized) throw TodoServiceNotInitialized();
 
     return _tasks!;
   }
 
   Future<void> incrTasksCompleted() async {
-    await LocalDbController().incrTasksCompleted(
+    await LocalDbController().incrUserTasksCompleted(
       user: LocalDbController().currentUser,
     );
   }
 
   Future<void> incrIncompleteTasks() async {
-    await LocalDbController().incrIncompleteTasks(
+    await LocalDbController().incrUserIncompleteTasks(
       user: LocalDbController().currentUser,
     );
   }

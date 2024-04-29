@@ -1,17 +1,17 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
-class DatabaseTask {
+class Task {
   final int id;
   final int userId;
   final String _text;
 
-  DatabaseTask({
+  Task({
     required this.id,
     required this.userId,
     required String text,
   }) : _text = text;
 
-  DatabaseTask.fromRow(Map<String, Object?> map)
+  Task.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
         userId = map[userIdColumn] as int,
         _text = map[textColumn] as String;
@@ -27,7 +27,7 @@ class DatabaseTask {
       };
 
   @override
-  bool operator ==(covariant DatabaseTask other) => id == other.id;
+  bool operator ==(covariant Task other) => id == other.id;
 
   @override
   int get hashCode => id.hashCode;

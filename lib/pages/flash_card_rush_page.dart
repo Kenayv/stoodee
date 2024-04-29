@@ -9,17 +9,17 @@ import 'package:stoodee/services/local_crud/local_database_service/database_flas
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/router/route_functions.dart';
-import 'package:stoodee/utilities/page_utilities/flashcards/fc_reader_widget.dart';
-import 'package:stoodee/utilities/page_utilities/flashcards/fc_rush_finish_screen.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/flashcards/fc_reader_widget.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/flashcards/fc_rush_finish_screen.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
-import 'package:stoodee/utilities/page_utilities/reusable_card.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
-import 'package:stoodee/utilities/page_utilities/flashcards/empty_flashcard_reader_scaffold.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/flashcards/empty_flashcard_reader_scaffold.dart';
 import 'package:stoodee/utilities/reusables/timer.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
-import 'package:stoodee/utilities/page_utilities/flashcards/fc_rush_widdgets.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/flashcards/fc_rush_widdgets.dart';
 
 class FlashCardsRush extends StatefulWidget {
   const FlashCardsRush({
@@ -27,7 +27,7 @@ class FlashCardsRush extends StatefulWidget {
     required this.flashcardSet,
   });
 
-  final DatabaseFlashcardSet flashcardSet;
+  final FlashcardSet flashcardSet;
 
   @override
   State<FlashCardsRush> createState() => _FlashCardsRushState();
@@ -36,8 +36,8 @@ class FlashCardsRush extends StatefulWidget {
 class _FlashCardsRushState extends State<FlashCardsRush>
     with TickerProviderStateMixin {
   late final AnimationController _animationController;
-  late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
-  late DatabaseFlashcard currentFlashcard;
+  late Future<List<Flashcard>> _loadFlashcardsFuture;
+  late Flashcard currentFlashcard;
   bool shouldRandomizeFc = true;
   int missCount = 0;
 
@@ -90,13 +90,13 @@ class _FlashCardsRushState extends State<FlashCardsRush>
         goRouterToMain(context);
         return true;
       },
-      child: FutureBuilder<List<DatabaseFlashcard>>(
+      child: FutureBuilder<List<Flashcard>>(
         future: _loadFlashcardsFuture,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               try {
-                final List<DatabaseFlashcard> fcs = snapshot.data ?? [];
+                final List<Flashcard> fcs = snapshot.data ?? [];
 
                 if (shouldRandomizeFc) {
                   currentFlashcard = FlashcardsService().getRandFromList(
@@ -133,7 +133,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
 
   Widget _buildFcRushScaffold({
     required BuildContext context,
-    required DatabaseFlashcard flashcard,
+    required Flashcard flashcard,
   }) {
     return Scaffold(
       backgroundColor: usertheme.backgroundColor,
@@ -175,7 +175,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
   }
 
   Widget _buildFlashcardStack({
-    required DatabaseFlashcard flashcard,
+    required Flashcard flashcard,
   }) {
     void handleCorrectButtonPress() {
       score++;
@@ -298,7 +298,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
   }
 
   Widget _buildDifficultyRow({
-    required DatabaseFlashcard currentFlashcard,
+    required Flashcard currentFlashcard,
     required Function handleWrongAnswerFunc,
     required Function handleCorrectAnswerFunc,
   }) {

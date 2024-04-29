@@ -12,7 +12,7 @@ import 'package:stoodee/pages/achievements_page.dart';
 import 'package:stoodee/pages/account_page.dart';
 import 'package:stoodee/utilities/reusables/page_scaffold.dart';
 import 'package:stoodee/pages/flash_cards_reader.dart';
-import 'package:stoodee/utilities/page_utilities/achievement_widgets.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/achievement_widgets.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/dialogs/achievement_dialog.dart';
@@ -142,7 +142,7 @@ final GoRouter goRouterService = GoRouter(
                   path: "dialog",
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     var extras = state.extra as SetContainer;
-                    DatabaseFlashcardSet fcset = extras.getSet();
+                    FlashcardSet fcset = extras.getSet();
 
                     return SideSheetPage(
                       transitionsBuilder:

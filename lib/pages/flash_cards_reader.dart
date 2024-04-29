@@ -7,20 +7,20 @@ import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/router/route_functions.dart';
-import 'package:stoodee/utilities/page_utilities/flashcards/fc_reader_widget.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/flashcards/fc_reader_widget.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/globals.dart';
-import 'package:stoodee/utilities/page_utilities/reusable_card.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
-import 'package:stoodee/utilities/page_utilities/flashcards/empty_flashcard_reader_scaffold.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/flashcards/empty_flashcard_reader_scaffold.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class FlashCardsReader extends StatefulWidget {
   const FlashCardsReader({super.key, required this.flashcardSet});
 
-  final DatabaseFlashcardSet flashcardSet;
+  final FlashcardSet flashcardSet;
 
   @override
   State<FlashCardsReader> createState() => _FlashCardsReaderState();
@@ -29,8 +29,8 @@ class FlashCardsReader extends StatefulWidget {
 class _FlashCardsReaderState extends State<FlashCardsReader>
     with TickerProviderStateMixin {
   late final AnimationController _animationController;
-  late Future<List<DatabaseFlashcard>> _loadFlashcardsFuture;
-  late DatabaseFlashcard currentFlashcard;
+  late Future<List<Flashcard>> _loadFlashcardsFuture;
+  late Flashcard currentFlashcard;
   bool shouldRandomizeFc = true;
 
   late FlipCardController flipCardController;
@@ -70,13 +70,13 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
         goRouterToMain(context);
         return true;
       },
-      child: FutureBuilder<List<DatabaseFlashcard>>(
+      child: FutureBuilder<List<Flashcard>>(
         future: _loadFlashcardsFuture,
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
               try {
-                final List<DatabaseFlashcard> fcs = snapshot.data ?? [];
+                final List<Flashcard> fcs = snapshot.data ?? [];
                 final int totalFcsCount = fcs.length + _completedCount;
 
                 if (totalFcsCount != 0 && _completedCount == totalFcsCount) {
@@ -130,9 +130,9 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
 
   Widget _buildFlashcardsScaffold({
     required BuildContext context,
-    required List<DatabaseFlashcard> flashcards,
+    required List<Flashcard> flashcards,
     required int totalFlashcardsCount,
-    required DatabaseFlashcard currentFlashcard,
+    required Flashcard currentFlashcard,
   }) {
     return Scaffold(
       backgroundColor: usertheme.backgroundColor,
@@ -170,7 +170,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
   }
 
   Widget _buildFlashcardStack({
-    required DatabaseFlashcard currentFlashcard,
+    required Flashcard currentFlashcard,
     required int totalFlashcardsCount,
     required Function removeFcFunction,
   }) {
@@ -240,7 +240,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
   }
 
   Widget _buildDifficultyRow({
-    required DatabaseFlashcard currentFlashcard,
+    required Flashcard currentFlashcard,
     required Function removeFcFunction,
   }) {
     if (_showNavigation) {
@@ -327,7 +327,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
   }
 
   void _handleDifficultyButtonPress({
-    required DatabaseFlashcard currentFlashcard,
+    required Flashcard currentFlashcard,
     required int difficultyChange,
     required Function removeFcFunction,
   }) async {

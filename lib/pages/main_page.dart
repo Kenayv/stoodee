@@ -1,5 +1,5 @@
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-import 'package:stoodee/utilities/page_utilities/mainpage_widgets.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/mainpage_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
@@ -22,24 +22,33 @@ class _MainPage extends State<MainPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Gap(MediaQuery.of(context).size.width * 0.03),
-             Text(
+            Text(
               "Stoodee",
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold,color:usertheme.textColor),
+              style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: usertheme.textColor),
             ),
             const Text("Did you know...", style: TextStyle(color: Colors.grey)),
             const Gap(5),
             buildFunFactBox(context: context),
             const Gap(25),
-             Text("Today's goal: ",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26,color: usertheme.textColor)),
+            Text("Today's goal: ",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                    color: usertheme.textColor)),
             buildGaugeRow(context, currentUser),
             const Gap(25),
-             Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "Current days streak:",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26,color:usertheme.textColor),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 26,
+                      color: usertheme.textColor),
                 ),
               ],
             ),

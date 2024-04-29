@@ -30,7 +30,7 @@ class CloudDbController {
     }
   }
 
-  Future<DatabaseUser?> getUserOrNull({required String? cloudId}) async {
+  Future<User?> getUserOrNull({required String? cloudId}) async {
     if (cloudId == null) return null;
 
     final docUser =
@@ -41,11 +41,11 @@ class CloudDbController {
     if (!docSnapshot.exists) return null;
 
     final userData = docSnapshot.data()!;
-    return DatabaseUser.fromRow(userData);
+    return User.fromRow(userData);
   }
 
   Future<void> saveAllToCloud({
-    required DatabaseUser user,
+    required User user,
   }) async {
     final batch = _firestore.batch();
 
@@ -75,13 +75,14 @@ class CloudDbController {
   }
 
   Future<void> _saveUserToBatch({
-    required DatabaseUser user,
+    required User user,
     required WriteBatch batch,
   }) async {
     final userDoc = _firestore.collection(usersCollection).doc(user.cloudId);
 
     if (user.cloudId == null) {
-      await LocalDbController().setUserCloudId(user: user, cloudId: userDoc.id);
+      await LocalDbController()
+          .updateUserCloudId(user: user, cloudId: userDoc.id);
       user.setCloudId(userDoc.id);
     }
 
@@ -93,8 +94,8 @@ class CloudDbController {
   }
 
   Future<void> _saveFlashcardSetToBatch({
-    required DatabaseUser user,
-    required DatabaseFlashcardSet fcSet,
+    required User user,
+    required FlashcardSet fcSet,
     required WriteBatch batch,
   }) async {
     if (user.cloudId == null) throw NullCloudIdException();
@@ -113,8 +114,8 @@ class CloudDbController {
   }
 
   Future<void> _saveFlashcardToBatch({
-    required DatabaseUser user,
-    required DatabaseFlashcard flashcard,
+    required User user,
+    required Flashcard flashcard,
     required WriteBatch batch,
   }) async {
     if (user.cloudId == null) throw NullCloudIdException();
@@ -133,8 +134,8 @@ class CloudDbController {
   }
 
   Future<void> _saveTaskToBatch({
-    required DatabaseUser user,
-    required DatabaseTask task,
+    required User user,
+    required Task task,
     required WriteBatch batch,
   }) async {
     if (user.cloudId == null) throw NullCloudIdException();
@@ -157,7 +158,7 @@ class CloudDbController {
     return docSnapshot.exists;
   }
 
-  Future<CloudUserData> loadAllFromCloud({required DatabaseUser user}) async {
+  Future<CloudUserData> loadAllFromCloud({required User user}) async {
     if (user.cloudId == null) throw NullCloudIdException();
 
     final userData = await _loadUserData(user);
@@ -173,19 +174,19 @@ class CloudDbController {
     );
   }
 
-  Future<DatabaseUser> _loadUserData(DatabaseUser user) async {
+  Future<User> _loadUserData(User user) async {
     final docUser = _firestore.collection(usersCollection).doc(user.cloudId);
     final docSnapshot = await docUser.get();
 
     if (docSnapshot.exists) {
       final userData = docSnapshot.data()!;
-      return DatabaseUser.fromRow(userData);
+      return User.fromRow(userData);
     } else {
       throw CouldNotFindCloudUser();
     }
   }
 
-  Future<List<DatabaseTask>> _loadTasks(DatabaseUser user) async {
+  Future<List<Task>> _loadTasks(User user) async {
     if (user.cloudId == null) throw NullCloudIdException();
 
     final taskCollection = _firestore
@@ -197,12 +198,12 @@ class CloudDbController {
 
     return querySnapshot.docs.map((doc) {
       final taskData = doc.data();
-      return DatabaseTask.fromRow(taskData);
+      return Task.fromRow(taskData);
     }).toList();
   }
 
-  Future<List<DatabaseFlashcardSet>> _loadFlashcardSets(
-    DatabaseUser user,
+  Future<List<FlashcardSet>> _loadFlashcardSets(
+    User user,
   ) async {
     if (user.cloudId == null) throw NullCloudIdException();
 
@@ -215,11 +216,11 @@ class CloudDbController {
 
     return querySnapshot.docs.map((doc) {
       final setData = doc.data();
-      return DatabaseFlashcardSet.fromRow(setData);
+      return FlashcardSet.fromRow(setData);
     }).toList();
   }
 
-  Future<List<DatabaseFlashcard>> _loadFlashcards(DatabaseUser user) async {
+  Future<List<Flashcard>> _loadFlashcards(User user) async {
     if (user.cloudId == null) throw NullCloudIdException();
 
     final setsCollection = _firestore
@@ -231,12 +232,12 @@ class CloudDbController {
 
     return querySnapshot.docs.map((doc) {
       final setData = doc.data();
-      return DatabaseFlashcard.fromRow(setData);
+      return Flashcard.fromRow(setData);
     }).toList();
   }
 
   Future<void> _deleteObsoleteTasksFromBatch({
-    required DatabaseUser user,
+    required User user,
     required WriteBatch batch,
   }) async {
     final firestoreObjectIds = await _getFirestoreTaskIds(user);
@@ -255,7 +256,7 @@ class CloudDbController {
   }
 
   Future<void> _deleteObsoleteFlashcardsFromBatch({
-    required DatabaseUser user,
+    required User user,
     required WriteBatch batch,
   }) async {
     final firestoreFlashcardIds = await _getFirestoreFlashcardIds(user);
@@ -274,7 +275,7 @@ class CloudDbController {
   }
 
   Future<void> _deleteObsoleteFcSetsFromBatch({
-    required DatabaseUser user,
+    required User user,
     required WriteBatch batch,
   }) async {
     final firestoreFlashcardSetIds = await _getFirestoreFcSetIds(user);
@@ -295,7 +296,7 @@ class CloudDbController {
   // Iterate over the obsolete object IDs and delete them from the batch.
   void _deleteObjectsByIdList({
     required WriteBatch batch,
-    required DatabaseUser user,
+    required User user,
     required String collection,
     required Iterable<String> idList,
   }) {
@@ -310,7 +311,7 @@ class CloudDbController {
     }
   }
 
-  Future<List<String>> _getFirestoreTaskIds(DatabaseUser user) async {
+  Future<List<String>> _getFirestoreTaskIds(User user) async {
     if (user.cloudId == null) throw NullCloudIdException();
 
     final querySnapshot = await _firestore
@@ -322,7 +323,7 @@ class CloudDbController {
     return querySnapshot.docs.map((doc) => doc.id).toList();
   }
 
-  Future<List<String>> _getFirestoreFlashcardIds(DatabaseUser user) async {
+  Future<List<String>> _getFirestoreFlashcardIds(User user) async {
     if (user.cloudId == null) throw NullCloudIdException();
 
     final querySnapshot = await _firestore
@@ -334,7 +335,7 @@ class CloudDbController {
     return querySnapshot.docs.map((doc) => doc.id).toList();
   }
 
-  Future<List<String>> _getFirestoreFcSetIds(DatabaseUser user) async {
+  Future<List<String>> _getFirestoreFcSetIds(User user) async {
     if (user.cloudId == null) throw NullCloudIdException();
 
     final querySnapshot = await _firestore
@@ -346,17 +347,17 @@ class CloudDbController {
     return querySnapshot.docs.map((doc) => doc.id).toList();
   }
 
-  Future<List<String>> _getLocalDbTaskIds(DatabaseUser user) async {
+  Future<List<String>> _getLocalDbTaskIds(User user) async {
     final tasks = await LocalDbController().getUserTasks(user: user);
     return tasks.map((task) => task.id.toString()).toList();
   }
 
-  Future<List<String>> _getLocalDbFlashcardIds(DatabaseUser user) async {
+  Future<List<String>> _getLocalDbFlashcardIds(User user) async {
     final flashcards = await LocalDbController().getUserFlashcards(user: user);
     return flashcards.map((flashcard) => flashcard.id.toString()).toList();
   }
 
-  Future<List<String>> _getLocalDbFcSetIds(DatabaseUser user) async {
+  Future<List<String>> _getLocalDbFcSetIds(User user) async {
     final fcSets = await LocalDbController().getUserFlashcardSets(user: user);
     return fcSets.map((flashcardSet) => flashcardSet.id.toString()).toList();
   }

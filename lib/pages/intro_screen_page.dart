@@ -7,7 +7,7 @@ import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
-import 'package:stoodee/utilities/page_utilities/introduction_assets/introduction_assets.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/introduction_assets/introduction_assets.dart';
 import 'package:stoodee/utilities/reusables/bullet_list.dart';
 
 class IntroductionScreens extends StatefulWidget {

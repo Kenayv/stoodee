@@ -7,10 +7,10 @@ import '../theme/theme.dart';
 
 Future<dynamic> genericDeleteSetDialog({
   required BuildContext context,
-  required List<DatabaseFlashcardSet> fcsets,
+  required List<FlashcardSet> fcsets,
   TextButton? additionalButton,
 }) {
-  DatabaseFlashcardSet? selectedSet;
+  FlashcardSet? selectedSet;
 
   return showDialog(
     context: context,
@@ -20,15 +20,15 @@ Future<dynamic> genericDeleteSetDialog({
         content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return Column(mainAxisSize: MainAxisSize.min, children: [
-            DropdownButton<DatabaseFlashcardSet>(
+            DropdownButton<FlashcardSet>(
               value: selectedSet,
-              onChanged: (DatabaseFlashcardSet? newValue) {
+              onChanged: (FlashcardSet? newValue) {
                 setState(() {
                   selectedSet = newValue;
                 });
               },
-              items: fcsets.map((DatabaseFlashcardSet set) {
-                return DropdownMenuItem<DatabaseFlashcardSet>(
+              items: fcsets.map((FlashcardSet set) {
+                return DropdownMenuItem<FlashcardSet>(
                   value: set,
                   child: Text(set.name),
                 );

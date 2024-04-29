@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/router/route_functions.dart';
-import 'package:stoodee/utilities/page_utilities/reusable_card.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 
@@ -15,7 +15,7 @@ import '../../reusables/custom_appbar.dart';
 class EmptyReaderScaffold extends StatefulWidget {
   const EmptyReaderScaffold({super.key, required this.fcset});
 
-  final DatabaseFlashcardSet fcset;
+  final FlashcardSet fcset;
 
   @override
   State<EmptyReaderScaffold> createState() => _EmptyReaderScaffoldState();
@@ -57,7 +57,8 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 15),
-                  child: Text("empty",style:TextStyle(color:usertheme.textColor)),
+                  child: Text("empty",
+                      style: TextStyle(color: usertheme.textColor)),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),

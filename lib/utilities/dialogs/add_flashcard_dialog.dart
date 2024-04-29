@@ -9,7 +9,7 @@ import 'package:stoodee/utilities/theme/theme.dart';
 import '../snackbar/create_snackbar.dart';
 
 Future<void> showAddFlashcardDialog(
-    {required BuildContext context, required DatabaseFlashcardSet fcSet}) {
+    {required BuildContext context, required FlashcardSet fcSet}) {
   TextEditingController frontTextController = TextEditingController();
   TextEditingController backTextController = TextEditingController();
   return genericInputDialog(
@@ -17,19 +17,18 @@ Future<void> showAddFlashcardDialog(
     title: 'Add Flashcard',
     inputs: [
       TextField(
-        style: TextStyle(color:usertheme.textColor),
+        style: TextStyle(color: usertheme.textColor),
         controller: frontTextController,
         decoration: InputDecoration(
-
-          hintStyle: TextStyle(color:usertheme.textColor.withOpacity(0.3)),
+          hintStyle: TextStyle(color: usertheme.textColor.withOpacity(0.3)),
           hintText: 'front text',
         ),
       ),
       TextField(
-        style: TextStyle(color:usertheme.textColor),
+        style: TextStyle(color: usertheme.textColor),
         controller: backTextController,
-        decoration:  InputDecoration(
-          hintStyle: TextStyle(color:usertheme.textColor.withOpacity(0.3)),
+        decoration: InputDecoration(
+          hintStyle: TextStyle(color: usertheme.textColor.withOpacity(0.3)),
           hintText: 'back text',
         ),
       )

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_task.dart';
 import 'package:stoodee/utilities/dialogs/add_task_dialog.dart';
 import 'package:gap/gap.dart';
-import 'package:stoodee/utilities/page_utilities/todo_widgets.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/todo_widgets.dart';
 import 'package:stoodee/services/todoTasks/todo_service.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
@@ -14,13 +14,13 @@ class ToDoPage extends StatefulWidget {
 }
 
 class _ToDoPage extends State<ToDoPage> {
-  Future<void> completeTask(DatabaseTask task) async {
+  Future<void> completeTask(Task task) async {
     await TodoService().removeTask(task);
     await TodoService().incrTasksCompleted();
     setState(() {});
   }
 
-  Future<void> dismissTask(DatabaseTask task) async {
+  Future<void> dismissTask(Task task) async {
     await TodoService().removeTask(task);
     await TodoService().incrIncompleteTasks();
     setState(() {});
@@ -38,12 +38,12 @@ class _ToDoPage extends State<ToDoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<DatabaseTask>>(
+    return FutureBuilder<List<Task>>(
       future: TodoService().getTasks(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            List<DatabaseTask> tasks = snapshot.data ?? [];
+            List<Task> tasks = snapshot.data ?? [];
             return Scaffold(
               backgroundColor: usertheme.backgroundColor,
               body: SingleChildScrollView(

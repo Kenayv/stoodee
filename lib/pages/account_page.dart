@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/dialogs/user_settings_dialog.dart';
-import 'package:stoodee/utilities/page_utilities/account_widgets.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/account_widgets.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class AccountPage extends StatefulWidget {

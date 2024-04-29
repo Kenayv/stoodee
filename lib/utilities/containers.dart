@@ -1,7 +1,7 @@
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 
 class SetContainer {
-  final DatabaseFlashcardSet currentSet;
+  final FlashcardSet currentSet;
   final String name;
 
   SetContainer({required this.currentSet, required this.name});
@@ -10,7 +10,7 @@ class SetContainer {
     return name;
   }
 
-  DatabaseFlashcardSet getSet() {
+  FlashcardSet getSet() {
     return currentSet;
   }
 }

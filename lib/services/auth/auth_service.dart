@@ -35,7 +35,7 @@ class AuthService implements AuthProvider {
   Future<void> logOut() async {
     try {
       final nullUser = await LocalDbController().getNullUser();
-      LocalDbController().setCurrentUser(nullUser);
+      LocalDbController().setCurrentUser(user: nullUser);
     } on DatabaseIsNotOpened catch (_) {
       //if localDb is NOT initialized, then it's not an error. if it is, rethrow.
       if (LocalDbController().initialized) rethrow;

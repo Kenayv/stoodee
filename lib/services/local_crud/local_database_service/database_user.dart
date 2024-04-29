@@ -1,6 +1,6 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
-class DatabaseUser {
+class User {
   final int id;
   final String email;
   late String? _cloudId;
@@ -21,7 +21,7 @@ class DatabaseUser {
 
   late int _totalIncompleteTasks;
 
-  DatabaseUser({
+  User({
     required this.id,
     required this.email,
     required String? cloudId,
@@ -57,7 +57,7 @@ class DatabaseUser {
         _flashcardRushHighscore = flashcardRushHighscore,
         _totalIncompleteTasks = totalIncompleteTasks;
 
-  DatabaseUser.fromRow(Map<String, Object?> map)
+  User.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
         _cloudId = map[cloudIdColumn] as String?,
         email = map[emailColumn] as String,
@@ -143,7 +143,7 @@ class DatabaseUser {
       };
 
   @override
-  bool operator ==(covariant DatabaseUser other) => id == other.id;
+  bool operator ==(covariant User other) => id == other.id;
 
   @override
   int get hashCode => id.hashCode;

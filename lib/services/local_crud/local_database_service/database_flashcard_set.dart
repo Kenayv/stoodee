@@ -1,12 +1,12 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
-class DatabaseFlashcardSet {
+class FlashcardSet {
   final int id;
   final int userId;
   String _name;
   int _pairCount;
 
-  DatabaseFlashcardSet({
+  FlashcardSet({
     required this.id,
     required this.userId,
     required String name,
@@ -14,7 +14,7 @@ class DatabaseFlashcardSet {
   })  : _pairCount = pairCount,
         _name = name;
 
-  DatabaseFlashcardSet.fromRow(Map<String, Object?> map)
+  FlashcardSet.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
         userId = map[userIdColumn] as int,
         _name = map[nameColumn] as String,
@@ -32,7 +32,7 @@ class DatabaseFlashcardSet {
       };
 
   @override
-  bool operator ==(covariant DatabaseFlashcardSet other) => id == other.id;
+  bool operator ==(covariant FlashcardSet other) => id == other.id;
 
   @override
   int get hashCode => id.hashCode;

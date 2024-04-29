@@ -5,7 +5,7 @@ import 'package:stoodee/services/router/route_functions.dart';
 
 Future<void> showFinishScreen({
   required BuildContext context,
-  required DatabaseUser user,
+  required User user,
   required int score,
   required int missCount,
 }) {
