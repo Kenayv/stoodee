@@ -17,6 +17,8 @@ import 'package:stoodee/utilities/page_utilities/flashcards/empty_flashcard_read
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
+import '../utilities/dialogs/are_you_sure_dialog.dart';
+
 class FlashCardsReader extends StatefulWidget {
   const FlashCardsReader({super.key, required this.flashcardSet});
 
@@ -128,6 +130,11 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     );
   }
 
+  void deleteLogic(){
+    print("delete logic");
+  }
+
+
   Widget _buildFlashcardsScaffold({
     required BuildContext context,
     required List<DatabaseFlashcard> flashcards,
@@ -145,6 +152,15 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
             fontWeight: FontWeight.bold,
           ),
         ),
+        leftWidget: ElevatedButton(child:Text("delete"),onPressed: () async {
+          await showAreYouSureDialog(context: context, fun: deleteLogic);
+
+          setState(() {
+
+          });
+
+
+        },),
       ),
       body: Stack(
         children: [

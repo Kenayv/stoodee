@@ -245,7 +245,7 @@ final GoRouter goRouterService = GoRouter(
                           (context, animation, secondaryAnimation, child) {
                         return SlideTransition(
                           position: Tween(
-                            begin: const Offset(0, 1),
+                            begin: const Offset(-1, 0),
                             end: const Offset(0, 0),
                           ).animate(
                             animation,

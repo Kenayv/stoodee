@@ -14,7 +14,7 @@ class SideSheetPage<T> extends CustomTransitionPage<T> {
     super.barrierColor = Colors.black54,
     super.barrierDismissible = true,
     super.barrierLabel,
-    super.transitionDuration = const Duration(milliseconds: 20000),
+    super.transitionDuration = const Duration(milliseconds: 200),
     this.label,
     this.useSafeArea = true,
     this.themes,
