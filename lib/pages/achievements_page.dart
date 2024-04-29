@@ -46,8 +46,8 @@ class _AchievementsPage extends State<AchievementsPage> {
     } on NullUserException {
       return Scaffold(
         backgroundColor: usertheme.backgroundColor,
-        body: const Center(
-          child: Text("log-in to see achievements"),
+        body: Center(
+          child: Text("log-in to see achievements",style:TextStyle(color: usertheme.textColor)),
         ),
       );
     }

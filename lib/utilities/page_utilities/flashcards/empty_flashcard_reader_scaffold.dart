@@ -22,7 +22,14 @@ class EmptyReaderScaffold extends StatefulWidget {
 }
 
 class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
+  late int beforeCards;
   void nothing() {}
+
+  @override
+  void initState(){
+    beforeCards=widget.fcset.pairCount;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +112,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                         fcSet: widget.fcset,
                       );
 
-                      if (widget.fcset.pairCount > 0) {
+                      if (beforeCards<widget.fcset.pairCount) {
                         /*
                         WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
                             createSuccessSnackbar(

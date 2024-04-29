@@ -189,6 +189,7 @@ StoodeeButton buildSyncWithCloudButton(BuildContext context) {
         ScaffoldMessenger.of(context)
             .showSnackBar(createErrorSnackbar("cannot sync so frequently"));
       }
+
     },
   );
 }
