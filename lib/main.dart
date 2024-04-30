@@ -9,7 +9,6 @@ Future<void> initApp() async {
   await SharedPrefs().init();
   await AuthService.firebase().init();
 
-  // ugly ass code, idk if it should be there
   if (!SharedPrefs().rememberLoginData &&
       AuthService.firebase().currentUser != null) {
     await AuthService.firebase().logOut();
