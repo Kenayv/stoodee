@@ -294,7 +294,6 @@ class LocalDbController {
 
     //update user's "last change date" variable for correct syncing with cloud
     if (updatesCount != 1) throw CouldNotUpdateUser();
-    await _setUserLastChangesNow(user: user);
   }
 
   Future<void> updateUserName({
@@ -802,7 +801,6 @@ class LocalDbController {
       throw CannotSyncSoFrequently();
     }
 
-    await setLastSynced(user: user, date: DateTime.now());
     //If userCloudId is null locally but exists in cloud:
     if (user.cloudId == null) {
       //Check if user exists in cloud db. If so, assign an id to them
@@ -825,6 +823,7 @@ class LocalDbController {
     } else {
       await _loadAllFromCloud(user);
     }
+    await setLastSynced(user: user, date: DateTime.now());
   }
 
   // >> PRIVATE METHODS >>
