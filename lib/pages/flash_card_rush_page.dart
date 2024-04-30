@@ -206,7 +206,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
         children: [
           _buildReturnButton(),
           TimerWidget(
-            startingseconds: 100,
+            startingseconds: 90,
             func: () async {
               await showFinishScreen(
                 context: context,
