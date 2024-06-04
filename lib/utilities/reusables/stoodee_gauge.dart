@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:developer' as dart_dev;
 
+import 'package:stoodee/utilities/reusables/page_scaffold.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +17,24 @@ bool isNotMaxedOut(int value, int max) {
   }
 }
 
-Column stoodeeGauge({
+bool isCorrectRedirectNumberGiven(int redirectNumber){
+
+  if(redirectNumber==-1) return false;
+  if (redirectNumber < 0 || redirectNumber > 5) return false;
+
+
+
+  return true;
+}
+
+
+
+GestureDetector stoodeeGauge({
   required int value,
   required int max,
   required Icon titleIcon,
   required double containerHeight,
+  int redirectNumber=-1
 }) {
   //math
   double degree = 180 * (value / max);
@@ -29,72 +43,83 @@ Column stoodeeGauge({
   //ewwwww
   dart_dev.log("degree: $degree");
 
-  return Column(
-    children: [
-      SizedBox(
-        height: containerHeight * 0.3,
-        child: titleIcon,
-      ),
-      SizedBox(
-        height: containerHeight * 0.7,
-        child: SfRadialGauge(
-          enableLoadingAnimation: true,
-          axes: <RadialAxis>[
-            RadialAxis(
-                showLabels: false,
-                showTicks: false,
-                startAngle: 180,
-                endAngle: 0,
-                radiusFactor: 0.8,
-                maximum: 180,
-                canScaleToFit: true,
-                axisLineStyle: const AxisLineStyle(
-                    cornerStyle: CornerStyle.bothCurve, thickness: 10),
-                annotations: <GaugeAnnotation>[
-                  GaugeAnnotation(
-                      angle: 90,
-                      widget: Text(
-                        "$displaypercent%",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: usertheme.textColor),
-                      )),
-                  if (value != 0)
-                    GaugeAnnotation(
-                      angle: 180,
-                      positionFactor: 1.2,
-                      widget: Text('0',
-                          style: TextStyle(color: usertheme.textColor)),
-                    ),
-                  GaugeAnnotation(
-                    angle: 180 + degree,
-                    positionFactor: 1.3,
-                    widget: Text('$value',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: usertheme.textColor)),
-                  ),
-                  if (isNotMaxedOut(value, max))
-                    GaugeAnnotation(
-                      angle: 0,
-                      positionFactor: 1.25,
-                      widget: Text('$max',
-                          style: TextStyle(color: usertheme.textColor)),
-                    ),
-                ],
-                pointers: <GaugePointer>[
-                  RangePointer(
-                    value: degree,
-                    width: 10,
-                    pointerOffset: 0,
-                    cornerStyle: CornerStyle.bothCurve,
-                    color: usertheme.primaryAppColor,
-                    //maybe gradient
-                  ),
-                ]),
-          ],
+
+
+  return GestureDetector(
+    onTap: (){
+      dart_dev.log("tapped");
+      if(isCorrectRedirectNumberGiven(redirectNumber)){
+        dart_dev.log("correct redirect nunbmer");
+        (navigatorKey.currentWidget as BottomNavigationBar).onTap!(redirectNumber);
+      }
+    },
+    child: Column(
+      children: [
+        SizedBox(
+          height: containerHeight * 0.3,
+          child: titleIcon,
         ),
-      ),
-    ],
+        SizedBox(
+          height: containerHeight * 0.7,
+          child: SfRadialGauge(
+            enableLoadingAnimation: true,
+            axes: <RadialAxis>[
+              RadialAxis(
+                  showLabels: false,
+                  showTicks: false,
+                  startAngle: 180,
+                  endAngle: 0,
+                  radiusFactor: 0.8,
+                  maximum: 180,
+                  canScaleToFit: true,
+                  axisLineStyle: const AxisLineStyle(
+                      cornerStyle: CornerStyle.bothCurve, thickness: 10),
+                  annotations: <GaugeAnnotation>[
+                    GaugeAnnotation(
+                        angle: 90,
+                        widget: Text(
+                          "$displaypercent%",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: usertheme.textColor),
+                        )),
+                    if (value != 0)
+                      GaugeAnnotation(
+                        angle: 180,
+                        positionFactor: 1.2,
+                        widget: Text('0',
+                            style: TextStyle(color: usertheme.textColor)),
+                      ),
+                    GaugeAnnotation(
+                      angle: 180 + degree,
+                      positionFactor: 1.3,
+                      widget: Text('$value',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: usertheme.textColor)),
+                    ),
+                    if (isNotMaxedOut(value, max))
+                      GaugeAnnotation(
+                        angle: 0,
+                        positionFactor: 1.25,
+                        widget: Text('$max',
+                            style: TextStyle(color: usertheme.textColor)),
+                      ),
+                  ],
+                  pointers: <GaugePointer>[
+                    RangePointer(
+                      value: degree,
+                      width: 10,
+                      pointerOffset: 0,
+                      cornerStyle: CornerStyle.bothCurve,
+                      color: usertheme.primaryAppColor,
+                      //maybe gradient
+                    ),
+                  ]),
+            ],
+          ),
+        ),
+      ],
+    ),
   );
 }
