@@ -797,7 +797,8 @@ class LocalDbController {
       throw NoInternetConnectionException();
     }
     //throw if user syncs too frequently
-    if (DateTime.now().difference(user.lastSynced).inMinutes < 15) {
+    if (DateTime.now().difference(user.lastSynced).inMinutes < -1) {
+      //FIXME: debug
       throw CannotSyncSoFrequently();
     }
 
@@ -853,7 +854,7 @@ class LocalDbController {
     await CloudDbController().saveAllToCloud(user: user);
   }
 
-  Future<void> _updateUser({required User user}) async {
+  Future<void> _updateDbUser({required User user}) async {
     final db = _getDatabaseOrThrow();
 
     await db.update(
@@ -903,6 +904,9 @@ class LocalDbController {
   Future<void> _updateOrCreateTask({required Task task}) async {
     final db = _getDatabaseOrThrow();
 
+    // Debug output to verify task.id
+    print('Updating task with id: ${task.id}');
+
     int rowsUpdated = await db.update(
       taskTable,
       task.toJson(),
@@ -910,8 +914,12 @@ class LocalDbController {
       whereArgs: [task.id],
     );
 
+    // Debug output to check rowsUpdated value
+    print('Rows updated: $rowsUpdated');
+
     // If no rows were updated, it means the task doesn't exist, so insert it instead
     if (rowsUpdated == 0) {
+      print('Inserting task with id: ${task.id}');
       await db.insert(
         taskTable,
         task.toJson(),
@@ -924,25 +932,30 @@ class LocalDbController {
     final cloudUserData = await CloudDbController().loadAllFromCloud(
       user: user,
     );
-    log('loading all from cloud:\n\n');
-    log('$cloudUserData\n\n');
 
-    await _updateUser(user: user);
+    await _updateDbUser(user: cloudUserData.user);
+    await setCurrentUser(user: cloudUserData.user);
 
     for (final task in cloudUserData.tasks) {
+      log('1');
       await _updateOrCreateTask(task: task);
     }
 
     for (final fcSet in cloudUserData.flashcardSets) {
+      log('2');
       await _updateOrCreateFcSet(fcSet: fcSet);
     }
 
     for (final flashcard in cloudUserData.flashcards) {
+      log('3');
+
       await _updateOrCreateFlashcard(flashcard: flashcard);
     }
 
     await _reloadCurrentUser();
+
     await TodoService().reloadTasks();
+
     await FlashcardsService().reloadFlashcardSets();
   }
 
