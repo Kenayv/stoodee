@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
+import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/reusables/stoodee_gauge.dart';
 import 'package:stoodee/utilities/reusables/stoodee_linear_gauge.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
@@ -103,6 +104,7 @@ Row buildGaugeRow(BuildContext context, User user) {
           titleIcon: Icon(StoodeeIcons.tasks,
               color: usertheme.primaryAppColor, size: iconSize),
           containerHeight: gaugeContainerHeight,
+          redirectNumber: toDoPageRedirectIndex,
         ),
       ),
       SizedBox(
@@ -117,6 +119,8 @@ Row buildGaugeRow(BuildContext context, User user) {
             size: iconSize,
           ),
           containerHeight: gaugeContainerHeight,
+          redirectNumber: flashCardsPageRedirectIndex
+
         ),
       ),
     ],

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,10 @@ import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
+
+GlobalKey navigatorKey = GlobalKey(debugLabel: 'btm_app_bar');
+
+
 
 class PageScaffold extends StatefulWidget {
   const PageScaffold({required this.child, super.key});
@@ -86,6 +91,7 @@ class _PageScaffold extends State<PageScaffold> {
                 borderRadius: const BorderRadius.all(Radius.circular(24)),
               ),
               child: BottomNavigationBar(
+                key: navigatorKey,
                 elevation: 0,
                 showSelectedLabels: false,
                 showUnselectedLabels: false,

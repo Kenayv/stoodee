@@ -10,3 +10,12 @@ TextStyle buttonTextStyle = const TextStyle(
 
 TextStyle biggerButtonTextStyle=const TextStyle(
   fontWeight: FontWeight.bold,color:Colors.white,fontSize:20);
+
+
+
+int toDoPageRedirectIndex=0;
+int flashCardsPageRedirectIndex=1;
+int mainPageRedirectIndex=2;
+int achievementsPageRedirectIndex=3;
+int accountPageRedirectIndex=4;
+
