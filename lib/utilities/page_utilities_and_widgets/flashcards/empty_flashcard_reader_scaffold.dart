@@ -121,7 +121,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
 
                         */
                         ScaffoldMessenger.of(context).showSnackBar(
-                            createSuccessSnackbar("flashcard added :3"));
+                            createSuccessSnackbar("flashcard added"));
                         goRouterToMain(context);
                       } else {
                         /*

@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +9,6 @@ import 'package:stoodee/utilities/reusables/custom_appbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 GlobalKey navigatorKey = GlobalKey(debugLabel: 'btm_app_bar');
-
-
 
 class PageScaffold extends StatefulWidget {
   const PageScaffold({required this.child, super.key});

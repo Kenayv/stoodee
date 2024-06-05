@@ -782,8 +782,7 @@ class LocalDbController {
       throw NoInternetConnectionException();
     }
     //throw if user syncs too frequently
-    if (DateTime.now().difference(user.lastSynced).inMinutes < -1) {
-      //FIXME: debug
+    if (DateTime.now().difference(user.lastSynced).inMinutes < 15) {
       throw CannotSyncSoFrequently();
     }
 
@@ -893,10 +892,6 @@ class LocalDbController {
 
   Future<void> _updateOrCreateTask({required Task task}) async {
     final db = _getDatabaseOrThrow();
-
-    // Debug output to verify task.id
-    print('Updating task with id: ${task.id}');
-
     int rowsUpdated = await db.update(
       taskTable,
       task.toJson(),
@@ -904,12 +899,8 @@ class LocalDbController {
       whereArgs: [task.id],
     );
 
-    // Debug output to check rowsUpdated value
-    print('Rows updated: $rowsUpdated');
-
     // If no rows were updated, it means the task doesn't exist, so insert it instead
     if (rowsUpdated == 0) {
-      print('Inserting task with id: ${task.id}');
       await db.insert(
         taskTable,
         task.toJson(),

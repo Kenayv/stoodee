@@ -110,7 +110,6 @@ class FlashcardsService {
     required Flashcard flashcard,
   }) async {
     if (!_initialized) throw FcServiceNotInitialized();
-    print('remowing');
     await LocalDbController().deleteFlashcard(flashcard: flashcard);
   }
 

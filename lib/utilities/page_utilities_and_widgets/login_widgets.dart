@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
@@ -182,10 +180,7 @@ StoodeeButton buildSignInButton({
       } on InvalidCredentialsAuthException {
         ScaffoldMessenger.of(context)
             .showSnackBar(createErrorSnackbar("Incorrect email or password"));
-      } on GenericAuthException catch (e) {
-        print(e);
-        print(e.hashCode);
-        print(e.runtimeType);
+      } on GenericAuthException {
         ScaffoldMessenger.of(context).showSnackBar(
             createErrorSnackbar("Enter email and password to log-in"));
       } on NoNetworkConnectionException {
