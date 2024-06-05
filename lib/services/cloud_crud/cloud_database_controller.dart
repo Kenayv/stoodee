@@ -17,7 +17,7 @@ class CloudDbController {
 
   FirebaseFirestore get _firestore => FirebaseFirestore.instance;
 
-  Future<String?> getUserIdByEmail({required String email}) async {
+  Future<String?> getUserCloudIdByEmail({required String email}) async {
     final querySnapshot = await FirebaseFirestore.instance
         .collection(usersCollection)
         .where('email', isEqualTo: email)

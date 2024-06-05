@@ -2,27 +2,27 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
 class Task {
   final int id;
-  final int userId;
+  final String userEmail;
   final String _text;
 
   Task({
     required this.id,
-    required this.userId,
+    required this.userEmail,
     required String text,
   }) : _text = text;
 
   Task.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
-        userId = map[userIdColumn] as int,
+        userEmail = map[userEmailColumn] as String,
         _text = map[textColumn] as String;
 
   @override
   String toString() =>
-      "\nTaskId = [$id]:\n   text = [$_text],\n   userId = [$userId],\n";
+      "\nTaskId = [$id]:\n   text = [$_text],\n   userEmail = [$userEmail],\n";
 
   Map<String, dynamic> toJson() => {
         localIdColumn: id,
-        userIdColumn: userId,
+        userEmailColumn: userEmail,
         textColumn: _text,
       };
 

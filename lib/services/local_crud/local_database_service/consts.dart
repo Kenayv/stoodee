@@ -26,7 +26,7 @@ const flashcardsCompletedTodayColumn = 'flashcards_completed_today';
 const currentDayStreakColumn = 'current_day_streak';
 
 const textColumn = 'text';
-const userIdColumn = 'user_id';
+const userEmailColumn = 'user_email';
 
 const flashcardSetIdColumn = 'flashcard_set_id';
 const frontTextColumn = 'front_text';
@@ -50,9 +50,8 @@ const defaultNullUserEmail = 'null.user@stoodee.fakemail';
 
 const createUserTable = ''' 
   CREATE TABLE IF NOT EXISTS "$userTable" (
-    "$localIdColumn"	INTEGER NOT NULL UNIQUE,
-    "$cloudIdColumn" TEXT UNIQUE NULL,
     "$emailColumn"	TEXT NOT NULL UNIQUE,
+    "$cloudIdColumn" TEXT UNIQUE NULL,
     "$nameColumn" TEXT NOT NULL DEFAULT "$defaultUserName",
     "$lastChangesColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
     "$lastSyncedColumn" TEXT NOT NULL DEFAULT "$defaultDateStr",
@@ -68,28 +67,28 @@ const createUserTable = '''
     "$totalTasksCompletedColumn" INTEGER NOT NULL DEFAULT 0,
     "$totalIncompleteTasksColumn" INTEGER NOT NULL DEFAULT 0,
     "$flashcardRushHighscoreColumn" INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY("$localIdColumn" AUTOINCREMENT)
+    PRIMARY KEY("$emailColumn")
   );
 ''';
 
 const createTaskTable = '''
   CREATE TABLE IF NOT EXISTS "$taskTable" (
     "$localIdColumn"	INTEGER NOT NULL UNIQUE,
-    "$userIdColumn"	INTEGER NOT NULL,
+    "$userEmailColumn"	INTEGER NOT NULL,
     "$textColumn"	TEXT NOT NULL,
     PRIMARY KEY("$localIdColumn" AUTOINCREMENT),
-    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$localIdColumn")
+    FOREIGN KEY("$userEmailColumn") REFERENCES "$userTable"("$localIdColumn")
   );
 ''';
 
 const createFlashcardSetTable = '''
   CREATE TABLE IF NOT EXISTS "$flashcardSetTable" (
     "$localIdColumn"	INTEGER NOT NULL UNIQUE,
-    "$userIdColumn"	INTEGER NOT NULL,
+    "$userEmailColumn"	INTEGER NOT NULL,
     "$nameColumn"	TEXT NOT NULL,
     "$pairCountColumn" INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("$localIdColumn" AUTOINCREMENT),
-    FOREIGN KEY("$userIdColumn") REFERENCES "$userTable"("$localIdColumn")
+    FOREIGN KEY("$userEmailColumn") REFERENCES "$userTable"("$localIdColumn")
   );
 ''';
 
@@ -97,7 +96,7 @@ const createFlashcardTable = '''
   CREATE TABLE  IF NOT EXISTS"$flashcardTable" (
     "$localIdColumn"	INTEGER NOT NULL UNIQUE,
     "$flashcardSetIdColumn"	INTEGER NOT NULL,
-    "$userIdColumn"	INTEGER NOT NULL,
+    "$userEmailColumn"	INTEGER NOT NULL,
     "$frontTextColumn"	TEXT NOT NULL,
     "$backTextColumn"	TEXT NOT NULL,
     "$cardDifficultyColumn"	INTEGER NOT NULL DEFAULT "$defaultFlashcardDifficulty",

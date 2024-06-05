@@ -51,7 +51,7 @@ class LocalDbController {
     if (_db == null) throw DatabaseIsNotOpened();
 
     //Make sure the user exists and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     _currentUser = dbUser;
@@ -69,11 +69,11 @@ class LocalDbController {
 
     if (result.isNotEmpty) throw UserAlreadyExists();
 
-    final userId = await db.insert(userTable, {
+    await db.insert(userTable, {
       emailColumn: email.toLowerCase(),
     });
+
     final newUser = User(
-      id: userId,
       cloudId: null,
       email: email,
       name: defaultUserName,
@@ -102,13 +102,13 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     final taskId = await db.insert(taskTable, {
-      userIdColumn: user.id,
+      userEmailColumn: user.email,
       textColumn: text,
     });
 
     final task = Task(
       id: taskId,
-      userId: user.id,
+      userEmail: user.email,
       text: text,
     );
 
@@ -125,20 +125,20 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: owner.email);
+    final dbUser = await getDbUser(email: owner.email);
     if (dbUser != owner) throw CouldNotFindUser();
 
     final fcSetId = await db.insert(
       flashcardSetTable,
       {
-        userIdColumn: owner.id,
+        userEmailColumn: owner.email,
         nameColumn: name,
       },
     );
 
     final fcSet = FlashcardSet(
       id: fcSetId,
-      userId: owner.id,
+      userEmail: owner.email,
       name: name,
       pairCount: 0,
     );
@@ -165,7 +165,7 @@ class LocalDbController {
       flashcardTable,
       {
         flashcardSetIdColumn: fcSet.id,
-        userIdColumn: user.id,
+        userEmailColumn: user.email,
         backTextColumn: backText,
         frontTextColumn: frontText,
       },
@@ -185,7 +185,7 @@ class LocalDbController {
     final flashcard = Flashcard(
       id: flashcardID,
       flashcardSetId: fcSet.id,
-      userId: user.id,
+      userEmail: user.email,
       backText: backText,
       frontText: frontText,
       cardDifficulty: defaultFlashcardDifficulty,
@@ -219,7 +219,7 @@ class LocalDbController {
     if (updateCount != 1) throw CouldNotUpdateTask();
 
     //update user's "last change date" variable for correct syncing with cloud
-    final owner = await getUserById(id: task.userId);
+    final owner = await getDbUser(email: task.userEmail);
     await _setUserLastChangesNow(user: owner);
 
     return task;
@@ -243,7 +243,7 @@ class LocalDbController {
     );
 
     //update user's "last change date" variable for correct syncing with cloud
-    final user = await getUserById(id: flashcard.userId);
+    final user = await getDbUser(email: flashcard.userEmail);
     await _setUserLastChangesNow(user: user);
 
     if (updateCount != 1) throw CouldNotUpdateFlashCard();
@@ -267,7 +267,7 @@ class LocalDbController {
     );
 
     //update user's "last change date" variable for correct syncing with cloud
-    final user = await getUserById(id: flashcard.userId);
+    final user = await getDbUser(email: flashcard.userEmail);
     await _setUserLastChangesNow(user: user);
 
     if (updateCount != 1) throw CouldNotUpdateFlashCard();
@@ -280,7 +280,7 @@ class LocalDbController {
   }) async {
     final db = _getDatabaseOrThrow();
 
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     if (user.cloudId != null) throw UserCloudIdAlreadyInitialized();
@@ -288,8 +288,8 @@ class LocalDbController {
     final updatesCount = await db.update(
       userTable,
       {cloudIdColumn: cloudId},
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     //update user's "last change date" variable for correct syncing with cloud
@@ -303,7 +303,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -311,8 +311,8 @@ class LocalDbController {
       {
         nameColumn: name,
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updateCount != 1) throw CouldNotUpdateUser();
@@ -330,7 +330,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -338,8 +338,8 @@ class LocalDbController {
       {
         dailyGoalTasksColumn: taskGoal,
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updateCount != 1) throw CouldNotUpdateUser();
@@ -357,7 +357,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -365,8 +365,8 @@ class LocalDbController {
       {
         dailyGoalFlashcardsColumn: flashcardGoal,
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     user.setDailyFlashcardsGoal(flashcardGoal);
@@ -397,7 +397,7 @@ class LocalDbController {
 
     if (updateCount != 1) throw CouldNotUpdateFcSet();
 
-    final user = await getUserById(id: fcSet.userId);
+    final user = await getDbUser(email: fcSet.userEmail);
     //update user's "last change date" variable for correct syncing with cloud
     await _setUserLastChangesNow(user: user);
 
@@ -428,7 +428,7 @@ class LocalDbController {
     if (updateCount != 1) throw CouldNotUpdateFlashCard();
 
     //update user's "last change date" variable for correct syncing with cloud
-    final user = await getUserById(id: flashcard.userId);
+    final user = await getDbUser(email: flashcard.userEmail);
     await _setUserLastChangesNow(user: user);
 
     return flashcard;
@@ -441,7 +441,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindTask();
 
     final updateCount = await db.update(
@@ -449,8 +449,8 @@ class LocalDbController {
       {
         flashcardRushHighscoreColumn: value,
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updateCount != 1) throw CouldNotUpdateTask();
@@ -464,7 +464,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final newTotalCompletedCount = user.totalFlashcardsCompleted + 1;
@@ -477,8 +477,8 @@ class LocalDbController {
         flashcardsCompletedTodayColumn: newFlashcardsCompletedToday,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
@@ -495,7 +495,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final newTotalCompletedCount = user.totalTasksCompleted + 1;
@@ -508,8 +508,8 @@ class LocalDbController {
         tasksCompletedTodayColumn: newTasksCompletedToday,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
@@ -527,7 +527,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure owner exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final newIncompleteTasksCount = user.totalIncompleteTasks + 1;
@@ -538,8 +538,8 @@ class LocalDbController {
         totalIncompleteTasksColumn: newIncompleteTasksCount,
         lastStudiedColumn: getCurrentDateAsFormattedString(),
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updatesCount != 1) throw CouldnotUpdateDailyGoal();
@@ -579,7 +579,7 @@ class LocalDbController {
     if (deletedCount != 1) throw CouldNotDeleteTask();
 
     //update user's "last change date" variable for correct syncing with cloud
-    final owner = await getUserById(id: task.userId);
+    final owner = await getDbUser(email: task.userEmail);
     await _setUserLastChangesNow(user: owner);
   }
 
@@ -599,7 +599,7 @@ class LocalDbController {
     }
 
     //update user's "last change date" variable for correct syncing with cloud
-    final owner = await getUserById(id: fcSet.userId);
+    final owner = await getDbUser(email: fcSet.userEmail);
     await _setUserLastChangesNow(user: owner);
   }
 
@@ -641,7 +641,7 @@ class LocalDbController {
     if (updateCount != 1) throw CouldNotFindFcSet();
 
     //update user's "last change date" variable for correct syncing with cloud
-    final user = await getUserById(id: flashcard.userId);
+    final user = await getDbUser(email: flashcard.userEmail);
     await _setUserLastChangesNow(user: user);
   }
 
@@ -675,27 +675,12 @@ class LocalDbController {
     return FlashcardSet.fromRow(results.first);
   }
 
-  Future<User> getUserByEmail({required String email}) async {
+  Future<User> getDbUser({required String email}) async {
     final User? user = await getUserOrNull(email: email);
 
     if (user == null) throw CouldNotFindUser();
 
     return user;
-  }
-
-  Future<User> getUserById({required int id}) async {
-    final db = _getDatabaseOrThrow();
-
-    final result = await db.query(
-      userTable,
-      limit: 1,
-      where: '$localIdColumn = ?',
-      whereArgs: [id],
-    );
-
-    if (result.isEmpty) throw CouldNotFindUser();
-
-    return User.fromRow(result.first);
   }
 
   Future<User?> getUserOrNull({required String email}) async {
@@ -715,23 +700,23 @@ class LocalDbController {
 
   Future<List<Task>> getUserTasks({required User user}) async {
     List<Task> allTasks = await _getAllDbTasks();
-    return allTasks.where((task) => task.userId == user.id).toList();
+    return allTasks.where((task) => task.userEmail == user.email).toList();
   }
 
   Future<User> getNullUser() async {
-    return await getUserByEmail(email: defaultNullUserEmail);
+    return await getDbUser(email: defaultNullUserEmail);
   }
 
   Future<List<FlashcardSet>> getUserFlashcardSets({required User user}) async {
     List<FlashcardSet> allFcSets = await _getAllDbFlashCardSets();
-    return allFcSets.where((fcSet) => fcSet.userId == user.id).toList();
+    return allFcSets.where((fcSet) => fcSet.userEmail == user.email).toList();
   }
 
   Future<List<Flashcard>> getUserFlashcards({required User user}) async {
     List<Flashcard> flashcards = await _getAllDbFlashcards();
 
     return flashcards
-        .where((flashcard) => flashcard.userId == user.id)
+        .where((flashcard) => flashcard.userEmail == user.email)
         .toList();
   }
 
@@ -766,7 +751,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure user exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -774,8 +759,8 @@ class LocalDbController {
       {
         lastSyncedColumn: getDateAsFormattedString(date),
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     user.setLastSynced(date);
@@ -805,13 +790,13 @@ class LocalDbController {
     //If userCloudId is null locally but exists in cloud:
     if (user.cloudId == null) {
       //Check if user exists in cloud db. If so, assign an id to them
-      final cloudId = await CloudDbController().getUserIdByEmail(
+      final cloudId = await CloudDbController().getUserCloudIdByEmail(
         email: user.email,
       );
       if (cloudId != null) {
         //set id and reload user
         await updateUserCloudId(user: user, cloudId: cloudId);
-        user = await getUserByEmail(email: user.email);
+        user = await getDbUser(email: user.email);
       }
     }
 
@@ -857,11 +842,16 @@ class LocalDbController {
   Future<void> _updateDbUser({required User user}) async {
     final db = _getDatabaseOrThrow();
 
+    // Convert user to JSON and remove unique fields
+    final userMap = user.toJson();
+    userMap.remove(cloudIdColumn);
+    userMap.remove(emailColumn);
+
     await db.update(
       userTable,
-      user.toJson(),
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      userMap,
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
   }
 
@@ -993,8 +983,8 @@ class LocalDbController {
           tasksCompletedTodayColumn: 0,
           flashcardsCompletedTodayColumn: 0,
         },
-        where: '$localIdColumn = ?',
-        whereArgs: [user.id],
+        where: '$emailColumn = ?',
+        whereArgs: [user.email],
       );
 
       totalUpdatesCount += updateCount;
@@ -1008,8 +998,8 @@ class LocalDbController {
       final updateCount = await db.update(
         userTable,
         {currentDayStreakColumn: 0},
-        where: '$localIdColumn = ?',
-        whereArgs: [user.id],
+        where: '$emailColumn = ?',
+        whereArgs: [user.email],
       );
 
       totalUpdatesCount += updateCount;
@@ -1035,7 +1025,7 @@ class LocalDbController {
   Future<void> _reloadCurrentUser() async {
     if (_currentUser == null) throw UserNotFound();
 
-    _currentUser = await getUserByEmail(email: _currentUser!.email);
+    _currentUser = await getDbUser(email: _currentUser!.email);
   }
 
   //Should be invoked on every task/flashcard completed. Increases user's daily streak if daily goal has been achieved
@@ -1064,7 +1054,7 @@ class LocalDbController {
           streakHighscoreColumn: userStreakHighscore,
         },
         where: 'id = ?',
-        whereArgs: [user.id],
+        whereArgs: [user.email],
       );
 
       if (updateCount != 1) throw CouldNotUpdateUser();
@@ -1118,7 +1108,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure task exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final now = DateTime.now();
@@ -1128,8 +1118,8 @@ class LocalDbController {
       {
         lastChangesColumn: getDateAsFormattedString(now),
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updateCount != 1) throw CouldNotUpdateTask();
@@ -1147,7 +1137,7 @@ class LocalDbController {
     final db = _getDatabaseOrThrow();
 
     //make sure task exists in database and isn't hard-coded
-    final dbUser = await getUserByEmail(email: user.email);
+    final dbUser = await getDbUser(email: user.email);
     if (dbUser != user) throw CouldNotFindUser();
 
     final updateCount = await db.update(
@@ -1155,8 +1145,8 @@ class LocalDbController {
       {
         lastStudiedColumn: getDateAsFormattedString(lastStudied),
       },
-      where: '$localIdColumn = ?',
-      whereArgs: [user.id],
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
     );
 
     if (updateCount != 1) throw CouldNotUpdateTask();

@@ -3,7 +3,7 @@ import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 class Flashcard {
   final int id;
   final int flashcardSetId;
-  final int userId;
+  final String userEmail;
   late String _frontText;
   late String _backText;
   late int _cardDifficulty;
@@ -12,7 +12,7 @@ class Flashcard {
   Flashcard({
     required this.id,
     required this.flashcardSetId,
-    required this.userId,
+    required this.userEmail,
     required String frontText,
     required String backText,
     required int cardDifficulty,
@@ -25,7 +25,7 @@ class Flashcard {
   Flashcard.fromRow(Map<String, Object?> map)
       : id = map[localIdColumn] as int,
         flashcardSetId = map[flashcardSetIdColumn] as int,
-        userId = map[userIdColumn] as int,
+        userEmail = map[userEmailColumn] as String,
         _frontText = map[frontTextColumn] as String,
         _backText = map[backTextColumn] as String,
         _cardDifficulty = map[cardDifficultyColumn] as int,
@@ -41,7 +41,7 @@ class Flashcard {
   Map<String, dynamic> toJson() => {
         localIdColumn: id,
         flashcardSetIdColumn: flashcardSetId,
-        userIdColumn: userId,
+        userEmailColumn: userEmail,
         frontTextColumn: _frontText,
         backTextColumn: _backText,
         cardDifficultyColumn: _cardDifficulty,

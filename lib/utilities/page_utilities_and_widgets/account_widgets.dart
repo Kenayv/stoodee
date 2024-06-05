@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
@@ -199,6 +201,9 @@ StoodeeButton buildSyncWithCloudButton(BuildContext context) {
         ScaffoldMessenger.of(context).showSnackBar(
           createErrorSnackbar("Error: code: ${e.toString()}"),
         );
+        log(e.toString());
+        log(e.runtimeType.toString());
+        log(e.hashCode.toString());
       }
     },
   );

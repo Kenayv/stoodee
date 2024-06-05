@@ -1,7 +1,6 @@
 import 'package:stoodee/services/local_crud/local_database_service/consts.dart';
 
 class User {
-  final int id;
   final String email;
   late String? _cloudId;
   late String _name;
@@ -22,7 +21,6 @@ class User {
   late int _totalIncompleteTasks;
 
   User({
-    required this.id,
     required this.email,
     required String? cloudId,
     required String name,
@@ -58,8 +56,7 @@ class User {
         _totalIncompleteTasks = totalIncompleteTasks;
 
   User.fromRow(Map<String, Object?> map)
-      : id = map[localIdColumn] as int,
-        _cloudId = map[cloudIdColumn] as String?,
+      : _cloudId = map[cloudIdColumn] as String?,
         email = map[emailColumn] as String,
         _name = map[nameColumn] as String,
         _lastSynced = parseStringToDateTime(map[lastSyncedColumn] as String),
@@ -119,10 +116,9 @@ class User {
 
   @override
   String toString() =>
-      'UserID = [$id],\n   cloudId = [$cloudId],\n   email = [$email],\n   userName = [$_name]\n   lastChanges = [$lastChanges]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$currentDayStreak]\n totalTasksCompleted = [$_totalTasksCompleted]\n   TotalFlashcardsCompleted = [$_totalFlashcardsCompleted]\n   streakHighScore = [$_streakHighScore]\n    incomplete tasks = [$_totalIncompleteTasks]\n   flashcardRush highscore = [$_flashcardRushHighscore]\n';
+      ' cloudId = [$cloudId],\n   email = [$email],\n   userName = [$_name]\n   lastChanges = [$lastChanges]\n   lastStreakBroken = [$lastStreakBroken]\n   dailyGoal: [tasks: $_tasksCompletedToday/$_dailyGoalTasks | flashcards: $_flashcardsCompletedToday/$_dailyGoalFlashcards]\n   LastStudied: $_lastStudied\n   dayStreak = [$currentDayStreak]\n totalTasksCompleted = [$_totalTasksCompleted]\n   TotalFlashcardsCompleted = [$_totalFlashcardsCompleted]\n   streakHighScore = [$_streakHighScore]\n    incomplete tasks = [$_totalIncompleteTasks]\n   flashcardRush highscore = [$_flashcardRushHighscore]\n';
 
   Map<String, dynamic> toJson() => {
-        localIdColumn: id,
         emailColumn: email,
         cloudIdColumn: cloudId,
         nameColumn: _name,
@@ -142,9 +138,10 @@ class User {
         lastSyncedColumn: getDateAsFormattedString(_lastSynced),
       };
 
+  //All accounts should have unique emails. Id's may differ between cloud and local user, therefore, it's better to identify them by emails.
   @override
-  bool operator ==(covariant User other) => id == other.id;
+  bool operator ==(covariant User other) => email == other.email;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode => email.hashCode;
 }
