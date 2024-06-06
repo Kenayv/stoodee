@@ -486,8 +486,9 @@ class LocalDbController {
     user.setTotalFcsCompleted(newTotalCompletedCount);
     user.setFcCompletedToday(newFlashcardsCompletedToday);
 
-    //update user's "last change date" variable for correct syncing with cloud
     await _updateUserStreakAfterChange(user: user);
+
+    //update user's "last change date" variable for correct syncing with cloud
     await _setUserLastChangesNow(user: user);
   }
 
@@ -518,8 +519,9 @@ class LocalDbController {
     user.setTasksCompletedToday(newTasksCompletedToday);
     user.setLastStudied(DateTime.now());
 
-    //update user's "last change date" variable for correct syncing with cloud
     await _updateUserStreakAfterChange(user: user);
+
+    //update user's "last change date" variable for correct syncing with cloud
     await _setUserLastChangesNow(user: user);
   }
 
@@ -960,41 +962,54 @@ class LocalDbController {
         .toList();
   }
 
-  //FIXME: split it into 2 methods. one for streak one for tasks and fcs
+  //Resets user's tasks and flashcards finished today count. Returns updatecount as an integer
+  Future<int> _resetTodaysProgress({required User user}) async {
+    final db = _getDatabaseOrThrow();
+
+    final updateCount = await db.update(
+      userTable,
+      {
+        tasksCompletedTodayColumn: 0,
+        flashcardsCompletedTodayColumn: 0,
+      },
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateUser();
+
+    return updateCount;
+  }
+
+  //Resets user's days streak. Returns updatecount as an integer
+  Future<int> _resetUserStreak({required User user}) async {
+    final db = _getDatabaseOrThrow();
+
+    final updateCount = await db.update(
+      userTable,
+      {currentDayStreakColumn: 0},
+      where: '$emailColumn = ?',
+      whereArgs: [user.email],
+    );
+
+    if (updateCount != 1) throw CouldNotUpdateTask();
+
+    return updateCount;
+  }
+
   Future<void> _initAndSetUserStreak({required User user}) async {
-    var totalUpdatesCount = 0;
+    int totalUpdatesCount = 0;
 
     //Resets user's Fcs and tasks completed today to 0 if user hadn't studied today.
     if (daysDifferenceFromNow(user.lastStudied) <= -1) {
-      final db = _getDatabaseOrThrow();
-
-      final updateCount = await db.update(
-        userTable,
-        {
-          tasksCompletedTodayColumn: 0,
-          flashcardsCompletedTodayColumn: 0,
-        },
-        where: '$emailColumn = ?',
-        whereArgs: [user.email],
-      );
-
+      int updateCount = await _resetTodaysProgress(user: user);
       totalUpdatesCount += updateCount;
-      if (updateCount != 1) throw CouldNotUpdateTask();
     }
 
     //Resets user's streak if user hadn't finished a daily goal for more than 1 day
     if (daysDifferenceFromNow(user.lastStreakBroken) <= -2) {
-      final db = _getDatabaseOrThrow();
-
-      final updateCount = await db.update(
-        userTable,
-        {currentDayStreakColumn: 0},
-        where: '$emailColumn = ?',
-        whereArgs: [user.email],
-      );
-
+      int updateCount = await _resetUserStreak(user: user);
       totalUpdatesCount += updateCount;
-      if (updateCount != 1) throw CouldNotUpdateTask();
     }
 
     if (totalUpdatesCount > 0) await _reloadCurrentUser();
@@ -1023,10 +1038,6 @@ class LocalDbController {
   Future<void> _updateUserStreakAfterChange({required User user}) async {
     final db = _getDatabaseOrThrow();
 
-    if (daysDifferenceFromNow(user.lastStudied) == 0) {
-      _setUserLastStudied(user: user, lastStudied: DateTime.now());
-    }
-
     if (daysDifferenceFromNow(user.lastStreakBroken) != 0 &&
         user.flashcardsCompletedToday >= user.dailyGoalFlashcards &&
         user.tasksCompletedToday >= user.dailyGoalTasks) {
@@ -1044,7 +1055,7 @@ class LocalDbController {
           currentDayStreakColumn: newDayStreak,
           streakHighscoreColumn: userStreakHighscore,
         },
-        where: 'id = ?',
+        where: 'email = ?',
         whereArgs: [user.email],
       );
 
