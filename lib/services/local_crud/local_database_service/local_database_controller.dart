@@ -1131,35 +1131,6 @@ class LocalDbController {
     return user;
   }
 
-  //Should be invoked on every user's flashcard completed, flashcardRush played or task completed.
-  Future<User> _setUserLastStudied({
-    required User user,
-    required DateTime lastStudied,
-  }) async {
-    final db = _getDatabaseOrThrow();
-
-    //make sure task exists in database and isn't hard-coded
-    final dbUser = await getDbUser(email: user.email);
-    if (dbUser != user) throw CouldNotFindUser();
-
-    final updateCount = await db.update(
-      userTable,
-      {
-        lastStudiedColumn: getDateAsFormattedString(lastStudied),
-      },
-      where: '$emailColumn = ?',
-      whereArgs: [user.email],
-    );
-
-    if (updateCount != 1) throw CouldNotUpdateTask();
-
-    user.setLastStudied(lastStudied);
-    //update user's "last change date" variable for correct syncing with cloud
-    await _setUserLastChangesNow(user: user);
-
-    return user;
-  }
-
   bool isNullUser(User user) => user.email == defaultNullUserEmail;
 
   User get currentUser =>

@@ -272,21 +272,6 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     );
   }
 
-  String getDisplayDateText(DateTime displayDate) {
-    DateTime now = DateTime.now();
-    Duration difference = displayDate.difference(now);
-
-    if (difference.inDays > 1) {
-      return "show in:\n ${difference.inDays} ${difference.inDays > 1 ? "Days" : "Day"}";
-    } else if (difference.inHours > 1) {
-      return "show in:\n ${difference.inHours}h ${difference.inHours > 1 ? "Hours" : "Hour"}";
-    } else if (difference.inMinutes > 1) {
-      return "show in:\n ${difference.inMinutes}  ${difference.inMinutes > 1 ? "Minutes" : "Minute"}";
-    } else {
-      return "Show now";
-    }
-  }
-
   Widget _buildReturnButton() {
     return Container(
       padding: const EdgeInsets.all(8),

@@ -60,11 +60,9 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
   }
 
   void navigateToMain(BuildContext context) {
-
     goRouterToFlashCards(context, "l");
     WidgetsBinding.instance.addPostFrameCallback(
-          (_) =>  (navigatorKey.currentWidget as BottomNavigationBar).onTap!(1));
-
+        (_) => (navigatorKey.currentWidget as BottomNavigationBar).onTap!(1));
   }
 
   int _completedCount = 0;
@@ -253,13 +251,13 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     Duration difference = displayDate.difference(now);
 
     if (difference.inDays > 1) {
-      return "show in:\n ${difference.inDays} ${difference.inDays > 1 ? "Days" : "Day"}";
+      return "${difference.inDays} ${difference.inDays > 1 ? "Days" : "Day"}";
     } else if (difference.inHours > 1) {
-      return "show in:\n ${difference.inHours}h ${difference.inHours > 1 ? "Hours" : "Hour"}";
+      return "${difference.inHours}h ${difference.inHours > 1 ? "Hours" : "Hour"}";
     } else if (difference.inMinutes > 1) {
-      return "show in:\n ${difference.inMinutes}  ${difference.inMinutes > 1 ? "Minutes" : "Minute"}";
+      return "${difference.inMinutes}  ${difference.inMinutes > 1 ? "Minutes" : "Minute"}";
     } else {
-      return "Show now";
+      return "1 minute";
     }
   }
 
@@ -341,6 +339,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           onPressed: onPressed,
           child: Text(buttonText, style: biggerButtonTextStyle),
         ),
+        const Text("show after:"),
         Text(
           displayDateText,
           style: TextStyle(color: usertheme.textColor),
