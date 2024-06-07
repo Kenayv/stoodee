@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:path/path.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
@@ -17,6 +18,8 @@ import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 import 'package:stoodee/services/local_crud/crud_exceptions.dart';
+import 'package:stoodee/main.dart';
+import 'package:dash_flags/dash_flags.dart';
 
 StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
   if (AuthService.firebase().currentUser == null) {
@@ -140,6 +143,68 @@ Padding buildStatItem(String title, String value) {
     ),
   );
 }
+
+Align buildCountryFlags(BuildContext context) {
+
+  double dropDdownWidth=MediaQuery.of(context).size.width*0.2;
+  double flagDropDownWidth=MediaQuery.of(context).size.width*0.07;
+  log("currentLocale: $currentLocale");
+  return Align(
+    alignment: Alignment.topLeft,
+    child:Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: dropDdownWidth,
+        child: DropdownButtonFormField<String>(
+          //icon: Visibility(visible: false,child:Icon(Icons.arrow_back)),
+          style: TextStyle(color: usertheme.textColor),
+          value: currentLocale,
+          isDense: false,
+          decoration: const InputDecoration.collapsed(hintText: ''),
+
+          dropdownColor: usertheme.backgroundColor,
+          items: [
+            DropdownMenuItem(
+              value: "pl",
+              child: CountryFlag(
+                country: Country.pl,
+                height: flagDropDownWidth,
+              ),
+            ),
+            DropdownMenuItem(
+              value: "en",
+              child: CountryFlag(
+                country:Country.us,
+                height:flagDropDownWidth,
+              ),
+            ),
+          ],
+          onChanged: (value) {
+            if (value != null) {
+              setLocale(value);
+
+            }
+          },
+        ),
+      ),
+    ),
+  );
+}
+
+
+void setLocale(String? value){
+
+  if(value=="en"){
+    localization.translate("en");
+  }
+  else if(value=="pl"){
+    localization.translate("pl");
+  }
+
+
+}
+
+
 
 Align buildProfilePic(BuildContext context) {
   double imgSize = MediaQuery.of(context).size.height * 0.15;

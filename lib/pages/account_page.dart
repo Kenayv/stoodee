@@ -26,6 +26,7 @@ class _AccountPage extends State<AccountPage> {
             const Gap(10),
             Stack(
               children: [
+                buildCountryFlags(context),
                 buildProfilePic(context),
                 buildSettingsButton(
                   onPressed: () async {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/router/go_router_service.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
+import 'package:stoodee/localization/locales.dart';
 
 Future<void> initApp() async {
   await SharedPrefs().init();
@@ -21,16 +23,56 @@ Future<void> initApp() async {
   } else {
     usertheme = blacktheme;
   }
+
+
+
+
+
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+late String currentLocale;
+final FlutterLocalization localization=FlutterLocalization.instance;
+
+
+class MyApp extends StatefulWidget {
+   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+
+  @override void initState() {
+    super.initState();
+
+    localization.init(mapLocales: LOCALES, initLanguageCode: "pl"); // //TODO:<-- initLanguageCode powinien być wczytywany z sharedprefów
+    localization.onTranslatedLanguage=onTranslatedLangauge;
+    currentLocale=localization.currentLocale!.languageCode;
+  }
+  void onTranslatedLangauge(Locale? locale){
+    currentLocale=locale!.languageCode.toString();
+
+    //TODO:<--- tutaj gdzieś powinno się to do sharedprefów zapisywać
+
+    setState(() {
+
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: goRouterService,
       debugShowCheckedModeBanner: false,
+
+      supportedLocales: localization.supportedLocales,
+      localizationsDelegates: localization.localizationsDelegates,
+
+
     );
   }
 }

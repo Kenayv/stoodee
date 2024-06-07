@@ -56,6 +56,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   syncfusion_flutter_gauges: ^25.1.40
   connectivity_plus: ^6.0.3
+  flutter_localization: ^0.2.0
+  dash_flags: ^0.1.1
 
 dev_dependencies:
   flutter_test:

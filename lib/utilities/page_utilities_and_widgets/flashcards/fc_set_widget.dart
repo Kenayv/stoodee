@@ -17,17 +17,18 @@ Future<void> showRegularOrFcRushDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text("Select flashcards mode"),
-        content: const Text("Selech preffered game mode:"),
+        backgroundColor: usertheme.backgroundColor,
+        title:  Text("Select flashcards mode",style: TextStyle(color: usertheme.textColor),),
+        content:  Text("Selech preffered game mode:",style: TextStyle(color: usertheme.textColor),),
         actions: <Widget>[
           TextButton(
-            child: const Text('normal mode'),
+            child:  Text('normal mode',style: TextStyle(color: usertheme.textColor),),
             onPressed: () {
               goRouterToFlashCardReader(context, container);
             },
           ),
           TextButton(
-            child: const Text('flashcards Rush'),
+            child:  Text('flashcards Rush',style: TextStyle(color: usertheme.textColor),),
             onPressed: () {
               goRouterToFlashCardRush(context, container);
             },

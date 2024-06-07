@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
 import 'package:stoodee/utilities/reusables/custom_appbar.dart';
@@ -25,15 +27,15 @@ class _PageScaffold extends State<PageScaffold> {
   String indexToTitle(int index) {
     switch (index) {
       case 1:
-        return "ToDo";
+        return LocaleData.page1Title.getString(context);
       case 2:
-        return "Flashcards";
+        return LocaleData.page2Title.getString(context);
       case 3:
-        return "Home";
+        return LocaleData.page3Title.getString(context);
       case 4:
-        return "Achievements";
+        return LocaleData.page4Title.getString(context);
       case 5:
-        return "Account";
+        return LocaleData.page5Title.getString(context);
       default:
         return "?";
     }
