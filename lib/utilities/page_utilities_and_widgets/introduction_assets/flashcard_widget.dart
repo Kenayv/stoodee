@@ -115,8 +115,8 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
                     alignment: Alignment.bottomCenter,
                     height: 100,
                     child: Text(
-                      'Total pairs: ${widget.fcSetlength}',
-                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                      'All pairs: ${widget.fcSetlength}',
+                      style: const TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
                 ),
@@ -126,14 +126,12 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
         ),
       ),
       onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-            createNeutralSnackbar(
-                "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
+        ScaffoldMessenger.of(context).showSnackBar(createNeutralSnackbar(
+            "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
       },
-      onLongPress: (){
-        ScaffoldMessenger.of(context).showSnackBar(
-            createNeutralSnackbar(
-                "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
+      onLongPress: () {
+        ScaffoldMessenger.of(context).showSnackBar(createNeutralSnackbar(
+            "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
       },
       splashColor: Colors.transparent,
     );

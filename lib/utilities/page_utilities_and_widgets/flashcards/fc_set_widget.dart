@@ -18,17 +18,29 @@ Future<void> showRegularOrFcRushDialog(
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: usertheme.backgroundColor,
-        title:  Text("Select flashcards mode",style: TextStyle(color: usertheme.textColor),),
-        content:  Text("Selech preffered game mode:",style: TextStyle(color: usertheme.textColor),),
+        title: Text(
+          "Select flashcards mode",
+          style: TextStyle(color: usertheme.textColor),
+        ),
+        content: Text(
+          "Selech preffered game mode:",
+          style: TextStyle(color: usertheme.textColor),
+        ),
         actions: <Widget>[
           TextButton(
-            child:  Text('normal mode',style: TextStyle(color: usertheme.textColor),),
+            child: Text(
+              'normal mode',
+              style: TextStyle(color: usertheme.textColor),
+            ),
             onPressed: () {
               goRouterToFlashCardReader(context, container);
             },
           ),
           TextButton(
-            child:  Text('flashcards Rush',style: TextStyle(color: usertheme.textColor),),
+            child: Text(
+              'flashcards Rush',
+              style: TextStyle(color: usertheme.textColor),
+            ),
             onPressed: () {
               goRouterToFlashCardRush(context, container);
             },
@@ -158,9 +170,9 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                       alignment: Alignment.bottomCenter,
                       height: 100,
                       child: Text(
-                        'Total pairs: ${widget.fcSet.pairCount}',
+                        'All pairs: ${widget.fcSet.pairCount}',
                         style:
-                            const TextStyle(fontSize: 16, color: Colors.white),
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
                   ),

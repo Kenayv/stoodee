@@ -29,7 +29,13 @@ class _MainPage extends State<MainPage> {
                   fontWeight: FontWeight.bold,
                   color: usertheme.textColor),
             ),
-            const Text("Did you know...", style: TextStyle(color: Colors.grey)),
+            const Text(
+              "Did you know...",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 18,
+              ),
+            ),
             const Gap(5),
             buildFunFactBox(context: context),
             const Gap(25),
