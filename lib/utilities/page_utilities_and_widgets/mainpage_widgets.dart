@@ -48,15 +48,6 @@ Future<void> _showFunFactDialog(BuildContext context, String text) {
   final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
 
-  final backgroundBlur = BackdropFilter(
-    filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-    child: Container(
-      color: Colors.black.withOpacity(0.5),
-      width: double.infinity,
-      height: double.infinity,
-    ),
-  );
-
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -64,7 +55,7 @@ Future<void> _showFunFactDialog(BuildContext context, String text) {
         onTap: () => Navigator.of(context).pop(),
         child: Stack(
           children: [
-            backgroundBlur,
+            defaultBgBlur,
             Center(
               child: AlertDialog(
                 contentPadding: const EdgeInsets.all(20),

@@ -9,15 +9,6 @@ Future<void> showAchievementDialog(
     required String name,
     required String path,
     required String desc}) {
-  final backgroundBlur = BackdropFilter(
-    filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-    child: Container(
-      color: Colors.black.withOpacity(0.5),
-      width: double.infinity,
-      height: double.infinity,
-    ),
-  );
-
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -25,10 +16,9 @@ Future<void> showAchievementDialog(
         onTap: () => Navigator.of(context).pop(),
         child: Stack(
           children: [
-            backgroundBlur,
+            defaultBgBlur,
             Center(
               child: AlertDialog(
-                shadowColor: Colors.black,
                 elevation: 200,
                 backgroundColor: usertheme.analogousColor,
                 title: Center(
