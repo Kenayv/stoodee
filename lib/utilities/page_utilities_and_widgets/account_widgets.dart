@@ -4,7 +4,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:path/path.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';

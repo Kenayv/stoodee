@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:go_router/go_router.dart';
 import 'package:stoodee/services/achievements/const_achievements.dart';
 import 'package:stoodee/services/cloud_crud/cloud_exceptions.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
+import 'package:stoodee/utilities/dialogs/achievement_dialog.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class AchievementTileContainer {
@@ -33,16 +33,12 @@ class AchievementTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.go(
-          "/Achievements/dialog",
-          extra: AchievementTileContainer(
-            name: name,
-            path: path,
-            desc: desc,
-          ),
-        );
-      },
+      onTap: () => showAchievementDialog(
+        context: context,
+        name: name,
+        path: path,
+        desc: desc,
+      ),
       child: Container(
         decoration: BoxDecoration(
             color: usertheme.analogousColor,
