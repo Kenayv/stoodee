@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
@@ -42,19 +44,82 @@ List<String> funFactsList = [
   "Rewarding yourself with small treats or breaks after completing study goals can provide motivation and reinforce positive study habits.",
 ];
 
-Container buildFunFactBox({
+Future<void> _showFunFactDialog(BuildContext context, String text) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
+  final backgroundBlur = BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+    child: Container(
+      color: Colors.black.withOpacity(0.5),
+      width: double.infinity,
+      height: double.infinity,
+    ),
+  );
+
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Stack(
+          children: [
+            backgroundBlur,
+            Center(
+              child: AlertDialog(
+                contentPadding: const EdgeInsets.all(20),
+                backgroundColor: usertheme.backgroundColor,
+                content: SizedBox(
+                  width: screenWidth * 0.8,
+                  height: screenHeight * 0.25,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "Did you know that...?",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 88, 88, 88),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Padding(padding: EdgeInsets.only(bottom: 10)),
+                      Text(
+                        text,
+                        style: TextStyle(
+                          color: usertheme.textColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+Widget buildFunFactBox({
   required BuildContext context,
 }) {
-  //FIXME: add max length to a single funfact text
-
   funFactsList.shuffle();
   String animatedText = funFactsList[0];
 
-  return Container(
-    height: MediaQuery.of(context).size.height * 0.11,
-    padding: const EdgeInsets.all(10),
-    width: MediaQuery.of(context).size.width * 0.9,
-    decoration: BoxDecoration(
+  return GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: () => _showFunFactDialog(context, animatedText),
+    child: Container(
+      height: MediaQuery.of(context).size.height * 0.11,
+      padding: const EdgeInsets.all(10),
+      width: MediaQuery.of(context).size.width * 0.9,
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: usertheme.backgroundColor.withOpacity(0.85),
         boxShadow: [
@@ -62,16 +127,21 @@ Container buildFunFactBox({
             color: usertheme.basicShaddow,
             offset: const Offset(1, 1),
           )
-        ]),
-    child: AnimatedTextKit(
-      repeatForever: false,
-      totalRepeatCount: 1,
-      animatedTexts: [
-        TypewriterAnimatedText(animatedText,
+        ],
+      ),
+      child: AnimatedTextKit(
+        repeatForever: false,
+        totalRepeatCount: 1,
+        animatedTexts: [
+          TypewriterAnimatedText(
+            animatedText,
             textStyle: TextStyle(color: usertheme.textColor),
             speed: defaultWriterSpeed,
-            cursor: "|")
-      ],
+            cursor: "|",
+          )
+        ],
+        onTap: () => _showFunFactDialog(context, animatedText),
+      ),
     ),
   );
 }
@@ -111,17 +181,15 @@ Row buildGaugeRow(BuildContext context, User user) {
         width: gaugeContainerWidth,
         height: gaugeContainerHeight,
         child: stoodeeGauge(
-          value: flashcardsGaugeValue,
-          max: user.dailyGoalFlashcards,
-          titleIcon: Icon(
-            StoodeeIcons.flashcards,
-            color: usertheme.primaryAppColor,
-            size: iconSize,
-          ),
-          containerHeight: gaugeContainerHeight,
-          redirectNumber: flashCardsPageRedirectIndex
-
-        ),
+            value: flashcardsGaugeValue,
+            max: user.dailyGoalFlashcards,
+            titleIcon: Icon(
+              StoodeeIcons.flashcards,
+              color: usertheme.primaryAppColor,
+              size: iconSize,
+            ),
+            containerHeight: gaugeContainerHeight,
+            redirectNumber: flashCardsPageRedirectIndex),
       ),
     ],
   );

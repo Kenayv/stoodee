@@ -1,7 +1,7 @@
-import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
-import 'package:stoodee/utilities/page_utilities_and_widgets/mainpage_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
+import 'package:stoodee/utilities/page_utilities_and_widgets/mainpage_widgets.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class MainPage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _MainPage extends State<MainPage> {
                   color: usertheme.textColor),
             ),
             const Text(
-              "Did you know...",
+              "Did you know that...?",
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 18,
