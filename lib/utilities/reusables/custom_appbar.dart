@@ -18,41 +18,43 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Container(
-      height: 90, //TODO: In Future remove the height
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-      decoration: BoxDecoration(
-        color: usertheme.primaryAppColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25 / 2.5),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: titleWidget == null
-                  ? Center(child: Text(title))
-                  : Center(child: titleWidget!),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                leading ??
-                    Transform.translate(
-                      offset: const Offset(0, 0),
-                      child: const Text("nothing"),
-                    ),
-                Align(
+      child: Container(
+        height: 90,
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        decoration: BoxDecoration(
+          color: usertheme.primaryAppColor,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 25 / 2.5),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: titleWidget == null
+                    ? Center(child: Text(title))
+                    : Center(child: titleWidget!),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  leading ??
+                      Transform.translate(
+                        offset: const Offset(0, 0),
+                      ),
+                  Align(
                     alignment: Alignment.centerRight,
-                    child: leftWidget ?? const Text(''))
-              ],
-            )
-          ],
+                    child: leftWidget ?? const Text(''),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   @override

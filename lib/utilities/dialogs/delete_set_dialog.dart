@@ -50,10 +50,18 @@ Future<dynamic> genericDeleteSetDialog({
               try {
                 await FlashcardsService().removeFcSet(selectedSet!);
               } on Exception {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    createErrorSnackbar("Please select a set >:("));
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        createErrorSnackbar("Please select a set >:("));
+                  },
+                );
               }
-              Navigator.of(context).pop(null);
+              WidgetsBinding.instance.addPostFrameCallback(
+                (_) {
+                  Navigator.of(context).pop(null);
+                },
+              );
             },
           )
         ],

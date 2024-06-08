@@ -10,7 +10,7 @@ mixin LocaleData {
   static const String polishLang = 'pl';
   static const String englishLang = 'en';
 
-  static const Map<String, dynamic> EN = {
+  static const Map<String, dynamic> en = {
     page1Title: "ToDo",
     page2Title: "FlashCards",
     page3Title: "Home",
@@ -18,7 +18,7 @@ mixin LocaleData {
     page5Title: "Account",
   };
 
-  static const Map<String, dynamic> PL = {
+  static const Map<String, dynamic> pl = {
     page1Title: "Lista zadań",
     page2Title: "Fiszki",
     page3Title: "Strona główna",
@@ -27,7 +27,7 @@ mixin LocaleData {
   };
 }
 
-const List<MapLocale> LOCALES = [
-  MapLocale(LocaleData.englishLang, LocaleData.EN),
-  MapLocale(LocaleData.polishLang, LocaleData.PL)
+const List<MapLocale> locales = [
+  MapLocale(LocaleData.englishLang, LocaleData.en),
+  MapLocale(LocaleData.polishLang, LocaleData.pl)
 ];

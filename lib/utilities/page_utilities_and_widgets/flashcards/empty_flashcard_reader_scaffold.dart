@@ -6,11 +6,26 @@ import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/page_utilities_and_widgets/reusable_card.dart';
 import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
-
 import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
-import '../../reusables/custom_appbar.dart';
+import 'package:stoodee/utilities/reusables/custom_appbar.dart';
+
+Container _buildReturnButton(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.all(8),
+    child: Align(
+      alignment: Alignment.bottomLeft,
+      child: StoodeeButton(
+        onPressed: () => goRouterToMain(context),
+        child: const Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+      ),
+    ),
+  );
+}
 
 class EmptyReaderScaffold extends StatefulWidget {
   const EmptyReaderScaffold({super.key, required this.fcset});
@@ -22,13 +37,11 @@ class EmptyReaderScaffold extends StatefulWidget {
 }
 
 class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
-  late int beforeCards;
-  void nothing() {}
+  late final currentSet = widget.fcset;
 
   @override
   void initState() {
     super.initState();
-    beforeCards = widget.fcset.pairCount;
   }
 
   @override
@@ -36,7 +49,6 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
     return Scaffold(
       backgroundColor: usertheme.backgroundColor,
       appBar: CustomAppBar(
-        leading: const Text(""),
         titleWidget: Text(
           widget.fcset.name,
           style: const TextStyle(
@@ -50,22 +62,13 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
           Center(
             child: Column(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: StoodeeButton(
-                      onPressed: () {
-                        goRouterToMain(context);
-                      },
-                      child: const Icon(Icons.arrow_back, color: Colors.white),
-                    ),
-                  ),
-                ),
+                _buildReturnButton(context),
                 Container(
                   margin: const EdgeInsets.only(top: 15),
-                  child: Text("empty",
-                      style: TextStyle(color: usertheme.textColor)),
+                  child: Text(
+                    "empty",
+                    style: TextStyle(color: usertheme.textColor),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -99,7 +102,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                     side: CardSide.FRONT,
                     direction: FlipDirection.HORIZONTAL,
                     front: const ReusableCard(
-                      text: "add flashcard below",
+                      text: "add a flashcard before stoodying",
                     ),
                     back: const ReusableCard(
                       text: "pls",
@@ -107,39 +110,35 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                   ),
                 ),
                 StoodeeButton(
-                    onPressed: () async {
-                      await showAddFlashcardDialog(
-                        context: context,
-                        fcSet: widget.fcset,
+                  onPressed: () async {
+                    await showAddFlashcardDialog(
+                      context: context,
+                      fcSet: currentSet,
+                    );
+
+                    if (currentSet.pairCount > 0) {
+                      WidgetsBinding.instance.addPostFrameCallback(
+                        (_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              createSuccessSnackbar("flashcard added"));
+                          goRouterToMain(context);
+                        },
                       );
-
-                      if (beforeCards < widget.fcset.pairCount) {
-                        /*
-                        WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
-                            createSuccessSnackbar(
-                                "Flashcard added :3")));
-
-                        */
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            createSuccessSnackbar("flashcard added"));
-                        goRouterToMain(context);
-                      } else {
-                        /*
-                        WidgetsBinding.instance.addPostFrameCallback((_) =>   ScaffoldMessenger.of(context).showSnackBar(
-                            createErrorSnackbar(
-                                "Flashcard still not added :3")));
-
-                         */
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            createErrorSnackbar(
-                                "Flashcard could not be added"));
-                      }
-                    },
-                    child: Text(
-                      "Add flashcard",
-                      style: buttonTextStyle,
-                    )),
-                const Expanded(child: Text("")),
+                    } else {
+                      WidgetsBinding.instance.addPostFrameCallback(
+                        (_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            createErrorSnackbar("Flashcard could not be added"),
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Text(
+                    "Add flashcard",
+                    style: buttonTextStyle,
+                  ),
+                ),
               ],
             ),
           ),

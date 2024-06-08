@@ -81,7 +81,7 @@ class _PageScaffold extends State<PageScaffold> {
           ),
           child: SafeArea(
             child: Container(
-              height: 70, //TODO: In Future remove the height
+              height: 70,
               padding:
                   const EdgeInsets.only(top: 4, bottom: 4, left: 18, right: 18),
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

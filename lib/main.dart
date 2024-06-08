@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     localization.init(
-      mapLocales: LOCALES,
+      mapLocales: locales,
       initLanguageCode: SharedPrefs().preferredLang,
     );
     localization.onTranslatedLanguage = onTranslatedLangauge;

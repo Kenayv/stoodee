@@ -97,7 +97,6 @@ List<Widget> flashcardSetListViewIntro({
   for (int i = 0; i < 4; i++) {
     flashcardList.add(
       FlashCardSetWidgetIntro(
-        //FIXME: onLongPressed function could be passed right there as an argument.to allow setting state.
         context: context,
         name: "set $i",
         fcSetlength: 3 - i,

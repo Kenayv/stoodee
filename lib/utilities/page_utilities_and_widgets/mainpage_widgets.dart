@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
@@ -55,7 +53,7 @@ Future<void> _showFunFactDialog(BuildContext context, String text) {
         onTap: () => Navigator.of(context).pop(),
         child: Stack(
           children: [
-            defaultBgBlur,
+            defaultBlurFilter(),
             Center(
               child: AlertDialog(
                 contentPadding: const EdgeInsets.all(20),

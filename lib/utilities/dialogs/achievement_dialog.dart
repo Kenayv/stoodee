@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
@@ -16,7 +14,7 @@ Future<void> showAchievementDialog(
         onTap: () => Navigator.of(context).pop(),
         child: Stack(
           children: [
-            defaultBgBlur,
+            defaultBlurFilter(),
             Center(
               child: AlertDialog(
                 elevation: 200,

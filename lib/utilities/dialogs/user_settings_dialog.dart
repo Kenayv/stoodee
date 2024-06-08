@@ -29,8 +29,6 @@ Future<void> showUserSettingsDialog({
         ),
       ),
       TextField(
-        //FIXME: placeholders should indicate previous value
-        //sliders would work best
         style: TextStyle(color: usertheme.textColor),
         keyboardType: TextInputType.number,
         controller: taskGoalController,
@@ -45,8 +43,6 @@ Future<void> showUserSettingsDialog({
       ),
       TextField(
         style: TextStyle(color: usertheme.textColor),
-        //FIXME: placeholders should indicate previous value
-        //sliders would work best
         keyboardType: TextInputType.number,
         controller: fcGoalController,
         decoration: InputDecoration(

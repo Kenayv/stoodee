@@ -66,11 +66,13 @@ void reEvalTheme() {
   }
 }
 
-final defaultBgBlur = BackdropFilter(
-  filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-  child: Container(
-    color: Colors.black.withOpacity(0.5),
-    width: double.infinity,
-    height: double.infinity,
-  ),
-);
+BackdropFilter defaultBlurFilter() {
+  return BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+    child: Container(
+      color: Colors.black.withOpacity(0.5),
+      width: double.infinity,
+      height: double.infinity,
+    ),
+  );
+}
