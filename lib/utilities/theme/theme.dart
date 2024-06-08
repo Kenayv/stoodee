@@ -53,7 +53,7 @@ Dark theme: #1f2a5f         31, 42, 95)
 late StoodeeTheme usertheme;
 
 void reEvalTheme() {
-  if (SharedPrefs().prefferedTheme == SharedPrefs.lightTheme) {
+  if (SharedPrefs().preferredTheme == SharedPrefs.lightTheme) {
     usertheme = whitetheme;
   } else {
     usertheme = blacktheme;

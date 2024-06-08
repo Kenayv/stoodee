@@ -13,7 +13,7 @@ Future<void> showUserSettingsDialog({
   TextEditingController nameController = TextEditingController();
   TextEditingController fcGoalController = TextEditingController();
   TextEditingController taskGoalController = TextEditingController();
-  String selectedTheme = SharedPrefs().prefferedTheme;
+  String selectedTheme = SharedPrefs().preferredTheme;
 
   return genericInputDialog(
     context: context,
@@ -123,7 +123,7 @@ Future<void> showUserSettingsDialog({
         user.setDailyFlashcardsGoal(newFcGoal);
       }
 
-      await SharedPrefs().setPrefferedTheme(value: selectedTheme);
+      await SharedPrefs().setPreferredTheme(value: selectedTheme);
       reEvalTheme();
     },
   );

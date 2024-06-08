@@ -145,13 +145,12 @@ Padding buildStatItem(String title, String value) {
 }
 
 Align buildCountryFlags(BuildContext context) {
-
-  double dropDdownWidth=MediaQuery.of(context).size.width*0.2;
-  double flagDropDownWidth=MediaQuery.of(context).size.width*0.07;
+  double dropDdownWidth = MediaQuery.of(context).size.width * 0.2;
+  double flagDropDownWidth = MediaQuery.of(context).size.width * 0.07;
   log("currentLocale: $currentLocale");
   return Align(
     alignment: Alignment.topLeft,
-    child:Padding(
+    child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
         width: dropDdownWidth,
@@ -174,15 +173,14 @@ Align buildCountryFlags(BuildContext context) {
             DropdownMenuItem(
               value: "en",
               child: CountryFlag(
-                country:Country.us,
-                height:flagDropDownWidth,
+                country: Country.us,
+                height: flagDropDownWidth,
               ),
             ),
           ],
           onChanged: (value) {
             if (value != null) {
               setLocale(value);
-
             }
           },
         ),
@@ -191,20 +189,13 @@ Align buildCountryFlags(BuildContext context) {
   );
 }
 
-
-void setLocale(String? value){
-
-  if(value=="en"){
+void setLocale(String? value) {
+  if (value == "en") {
     localization.translate("en");
-  }
-  else if(value=="pl"){
+  } else if (value == "pl") {
     localization.translate("pl");
   }
-
-
 }
-
-
 
 Align buildProfilePic(BuildContext context) {
   double imgSize = MediaQuery.of(context).size.height * 0.15;

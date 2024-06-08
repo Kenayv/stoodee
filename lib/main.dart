@@ -18,61 +18,52 @@ Future<void> initApp() async {
 
   await LocalDbController().init();
 
-  if (SharedPrefs().prefferedTheme == SharedPrefs.lightTheme) {
+  if (SharedPrefs().preferredTheme == SharedPrefs.lightTheme) {
     usertheme = whitetheme;
   } else {
     usertheme = blacktheme;
   }
-
-
-
-
-
 }
 
+//TODO: nie wiem czy to wszystko powinno w mainie byc
 late String currentLocale;
-final FlutterLocalization localization=FlutterLocalization.instance;
-
+final FlutterLocalization localization = FlutterLocalization.instance;
 
 class MyApp extends StatefulWidget {
-   const MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
-
-  @override void initState() {
+  @override
+  void initState() {
     super.initState();
 
-    localization.init(mapLocales: LOCALES, initLanguageCode: "pl"); // //TODO:<-- initLanguageCode powinien być wczytywany z sharedprefów
-    localization.onTranslatedLanguage=onTranslatedLangauge;
-    currentLocale=localization.currentLocale!.languageCode;
-  }
-  void onTranslatedLangauge(Locale? locale){
-    currentLocale=locale!.languageCode.toString();
-
-    //TODO:<--- tutaj gdzieś powinno się to do sharedprefów zapisywać
-
-    setState(() {
-
-    });
+    localization.init(
+      mapLocales: LOCALES,
+      initLanguageCode: SharedPrefs().preferredLang,
+    );
+    localization.onTranslatedLanguage = onTranslatedLangauge;
+    currentLocale = localization.currentLocale!.languageCode;
   }
 
+  void onTranslatedLangauge(Locale? locale) {
+    currentLocale = locale!.languageCode.toString();
 
+    SharedPrefs().setPreferredLang(value: currentLocale);
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: goRouterService,
       debugShowCheckedModeBanner: false,
-
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,
-
-
     );
   }
 }
