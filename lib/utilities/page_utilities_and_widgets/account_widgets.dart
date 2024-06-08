@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
@@ -163,14 +164,14 @@ Align buildCountryFlags(BuildContext context) {
           dropdownColor: usertheme.backgroundColor,
           items: [
             DropdownMenuItem(
-              value: "pl",
+              value: LocaleData.polishLang,
               child: CountryFlag(
                 country: Country.pl,
                 height: flagDropDownWidth,
               ),
             ),
             DropdownMenuItem(
-              value: "en",
+              value: LocaleData.englishLang,
               child: CountryFlag(
                 country: Country.us,
                 height: flagDropDownWidth,
@@ -189,10 +190,10 @@ Align buildCountryFlags(BuildContext context) {
 }
 
 void setLocale(String? value) {
-  if (value == "en") {
-    localization.translate("en");
-  } else if (value == "pl") {
-    localization.translate("pl");
+  if (value == LocaleData.englishLang) {
+    localization.translate(LocaleData.englishLang);
+  } else if (value == LocaleData.polishLang) {
+    localization.translate(LocaleData.polishLang);
   }
 }
 
