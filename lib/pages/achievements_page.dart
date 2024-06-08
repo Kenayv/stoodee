@@ -27,7 +27,7 @@ class _AchievementsPage extends State<AchievementsPage> {
             children: [
               Text(
                 'You have unlocked ${userAchivs.length} out of 12 achievements!',
-                style: TextStyle(fontSize: 13, color: usertheme.textColor),
+                style: TextStyle(fontSize: 16, color: usertheme.textColor),
               ),
               Expanded(
                 child: GridView.count(
@@ -47,7 +47,8 @@ class _AchievementsPage extends State<AchievementsPage> {
       return Scaffold(
         backgroundColor: usertheme.backgroundColor,
         body: Center(
-          child: Text("log-in to see achievements",style:TextStyle(color: usertheme.textColor)),
+          child: Text("log-in to see achievements",
+              style: TextStyle(color: usertheme.textColor)),
         ),
       );
     }

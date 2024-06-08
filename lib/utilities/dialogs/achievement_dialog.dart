@@ -38,8 +38,13 @@ class AchievementDialog extends StatelessWidget {
               height: 150.0,
             ),
             const SizedBox(height: 10.0),
-            Text(desc,
-                style: const TextStyle(color: Colors.white, fontSize: 16)),
+            Text(
+              desc,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+            ),
           ],
         ),
       ),
