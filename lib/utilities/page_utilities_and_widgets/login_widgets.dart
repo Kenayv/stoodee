@@ -2,6 +2,7 @@
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:stoodee/services/auth/auth_exceptions.dart';
 import 'package:stoodee/services/auth/auth_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
@@ -12,7 +13,9 @@ import 'package:stoodee/utilities/reusables/reusable_stoodee_button.dart';
 import 'package:stoodee/utilities/snackbar/create_snackbar.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
-SizedBox buildWelcomeAnimation() {
+import '../../localization/locales.dart';
+
+SizedBox buildWelcomeAnimation(BuildContext context) {
   return SizedBox(
     height: 35,
     child: DefaultTextStyle(
@@ -26,17 +29,17 @@ SizedBox buildWelcomeAnimation() {
         repeatForever: false,
         isRepeatingAnimation: false,
         animatedTexts: [
-          TypewriterAnimatedText('Thanks for being with us :D',
+          TypewriterAnimatedText(LocaleData.loginTypewriter1.getString(context),
               speed: const Duration(milliseconds: 150),
               curve: Curves.decelerate,
               textStyle: TextStyle(color: usertheme.textColor),
               cursor: "|"),
-          TypewriterAnimatedText('It means a lot! ^^',
+          TypewriterAnimatedText(LocaleData.loginTypewriter2.getString(context),
               speed: const Duration(milliseconds: 100),
               textStyle: TextStyle(color: usertheme.textColor),
               curve: Curves.decelerate,
               cursor: "|"),
-          TypewriterAnimatedText('~Stoodee team',
+          TypewriterAnimatedText(LocaleData.loginTypewriter3.getString(context),
               speed: const Duration(milliseconds: 100),
               textStyle: TextStyle(color: usertheme.textColor),
               curve: Curves.decelerate,
@@ -47,7 +50,7 @@ SizedBox buildWelcomeAnimation() {
   );
 }
 
-Padding buildEmailInput(TextEditingController emailController) {
+Padding buildEmailInput(TextEditingController emailController,BuildContext context) {
   return Padding(
     padding:
         const EdgeInsets.only(left: 25.0, right: 25.0, top: 10, bottom: 25),
@@ -55,7 +58,7 @@ Padding buildEmailInput(TextEditingController emailController) {
       textInputAction: TextInputAction.next,
       autocorrect: false,
       decoration: InputDecoration(
-        hintText: 'E-mail',
+        hintText: LocaleData.loginHintEmail.getString(context),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
         ),
@@ -70,7 +73,7 @@ Padding buildEmailInput(TextEditingController emailController) {
   );
 }
 
-Padding buildPasswordInput(TextEditingController passwordController) {
+Padding buildPasswordInput(TextEditingController passwordController,BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(top: 15.0, left: 25, right: 25, bottom: 5),
     child: TextField(
@@ -79,7 +82,7 @@ Padding buildPasswordInput(TextEditingController passwordController) {
       enableSuggestions: false,
       autocorrect: false,
       decoration: InputDecoration(
-        hintText: 'Password',
+        hintText: LocaleData.loginHintPassword.getString(context),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
         ),
@@ -90,6 +93,10 @@ Padding buildPasswordInput(TextEditingController passwordController) {
         filled: true,
       ),
       controller: passwordController,
+
+
+
+
     ),
   );
 }
@@ -146,7 +153,7 @@ StoodeeButton buildSignUpButton({
       }
     },
     child: Text(
-      'Sign-up',
+      LocaleData.loginSignUp.getString(context),
       style: buttonTextStyle,
     ),
   );
@@ -191,7 +198,7 @@ StoodeeButton buildSignInButton({
             .showSnackBar(createErrorSnackbar(e.toString()));
       }
     },
-    child: Text('Log-in', style: buttonTextStyle),
+    child: Text(LocaleData.loginTitle.getString(context), style: buttonTextStyle),
   );
 }
 
@@ -211,7 +218,7 @@ GestureDetector buildSkipLoginButton(BuildContext context) {
       goRouterToMain(context);
     },
     child: Text(
-      "skip log-in",
+      LocaleData.loginSkip.getString(context),
       style: TextStyle(
           fontSize: 20,
           color: Colors.black54,

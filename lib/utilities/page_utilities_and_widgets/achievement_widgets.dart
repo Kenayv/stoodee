@@ -77,7 +77,7 @@ class AchievementTile extends StatelessWidget {
   }
 }
 
-List<AchievementTile> getUserAchievementTiles(User user) {
+List<AchievementTile> getUserAchievementTiles(User user,BuildContext context) {
   if (LocalDbController().isNullUser(user)) throw NullUserException();
 
   final totaluserTasks = user.totalTasksCompleted;
@@ -86,20 +86,20 @@ List<AchievementTile> getUserAchievementTiles(User user) {
 
   final List<AchievementTile> userAchivs = [];
 
-  if (totaluserTasks >= 1) userAchivs.add(woodTaskAch);
-  if (totaluserTasks >= 5) userAchivs.add(copperTaskAch);
-  if (totaluserTasks >= 20) userAchivs.add(silverTaskAch);
-  if (totaluserTasks >= 50) userAchivs.add(goldTaskAch);
+  if (totaluserTasks >= 1) userAchivs.add(evaluateWoodTaskAch(context));
+  if (totaluserTasks >= 5) userAchivs.add(evaluateCopperTaskAch(context));
+  if (totaluserTasks >= 20) userAchivs.add(evaluateSilverTaskAch(context));
+  if (totaluserTasks >= 50) userAchivs.add(evaluateGoldTaskAch(context));
 
-  if (totaluserFlashcards >= 1) userAchivs.add(woodFcAch);
-  if (totaluserFlashcards >= 10) userAchivs.add(copperFcAch);
-  if (totaluserFlashcards >= 50) userAchivs.add(silverFcAch);
-  if (totaluserFlashcards >= 250) userAchivs.add(goldTaskAch);
+  if (totaluserFlashcards >= 1) userAchivs.add(evaluateWoodFcAch(context));
+  if (totaluserFlashcards >= 10) userAchivs.add(evaluateCopperFcAch(context));
+  if (totaluserFlashcards >= 50) userAchivs.add(evaluateSilverFcAch(context));
+  if (totaluserFlashcards >= 250) userAchivs.add(evaluateGoldFcAch(context));
 
-  if (userStreakHighscore >= 1) userAchivs.add(woodStreakAch);
-  if (userStreakHighscore >= 3) userAchivs.add(copperStreakAch);
-  if (userStreakHighscore >= 7) userAchivs.add(silverStreakAch);
-  if (userStreakHighscore >= 14) userAchivs.add(goldStreakAch);
+  if (userStreakHighscore >= 1) userAchivs.add(evaluateWoodStreakAch(context));
+  if (userStreakHighscore >= 3) userAchivs.add(evaluateCopperStreakAch(context));
+  if (userStreakHighscore >= 7) userAchivs.add(evaluateSilverStreakAch(context));
+  if (userStreakHighscore >= 14) userAchivs.add(evaluateGoldStreakAch(context));
 
   return userAchivs;
 }

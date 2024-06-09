@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:gap/gap.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/page_utilities_and_widgets/mainpage_widgets.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
@@ -29,9 +31,9 @@ class _MainPage extends State<MainPage> {
                   fontWeight: FontWeight.bold,
                   color: usertheme.textColor),
             ),
-            const Text(
-              "Did you know that...?",
-              style: TextStyle(
+            Text(
+              LocaleData.mainDidYouKnow.getString(context),
+              style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 18,
               ),
@@ -39,7 +41,7 @@ class _MainPage extends State<MainPage> {
             const Gap(5),
             buildFunFactBox(context: context),
             const Gap(25),
-            Text("Today's goal: ",
+            Text(LocaleData.mainTodaysGoal.getString(context),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 26,
@@ -50,7 +52,7 @@ class _MainPage extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Current days streak:",
+                  LocaleData.mainCurrentDaysStreak.getString(context),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 26,

@@ -7,9 +7,11 @@ import 'package:stoodee/utilities/reusables/stoodee_gauge.dart';
 import 'package:stoodee/utilities/reusables/stoodee_linear_gauge.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
-const Duration defaultWriterSpeed = Duration(milliseconds: 80);
+import '../../localization/locales.dart';
+import '../../main.dart';
 
-List<String> funFactsList = [
+const Duration defaultWriterSpeed = Duration(milliseconds: 80);
+List<String> funFactsListEN = [
   "Studying while chewing gum can increase your focus and concentration.",
   "Research suggests that studying in short bursts with breaks in between can enhance retention and understanding.",
   "Drawing diagrams and doodling while studying can help reinforce concepts and improve memory recall.",
@@ -41,6 +43,40 @@ List<String> funFactsList = [
   "Using online resources such as educational videos and interactive quizzes can supplement traditional study methods and enhance learning.",
   "Rewarding yourself with small treats or breaks after completing study goals can provide motivation and reinforce positive study habits.",
 ];
+
+List<String> funFactsListPL = [
+  "Nauka podczas żucia gumy może zwiększyć twoją koncentrację i skupienie.",
+  "Badania sugerują, że nauka w krótkich seriach z przerwami pomiędzy może zwiększyć retencję i zrozumienie.",
+  "Rysowanie diagramów i bazgranie podczas nauki może pomóc w wzmocnieniu pojęć i poprawie przypominania.",
+  "Odtwarzanie muzyki instrumentalnej w tle podczas nauki może stworzyć sprzyjające warunki do nauki.",
+  "Nauczanie kogoś innego tego, czego się nauczyłeś, jest jednym z najskuteczniejszych sposobów na utrwalenie własnego zrozumienia.",
+  "Regularne ćwiczenia fizyczne wykazują poprawę funkcji poznawczych i mogą zwiększyć twoją efektywność w nauce.",
+  "Nauka w różnych środowiskach może zapobiec monotonii i pobudzić kreatywność.",
+  "Stosowanie mnemoników, takich jak akronimy czy rymy, może pomóc w zapamiętywaniu skomplikowanych informacji.",
+  "Spożywanie ciemnej czekolady z umiarem może poprawić funkcje mózgu i zwiększyć koncentrację.",
+  "Krótkie drzemki (około 20-30 minut) mogą zwiększyć konsolidację pamięci i odmłodzić umysł do dalszej nauki.",
+  "Pisanie notatek ręcznie zamiast ich wpisywania może prowadzić do lepszego zrozumienia i retencji materiału.",
+  "Technika Pomodoro, polegająca na nauce przez 25 minut, a następnie na 5-minutowej przerwie, jest popularną metodą maksymalizacji produktywności.",
+  "Wąchanie olejku eterycznego z rozmarynu wykazano, że poprawia pamięć i czujność.",
+  "Żucie ołówka podczas nauki może faktycznie pomóc w lepszym zapamiętywaniu informacji dzięki sensorycznemu doświadczeniu.",
+  "Nauka przed snem może poprawić retencję, ponieważ mózg kontynuuje przetwarzanie informacji podczas snu.",
+  "Pisanie egzaminów próbnych dla siebie jest skutecznym sposobem na przygotowanie się do rzeczywistych testów lub egzaminów.",
+  "Wyjaśnianie koncepcji na głos własnymi słowami może wzmocnić naukę i podkreślić obszary słabości.",
+  "Stworzenie wyznaczonej przestrzeni do nauki może sygnalizować mózgowi, że nadszedł czas na skupienie się i poprawić nawyki naukowe.",
+  "Robienie przerw na rozciąganie lub lekką aktywność fizyczną może zwiększyć przepływ krwi do mózgu i poprawić funkcje poznawcze.",
+  "Używanie różnych kolorowych długopisów do notatek może pomóc w organizacji informacji i ułatwić ich przypomnienie.",
+  "Badania wykazały, że umiarkowane spożycie kofeiny może poprawić czujność i wydajność poznawczą.",
+  "Włączenie humoru do sesji nauki może uczynić naukę bardziej przyjemną i zapamiętywalną.",
+  "Pisanie ręcznych notatek podczas wykładów może prowadzić do lepszego zrozumienia i retencji w porównaniu z wpisywaniem notatek na laptopie.",
+  "Omawianie i debatowanie tematów z rówieśnikami może pogłębić zrozumienie i dostarczyć nowych perspektyw.",
+  "Tworzenie map myśli lub map pojęć może pomóc wizualizować relacje między pomysłami i wspomagać zrozumienie skomplikowanych pojęć.",
+  "Badania sugerują, że wystarczająca ilość snu jest kluczowa dla optymalnych funkcji poznawczych, konsolidacji pamięci i nauki.",
+  "Rozbijanie dużych zadań na mniejsze, łatwiejsze do zarządzania części może zmniejszyć przytłoczenie i poprawić produktywność.",
+  "Praktykowanie medytacji lub technik uważności może zmniejszyć stres i poprawić koncentrację podczas sesji nauki.",
+  "Korzystanie z zasobów online, takich jak edukacyjne filmy wideo i interaktywne quizy, może uzupełnić tradycyjne metody nauki i poprawić naukę.",
+  "Nagradzanie siebie małymi przysmakami lub przerwami po osiągnięciu celów naukowych może zapewnić motywację i wzmocnić pozytywne nawyki naukowe.",
+];
+
 
 Future<void> _showFunFactDialog(BuildContext context, String text) {
   final screenWidth = MediaQuery.of(context).size.width;
@@ -98,8 +134,21 @@ Future<void> _showFunFactDialog(BuildContext context, String text) {
 Widget buildFunFactBox({
   required BuildContext context,
 }) {
-  funFactsList.shuffle();
-  String animatedText = funFactsList[0];
+  String animatedText;
+  if(currentLocale==LocaleData.polishLang){
+    funFactsListPL.shuffle();
+    animatedText=funFactsListPL[0];
+  }
+  else if(currentLocale==LocaleData.englishLang){
+    funFactsListEN.shuffle();
+    animatedText=funFactsListEN[0];
+  }
+  else{
+    funFactsListPL.shuffle();
+    animatedText=funFactsListPL[0];
+
+  }
+
 
   return GestureDetector(
     behavior: HitTestBehavior.translucent,

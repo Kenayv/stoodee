@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/utilities/globals.dart';
 import 'package:stoodee/utilities/page_utilities_and_widgets/login_widgets.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
+
+import '../localization/locales.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -49,15 +52,15 @@ class _LoginPage extends State<LoginPage> {
                 height: 140,
               ),
               const Gap(25),
-              buildWelcomeAnimation(),
+              buildWelcomeAnimation(context),
               const Gap(10),
-              const Text("Log-in", style: TextStyle(color: Colors.grey)),
-              buildEmailInput(emailController),
-              buildPasswordInput(passwordController),
+              Text(LocaleData.loginTitle.getString(context), style: TextStyle(color: Colors.grey)),
+              buildEmailInput(emailController,context),
+              buildPasswordInput(passwordController,context),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Remember me",
+                  Text(LocaleData.loginRememberMe.getString(context),
                       style: TextStyle(color: Colors.grey.shade400)),
                   Checkbox(
                     value: rememberBool,
