@@ -54,7 +54,7 @@ class _AccountPage extends State<AccountPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(child: buildUsername(currentUser)),
+                    Center(child: buildUsername(currentUser,context)),
                     Center(
                         child: Text(
                       LocaleData.accountYourStats.getString(context),

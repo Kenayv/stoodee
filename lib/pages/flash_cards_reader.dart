@@ -1,7 +1,9 @@
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottie/lottie.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/flashcards/fc_difficulty.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
@@ -60,9 +62,11 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
   }
 
   void navigateToMain(BuildContext context) {
-    goRouterToFlashCards(context, "l");
+    goRouterToMain(context, "l");
+
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => (navigatorKey.currentWidget as BottomNavigationBar).onTap!(1));
+
   }
 
   int _completedCount = 0;
@@ -251,13 +255,13 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     Duration difference = displayDate.difference(now);
 
     if (difference.inDays > 1) {
-      return "${difference.inDays} ${difference.inDays > 1 ? "Days" : "Day"}";
+      return "${difference.inDays} ${difference.inDays > 1 ? LocaleData.accountDays.getString(context) : LocaleData.accountDay.getString(context)}";
     } else if (difference.inHours > 1) {
-      return "${difference.inHours}h ${difference.inHours > 1 ? "Hours" : "Hour"}";
+      return "${difference.inHours}h ${difference.inHours > 1 ? LocaleData.fcreaderHours.getString(context) : LocaleData.fcreaderHour.getString(context)}";
     } else if (difference.inMinutes > 1) {
-      return "${difference.inMinutes}  ${difference.inMinutes > 1 ? "Minutes" : "Minute"}";
+      return "${difference.inMinutes}  ${difference.inMinutes > 1 ? LocaleData.fcreaderMinutes.getString(context) : LocaleData.fcreaderMinute.getString(context)}";
     } else {
-      return "1 minute";
+      return "1 ${LocaleData.fcreaderMinute.getString(context)}";
     }
   }
 
@@ -285,7 +289,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildDifficultyButton(
-              buttonText: "Easy",
+              buttonText: LocaleData.fcreaderEasy.getString(context),
               onPressed: () => _handleDifficultyButtonPress(
                 currentFlashcard: currentFlashcard,
                 difficultyChange: -1,
@@ -297,7 +301,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
               ),
             ),
             _buildDifficultyButton(
-              buttonText: "Medium",
+              buttonText: LocaleData.fcreaderMedium.getString(context),
               onPressed: () => _handleDifficultyButtonPress(
                 currentFlashcard: currentFlashcard,
                 difficultyChange: 0,
@@ -309,7 +313,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
               ),
             ),
             _buildDifficultyButton(
-              buttonText: "Hard",
+              buttonText: LocaleData.fcreaderHard.getString(context),
               onPressed: () => _handleDifficultyButtonPress(
                 currentFlashcard: currentFlashcard,
                 difficultyChange: 2,
@@ -339,10 +343,10 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           onPressed: onPressed,
           child: Text(buttonText, style: biggerButtonTextStyle),
         ),
-        const Text("show after:"),
+        Text(LocaleData.fcreaderShowAfter.getString(context),style: TextStyle(color: usertheme.textColor.withOpacity(0.6),),),
         Text(
           displayDateText,
-          style: TextStyle(color: usertheme.textColor),
+          style: TextStyle(color: usertheme.textColor,fontWeight: FontWeight.bold),
         ),
       ],
     );

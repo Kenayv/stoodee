@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:gap/gap.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/reusables/custom_grid_view.dart';
 import 'package:stoodee/utilities/page_utilities_and_widgets/introduction_assets/introduction_assets.dart';
 import 'package:stoodee/utilities/reusables/bullet_list.dart';
+
+import '../localization/locales.dart';
 
 class IntroductionScreens extends StatefulWidget {
   const IntroductionScreens({super.key});
@@ -82,11 +85,11 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                       ),
                     ),
                   ),
-                  bodyWidget: const Align(
+                  bodyWidget: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'We will help you study 😎',
-                        style: TextStyle(
+                        LocaleData.introHelpYouStoodee.getString(context),
+                        style: const TextStyle(
                             color: Colors.black54,
                             fontSize: 20,
                             fontFamily: 'Roboto'),
@@ -101,14 +104,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                     padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * 0.05,
                         bottom: MediaQuery.of(context).size.height * 0.05),
-                    child: const Text('',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            fontFamily: 'Roboto',
-                            height: 0.8,
-                            letterSpacing: 0.8)),
+                    child: buildCountryFlags(context)
                   ),
                   decoration: getPageDecoration1(),
                 ),
@@ -120,13 +116,13 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                           child: taskListViewIntro(context: context)),
                     ),
                   ]),
-                  bodyWidget: const Align(
+                  bodyWidget: Align(
                     alignment: Alignment.centerLeft,
                     child: Column(
                       children: [
                         Text(
-                          'Task list',
-                          style: TextStyle(
+                          LocaleData.introTaskListTitle.getString(context),
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 50,
                               fontFamily: 'Roboto Mono',
@@ -134,10 +130,11 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                               letterSpacing: 1.4),
                           textAlign: TextAlign.left,
                         ),
-                        Gap(20),
+                        const Gap(20),
                         BulletList([
-                          "Swipe left, and the task will be deleted and marked as incomplete.",
-                          "Swipe right, and the task will be marked as finished."
+                          LocaleData.introTaskListPoint1.getString(context),
+                          LocaleData.introTaskListPoint2.getString(context),
+
                         ]),
                       ],
                     ),
@@ -145,9 +142,9 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   footer: Padding(
                     padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * 0.05),
-                    child: const Text('Organize your Stoodying',
+                    child: Text(LocaleData.introTaskOrganize.getString(context),
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
                             fontFamily: 'Roboto',
@@ -165,14 +162,14 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                       items: flashcardSetListViewIntro(context: context),
                     )),
                   ),
-                  bodyWidget: const Column(
+                  bodyWidget: Column(
                     children: [
-                      Gap(10),
+                      const Gap(10),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Flashcards',
-                          style: TextStyle(
+                          LocaleData.introfcTitle.getString(context),
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 50,
                               fontFamily: 'Roboto Mono',
@@ -181,20 +178,20 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                           textAlign: TextAlign.left,
                         ),
                       ),
-                      Gap(40),
+                      const Gap(40),
                       BulletList([
-                        "Tap on a plus icon, and flashcard will be added.",
-                        "Tap on the whole set, and you will open it. ",
-                        "Hold the set, and it will be deleted"
+                        LocaleData.introfcPoint1.getString(context),
+                        LocaleData.introfcPoint2.getString(context),
+                        LocaleData.introfcPoint3.getString(context),
                       ]),
                     ],
                   ),
                   footer: Padding(
                     padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * 0.05),
-                    child: const Text('Empower your knowledge',
+                    child: Text(LocaleData.introEmpower.getString(context),
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
                             fontFamily: 'Roboto',
@@ -204,9 +201,9 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   decoration: getPageDecoration1(),
                 ),
                 PageViewModel(
-                  title: "Have fun learning!",
+                  title: LocaleData.introHaveFun.getString(context),
                   body:
-                      "In settings you will be able to set how many tasks and flashcards you can do per day",
+                      LocaleData.introYapping.getString(context),
                   decoration: getPageDecoration2(),
                 ),
               ],
@@ -224,8 +221,8 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
               showBackButton: false,
               back: const Icon(Icons.arrow_back),
               next: const Icon(Icons.forward),
-              done: const Text('Done',
-                  style: TextStyle(
+              done: Text(LocaleData.introDone.getString(context),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w600, color: primaryAppColor)),
               dotsDecorator: getDotsDecorator(),
             ),

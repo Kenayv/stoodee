@@ -221,7 +221,7 @@ GestureDetector buildSkipLoginButton(BuildContext context) {
       LocaleData.loginSkip.getString(context),
       style: TextStyle(
           fontSize: 20,
-          color: Colors.black54,
+          color: usertheme.textColor.withOpacity(0.6),
           decoration: TextDecoration.underline,
           decorationColor: Colors.grey.shade400),
     ),

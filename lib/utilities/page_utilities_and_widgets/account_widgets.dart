@@ -221,8 +221,8 @@ Align buildProfilePic(BuildContext context) {
   );
 }
 
-Text buildUsername(User user) {
-  String nameText = "FIXME"; //TODO:
+Text buildUsername(User user,BuildContext context) {
+  String nameText = LocaleData.accountNotLoggedIn.getString(context); //TODO:
 
   if (!LocalDbController().isNullUser(user)) {
     nameText = user.name;

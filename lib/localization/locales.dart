@@ -101,6 +101,42 @@ mixin LocaleData {
   static const String accountChangeWarning =
       "warning! change resets today's progress.";
 
+
+
+
+  static const String fcreaderShowAfter="show after:";
+  static const String fcreaderDialogAreYouSure="Are you sure you want to delete this flashcard?";
+  static const String fcreaderEasy="Easy";
+  static const String fcreaderMedium="Medium";
+  static const String fcreaderHard="Hard";
+
+  static const String fcreaderMinute="minute";
+  static const String fcreaderMinutes="minutes";
+  static const String fcreaderHour="hour";
+  static const String fcreaderHours="hours";
+
+  static const String fcPageAll="All:";
+  static const String fcPageReady="Ready:";
+
+  static const String introHelpYouStoodee="We will help you stoodee 😎";
+  static const String introTaskListTitle="Task list";
+  static const String introTaskListPoint1="Swipe left, and the task will be deleted and marked as incomplete.";
+  static const String introTaskListPoint2="Swipe right, and the task will be marked as finished.";
+  static const String introTaskOrganize="Organize your Stoodying";
+  static const String introfcTitle="Flashcards";
+  static const String introfcPoint1="Tap on a plus icon, and flashcard will be added.";
+  static const String introfcPoint2="Tap on the whole set, and you will open it.";
+  static const String introfcPoint3="Hold the set, and it will be deleted.";
+  static const String introEmpower="Empower your knowledge";
+  static const String introHaveFun="Have fun learning!";
+  static const String introYapping="In settings you will be able to set how many tasks and flashcards you can do per day";
+  static const String introDone="Done";
+
+
+
+
+
+
   static const String polishLang = 'pl';
   static const String englishLang = 'en';
 
@@ -179,7 +215,39 @@ mixin LocaleData {
     accountLightTheme: "Light theme",
     accountDarkTheme: "Dark theme",
     accountChangeWarning: "warning! change resets today's progress.",
-  };
+    fcreaderShowAfter:"show after:",
+    fcreaderDialogAreYouSure:"Are you sure you want to delete this flashcard?",
+    fcreaderEasy:"Easy",
+    fcreaderMedium:"Medium",
+    fcreaderHard:"Hard",
+
+    fcreaderMinute:"minute",
+    fcreaderMinutes:"minutes",
+    fcreaderHour:"hour",
+    fcreaderHours:"hours",
+    fcPageAll:"All:",
+    fcPageReady:"Ready:",
+
+
+
+    introHelpYouStoodee:"We will help you stoodee 😎",
+    introTaskListTitle:"Task list",
+    introTaskListPoint1:"Swipe left, and the task will be deleted and marked as incomplete.",
+    introTaskListPoint2:"Swipe right, and the task will be marked as finished.",
+    introTaskOrganize:"Organize your Stoodying",
+    introfcTitle:"Flashcards",
+    introfcPoint1:"Tap on a plus icon, and flashcard will be added.",
+    introfcPoint2:"Tap on the whole set, and you will open it.",
+    introfcPoint3:"Hold the set, and it will be deleted.",
+    introEmpower:"Empower your knowledge",
+    introHaveFun:"Have fun learning!",
+    introYapping:"In settings you will be able to set how many tasks and flashcards you can do per day",
+    introDone:"All done",
+
+
+
+
+};
 
   static const Map<String, dynamic> pl = {
     dialogCancel: "Anuluj",
@@ -232,7 +300,7 @@ mixin LocaleData {
     achCopperStreakDesc: "Osiągnij 3-dniową serię",
     achSilverStreakDesc: "Osiągnij 7-dniową serię",
     achGoldStreakDesc: "Osiągnij 14-dniową serię",
-    achYouHaveUnlocked: "Odblokowałeś %a z 12 osiągnięć",
+    achYouHaveUnlocked: "Odblokowano %a z 12 osiągnięć",
     achLogInToSee: "Zaloguj się aby zobaczyć osiągnięcia",
     accountYourStats: "Twoje statystyki",
     accountCompletedFlashcards: "Ukończone fiszki",
@@ -257,6 +325,37 @@ mixin LocaleData {
     accountLightTheme: "Jasny motyw",
     accountDarkTheme: "Ciemny motyw",
     accountChangeWarning: "uwaga! zmiana resetuje dzisiejszy postęp",
+    fcreaderShowAfter:"pokaż za:",
+    fcreaderDialogAreYouSure:"Czy jesteś pewien że chcesz usunąć tę fiszkę?",
+    fcreaderEasy:"Łatwe",
+    fcreaderMedium:"Średnie",
+    fcreaderHard:"Ciężkie",
+
+    fcreaderMinute:"minute",
+    fcreaderMinutes:"minut(y)",
+    fcreaderHour:"godzine",
+    fcreaderHours:"godziny",
+
+
+    fcPageAll:"Wszystkie:",
+    fcPageReady:"Do zrobienia:",
+
+    introHelpYouStoodee:"Pomożemy ci w uczeniu 😎",
+    introTaskListTitle:"Lista zadań",
+    introTaskListPoint1:"Przesuń w lewo a zadanie zostanie usunięte i zaliczone jako niewykonane.",
+    introTaskListPoint2:"Przesuń w prawo zadanie zostanie wykonane",
+    introTaskOrganize:"Zorganizuj swoją nauke",
+    introfcTitle:"Fiszki",
+    introfcPoint1:"Kliknij na plusa, fiszka zostanie dodana",
+    introfcPoint2:"Kliknij na zestaw, to go otworzysz.",
+    introfcPoint3:"Przytrzymaj zestaw, to go usuniesz.",
+    introEmpower:"Utrwal swoją wiedzę",
+    introHaveFun:"Baw sie dobrze!",
+    introYapping:"W ustawieniach będziesz mógł ustawić, ile zadań i fiszek chcesz wykonać dziennie",
+    introDone:"Wszystko gotowe",
+
+
+
   };
 }
 
