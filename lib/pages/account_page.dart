@@ -55,14 +55,14 @@ class _AccountPage extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(child: buildUsername(currentUser)),
-                     Center(
+                    Center(
                         child: Text(
                       LocaleData.accountYourStats.getString(context),
                       style: const TextStyle(color: Colors.grey),
                     )),
                     const Divider(color: Colors.grey, thickness: 2),
                     const Gap(15),
-                    buildStatsContainer(currentUser,context),
+                    buildStatsContainer(currentUser, context),
                   ],
                 ),
               ),

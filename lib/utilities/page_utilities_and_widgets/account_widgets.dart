@@ -223,6 +223,7 @@ Align buildProfilePic(BuildContext context) {
 
 Text buildUsername(User user) {
   String nameText = "FIXME"; //TODO:
+
   if (!LocalDbController().isNullUser(user)) {
     nameText = user.name;
   }
