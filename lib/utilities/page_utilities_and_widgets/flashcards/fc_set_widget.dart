@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
+import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
@@ -114,6 +115,15 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
     return l;
   }
 
+  Future<int> _getActiveFlashcardsCount() async {
+    final allFcs = await FlashcardsService().loadFlashcardsFromSet(
+      fcSet: widget.fcSet,
+      mustBeActive: true,
+    );
+
+    return allFcs.length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -169,10 +179,56 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                     child: Container(
                       alignment: Alignment.bottomCenter,
                       height: 100,
-                      child: Text(
-                        'All pairs: ${widget.fcSet.pairCount}',
-                        style:
-                            const TextStyle(fontSize: 18, color: Colors.white),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Text(
+                            'pairs',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FutureBuilder<int>(
+                                future: _getActiveFlashcardsCount(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<int> snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Text(
+                                      'active: loading...',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    );
+                                  } else {
+                                    return Text(
+                                      'active: ${snapshot.data as int}',
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    );
+                                  }
+                                },
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(10),
+                              ),
+                              Text(
+                                'All: ${widget.fcSet.pairCount}',
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),

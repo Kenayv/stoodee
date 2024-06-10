@@ -18,10 +18,8 @@ class _AchievementsPage extends State<AchievementsPage> {
   @override
   Widget build(BuildContext context) {
     try {
-      final userAchivs = getUserAchievementTiles(
-        LocalDbController().currentUser,
-        context
-      );
+      final userAchivs =
+          getUserAchievementTiles(LocalDbController().currentUser, context);
 
       return Scaffold(
         backgroundColor: usertheme.backgroundColor,
@@ -30,7 +28,8 @@ class _AchievementsPage extends State<AchievementsPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                context.formatString(LocaleData.achYouHaveUnlocked,[userAchivs.length]) ,
+                context.formatString(
+                    LocaleData.achYouHaveUnlocked, [userAchivs.length]),
                 style: TextStyle(fontSize: 16, color: usertheme.textColor),
               ),
               Expanded(

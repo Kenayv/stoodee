@@ -7,7 +7,7 @@ import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 import 'package:stoodee/localization/locales.dart';
 
-Future<void> initApp() async {
+Future<void> _initApp() async {
   await SharedPrefs().init();
   await AuthService.firebase().init();
 
@@ -25,7 +25,6 @@ Future<void> initApp() async {
   }
 }
 
-//TODO: nie wiem czy to wszystko powinno w mainie byc
 late String currentLocale;
 final FlutterLocalization localization = FlutterLocalization.instance;
 
@@ -37,24 +36,25 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
+  void _onTranslatedLangauge(Locale? locale) {
+    currentLocale = locale!.languageCode.toString();
+    SharedPrefs().setPreferredLang(value: currentLocale);
+    setState(() {});
+  }
 
+  void _initLocalization() {
     localization.init(
       mapLocales: locales,
       initLanguageCode: SharedPrefs().preferredLang,
     );
-    localization.onTranslatedLanguage = onTranslatedLangauge;
+    localization.onTranslatedLanguage = _onTranslatedLangauge;
     currentLocale = localization.currentLocale!.languageCode;
   }
 
-  void onTranslatedLangauge(Locale? locale) {
-    currentLocale = locale!.languageCode.toString();
-
-    SharedPrefs().setPreferredLang(value: currentLocale);
-
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+    _initLocalization();
   }
 
   @override
@@ -70,7 +70,6 @@ class _MyAppState extends State<MyApp> {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initApp();
-
+  await _initApp();
   runApp(const MyApp());
 }

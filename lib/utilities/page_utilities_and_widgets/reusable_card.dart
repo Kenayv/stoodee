@@ -14,11 +14,14 @@ class ReusableCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         elevation: 2,
         shadowColor: usertheme.basicShaddow,
-
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(
-            child: Text(text, textAlign: TextAlign.center,style: TextStyle(color: usertheme.textColor),),
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: usertheme.textColor),
+            ),
           ),
         ),
       ),
