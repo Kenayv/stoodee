@@ -31,7 +31,8 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
           await TodoService().reloadTasks();
           goRouterToLogin(context);
         },
-        child: Text(LocaleData.loginTitle.getString(context), style: buttonTextStyle));
+        child: Text(LocaleData.loginTitle.getString(context),
+            style: buttonTextStyle));
   } else {
     return StoodeeButton(
       onPressed: () async {
@@ -44,15 +45,16 @@ StoodeeButton buildLoginOrLogoutButton(BuildContext context) {
         goRouterToLogin(context);
       },
       child: Text(
-      LocaleData.accountLogOut.getString(context),
+        LocaleData.accountLogOut.getString(context),
         style: buttonTextStyle,
       ),
     );
   }
 }
 
-Container buildStatsContainer(User user,BuildContext context) {
-  String defaultStatString = LocaleData.accountLogInToSeeStats.getString(context);
+Container buildStatsContainer(User user, BuildContext context) {
+  String defaultStatString =
+      LocaleData.accountLogInToSeeStats.getString(context);
 
   String currentStreak = defaultStatString;
 
@@ -94,8 +96,10 @@ Container buildStatsContainer(User user,BuildContext context) {
     completedFlashcards = user.totalFlashcardsCompleted.toString();
     longestStreak = user.streakHighscore.toString();
 
-    currentStreak = '$currentStreak ${currentStreak == '1' ? LocaleData.accountDay.getString(context) : LocaleData.accountDays.getString(context)}';
-    longestStreak = '$longestStreak ${longestStreak == '1' ? LocaleData.accountDay.getString(context) : LocaleData.accountDays.getString(context)}';
+    currentStreak =
+        '$currentStreak ${currentStreak == '1' ? LocaleData.accountDay.getString(context) : LocaleData.accountDays.getString(context)}';
+    longestStreak =
+        '$longestStreak ${longestStreak == '1' ? LocaleData.accountDay.getString(context) : LocaleData.accountDays.getString(context)}';
     taskCompletion = '$taskCompletion%';
   }
 
@@ -113,13 +117,20 @@ Container buildStatsContainer(User user,BuildContext context) {
         ]),
     child: Column(
       children: [
-        buildStatItem(LocaleData.accountCompletedFlashcards.getString(context), completedFlashcards),
-        buildStatItem(LocaleData.accountFCRushHighScore.getString(context), fcRushHighscore),
-        buildStatItem(LocaleData.accountCompletedTasks.getString(context), completedTasks),
-        buildStatItem(LocaleData.accountIncompleteTasks.getString(context), incompleteTasks),
-        buildStatItem(LocaleData.accountTaskCompletionRate.getString(context), taskCompletion),
-        buildStatItem(LocaleData.accountCurrentStreak.getString(context), currentStreak),
-        buildStatItem(LocaleData.accountLongestStreak.getString(context), longestStreak),
+        buildStatItem(LocaleData.accountCompletedFlashcards.getString(context),
+            completedFlashcards),
+        buildStatItem(LocaleData.accountFCRushHighScore.getString(context),
+            fcRushHighscore),
+        buildStatItem(LocaleData.accountCompletedTasks.getString(context),
+            completedTasks),
+        buildStatItem(LocaleData.accountIncompleteTasks.getString(context),
+            incompleteTasks),
+        buildStatItem(LocaleData.accountTaskCompletionRate.getString(context),
+            taskCompletion),
+        buildStatItem(
+            LocaleData.accountCurrentStreak.getString(context), currentStreak),
+        buildStatItem(
+            LocaleData.accountLongestStreak.getString(context), longestStreak),
       ],
     ),
   );
@@ -211,8 +222,13 @@ Align buildProfilePic(BuildContext context) {
 }
 
 Text buildUsername(User user) {
+  String nameText = "FIXME"; //TODO:
+  if (!LocalDbController().isNullUser(user)) {
+    nameText = user.name;
+  }
+
   return Text(
-    user.name,
+    nameText,
     style: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
