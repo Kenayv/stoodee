@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/stoodee_icons_icons.dart';
 import 'package:stoodee/utilities/globals.dart';
@@ -96,13 +97,13 @@ Future<void> _showFunFactDialog(BuildContext context, String text) {
                 backgroundColor: usertheme.backgroundColor,
                 content: SizedBox(
                   width: screenWidth * 0.8,
-                  height: screenHeight * 0.25,
+                  height: screenHeight * 0.4,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "Did you know that...?",
-                        style: TextStyle(
+                       Text(
+                        LocaleData.mainDidYouKnow.getString(context),
+                        style: const TextStyle(
                           color: Color.fromARGB(255, 88, 88, 88),
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -117,7 +118,7 @@ Future<void> _showFunFactDialog(BuildContext context, String text) {
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
-                        textAlign: TextAlign.justify,
+                        textAlign: TextAlign.left,
                       ),
                     ],
                   ),

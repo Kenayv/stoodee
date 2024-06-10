@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 Future<dynamic> genericInputDialog({
@@ -36,7 +38,7 @@ Future<dynamic> genericInputDialog({
           additionalButton ?? voidWidget,
           TextButton(
             child: Text(
-              'Cancel',
+              LocaleData.dialogCancel.getString(context),
               style: TextStyle(color: usertheme.textColor),
             ),
             onPressed: () {

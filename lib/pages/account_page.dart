@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:gap/gap.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/utilities/dialogs/user_settings_dialog.dart';
 import 'package:stoodee/utilities/page_utilities_and_widgets/account_widgets.dart';
@@ -53,14 +55,14 @@ class _AccountPage extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(child: buildUsername(currentUser)),
-                    const Center(
+                     Center(
                         child: Text(
-                      'Your stats:',
-                      style: TextStyle(color: Colors.grey),
+                      LocaleData.accountYourStats.getString(context),
+                      style: const TextStyle(color: Colors.grey),
                     )),
                     const Divider(color: Colors.grey, thickness: 2),
                     const Gap(15),
-                    buildStatsContainer(currentUser),
+                    buildStatsContainer(currentUser,context),
                   ],
                 ),
               ),

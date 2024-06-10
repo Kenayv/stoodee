@@ -1,3 +1,5 @@
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_user.dart';
 import 'package:stoodee/services/local_crud/local_database_service/local_database_controller.dart';
 import 'package:stoodee/services/shared_prefs/shared_prefs.dart';
@@ -17,15 +19,15 @@ Future<void> showUserSettingsDialog({
 
   return genericInputDialog(
     context: context,
-    contentText: 'Leave the fields below empty to keep them unchanged.',
-    title: 'User settings',
+    contentText: LocaleData.accountSettingsInfo.getString(context),
+    title: LocaleData.accountUserSettingsTitle.getString(context),
     inputs: [
       TextField(
         style: TextStyle(color: usertheme.textColor),
         controller: nameController,
         decoration: InputDecoration(
           hintStyle: TextStyle(color: usertheme.textColor.withOpacity(0.3)),
-          hintText: 'New username',
+          hintText: LocaleData.accountNewUsername.getString(context),
         ),
       ),
       TextField(
@@ -33,8 +35,8 @@ Future<void> showUserSettingsDialog({
         keyboardType: TextInputType.number,
         controller: taskGoalController,
         decoration: InputDecoration(
-          hintText: 'warning! change resets today\'s progress.',
-          labelText: 'daily tasks goal',
+          hintText: LocaleData.accountChangeWarning.getString(context),
+          labelText: LocaleData.accountDailyTasksGoal.getString(context),
           hintStyle: TextStyle(
               fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
           labelStyle: TextStyle(
@@ -46,8 +48,8 @@ Future<void> showUserSettingsDialog({
         keyboardType: TextInputType.number,
         controller: fcGoalController,
         decoration: InputDecoration(
-          hintText: 'warning! change resets today\'s progress.',
-          labelText: 'daily flashcards goal',
+          hintText: LocaleData.accountChangeWarning.getString(context),
+          labelText: LocaleData.accountDailyFlashcardGoal.getString(context),
           hintStyle: TextStyle(
               fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
           labelStyle: TextStyle(
@@ -70,19 +72,19 @@ Future<void> showUserSettingsDialog({
       style: TextStyle(color: usertheme.textColor),
       value: selectedTheme,
       decoration: InputDecoration(
-        labelText: 'Select Theme',
+        labelText: LocaleData.accountSelectTheme.getString(context),
         labelStyle: TextStyle(
             fontSize: 14, color: usertheme.textColor.withOpacity(0.3)),
       ),
       dropdownColor: usertheme.backgroundColor,
-      items: const [
+      items: [
         DropdownMenuItem(
           value: "dark_theme",
-          child: Text('Dark Theme'),
+          child: Text(LocaleData.accountDarkTheme.getString(context)),
         ),
         DropdownMenuItem(
           value: "light_theme",
-          child: Text('Light Theme'),
+          child: Text(LocaleData.accountLightTheme.getString(context)),
         ),
       ],
       onChanged: (value) {

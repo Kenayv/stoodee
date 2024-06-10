@@ -2,6 +2,12 @@ import 'package:flutter_localization/flutter_localization.dart';
 
 mixin LocaleData {
 
+  //basic dialogs
+  static const String dialogCancel="Cancel";
+
+
+
+
   //pagescaffold
   static const String page1Title = "ToDo";
   static const String page2Title = "FlashCards";
@@ -73,12 +79,40 @@ mixin LocaleData {
 
 
 
+  //account
+
+
+  static const String accountYourStats = "Your stats:";
+  static const String accountCompletedFlashcards = "Completed flashcards:";
+  static const String accountFCRushHighScore = "Fc Rush Highscore:";
+  static const String accountCompletedTasks = "Completed tasks:";
+  static const String accountIncompleteTasks = "Incomplete tasks:";
+  static const String accountTaskCompletionRate = "Task completion rate:";
+  static const String accountCurrentStreak = "Current streak:";
+  static const String accountLongestStreak = "Longest streak";
+  static const String accountDays="days";
+  static const String accountDay="day";
+  static const String accountLogOut="Log-out";
+  static const String accountLogInToSeeStats="Log-in to see stats!";
+  static const String accountNotLoggedIn="Not logged in!";
+  //account settings dialog
+  static const String accountUserSettingsTitle="User settings";
+  static const String accountSettingsInfo="Leave the fields below empty to keep them unchanged.";
+  static const String accountNewUsername="Username";
+  static const String accountDailyTasksGoal="Daily tasks goal";
+  static const String accountDailyFlashcardGoal="Daily flashcards goal";
+  static const String accountSelectTheme="Select theme";
+  static const String accountLightTheme="Light theme";
+  static const String accountDarkTheme="Dark theme";
+  static const String accountChangeWarning="warning! change resets today's progress.";
+
 
 
   static const String polishLang = 'pl';
   static const String englishLang = 'en';
 
   static const Map<String, dynamic> en = {
+    dialogCancel:"Cancel",
     page1Title: "ToDo",
     page2Title: "FlashCards",
     page3Title: "Home",
@@ -144,9 +178,37 @@ mixin LocaleData {
 
 
 
-  };
+  accountYourStats: "Your stats:",
+  accountCompletedFlashcards: "Completed flashcards",
+  accountFCRushHighScore: "Fc Rush Highscore",
+  accountCompletedTasks: "Completed tasks",
+  accountIncompleteTasks: "Incomplete tasks",
+  accountTaskCompletionRate: "Task completion rate",
+  accountCurrentStreak: "Current streak",
+  accountLongestStreak: "Longest streak",
+  accountDay:"day",
+  accountDays:"days",
+  accountLogOut:"Log-out",
+  accountLogInToSeeStats:"Log-in to see stats!",
+  accountNotLoggedIn:"Not logged in!",
+
+   accountUserSettingsTitle:"User settings",
+   accountSettingsInfo:"Leave the fields below empty to keep them unchanged.",
+   accountNewUsername:"Username",
+   accountDailyTasksGoal:"Daily tasks goal",
+   accountDailyFlashcardGoal:"Daily flashcards goal",
+   accountSelectTheme:"Select theme",
+   accountLightTheme:"Light theme",
+   accountDarkTheme:"Dark theme",
+   accountChangeWarning:"warning! change resets today's progress.",
+
+
+
+
+};
 
   static const Map<String, dynamic> pl = {
+    dialogCancel:"Anuluj",
     page1Title: "Lista zadań",
     page2Title: "Fiszki",
     page3Title: "Strona główna",
@@ -165,7 +227,7 @@ mixin LocaleData {
 
 
     mainDidYouKnow:"Czy wiesz, że...?",
-    mainTodaysGoal:"Dzisiejszy cel:",
+    mainTodaysGoal:"Dzisiejsze cele:",
     mainCurrentDaysStreak:"Aktualna seria dni:",
 
 
@@ -208,6 +270,33 @@ mixin LocaleData {
 
     achYouHaveUnlocked:"Odblokowałeś %a z 12 osiągnięć",
     achLogInToSee:"Zaloguj się aby zobaczyć osiągnięcia",
+
+
+    accountYourStats: "Twoje statystyki",
+    accountCompletedFlashcards: "Ukończone fiszki",
+    accountFCRushHighScore: "Rekord Fc Rush",
+    accountCompletedTasks: "Ukończone zadania",
+    accountIncompleteTasks: "Nieukończone zadania",
+    accountTaskCompletionRate: "Procent ukończenia zadań",
+    accountCurrentStreak: "Obecna seria",
+    accountLongestStreak: "Najdłuższa seria",
+    accountDays:"dni",
+    accountDay:"dzień",
+    accountLogOut:"Wyloguj się",
+    accountLogInToSeeStats:"Brak konta!",
+    accountNotLoggedIn:"Nie jesteś zalogowany!",
+
+
+
+    accountUserSettingsTitle:"Ustawienia",
+    accountSettingsInfo:"Pozostaw pole poniżej puste, jeśli nie chcesz ich zmieniać.",
+    accountNewUsername:"Nazwa użytkownika",
+    accountDailyTasksGoal:"Dzienny cel zadań",
+    accountDailyFlashcardGoal:"Dzienny cel fiszek",
+    accountSelectTheme:"Wybierz motyw",
+    accountLightTheme:"Jasny motyw",
+    accountDarkTheme:"Ciemny motyw",
+    accountChangeWarning:"uwaga! zmiana resetuje dzisiejszy postęp",
 
 
 
