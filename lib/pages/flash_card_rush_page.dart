@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
@@ -83,7 +85,12 @@ class _FlashCardsRushState extends State<FlashCardsRush>
           missCount: missCount,
         );
       });
-      return Container(color: Colors.white);
+      return GestureDetector(
+          onTap:(){
+            goRouterToMain(context);
+
+      } ,
+          child:Container(color: usertheme.backgroundColor));
     }
     return BackButtonListener(
       onBackButtonPressed: () async {
@@ -126,7 +133,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => ScaffoldMessenger.of(context).showSnackBar(
         createErrorSnackbar(
-            "Current set is empty. Add some flashcards before studying!"),
+            LocaleData.snackBarSetEmpty.getString(context)),
       ),
     );
   }
@@ -244,7 +251,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
               Column(
                 children: [
                   Text(
-                    "Score:",
+                    LocaleData.fcRushScore.getString(context),
                     style: TextStyle(color: usertheme.textColor),
                   ),
                   Text(
@@ -257,7 +264,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
                 flex: 3,
                 child: Container(),
               ),
-              buildMissCount(missCount),
+              buildMissCount(missCount,context),
               Expanded(flex: 2, child: Container()),
             ],
           ),
@@ -266,6 +273,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
             currentFlashcard: flashcard,
             handleCorrectAnswerFunc: handleCorrectButtonPress,
             handleWrongAnswerFunc: handleWrongButtonPress,
+            context: context,
           ),
         ],
       ),
@@ -286,6 +294,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
     required Flashcard currentFlashcard,
     required Function handleWrongAnswerFunc,
     required Function handleCorrectAnswerFunc,
+    required BuildContext context,
   }) {
     double textSize = 25;
 
@@ -300,7 +309,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
           children: [
             StoodeeButton(
                 child: Text(
-                  "Wrong",
+                  LocaleData.fcRushWrong.getString(context),
                   style: TextStyle(color: Colors.white, fontSize: textSize),
                 ),
                 onPressed: () {
@@ -308,7 +317,7 @@ class _FlashCardsRushState extends State<FlashCardsRush>
                   shouldRandomizeFc = true;
                 }),
             StoodeeButton(
-                child: Text("Correct",
+                child: Text(LocaleData.fcRushCorrect.getString(context),
                     style: TextStyle(color: Colors.white, fontSize: textSize)),
                 onPressed: () {
                   handleCorrectAnswerFunc();

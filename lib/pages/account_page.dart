@@ -34,7 +34,7 @@ class _AccountPage extends State<AccountPage> {
                   onPressed: () async {
                     if (LocalDbController().isNullUser(currentUser)) {
                       ScaffoldMessenger.of(context)
-                          .showSnackBar(createErrorSnackbar("Log-in first"));
+                          .showSnackBar(createErrorSnackbar(LocaleData.snackBarLogInFirst.getString(context)));
                     } else {
                       await showUserSettingsDialog(
                         context: context,

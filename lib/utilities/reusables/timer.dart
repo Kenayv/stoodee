@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/utilities/theme/theme.dart';
 
 class TimerWidget extends StatefulWidget {
@@ -59,7 +61,7 @@ class _TimerWidgetState extends State<TimerWidget> {
     return Column(
       children: [
         Text(
-          'Time remaining: $timeString',
+          '${LocaleData.fcRushTimeRemaining.getString(context)} $timeString',
           style: TextStyle(fontSize: 24, color: usertheme.textColor),
         ),
       ],

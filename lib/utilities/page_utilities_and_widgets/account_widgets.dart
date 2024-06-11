@@ -261,19 +261,19 @@ StoodeeButton buildSyncWithCloudButton(BuildContext context) {
       try {
         await LocalDbController().syncWithCloud();
         ScaffoldMessenger.of(context).showSnackBar(
-            createSuccessSnackbar("Succesfully synced with cloud"));
+            createSuccessSnackbar(LocaleData.snackBarSyncedWithCloud.getString(context)));
       } on CannotSyncNullUser {
         ScaffoldMessenger.of(context)
-            .showSnackBar(createErrorSnackbar("Log-in first"));
+            .showSnackBar(createErrorSnackbar(LocaleData.snackBarLogInFirst.getString(context)));
       } on CannotSyncSoFrequently {
         ScaffoldMessenger.of(context)
-            .showSnackBar(createErrorSnackbar("cannot sync so frequently"));
+            .showSnackBar(createErrorSnackbar(LocaleData.snackBarNotSoFast.getString(context)));
       } on NoInternetConnectionException {
         ScaffoldMessenger.of(context).showSnackBar(
-            createErrorSnackbar("could not find internet connection"));
+            createErrorSnackbar(LocaleData.snackBarNoInternet.getString(context)));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          createErrorSnackbar("Error: code: ${e.toString()}"),
+          createErrorSnackbar("${LocaleData.snackBarErrorCode.getString(context)} ${e.toString()}"),
         );
         log(e.toString());
         log(e.runtimeType.toString());

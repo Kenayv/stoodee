@@ -1,6 +1,8 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/page_utilities_and_widgets/reusable_card.dart';
@@ -66,7 +68,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                 Container(
                   margin: const EdgeInsets.only(top: 15),
                   child: Text(
-                    "empty",
+                    LocaleData.fcEmptyReaderempty.getString(context),
                     style: TextStyle(color: usertheme.textColor),
                   ),
                 ),
@@ -101,11 +103,11 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                     onFlip: () {},
                     side: CardSide.FRONT,
                     direction: FlipDirection.HORIZONTAL,
-                    front: const ReusableCard(
-                      text: "add a flashcard before stoodying",
+                    front: ReusableCard(
+                      text: LocaleData.fcEmptyReaderFrontText.getString(context),
                     ),
-                    back: const ReusableCard(
-                      text: "pls",
+                    back: ReusableCard(
+                      text: LocaleData.fcEmptyReaderBackText.getString(context),
                     ),
                   ),
                 ),
@@ -135,7 +137,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                     }
                   },
                   child: Text(
-                    "Add flashcard",
+                    LocaleData.fcEmptyReaderAddFlashcard.getString(context),
                     style: buttonTextStyle,
                   ),
                 ),

@@ -129,23 +129,23 @@ StoodeeButton buildSignUpButton({
       } on EmailAlreadyInUseAuthException {
         ScaffoldMessenger.of(context).showSnackBar(
           createErrorSnackbar(
-              "Account with this e-mail addresss already exists"),
+              LocaleData.snackBarAccountAlreadyExists.getString(context)),
         );
       } on InvalidEmailAuthException {
         ScaffoldMessenger.of(context).showSnackBar(
-          createErrorSnackbar("Incorrect email entered"),
+          createErrorSnackbar(LocaleData.snackBarIncorrectEmail.getString(context)),
         );
       } on GenericAuthException {
         ScaffoldMessenger.of(context).showSnackBar(
-          createErrorSnackbar("Enter email and password to Sign-Up"),
+          createErrorSnackbar(LocaleData.snackBarEmailAndPassword.getString(context)),
         );
       } on WeakPasswordAuthException {
         ScaffoldMessenger.of(context).showSnackBar(
-          createErrorSnackbar("Password must contain at least 8 characters"),
+          createErrorSnackbar(LocaleData.snackBarPassword.getString(context)),
         );
       } on NoNetworkConnectionException {
         ScaffoldMessenger.of(context).showSnackBar(
-            createErrorSnackbar("Could not find network connection"));
+            createErrorSnackbar(LocaleData.snackBarNoInternet.getString(context)));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           createErrorSnackbar(e.toString()),
@@ -186,13 +186,13 @@ StoodeeButton buildSignInButton({
         }
       } on InvalidCredentialsAuthException {
         ScaffoldMessenger.of(context)
-            .showSnackBar(createErrorSnackbar("Incorrect email or password"));
+            .showSnackBar(createErrorSnackbar(LocaleData.snackBarIncorrectEmail.getString(context)));
       } on GenericAuthException {
         ScaffoldMessenger.of(context).showSnackBar(
-            createErrorSnackbar("Enter email and password to log-in"));
+            createErrorSnackbar(LocaleData.snackBarEmailAndPassword.getString(context)));
       } on NoNetworkConnectionException {
         ScaffoldMessenger.of(context).showSnackBar(
-            createErrorSnackbar("Could not find network connection"));
+            createErrorSnackbar(LocaleData.snackBarNoInternet.getString(context)));
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(createErrorSnackbar(e.toString()));

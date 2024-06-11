@@ -132,7 +132,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => ScaffoldMessenger.of(context).showSnackBar(
         createErrorSnackbar(
-            "Current set is empty. Add some flashcards before studying!"),
+            LocaleData.snackBarSetEmpty.getString(context)),
       ),
     );
   }
@@ -166,7 +166,7 @@ class _FlashCardsReaderState extends State<FlashCardsReader>
           ),
         ),
         leftWidget: ElevatedButton(
-          child: const Text("delete"),
+          child: Text(LocaleData.fcReaderDeleteButton.getString(context)),
           onPressed: () async {
             await showDeleteFcDialog(
                 context: context,

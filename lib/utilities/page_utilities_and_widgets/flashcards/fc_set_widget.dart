@@ -23,17 +23,17 @@ Future<void> showRegularOrFcRushDialog(
       return AlertDialog(
         backgroundColor: usertheme.backgroundColor,
         title: Text(
-          "Select flashcards mode",
+          LocaleData.dialogSelectFcModeTitle.getString(context),
           style: TextStyle(color: usertheme.textColor),
         ),
         content: Text(
-          "Selech preffered game mode:",
+          LocaleData.dialogSelectFcModeDescription.getString(context),
           style: TextStyle(color: usertheme.textColor),
         ),
         actions: <Widget>[
           TextButton(
             child: Text(
-              'normal mode',
+              LocaleData.dialogNormalMode.getString(context),
               style: TextStyle(color: usertheme.textColor),
             ),
             onPressed: () {
@@ -42,7 +42,7 @@ Future<void> showRegularOrFcRushDialog(
           ),
           TextButton(
             child: Text(
-              'flashcards Rush',
+              LocaleData.dialogFcRushMode.getString(context),
               style: TextStyle(color: usertheme.textColor),
             ),
             onPressed: () {

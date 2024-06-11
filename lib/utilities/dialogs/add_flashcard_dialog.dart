@@ -1,5 +1,7 @@
 //Opens a new pop-up window allowing user to add a flashcard. Function invoked on (+) button press.
 
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/services/local_crud/local_database_service/database_flashcard_set.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
 import 'package:stoodee/utilities/dialogs/not_for_production_use/generic_input_dialog.dart';
@@ -14,14 +16,14 @@ Future<void> showAddFlashcardDialog(
   TextEditingController backTextController = TextEditingController();
   return genericInputDialog(
     context: context,
-    title: 'Add Flashcard',
+    title: LocaleData.dialogAddFlashcard.getString(context),
     inputs: [
       TextField(
         style: TextStyle(color: usertheme.textColor),
         controller: frontTextController,
         decoration: InputDecoration(
           hintStyle: TextStyle(color: usertheme.textColor.withOpacity(0.3)),
-          hintText: 'front text',
+          hintText: LocaleData.dialogFrontText.getString(context),
         ),
       ),
       TextField(
@@ -29,7 +31,7 @@ Future<void> showAddFlashcardDialog(
         controller: backTextController,
         decoration: InputDecoration(
           hintStyle: TextStyle(color: usertheme.textColor.withOpacity(0.3)),
-          hintText: 'back text',
+          hintText: LocaleData.dialogBackText.getString(context),
         ),
       )
     ],
@@ -43,7 +45,7 @@ Future<void> showAddFlashcardDialog(
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-            createErrorSnackbar("make sure all fields are filled"));
+            createErrorSnackbar(LocaleData.snackBarAllFieldsFilled.getString(context)));
       }
     },
   );
