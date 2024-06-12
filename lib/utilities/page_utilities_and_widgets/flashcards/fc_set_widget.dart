@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:gap/gap.dart';
 import 'package:stoodee/services/flashcards/flashcard_service.dart';
-import 'package:stoodee/services/local_crud/local_database_service/database_flashcard.dart';
 import 'package:stoodee/services/router/route_functions.dart';
 import 'package:stoodee/utilities/containers.dart';
 import 'package:stoodee/utilities/dialogs/add_flashcard_dialog.dart';
@@ -185,8 +184,6 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-
-
                           Text(
                             '${LocaleData.fcPageAll.getString(context)}${widget.fcSet.pairCount}',
                             style: const TextStyle(
@@ -194,8 +191,6 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
-
-
                           FutureBuilder<int>(
                             future: _getActiveFlashcardsCount(),
                             builder: (BuildContext context,
@@ -220,9 +215,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidget> {
                               }
                             },
                           ),
-                          Gap(5)
-
-
+                          const Gap(5)
                         ],
                       ),
                     ),

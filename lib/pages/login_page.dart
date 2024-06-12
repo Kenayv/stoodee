@@ -54,9 +54,12 @@ class _LoginPage extends State<LoginPage> {
               const Gap(25),
               buildWelcomeAnimation(context),
               const Gap(10),
-              Text(LocaleData.loginTitle.getString(context), style: TextStyle(color: Colors.grey)),
-              buildEmailInput(emailController,context),
-              buildPasswordInput(passwordController,context),
+              Text(
+                LocaleData.loginTitle.getString(context),
+                style: const TextStyle(color: Colors.grey),
+              ),
+              buildEmailInput(emailController, context),
+              buildPasswordInput(passwordController, context),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

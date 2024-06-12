@@ -221,8 +221,8 @@ Align buildProfilePic(BuildContext context) {
   );
 }
 
-Text buildUsername(User user,BuildContext context) {
-  String nameText = LocaleData.accountNotLoggedIn.getString(context); //TODO:
+Text buildUsername(User user, BuildContext context) {
+  String nameText = LocaleData.accountNotLoggedIn.getString(context);
 
   if (!LocalDbController().isNullUser(user)) {
     nameText = user.name;
@@ -260,20 +260,21 @@ StoodeeButton buildSyncWithCloudButton(BuildContext context) {
     onPressed: () async {
       try {
         await LocalDbController().syncWithCloud();
-        ScaffoldMessenger.of(context).showSnackBar(
-            createSuccessSnackbar(LocaleData.snackBarSyncedWithCloud.getString(context)));
+        ScaffoldMessenger.of(context).showSnackBar(createSuccessSnackbar(
+            LocaleData.snackBarSyncedWithCloud.getString(context)));
       } on CannotSyncNullUser {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(createErrorSnackbar(LocaleData.snackBarLogInFirst.getString(context)));
+        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar(
+            LocaleData.snackBarLogInFirst.getString(context)));
       } on CannotSyncSoFrequently {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(createErrorSnackbar(LocaleData.snackBarNotSoFast.getString(context)));
+        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar(
+            LocaleData.snackBarNotSoFast.getString(context)));
       } on NoInternetConnectionException {
-        ScaffoldMessenger.of(context).showSnackBar(
-            createErrorSnackbar(LocaleData.snackBarNoInternet.getString(context)));
+        ScaffoldMessenger.of(context).showSnackBar(createErrorSnackbar(
+            LocaleData.snackBarNoInternet.getString(context)));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          createErrorSnackbar("${LocaleData.snackBarErrorCode.getString(context)} ${e.toString()}"),
+          createErrorSnackbar(
+              "${LocaleData.snackBarErrorCode.getString(context)} ${e.toString()}"),
         );
         log(e.toString());
         log(e.runtimeType.toString());
