@@ -157,20 +157,20 @@ Padding buildStatItem(String title, String value) {
 }
 
 Align buildCountryFlags(BuildContext context) {
-  double dropDdownWidth = MediaQuery.of(context).size.width * 0.2;
+  double dropDdownWidth = MediaQuery.of(context).size.width * 0.18;
   double flagDropDownWidth = MediaQuery.of(context).size.width * 0.07;
   log("currentLocale: $currentLocale");
   return Align(
     alignment: Alignment.topLeft,
     child: Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16.0),
       child: SizedBox(
         width: dropDdownWidth,
         child: DropdownButtonFormField<String>(
           //icon: Visibility(visible: false,child:Icon(Icons.arrow_back)),
           style: TextStyle(color: usertheme.textColor),
           value: currentLocale,
-          isDense: false,
+
           decoration: const InputDecoration.collapsed(hintText: ''),
 
           dropdownColor: usertheme.backgroundColor,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stoodee/localization/locales.dart';
 
 import 'package:stoodee/utilities/containers.dart';
 
@@ -88,7 +90,7 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   createNeutralSnackbar(
-                                      "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
+                                      LocaleData.snackBarIntroduction.getString(context)));
                             },
                             child: const Icon(
                               Icons.add,
@@ -115,11 +117,20 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
                     alignment: Alignment.bottomCenter,
                     height: 100,
                     child: Text(
-                      'All pairs: ${widget.fcSetlength}',
+                      '${LocaleData.fcPageAll.getString(context)} ${widget.fcSetlength}',
                       style: const TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
                 ),
+            Text(
+              '${LocaleData.fcPageReady.getString(context)} 0',
+              style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            )
+
+
               ],
             ),
           ),
@@ -127,11 +138,11 @@ class _FlashCardSetWidgetState extends State<FlashCardSetWidgetIntro> {
       ),
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(createNeutralSnackbar(
-            "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
+           LocaleData.snackBarIntroduction.getString(context)));
       },
       onLongPress: () {
         ScaffoldMessenger.of(context).showSnackBar(createNeutralSnackbar(
-            "This feature is unavalible in introduction\nTo try it out, finish the intro :D"));
+            LocaleData.snackBarIntroduction.getString(context)));
       },
       splashColor: Colors.transparent,
     );

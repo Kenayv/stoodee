@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:stoodee/localization/locales.dart';
 import 'package:stoodee/utilities/globals.dart';
 
 class CustomErrorSnackBar extends StatelessWidget {
@@ -74,7 +76,7 @@ class CustomSuccessSnackBar extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Success!",
+                      Text(LocaleData.snackBarSuccess.getString(context),
                           style: TextStyle(fontSize: 18, color: Colors.white)),
                       Text(
                         successText,
@@ -120,7 +122,7 @@ class CustomNeutralSnackBar extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Hey!",
+                      Text(LocaleData.snackBarNeutral.getString(context),
                           style: TextStyle(fontSize: 18, color: Colors.white)),
                       Text(
                         neutralText,

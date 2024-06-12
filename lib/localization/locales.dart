@@ -35,6 +35,15 @@ mixin LocaleData {
   //fcreader
   static const String fcReaderDeleteButton = "Delete";
 
+
+  //emailverif
+  static const String emailVerifTitle="Verify Your Email";
+  static const String emailVerifDesc1="One more thing! You haven't verified your email yet!";
+  static const String emailVerifDesc2="We have sent an email verification link to you";
+  static const String emailVerifDesc3="To verify your account, Click the link inside of it";
+  static const String emailVerifDontSeeLink="Don't see a link? click here to resend verification email";
+
+
   //fcrush
   static const String fcRushTimeRemaining = "Time remaining: ";
   static const String fcRushScore = "Score";
@@ -360,6 +369,16 @@ mixin LocaleData {
     snackBarIncorrectEmail: "Incorrect email or password",
     snackBarEmailAndPassword: "Enter email and password to Sign-Up",
     snackBarPassword: "Password must contain at least 8 characters",
+
+
+
+   emailVerifTitle:"Verify Your Email",
+   emailVerifDesc1:"One more thing! You haven't verified your email yet!",
+   emailVerifDesc2:"We have sent an email verification link to you",
+   emailVerifDesc3:"To verify your account, Click the link inside of it",
+   emailVerifDontSeeLink:"Don't see a link? click here to resend verification email",
+
+
   };
 
   static const Map<String, dynamic> pl = {
@@ -512,6 +531,17 @@ mixin LocaleData {
     snackBarEmailAndPassword:
         "Wpisz email oraz hasło, aby się zalogować/zarejestrować",
     snackBarPassword: "Hasło musi mieć conajmniej 8 znaków",
+
+
+
+    emailVerifTitle:"Zweryfikuj swój email",
+    emailVerifDesc1:"Jeszcze jedno! Twój email jest niezweryfikowany!",
+    emailVerifDesc2:"Wysłaliśmy ci link do weryfikacji",
+    emailVerifDesc3:"Aby zweryfikować konto, kliknij w link we wiadomości",
+    emailVerifDontSeeLink:"Nie przyszło? Kliknij tutaj, wyślemy jeszcze raz",
+
+
+
   };
 }
 

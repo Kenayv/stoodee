@@ -122,7 +122,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                       WidgetsBinding.instance.addPostFrameCallback(
                         (_) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              createSuccessSnackbar("flashcard added"));
+                              createSuccessSnackbar(LocaleData.snackBarFlashcardAdded.getString(context)));
                           goRouterToMain(context);
                         },
                       );
@@ -130,7 +130,7 @@ class _EmptyReaderScaffoldState extends State<EmptyReaderScaffold> {
                       WidgetsBinding.instance.addPostFrameCallback(
                         (_) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            createErrorSnackbar("Flashcard could not be added"),
+                            createErrorSnackbar(LocaleData.snackBarFlashcarNotAdded.getString(context)),
                           );
                         },
                       );
